@@ -1,0 +1,19 @@
+%import common.NEWLINE
+
+?start : NEWLINE* stmt+ 
+       |
+
+?stmt: expr NEWLINE
+
+expr: literal
+
+literal: bool_literal
+       | int_literal
+
+bool_literal: TRUE
+            | FALSE
+TRUE: "true"
+FALSE: "false"
+
+%import common.INT
+int_literal: INT
