@@ -6,7 +6,7 @@
    :untyped-ast
      (BoolLiteral :value True)
    :typed-ast
-     (BoolLiteral Boolean))
+     (BoolLiteral Bool))
 
   (test-case "false literal"
    :program
@@ -14,5 +14,5 @@
    :untyped-ast
      (BoolLiteral :value False)
    :typed-ast
-     (BoolLiteral Boolean))
+     (BoolLiteral Bool))
 )

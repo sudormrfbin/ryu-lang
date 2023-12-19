@@ -10,8 +10,8 @@ class TestCase:
         self.test_name = test_name
         self.program = program
 
-        self.untyped_ast: LispAst | None = None
-        self.typed_ast: LispAst | None = None
+        self.untyped_ast_sexp: LispAst | None = None
+        self.typed_ast_sexp: LispAst | None = None
 
     @classmethod
     def from_sexp(cls, sexp: list[LispAst]):
@@ -37,9 +37,9 @@ class TestCase:
         while sexp:
             match sexp.pop(0), sexp.pop(0):
                 case ":", "untyped-ast":
-                    testcase.untyped_ast = sexp.pop(0)
+                    testcase.untyped_ast_sexp = sexp.pop(0)
                 case ":", "typed-ast":
-                    testcase.typed_ast = sexp.pop(0)
+                    testcase.typed_ast_sexp = sexp.pop(0)
                 case unknown:
                     raise AttributeError(f"Unknown argument {unknown}")
 

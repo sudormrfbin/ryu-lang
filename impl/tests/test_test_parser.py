@@ -22,5 +22,5 @@ def test_parser():
 
     assert case.test_name == "true literal"
     assert case.program == "true"
-    assert case.untyped_ast == ["BoolLiteral", ":", "value", "True"]
-    assert case.typed_ast == ["BoolLiteral", "Boolean"]
+    assert case.untyped_ast_sexp == ["BoolLiteral", ":", "value", "True"]
+    assert case.typed_ast_sexp == ["BoolLiteral", "Boolean"]
