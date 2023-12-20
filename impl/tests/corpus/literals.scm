@@ -16,7 +16,7 @@
     :typed-ast
       (BoolLiteral Bool))
 
-  (test-case "positive int literal"
+  (test-case "int literal"
     :program
       "123"
     :untyped-ast
@@ -24,7 +24,7 @@
     :typed-ast
       (IntLiteral Int))
 
-  (test-case "negative int literal"
+  (test-case "negative signed int literal"
     :program
       "-1"
     :untyped-ast
@@ -33,4 +33,16 @@
         :operand (IntLiteral :value "1"))
     :typed-ast
       (UnaryOp Int
-        :operand (IntLiteral Int))))
+        :operand (IntLiteral Int)))
+
+  (test-case "positive signed int literal"
+    :program
+      "+1"
+    :untyped-ast
+      (UnaryOp
+        :op "+"
+        :operand (IntLiteral :value "1"))
+    :typed-ast
+      (UnaryOp Int
+        :operand (IntLiteral Int)))
+)
