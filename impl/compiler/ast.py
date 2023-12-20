@@ -15,6 +15,9 @@ class _Ast(ast_utils.Ast):
     def __init__(self):
         self._type: langtypes.Type | None = None
 
+    def eval(self):
+        pass
+
     def to_untyped_sexp(self) -> _LispAst:
         classname = type(self).__name__
 
@@ -57,12 +60,26 @@ class UnaryOp(_Expression):
     op: Literal["+", "-"]
     operand: _Expression
 
+    def eval(self):
+        result = self.operand.eval()
+        match self.op:
+            case "+":
+                return result
+            case "-":
+                return -result
+
 
 @dataclass
 class BoolLiteral(_Expression):
     value: bool
 
+    def eval(self):
+        return self.value
+
 
 @dataclass
 class IntLiteral(_Expression):
-    value: bool
+    value: int
+
+    def eval(self):
+        return self.value
