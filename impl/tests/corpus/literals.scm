@@ -28,6 +28,9 @@
    :program
      "-1"
    :untyped-ast
-     (IntLiteral :value "-1")
+     (UnaryOp
+      :op "-"
+      :operand (IntLiteral :value "1"))
    :typed-ast
-     (IntLiteral Int)))
+     (UnaryOp Int
+      :operand (IntLiteral Int))))

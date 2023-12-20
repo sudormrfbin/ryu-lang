@@ -34,27 +34,8 @@ def test_untyped_ast(suite: TestSuite):
 
         tree = parse(case.program)
         ast = parse_tree_to_ast(tree)
-        sexp = case.untyped_ast_sexp
 
-        node = sexp[0]
-        assert type(ast).__name__ == node, "Mismatched AST nodes"
-
-        i = 1
-        while i < len(sexp):
-            match sexp[i]:
-                case ":":
-                    attr, val = sexp[i + 1], sexp[i + 2]
-                    i += 3
-
-                    assert type(attr) == str, "Attribute following : must be string"
-
-                    assert hasattr(ast, attr), f"{node} node missing {attr} attribute"
-
-                    attrvalue = getattr(ast, attr)
-                    if isinstance(val, list):
-                        assert_untyped_ast(val, attrvalue)
-                    else:
-                        assert val == str(attrvalue)
+        assert ast.to_untyped_sexp() == case.untyped_ast_sexp
 
 
 @pytest.mark.parametrize("suite", TEST_SUITES)
@@ -66,13 +47,5 @@ def test_typed_ast(suite: TestSuite):
         tree = parse(case.program)
         ast = parse_tree_to_ast(tree)
         ast = type_check(ast)
-        node = case.typed_ast_sexp[0]
-        assert type(ast).__name__ == node, f"Mismatched AST nodes in '{case.test_name}'"
 
-        match arg := case.typed_ast_sexp[1]:
-            case str():
-                assert (
-                    type(ast._type).__name__ == arg
-                ), f"Mismatched types in '{case.test_name}'"
-            case _:
-                assert False, "Unhandled case"
+        assert ast.to_typed_sexp() == case.typed_ast_sexp

@@ -1,10 +1,12 @@
-?start: expression
+?start: unary_op
 
-?expression: bool_literal | int_literal
+?!unary_op: ("+" | "-") unary_op | atom
+
+?atom: bool_literal | int_literal
 
 bool_literal: TRUE | FALSE
 TRUE: "true"
 FALSE: "false"
 
-%import common.SIGNED_INT
-int_literal: SIGNED_INT
+%import common.INT
+int_literal: INT
