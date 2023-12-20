@@ -15,6 +15,9 @@ class _Ast(ast_utils.Ast):
     def __init__(self):
         self._type: langtypes.Type | None = None
 
+    def typecheck(self):
+        pass
+
     def eval(self):
         pass
 
@@ -60,6 +63,10 @@ class UnaryOp(_Expression):
     op: Literal["+", "-"]
     operand: _Expression
 
+    def typecheck(self):
+        self.operand.typecheck()
+        self._type = self.operand._type
+
     def eval(self):
         result = self.operand.eval()
         match self.op:
@@ -73,6 +80,9 @@ class UnaryOp(_Expression):
 class BoolLiteral(_Expression):
     value: bool
 
+    def typecheck(self):
+        self._type = langtypes.BOOL
+
     def eval(self):
         return self.value
 
@@ -80,6 +90,9 @@ class BoolLiteral(_Expression):
 @dataclass
 class IntLiteral(_Expression):
     value: int
+
+    def typecheck(self):
+        self._type = langtypes.INT
 
     def eval(self):
         return self.value

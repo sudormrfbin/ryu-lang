@@ -5,7 +5,6 @@ from tests.parser import TestSuite
 from tests.sexp import parse_sexp
 
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.typecheck import type_check
 
 
 def get_suites(dir: str) -> list[TestSuite]:
@@ -46,6 +45,6 @@ def test_typed_ast(suite: TestSuite):
 
         tree = parse(case.program)
         ast = parse_tree_to_ast(tree)
-        ast = type_check(ast)
+        ast.typecheck()
 
         assert ast.to_typed_sexp() == case.typed_ast_sexp
