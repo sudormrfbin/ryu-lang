@@ -1,7 +1,7 @@
 import pytest
 from glob import glob
 
-from tests.parser import TestSuite
+from tests.parser import TestSuite, TestCase
 from tests.sexp import parse_sexp
 
 from compiler.parser import parse, parse_tree_to_ast
@@ -22,42 +22,35 @@ def get_suites(dir: str) -> list[TestSuite]:
     return suite
 
 
+def get_cases(suites: list[TestSuite]) -> list[TestCase]:
+    return sum((s.cases for s in suites), start=[])
+
+
 TEST_SUITES = get_suites("tests/corpus")
+TEST_CASES = get_cases(TEST_SUITES)
 
 
-@pytest.mark.parametrize("suite", TEST_SUITES)
-def test_untyped_ast(suite: TestSuite):
-    for case in suite.cases:
-        if not case.untyped_ast_sexp:
-            continue
+@pytest.mark.parametrize("case", [c for c in TEST_CASES if c.untyped_ast_sexp])
+def test_untyped_ast(case: TestCase):
+    tree = parse(case.program)
+    ast = parse_tree_to_ast(tree)
 
-        tree = parse(case.program)
-        ast = parse_tree_to_ast(tree)
-
-        assert ast.to_untyped_sexp() == case.untyped_ast_sexp
+    assert ast.to_untyped_sexp() == case.untyped_ast_sexp
 
 
-@pytest.mark.parametrize("suite", TEST_SUITES)
-def test_typed_ast(suite: TestSuite):
-    for case in suite.cases:
-        if not case.typed_ast_sexp:
-            continue
+@pytest.mark.parametrize("case", [c for c in TEST_CASES if c.typed_ast_sexp])
+def test_typed_ast(case: TestCase):
+    tree = parse(case.program)
+    ast = parse_tree_to_ast(tree)
+    ast.typecheck()
 
-        tree = parse(case.program)
-        ast = parse_tree_to_ast(tree)
-        ast.typecheck()
-
-        assert ast.to_typed_sexp() == case.typed_ast_sexp
+    assert ast.to_typed_sexp() == case.typed_ast_sexp
 
 
-@pytest.mark.parametrize("suite", TEST_SUITES)
-def test_eval(suite: TestSuite):
-    for case in suite.cases:
-        if not case.eval:
-            continue
+@pytest.mark.parametrize("case", [c for c in TEST_CASES if c.eval])
+def test_eval(case: TestCase):
+    tree = parse(case.program)
+    ast = parse_tree_to_ast(tree)
+    ast.typecheck()
 
-        tree = parse(case.program)
-        ast = parse_tree_to_ast(tree)
-        ast.typecheck()
-
-        assert str(ast.eval()) == case.eval
+    assert str(ast.eval()) == case.eval
