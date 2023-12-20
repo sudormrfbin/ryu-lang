@@ -28,6 +28,6 @@
    :program
      "-1"
    :untyped-ast
-     (IntLiteral :value "1")
+     (IntLiteral :value "-1")
    :typed-ast
      (IntLiteral Int)))

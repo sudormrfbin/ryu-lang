@@ -11,11 +11,15 @@ class _Ast(ast_utils.Ast):
         self._type: langtypes.Type | None = None
 
 
+class _Expression(_Ast):
+    pass
+
+
 @dataclass
-class BoolLiteral(_Ast):
+class BoolLiteral(_Expression):
     value: bool
 
 
 @dataclass
-class IntLiteral(_Ast):
+class IntLiteral(_Expression):
     value: bool
