@@ -48,3 +48,16 @@ def test_typed_ast(suite: TestSuite):
         ast.typecheck()
 
         assert ast.to_typed_sexp() == case.typed_ast_sexp
+
+
+@pytest.mark.parametrize("suite", TEST_SUITES)
+def test_eval(suite: TestSuite):
+    for case in suite.cases:
+        if not case.eval:
+            continue
+
+        tree = parse(case.program)
+        ast = parse_tree_to_ast(tree)
+        ast.typecheck()
+
+        assert str(ast.eval()) == case.eval
