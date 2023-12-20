@@ -17,6 +17,9 @@ class LarkTreeToAstTransformer(Transformer):
     def FALSE(self, _):
         return False
 
+    def INT(self, n):
+        return int(n)
+
 
 _transformer = ast_utils.create_transformer(ast, LarkTreeToAstTransformer())
 

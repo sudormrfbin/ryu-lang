@@ -1,5 +1,8 @@
-?start: bool_literal
+?start: bool_literal | int_literal
 
 bool_literal: TRUE | FALSE
 TRUE: "true"
 FALSE: "false"
+
+%import common.SIGNED_INT
+int_literal: SIGNED_INT

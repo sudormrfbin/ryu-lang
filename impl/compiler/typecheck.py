@@ -1,10 +1,12 @@
-from .ast import _Ast, BoolLiteral
+from . import ast
 from . import langtypes as types
 
 
-def type_check(ast: _Ast) -> _Ast:
-    match ast:
-        case BoolLiteral():
-            ast._type = types.BOOL
+def type_check(node: ast._Ast) -> ast._Ast:
+    match node:
+        case ast.BoolLiteral():
+            node._type = types.BOOL
+        case ast.IntLiteral():
+            node._type = types.INT
 
-    return ast
+    return node
