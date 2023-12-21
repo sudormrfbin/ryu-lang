@@ -59,6 +59,32 @@ class _Expression(_Ast):
 
 
 @dataclass
+class Term(_Expression):
+    left: _Expression
+    op: Literal["+", "-"]
+    right: _Expression
+
+    def typecheck(self):
+        self.left.typecheck()
+        self.right.typecheck()
+
+        if self.left._type != self.right._type:
+            # TODO: Throw error
+            pass
+
+        self._type = self.left._type
+
+    def eval(self):
+        left = self.left.eval()
+        right = self.right.eval()
+        match self.op:
+            case "+":
+                return left + right
+            case "-":
+                return left - right
+
+
+@dataclass
 class UnaryOp(_Expression):
     op: Literal["+", "-"]
     operand: _Expression
