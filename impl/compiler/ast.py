@@ -25,13 +25,15 @@ class _Ast(ast_utils.Ast, ast_utils.WithMeta):
     def eval(self):
         pass
 
+    _SEXP_SKIP_ATTRS = ("type_", "meta")
+
     def to_untyped_sexp(self) -> _LispAst:
         classname = type(self).__name__
 
         lisp_ast: _LispAst = [classname]
 
         for field in dataclasses.fields(self):
-            if field.name in ("type_", "meta"):
+            if field.name in self._SEXP_SKIP_ATTRS:
                 continue
 
             lisp_ast.append(":")
@@ -52,7 +54,7 @@ class _Ast(ast_utils.Ast, ast_utils.WithMeta):
         lisp_ast: _LispAst = [classname, type_]
 
         for field in dataclasses.fields(self):
-            if field.name in ("type_", "meta"):
+            if field.name in self._SEXP_SKIP_ATTRS:
                 continue
 
             value = getattr(self, field.name)
