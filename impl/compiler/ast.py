@@ -12,8 +12,9 @@ _LispAst = list[Union[str, "_LispAst"]]
 # TODO: explain requirement of underscore by lark
 @dataclass
 class _Ast(ast_utils.Ast):
-    def __init__(self):
-        self._type: langtypes.Type | None = None
+    # kw_only is required to make dataclasses play nice with inheritance and
+    # fields with default values. https://stackoverflow.com/a/69822584/7115678
+    type_: langtypes.Type | None = dataclasses.field(default=None, kw_only=True)
 
     def typecheck(self):
         pass
@@ -27,6 +28,9 @@ class _Ast(ast_utils.Ast):
         lisp_ast: _LispAst = [classname]
 
         for field in dataclasses.fields(self):
+            if field.name in ("type_", "meta"):
+                continue
+
             lisp_ast.append(":")
             lisp_ast.append(field.name)
 
@@ -40,11 +44,14 @@ class _Ast(ast_utils.Ast):
 
     def to_typed_sexp(self) -> _LispAst:
         classname = type(self).__name__
-        type_ = type(self._type).__name__
+        type_ = type(self.type_).__name__
 
         lisp_ast: _LispAst = [classname, type_]
 
         for field in dataclasses.fields(self):
+            if field.name in ("type_", "meta"):
+                continue
+
             value = getattr(self, field.name)
             if isinstance(value, _Ast):
                 lisp_ast.append(":")
@@ -68,11 +75,11 @@ class Term(_Expression):
         self.left.typecheck()
         self.right.typecheck()
 
-        if self.left._type != self.right._type:
+        if self.left.type_ != self.right.type_:
             # TODO: Throw error
             pass
 
-        self._type = self.left._type
+        self.type_ = self.left.type_
 
     def eval(self):
         left = self.left.eval()
@@ -91,7 +98,7 @@ class UnaryOp(_Expression):
 
     def typecheck(self):
         self.operand.typecheck()
-        self._type = self.operand._type
+        self.type_ = self.operand.type_
 
     def eval(self):
         result = self.operand.eval()
@@ -107,7 +114,7 @@ class BoolLiteral(_Expression):
     value: bool
 
     def typecheck(self):
-        self._type = langtypes.BOOL
+        self.type_ = langtypes.BOOL
 
     def eval(self):
         return self.value
@@ -118,7 +125,7 @@ class IntLiteral(_Expression):
     value: int
 
     def typecheck(self):
-        self._type = langtypes.INT
+        self.type_ = langtypes.INT
 
     def eval(self):
         return self.value
