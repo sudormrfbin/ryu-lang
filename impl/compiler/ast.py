@@ -3,6 +3,7 @@ import dataclasses
 from dataclasses import dataclass
 
 from lark import ast_utils
+from lark.tree import Meta as LarkMeta
 
 from . import langtypes
 
@@ -11,7 +12,9 @@ _LispAst = list[Union[str, "_LispAst"]]
 
 # TODO: explain requirement of underscore by lark
 @dataclass
-class _Ast(ast_utils.Ast):
+class _Ast(ast_utils.Ast, ast_utils.WithMeta):
+    meta: LarkMeta  # line and column number information
+
     # kw_only is required to make dataclasses play nice with inheritance and
     # fields with default values. https://stackoverflow.com/a/69822584/7115678
     type_: langtypes.Type | None = dataclasses.field(default=None, kw_only=True)
