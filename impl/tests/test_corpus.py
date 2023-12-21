@@ -30,7 +30,16 @@ TEST_SUITES = get_suites("tests/corpus")
 TEST_CASES = get_cases(TEST_SUITES)
 
 
-@pytest.mark.parametrize("case", [c for c in TEST_CASES if c.untyped_ast_sexp])
+def case_id(val):
+    if isinstance(val, TestCase):
+        return val.test_name
+
+
+@pytest.mark.parametrize(
+    "case",
+    [c for c in TEST_CASES if c.untyped_ast_sexp],
+    ids=case_id,
+)
 def test_untyped_ast(case: TestCase):
     tree = parse(case.program)
     ast = parse_tree_to_ast(tree)
@@ -38,7 +47,11 @@ def test_untyped_ast(case: TestCase):
     assert ast.to_untyped_sexp() == case.untyped_ast_sexp
 
 
-@pytest.mark.parametrize("case", [c for c in TEST_CASES if c.typed_ast_sexp])
+@pytest.mark.parametrize(
+    "case",
+    [c for c in TEST_CASES if c.typed_ast_sexp],
+    ids=case_id,
+)
 def test_typed_ast(case: TestCase):
     tree = parse(case.program)
     ast = parse_tree_to_ast(tree)
@@ -47,7 +60,11 @@ def test_typed_ast(case: TestCase):
     assert ast.to_typed_sexp() == case.typed_ast_sexp
 
 
-@pytest.mark.parametrize("case", [c for c in TEST_CASES if c.eval])
+@pytest.mark.parametrize(
+    "case",
+    [c for c in TEST_CASES if c.eval],
+    ids=case_id,
+)
 def test_eval(case: TestCase):
     tree = parse(case.program)
     ast = parse_tree_to_ast(tree)
