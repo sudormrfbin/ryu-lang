@@ -50,7 +50,7 @@ class _Ast(ast_utils.Ast, ast_utils.WithMeta):
 
     def to_typed_sexp(self) -> _LispAst:
         classname = type(self).__name__
-        type_ = type(self.type_).__name__
+        type_ = self.type_.name
 
         lisp_ast: _LispAst = [classname, type_]
 
