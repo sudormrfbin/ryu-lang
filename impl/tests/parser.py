@@ -12,6 +12,7 @@ class TestCase:
 
         self.untyped_ast_sexp: LispAst | None = None
         self.typed_ast_sexp: LispAst | None = None
+        self.error: LispAst | None = None
         self.eval: str | None = None
 
     @classmethod
@@ -43,6 +44,8 @@ class TestCase:
                     testcase.typed_ast_sexp = sexp.pop(0)
                 case ":", "eval":
                     testcase.eval = sexp.pop(0)
+                case ":", "error":
+                    testcase.error = sexp.pop(0)
                 case unknown:
                     raise AttributeError(f"Unknown argument {unknown}")
 

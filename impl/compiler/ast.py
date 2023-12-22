@@ -6,6 +6,7 @@ from lark import ast_utils
 from lark.tree import Meta as LarkMeta
 
 from . import langtypes
+from . import errors
 
 _LispAst = list[Union[str, "_LispAst"]]
 
@@ -103,7 +104,15 @@ class UnaryOp(_Expression):
 
     def typecheck(self):
         self.operand.typecheck()
-        self.type_ = self.operand.type_
+        operand_type = self.operand.type_
+
+        match self.op, operand_type:
+            case "+" | "-", langtypes.INT:
+                self.type_ = operand_type
+            case _:
+                raise errors.InvalidOperationError(
+                    f"Invalid operation '{self.op}' for type '{operand_type.name}'"
+                )
 
     def eval(self):
         result = self.operand.eval()

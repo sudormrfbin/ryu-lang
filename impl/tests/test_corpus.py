@@ -5,6 +5,7 @@ from tests.parser import TestSuite, TestCase
 from tests.sexp import parse_sexp
 
 from compiler.parser import parse, parse_tree_to_ast
+from compiler.errors import CompilerError
 
 
 def get_suites(dir: str) -> list[TestSuite]:
@@ -71,3 +72,17 @@ def test_eval(case: TestCase):
     ast.typecheck()
 
     assert str(ast.eval()) == case.eval
+
+
+@pytest.mark.parametrize(
+    "case",
+    [c for c in TEST_CASES if c.error],
+    ids=case_id,
+)
+def test_error(case: TestCase):
+    with pytest.raises(CompilerError) as excinfo:
+        tree = parse(case.program)
+        ast = parse_tree_to_ast(tree)
+        ast.typecheck()
+
+    assert excinfo.value.to_sexp() == case.error

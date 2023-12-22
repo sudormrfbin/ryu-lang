@@ -1,5 +1,7 @@
 class Type:
-    pass
+    @property
+    def name(self):
+        return type(self).__name__
 
 
 class Bool(Type):
