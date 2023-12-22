@@ -14,11 +14,21 @@ _LispAst = list[Union[str, "_LispAst"]]
 # TODO: explain requirement of underscore by lark
 @dataclass
 class _Ast(ast_utils.Ast, ast_utils.WithMeta):
-    meta: LarkMeta  # line and column number information
+    # InitVar makes meta available on the __post_init__ method
+    # and excludes it in the generated __init__.
+    meta: dataclasses.InitVar[LarkMeta]
+    """Line and column numbers from lark framework.
+    Converted to Span for strorage within the class."""
+
+    span: errors.Span = dataclasses.field(init=False)
+    """Line and column number information."""
 
     # kw_only is required to make dataclasses play nice with inheritance and
     # fields with default values. https://stackoverflow.com/a/69822584/7115678
     type_: langtypes.Type | None = dataclasses.field(default=None, kw_only=True)
+
+    def __post_init__(self, meta: LarkMeta):
+        self.span = errors.Span.from_meta(meta)
 
     def typecheck(self):
         pass
@@ -26,7 +36,7 @@ class _Ast(ast_utils.Ast, ast_utils.WithMeta):
     def eval(self):
         pass
 
-    _SEXP_SKIP_ATTRS = ("type_", "meta")
+    _SEXP_SKIP_ATTRS = ("type_", "span")
 
     def to_untyped_sexp(self) -> _LispAst:
         classname = type(self).__name__
@@ -112,7 +122,7 @@ class UnaryOp(_Expression):
             case _:
                 raise errors.InvalidOperationError(
                     f"Invalid operation '{self.op}' for type '{operand_type.name}'",
-                    span=errors.Span.from_meta(self.meta),
+                    span=self.span,
                 )
 
     def eval(self):
