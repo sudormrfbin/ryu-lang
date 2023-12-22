@@ -1,4 +1,4 @@
-from typing import Iterable
+import dataclasses
 from dataclasses import dataclass
 
 from lark.tree import Meta
@@ -29,18 +29,22 @@ class Span:
         return ["Span", ":", "start", start, ":", "end", end]
 
 
+@dataclass
 class CompilerError(Exception):
-    _SEXP_INCLUDE: Iterable[str]
+    def __post_init__(self):
+        attributes = dataclasses.astuple(self)
+        # Custom exceptions must always call super(), we use the __post_init__
+        # mechanism provided by dataclasses to call the super constructor after
+        # this class's __init__ is called.
+        super().__init__(*attributes)
 
     def to_sexp(self):
         error_name = type(self).__name__
         sexp = [error_name]
 
-        for arg in self._SEXP_INCLUDE:
+        for arg, value in dataclasses.asdict(self).items():
             sexp.append(":")
             sexp.append(arg)
-
-            value = getattr(self, arg)
 
             if hasattr(value, attr := "to_sexp"):
                 to_sexp = getattr(value, attr)
@@ -56,20 +60,11 @@ class CompilerError(Exception):
         return sexp
 
 
+@dataclass
 class InvalidOperationError(CompilerError):
-    _SEXP_INCLUDE = ("message", "operator", "operands")
-
-    def __init__(
-        self,
-        message: str,
-        operator: tuple[str, Span],
-        operands: list[tuple[langtypes.Type, Span]],
-    ):
-        super().__init__(message, operator, operands)
-
-        self.message = message
-        self.operator = operator
-        self.operands = operands
+    message: str
+    operator: tuple[str, Span]
+    operands: list[tuple[langtypes.Type, Span]]
 
     def to_sexp_operator(self):
         return [self.operator[0], self.operator[1].to_sexp()]
