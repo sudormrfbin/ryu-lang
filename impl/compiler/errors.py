@@ -3,6 +3,8 @@ from dataclasses import dataclass
 
 from lark.tree import Meta
 
+from compiler import langtypes
+
 
 @dataclass
 class Span:
@@ -39,20 +41,42 @@ class CompilerError(Exception):
             sexp.append(arg)
 
             value = getattr(self, arg)
-            try:
-                to_sexp = getattr(value, "to_sexp")
-                sexp.append(to_sexp())
-            except AttributeError:
-                sexp.append(str(value))
+
+            if hasattr(value, attr := "to_sexp"):
+                to_sexp = getattr(value, attr)
+            elif hasattr(self, attr := f"to_sexp_{arg}"):
+                to_sexp = getattr(self, attr)
+            else:
+
+                def to_sexp():
+                    return str(value)
+
+            sexp.append(to_sexp())
 
         return sexp
 
 
 class InvalidOperationError(CompilerError):
-    _SEXP_INCLUDE = ("message", "span")
+    _SEXP_INCLUDE = ("message", "operator", "operands")
 
-    def __init__(self, message: str, span: Span):
-        super().__init__(message, span)
+    def __init__(
+        self,
+        message: str,
+        operator: tuple[str, Span],
+        operands: list[tuple[langtypes.Type, Span]],
+    ):
+        super().__init__(message, operator, operands)
 
         self.message = message
-        self.span = span
+        self.operator = operator
+        self.operands = operands
+
+    def to_sexp_operator(self):
+        return [self.operator[0], self.operator[1].to_sexp()]
+
+    def to_sexp_operands(self):
+        sexp = []
+        for type_, span in self.operands:
+            sexp.append([type_.to_sexp(), span.to_sexp()])
+
+        return sexp

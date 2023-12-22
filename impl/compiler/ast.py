@@ -60,6 +60,7 @@ class _Ast(ast_utils.Ast, ast_utils.WithMeta):
 
     def to_typed_sexp(self) -> _LispAst:
         classname = type(self).__name__
+        assert self.type_ is not None
         type_ = self.type_.name
 
         lisp_ast: _LispAst = [classname, type_]
@@ -120,9 +121,16 @@ class UnaryOp(_Expression):
             case "+" | "-", langtypes.INT:
                 self.type_ = operand_type
             case _:
+                op_span = errors.Span(
+                    start_line=self.span.start_line,
+                    start_column=self.span.start_column,
+                    end_line=self.span.start_line,
+                    end_column=self.span.start_column + len(self.op),
+                )
                 raise errors.InvalidOperationError(
                     f"Invalid operation '{self.op}' for type '{operand_type.name}'",
-                    span=self.span,
+                    operator=(self.op, op_span),
+                    operands=[(operand_type, self.operand.span)],
                 )
 
     def eval(self):
