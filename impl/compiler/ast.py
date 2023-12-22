@@ -10,6 +10,8 @@ from . import errors
 
 _LispAst = list[Union[str, "_LispAst"]]
 
+SEXP_SKIP_KEY = "sexp_skip"
+
 
 # TODO: explain requirement of underscore by lark
 @dataclass
@@ -20,12 +22,14 @@ class _Ast(ast_utils.Ast, ast_utils.WithMeta):
     """Line and column numbers from lark framework.
     Converted to Span for strorage within the class."""
 
-    span: errors.Span = dataclasses.field(init=False)
+    span: errors.Span = dataclasses.field(init=False, metadata={SEXP_SKIP_KEY: True})
     """Line and column number information."""
 
     # kw_only is required to make dataclasses play nice with inheritance and
     # fields with default values. https://stackoverflow.com/a/69822584/7115678
-    type_: langtypes.Type | None = dataclasses.field(default=None, kw_only=True)
+    type_: langtypes.Type | None = dataclasses.field(
+        default=None, kw_only=True, metadata={SEXP_SKIP_KEY: True}
+    )
 
     def __post_init__(self, meta: LarkMeta):
         self.span = errors.Span.from_meta(meta)
@@ -36,15 +40,13 @@ class _Ast(ast_utils.Ast, ast_utils.WithMeta):
     def eval(self):
         pass
 
-    _SEXP_SKIP_ATTRS = ("type_", "span")
-
     def to_untyped_sexp(self) -> _LispAst:
         classname = type(self).__name__
 
         lisp_ast: _LispAst = [classname]
 
         for field in dataclasses.fields(self):
-            if field.name in self._SEXP_SKIP_ATTRS:
+            if SEXP_SKIP_KEY in field.metadata:
                 continue
 
             lisp_ast.append(":")
@@ -66,7 +68,7 @@ class _Ast(ast_utils.Ast, ast_utils.WithMeta):
         lisp_ast: _LispAst = [classname, type_]
 
         for field in dataclasses.fields(self):
-            if field.name in self._SEXP_SKIP_ATTRS:
+            if SEXP_SKIP_KEY in field.metadata:
                 continue
 
             value = getattr(self, field.name)
