@@ -111,7 +111,8 @@ class UnaryOp(_Expression):
                 self.type_ = operand_type
             case _:
                 raise errors.InvalidOperationError(
-                    f"Invalid operation '{self.op}' for type '{operand_type.name}'"
+                    f"Invalid operation '{self.op}' for type '{operand_type.name}'",
+                    span=errors.Span.from_meta(self.meta),
                 )
 
     def eval(self):

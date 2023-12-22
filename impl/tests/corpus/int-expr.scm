@@ -169,5 +169,6 @@
         :operand (BoolLiteral :value True))
     :error
       (InvalidOperationError
-        :message "Invalid operation '-' for type 'Bool'"))
+        :message "Invalid operation '-' for type 'Bool'"
+        :span (Span :start "1:1" :end "1:6")))
 )
