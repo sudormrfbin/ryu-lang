@@ -42,14 +42,14 @@ class CompilerError(Exception):
         error_name = type(self).__name__
         sexp = [error_name]
 
-        for arg, value in dataclasses.asdict(self).items():
+        for field, value in dataclasses.asdict(self).items():
             sexp.append(":")
-            sexp.append(arg)
+            sexp.append(field)
 
-            if hasattr(value, attr := "to_sexp"):
-                to_sexp = getattr(value, attr)
-            elif hasattr(self, attr := f"to_sexp_{arg}"):
-                to_sexp = getattr(self, attr)
+            if hasattr(value, fn := "to_sexp"):
+                to_sexp = getattr(value, fn)
+            elif hasattr(self, fn := f"to_sexp_{field}"):
+                to_sexp = getattr(self, fn)
             else:
 
                 def to_sexp():
