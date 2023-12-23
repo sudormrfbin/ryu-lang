@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 def repl() -> None:
     while True:
         try:
-            source = input("> ").strip()
+            source = input(">> ").strip()
         except (KeyboardInterrupt, EOFError):
             print("\nExiting")
             break
@@ -36,11 +36,23 @@ def repl() -> None:
                     )
                 )
 
-            operand_type = err.operands[0][0]
-            message: Message = [
-                f"Invalid operation {err.operator[0]} for type ",
-                (operand_type.name, operand_type.name),
-            ]
+            operator = err.operator[0]
+            message: Message
+            match err.operands:
+                case [(op_type, _)]:
+                    message = [
+                        f"Invalid operation '{operator}' for type ",
+                        (op_type.name, op_type.name),
+                    ]
+                case [(op_type1, _), (op_type2, _)]:
+                    message = [
+                        f"Invalid operation '{operator}' for types ",
+                        (op_type1.name, op_type1.name),
+                        " and ",
+                        (op_type2.name, op_type2.name),
+                    ]
+                case _:
+                    raise RuntimeError("Unhandled case")
 
             report_error(
                 source=source,

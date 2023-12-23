@@ -3,6 +3,7 @@ import dataclasses
 from dataclasses import dataclass
 
 from lark.tree import Meta
+from lark.lexer import Token
 
 from compiler import langtypes
 
@@ -25,6 +26,24 @@ class Span:
             end_column=meta.end_column,
             start_pos=meta.start_pos,
             end_pos=meta.end_pos,
+        )
+
+    @classmethod
+    def from_token(cls, token: Token) -> "Span":
+        assert token.line
+        assert token.end_line
+        assert token.column
+        assert token.end_column
+        assert token.start_pos
+        assert token.end_pos
+
+        return cls(
+            start_line=token.line,
+            end_line=token.end_line,
+            start_column=token.column,
+            end_column=token.end_column,
+            start_pos=token.start_pos,
+            end_pos=token.end_pos,
         )
 
     def to_sexp(self):

@@ -92,11 +92,24 @@ class Term(_Expression):
 
     def typecheck(self):
         self.left.typecheck()
+        left_type = self.left.type_
         self.right.typecheck()
+        right_type = self.right.type_
 
-        if self.left.type_ != self.right.type_:
-            # TODO: Throw error
-            pass
+        match left_type, self.op, right_type:
+            case langtypes.INT, "+" | "-", langtypes.INT:
+                self.type_ = langtypes.INT
+            case _:
+                op_span = errors.Span.from_token(self.op)
+                raise errors.InvalidOperationError(
+                    message=f"Invalid operation {self.op} for types {left_type.name} and {right_type.name}",
+                    span=self.span,
+                    operator=(self.op, op_span),
+                    operands=[
+                        (left_type, self.left.span),
+                        (right_type, self.right.span),
+                    ],
+                )
 
         self.type_ = self.left.type_
 
@@ -124,14 +137,7 @@ class UnaryOp(_Expression):
             case "+" | "-", langtypes.INT:
                 self.type_ = operand_type
             case _:
-                op_span = errors.Span(
-                    start_line=self.span.start_line,
-                    start_column=self.span.start_column,
-                    end_line=self.span.start_line,
-                    end_column=self.span.start_column + len(self.op),
-                    start_pos=self.span.start_pos,
-                    end_pos=self.span.start_pos + len(self.op),
-                )
+                op_span = errors.Span.from_token(self.op)
                 raise errors.InvalidOperationError(
                     message=f"Invalid operation '{self.op}' for type '{operand_type.name}'",
                     span=self.span,
