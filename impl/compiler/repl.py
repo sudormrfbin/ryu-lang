@@ -6,7 +6,7 @@ from . import errors
 from error_report.error_report import report_error
 
 if TYPE_CHECKING:
-    from error_report.error_report import Message
+    from error_report.error_report import Message, Mark
 
 
 def repl() -> None:
@@ -25,12 +25,13 @@ def repl() -> None:
             if result is not None:
                 print(result)
         except errors.InvalidOperationError as err:
-            labels = []
+            labels: list[Mark] = []
             for type_, span in err.operands:
                 msg: Message = ["This is of type ", (type_.name, type_.name)]
                 labels.append(
                     (
                         msg,
+                        type_.name,
                         (span.start_pos, span.end_pos),
                     )
                 )
