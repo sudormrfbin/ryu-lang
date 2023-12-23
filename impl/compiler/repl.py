@@ -1,10 +1,15 @@
+from typing import TYPE_CHECKING
+
 from .compiler import run
 from . import errors
 
 from error_report.error_report import report_error
 
+if TYPE_CHECKING:
+    from error_report.error_report import Message
 
-def repl():
+
+def repl() -> None:
     while True:
         try:
             source = input("> ").strip()
@@ -22,17 +27,24 @@ def repl():
         except errors.InvalidOperationError as err:
             labels = []
             for type_, span in err.operands:
+                msg: Message = ["This is of type ", (type_.name, type_.name)]
                 labels.append(
                     (
-                        f"This is of type {type_.name}",
+                        msg,
                         (span.start_pos, span.end_pos),
                     )
                 )
 
+            operand_type = err.operands[0][0]
+            message: Message = [
+                f"Invalid operation {err.operator[0]} for type ",
+                (operand_type.name, operand_type.name),
+            ]
+
             report_error(
                 source=source,
                 start_pos=err.span.start_pos,
-                message=err.message,
+                message=message,
                 code=err.code,
                 labels=labels,
             )
