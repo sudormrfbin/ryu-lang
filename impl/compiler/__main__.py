@@ -1,7 +1,9 @@
-from .compiler import compile
+from .repl import repl
 
-with open("input.lang", "r") as f:
-    inp = f.read()
+repl()
 
-output = compile(inp)
-print(output)
+# with open("input.lang", "r") as f:
+#     inp = f.read()
+
+# output = compile(inp)
+# print(output)

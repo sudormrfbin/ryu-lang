@@ -119,6 +119,7 @@ class UnaryOp(_Expression):
         self.operand.typecheck()
         operand_type = self.operand.type_
 
+        # NOTE: self.op is a Token, not actually a string
         match self.op, operand_type:
             case "+" | "-", langtypes.INT:
                 self.type_ = operand_type
@@ -128,9 +129,12 @@ class UnaryOp(_Expression):
                     start_column=self.span.start_column,
                     end_line=self.span.start_line,
                     end_column=self.span.start_column + len(self.op),
+                    start_pos=self.span.start_pos,
+                    end_pos=self.span.start_pos + len(self.op),
                 )
                 raise errors.InvalidOperationError(
-                    f"Invalid operation '{self.op}' for type '{operand_type.name}'",
+                    message=f"Invalid operation '{self.op}' for type '{operand_type.name}'",
+                    span=self.span,
                     operator=(self.op, op_span),
                     operands=[(operand_type, self.operand.span)],
                 )
