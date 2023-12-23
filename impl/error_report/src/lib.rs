@@ -95,11 +95,6 @@ fn report_error(
             .collect()
     };
 
-    // Generate & choose some colours for each of our elements
-    // let a = colors.next();
-    // let b = colors.next();
-    // let out = Color::Fixed(81);
-
     let source_id = "stdin";
 
     let mut report = Report::build(ReportKind::Error, source_id, start_pos)
@@ -121,17 +116,12 @@ fn report_error(
 
     eprintln!();
     report
-        // .with_note(format!(
-        //     "Outputs of {} expressions must coerce to the same type",
-        //     "match".fg(out)
-        // ))
         .finish()
         .eprint((source_id, Source::from(source)))
         .unwrap();
     eprintln!();
 }
 
-/// A Python module implemented in Rust.
 #[pymodule]
 fn error_report(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(report_error, m)?)?;
