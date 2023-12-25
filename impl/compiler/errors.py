@@ -1,4 +1,4 @@
-from typing import ClassVar, NamedTuple
+from typing import ClassVar
 import dataclasses
 from dataclasses import dataclass
 

@@ -4,10 +4,12 @@ from .compiler import run
 from . import errors
 from .errors import OperandSpan
 
-from error_report.error_report import report_error
+# error_report submodule is generated dynamically by pyo3 on the rust
+# side. Hence pyright cannot detect the source file.
+from error_report.error_report import report_error  # pyright: ignore [reportMissingModuleSource]
 
 if TYPE_CHECKING:
-    from error_report.error_report import Message, Mark
+    from error_report.error_report import Message, Mark  # pyright: ignore [reportMissingModuleSource]
 
 
 def repl() -> None:

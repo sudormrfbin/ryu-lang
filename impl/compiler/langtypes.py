@@ -3,9 +3,6 @@ class Type:
     def name(self):
         return type(self).__name__
 
-    def to_sexp(self):
-        return self.name
-
 
 class Bool(Type):
     pass

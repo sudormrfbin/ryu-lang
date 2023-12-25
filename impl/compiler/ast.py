@@ -1,8 +1,8 @@
-from typing import Literal, Union
+from typing import Any, Union
 import dataclasses
 from dataclasses import dataclass
 
-from lark import ast_utils
+from lark import Token, ast_utils
 from lark.tree import Meta as LarkMeta
 
 from . import langtypes
@@ -11,6 +11,9 @@ from . import errors
 _LispAst = list[Union[str, "_LispAst"]]
 
 SEXP_SKIP_KEY = "sexp_skip"
+
+# TODO: Narrow down this type
+EvalResult = Any
 
 
 # TODO: explain requirement of underscore by lark
@@ -37,7 +40,7 @@ class _Ast(ast_utils.Ast, ast_utils.WithMeta):
     def typecheck(self):
         pass
 
-    def eval(self):
+    def eval(self) -> EvalResult:
         pass
 
     def to_dict(self) -> dict:
@@ -79,14 +82,16 @@ class _Expression(_Ast):
 @dataclass
 class Term(_Expression):
     left: _Expression
-    op: Literal["+", "-"]
+    op: Token
     right: _Expression
 
     def typecheck(self):
         self.left.typecheck()
         left_type = self.left.type_
+        assert left_type
         self.right.typecheck()
         right_type = self.right.type_
+        assert right_type
 
         match left_type, self.op, right_type:
             case langtypes.INT, "+" | "-", langtypes.INT:
@@ -117,12 +122,13 @@ class Term(_Expression):
 
 @dataclass
 class UnaryOp(_Expression):
-    op: Literal["+", "-"]
+    op: Token
     operand: _Expression
 
     def typecheck(self):
         self.operand.typecheck()
         operand_type = self.operand.type_
+        assert operand_type
 
         # NOTE: self.op is a lark.lexer.Token, not actually a string
         match self.op, operand_type:
