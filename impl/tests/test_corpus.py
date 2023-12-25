@@ -9,7 +9,7 @@ from compiler.errors import CompilerError
 
 
 def get_suites(dir: str) -> list[TestSuite]:
-    files = glob(f"{dir}/*.scm")
+    files = glob(f"{dir}/**/*.scm", recursive=True)
 
     suite = []
 
