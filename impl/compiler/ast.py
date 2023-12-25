@@ -40,6 +40,37 @@ class _Ast(ast_utils.Ast, ast_utils.WithMeta):
     def eval(self):
         pass
 
+    def to_dict(self) -> dict:
+        attrs = {}
+
+        for field in dataclasses.fields(self):
+            if SEXP_SKIP_KEY in field.metadata:
+                continue
+
+            value = getattr(self, field.name)
+            if isinstance(value, _Ast):
+                attrs[field.name] = value.to_dict()
+            else:
+                attrs[field.name] = value
+
+        return {type(self): attrs}
+
+    def to_type_dict(self) -> dict:
+        assert self.type_ is not None
+
+        result: dict = {}
+        result[type(self)] = type(self.type_)
+
+        for field in dataclasses.fields(self):
+            if SEXP_SKIP_KEY in field.metadata:
+                continue
+
+            value = getattr(self, field.name)
+            if isinstance(value, _Ast):
+                result[field.name] = value.to_type_dict()
+
+        return result
+
     def to_untyped_sexp(self) -> _LispAst:
         classname = type(self).__name__
 
