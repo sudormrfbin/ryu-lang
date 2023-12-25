@@ -1,4 +1,6 @@
+from _pytest.capture import CaptureFixture
 import pytest
+from compiler.compiler import run
 
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.errors import OperandSpan, InvalidOperationError
@@ -23,6 +25,12 @@ def test_unary_op_bool_error():
             assert False
 
 
+def test_unary_op_bool_error_output(capfd: CaptureFixture[str], snapshot):
+    run("-true")
+    _, err = capfd.readouterr()
+    assert snapshot == err
+
+
 def test_binary_op_bool_error():
     with pytest.raises(InvalidOperationError) as excinfo:
         ast = parse_tree_to_ast(parse("true+false"))
@@ -45,7 +53,13 @@ def test_binary_op_bool_error():
             assert False
 
 
-def test_binary_op_bool_interror():
+def test_binary_op_bool_error_output(capfd: CaptureFixture[str], snapshot):
+    run("true+false")
+    _, err = capfd.readouterr()
+    assert snapshot == err
+
+
+def test_binary_op_bool_int_error():
     with pytest.raises(InvalidOperationError) as excinfo:
         ast = parse_tree_to_ast(parse("24+false"))
         #                              123456789
@@ -65,3 +79,9 @@ def test_binary_op_bool_interror():
             assert s2.coord() == ((1, 4), (1, 9))
         case _:
             assert False
+
+
+def test_binary_op_bool_int_error_output(capfd: CaptureFixture[str], snapshot):
+    run("24+false")
+    _, err = capfd.readouterr()
+    assert snapshot == err
