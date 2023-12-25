@@ -71,45 +71,6 @@ class _Ast(ast_utils.Ast, ast_utils.WithMeta):
 
         return result
 
-    def to_untyped_sexp(self) -> _LispAst:
-        classname = type(self).__name__
-
-        lisp_ast: _LispAst = [classname]
-
-        for field in dataclasses.fields(self):
-            if SEXP_SKIP_KEY in field.metadata:
-                continue
-
-            lisp_ast.append(":")
-            lisp_ast.append(field.name)
-
-            value = getattr(self, field.name)
-            if isinstance(value, _Ast):
-                lisp_ast.append(value.to_untyped_sexp())
-            else:
-                lisp_ast.append(str(value))
-
-        return lisp_ast
-
-    def to_typed_sexp(self) -> _LispAst:
-        classname = type(self).__name__
-        assert self.type_ is not None
-        type_ = self.type_.name
-
-        lisp_ast: _LispAst = [classname, type_]
-
-        for field in dataclasses.fields(self):
-            if SEXP_SKIP_KEY in field.metadata:
-                continue
-
-            value = getattr(self, field.name)
-            if isinstance(value, _Ast):
-                lisp_ast.append(":")
-                lisp_ast.append(field.name)
-                lisp_ast.append(value.to_typed_sexp())
-
-        return lisp_ast
-
 
 class _Expression(_Ast):
     pass
@@ -135,10 +96,10 @@ class Term(_Expression):
                 raise errors.InvalidOperationError(
                     message=f"Invalid operation {self.op} for types {left_type.name} and {right_type.name}",
                     span=self.span,
-                    operator=(self.op, op_span),
+                    operator=errors.OperatorSpan(self.op, op_span),
                     operands=[
-                        (left_type, self.left.span),
-                        (right_type, self.right.span),
+                        errors.OperandSpan(left_type, self.left.span),
+                        errors.OperandSpan(right_type, self.right.span),
                     ],
                 )
 
@@ -172,8 +133,8 @@ class UnaryOp(_Expression):
                 raise errors.InvalidOperationError(
                     message=f"Invalid operation '{self.op}' for type '{operand_type.name}'",
                     span=self.span,
-                    operator=(self.op, op_span),
-                    operands=[(operand_type, self.operand.span)],
+                    operator=errors.OperatorSpan(self.op, op_span),
+                    operands=[errors.OperandSpan(operand_type, self.operand.span)],
                 )
 
     def eval(self):

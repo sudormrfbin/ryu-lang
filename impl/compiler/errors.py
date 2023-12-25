@@ -1,4 +1,4 @@
-from typing import ClassVar
+from typing import ClassVar, NamedTuple
 import dataclasses
 from dataclasses import dataclass
 
@@ -6,6 +6,8 @@ from lark.tree import Meta
 from lark.lexer import Token
 
 from compiler import langtypes
+
+LineCol = tuple[int, int]
 
 
 @dataclass
@@ -46,11 +48,10 @@ class Span:
             end_pos=token.end_pos,
         )
 
-    def to_sexp(self):
-        start = f"{self.start_line}:{self.start_column}"
-        end = f"{self.end_line}:{self.end_column}"
-
-        return ["Span", ":", "start", start, ":", "end", end]
+    def coord(self) -> tuple[LineCol, LineCol]:
+        start = (self.start_line, self.start_column)
+        end = (self.end_line, self.end_column)
+        return (start, end)
 
 
 class InternalCompilerError(Exception):
@@ -74,43 +75,22 @@ class CompilerError(Exception):
     def __str__(self) -> str:
         return f"{type(self).__name__}: {self.message}"
 
-    def to_sexp(self):
-        error_name = type(self).__name__
-        sexp = [error_name]
 
-        for field in dataclasses.fields(self):
-            sexp.append(":")
-            sexp.append(field.name)
+@dataclass
+class OperatorSpan:
+    name: str
+    span: Span
 
-            value = getattr(self, field.name)
 
-            if hasattr(value, fn := "to_sexp"):
-                to_sexp = getattr(value, fn)
-            elif hasattr(self, fn := f"to_sexp_{field.name}"):
-                to_sexp = getattr(self, fn)
-            else:
-
-                def to_sexp():
-                    return str(value)
-
-            sexp.append(to_sexp())
-
-        return sexp
+@dataclass
+class OperandSpan:
+    type_: langtypes.Type
+    span: Span
 
 
 @dataclass
 class InvalidOperationError(CompilerError):
     code = 1
 
-    operator: tuple[str, Span]
-    operands: list[tuple[langtypes.Type, Span]]
-
-    def to_sexp_operator(self):
-        return [self.operator[0], self.operator[1].to_sexp()]
-
-    def to_sexp_operands(self):
-        sexp = []
-        for type_, span in self.operands:
-            sexp.append([type_.to_sexp(), span.to_sexp()])
-
-        return sexp
+    operator: OperatorSpan
+    operands: list[OperandSpan]

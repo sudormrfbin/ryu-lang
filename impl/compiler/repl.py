@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING
 
 from .compiler import run
 from . import errors
+from .errors import OperandSpan
 
 from error_report.error_report import report_error
 
@@ -26,30 +27,30 @@ def repl() -> None:
                 print(result)
         except errors.InvalidOperationError as err:
             labels: list[Mark] = []
-            for type_, span in err.operands:
-                msg: Message = ["This is of type ", (type_.name, type_.name)]
+            for op in err.operands:
+                msg: Message = ["This is of type ", (op.type_.name, op.type_.name)]
                 labels.append(
                     (
                         msg,
-                        type_.name,
-                        (span.start_pos, span.end_pos),
+                        op.type_.name,
+                        (op.span.start_pos, op.span.end_pos),
                     )
                 )
 
-            operator = err.operator[0]
+            operator = err.operator
             message: Message
             match err.operands:
-                case [(op_type, _)]:
+                case [OperandSpan(type_=t)]:
                     message = [
-                        f"Invalid operation '{operator}' for type ",
-                        (op_type.name, op_type.name),
+                        f"Invalid operation '{operator.name}' for type ",
+                        (t.name, t.name),
                     ]
-                case [(op_type1, _), (op_type2, _)]:
+                case [OperandSpan(type_=t1), OperandSpan(type_=t2)]:
                     message = [
-                        f"Invalid operation '{operator}' for types ",
-                        (op_type1.name, op_type1.name),
+                        f"Invalid operation '{operator.name}' for types ",
+                        (t1.name, t1.name),
                         " and ",
-                        (op_type2.name, op_type2.name),
+                        (t2.name, t2.name),
                     ]
                 case _:
                     raise errors.InternalCompilerError("Unhandled case")
