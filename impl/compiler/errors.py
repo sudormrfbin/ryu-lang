@@ -53,6 +53,10 @@ class Span:
         return ["Span", ":", "start", start, ":", "end", end]
 
 
+class InternalCompilerError(Exception):
+    pass
+
+
 @dataclass
 class CompilerError(Exception):
     code: ClassVar[int]

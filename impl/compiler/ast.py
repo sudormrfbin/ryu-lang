@@ -132,7 +132,7 @@ class UnaryOp(_Expression):
         self.operand.typecheck()
         operand_type = self.operand.type_
 
-        # NOTE: self.op is a Token, not actually a string
+        # NOTE: self.op is a lark.lexer.Token, not actually a string
         match self.op, operand_type:
             case "+" | "-", langtypes.INT:
                 self.type_ = operand_type

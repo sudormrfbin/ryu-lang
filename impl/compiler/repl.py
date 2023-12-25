@@ -52,7 +52,7 @@ def repl() -> None:
                         (op_type2.name, op_type2.name),
                     ]
                 case _:
-                    raise RuntimeError("Unhandled case")
+                    raise errors.InternalCompilerError("Unhandled case")
 
             report_error(
                 source=source,
