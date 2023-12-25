@@ -30,12 +30,12 @@ class Span:
 
     @classmethod
     def from_token(cls, token: Token) -> "Span":
-        assert token.line
-        assert token.end_line
-        assert token.column
-        assert token.end_column
-        assert token.start_pos
-        assert token.end_pos
+        assert token.line is not None
+        assert token.end_line is not None
+        assert token.column is not None
+        assert token.end_column is not None
+        assert token.start_pos is not None
+        assert token.end_pos is not None
 
         return cls(
             start_line=token.line,
