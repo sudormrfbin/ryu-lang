@@ -209,3 +209,37 @@ def test_subtraction_with_negative_int_both():
         },
     }
     assert ast.eval() == 1
+
+
+def test_addition_3_ints():
+    ast = parse_tree_to_ast(parse("1+2+6"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {
+                IntLiteral: {"value": 1},
+            },
+            "op": "+",
+            "right": {
+                Term: {
+                    "left": {
+                        IntLiteral: {"value": 2},
+                    },
+                    "op": "+",
+                    "right": {
+                        IntLiteral: {"value": 6},
+                    },
+                },
+            },
+        },
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Int,
+        "left": {IntLiteral: Int},
+        "right": {
+            Term: Int,
+            "left": {IntLiteral: Int},
+            "right": {IntLiteral: Int},
+        },
+    }
+    assert ast.eval() == 9

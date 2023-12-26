@@ -109,6 +109,8 @@ class Term(_Expression):
         match left_type, self.op, right_type:
             case langtypes.INT, "+" | "-", langtypes.INT:
                 self.type_ = langtypes.INT
+            case langtypes.STRING, "+", langtypes.STRING:
+                self.type_ = langtypes.STRING
             case _:
                 op_span = errors.Span.from_token(self.op)
                 raise errors.InvalidOperationError(
