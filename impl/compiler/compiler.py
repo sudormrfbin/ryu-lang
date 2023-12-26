@@ -1,4 +1,3 @@
-from sys import stderr
 from typing import TYPE_CHECKING, Any
 
 # error_report submodule is generated dynamically by pyo3 on the rust

@@ -1,5 +1,6 @@
 import abc
 from typing import Any, Union
+import typing
 import dataclasses
 from dataclasses import dataclass
 
@@ -15,6 +16,17 @@ SKIP_SERIALIZE = "skip_serialize"
 
 # TODO: Narrow down this type
 EvalResult = Any
+
+AstDict = dict[typing.Type["_Ast"], dict[str, Any]]
+
+# In AstTypeDict, the key type will always correspond to exactly one value type:
+# _Ast -> Type
+# str -> AstTypeDict
+# Since this cannot be expressed in the type system, we settle for a union type
+# which introduces two extra invalid states (_Ast -> AstTypeDict & str -> Type)
+AstTypeDict = dict[
+    typing.Type["_Ast"] | str, typing.Type[langtypes.Type] | "AstTypeDict"
+]
 
 
 # TODO: explain requirement of underscore by lark
@@ -46,8 +58,8 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
     def eval(self) -> EvalResult:
         pass
 
-    def to_dict(self) -> dict:
-        attrs = {}
+    def to_dict(self) -> AstDict:
+        attrs: dict[str, Any] = {}
 
         for field in dataclasses.fields(self):
             if SKIP_SERIALIZE in field.metadata:
@@ -61,10 +73,12 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
 
         return {type(self): attrs}
 
-    def to_type_dict(self) -> dict:
+    def to_type_dict(
+        self,
+    ) -> AstTypeDict:
         assert self.type_ is not None
 
-        result: dict = {}
+        result: AstTypeDict = {}
         result[type(self)] = type(self.type_)
 
         for field in dataclasses.fields(self):
@@ -117,6 +131,10 @@ class Term(_Expression):
                 return left + right
             case "-":
                 return left - right
+            case _:
+                raise errors.InternalCompilerError(
+                    f"{type(self).__name__} recieved invalid operator {self.op}"
+                )
 
 
 @dataclass
@@ -148,6 +166,10 @@ class UnaryOp(_Expression):
                 return result
             case "-":
                 return -result
+            case _:
+                raise errors.InternalCompilerError(
+                    f"{type(self).__name__} recieved invalid operator {self.op}"
+                )
 
 
 @dataclass

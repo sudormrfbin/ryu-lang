@@ -1,9 +1,11 @@
-from lark import Lark, Tree, ast_utils, Transformer
+from typing import Any
+from lark import Lark, Token, Tree, ast_utils, Transformer
 
 from . import ast
 
+
 GRAMMAR_FILE = "g.lark"
-_parser = Lark.open(
+_parser = Lark.open(  # type: ignore
     GRAMMAR_FILE,
     parser="lalr",
     propagate_positions=True,
@@ -11,23 +13,25 @@ _parser = Lark.open(
 )
 
 
-def parse(source: str) -> Tree:
+def parse(source: str) -> Tree[Token]:
     return _parser.parse(source)
 
 
-class LarkTreeToAstTransformer(Transformer):
-    def TRUE(self, _):
+class LarkTreeToAstTransformer(Transformer[Token, Any]):
+    def TRUE(self, _) -> bool:
         return True
 
-    def FALSE(self, _):
+    def FALSE(self, _) -> bool:
         return False
 
-    def INT(self, n):
+    def INT(self, n: str) -> int:
         return int(n)
 
 
-_transformer = ast_utils.create_transformer(ast, LarkTreeToAstTransformer())
+_transformer: Transformer[
+    Token, ast._Ast  # pyright: ignore [reportPrivateUsage]
+] = ast_utils.create_transformer(ast, LarkTreeToAstTransformer())  # pyright: ignore [reportUnknownMemberType]
 
 
-def parse_tree_to_ast(tree: Tree) -> ast._Ast:
+def parse_tree_to_ast(tree: Tree[Token]) -> ast._Ast:  # pyright: ignore [reportPrivateUsage]
     return _transformer.transform(tree)
