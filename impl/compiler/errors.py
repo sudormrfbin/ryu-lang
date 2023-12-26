@@ -1,6 +1,7 @@
 from typing import ClassVar
 import dataclasses
 from dataclasses import dataclass
+from typing_extensions import override
 
 from lark.tree import Meta
 from lark.lexer import Token
@@ -72,6 +73,7 @@ class CompilerError(Exception):
         # this class's __init__ is called.
         super().__init__(*attributes)
 
+    @override
     def __str__(self) -> str:
         return f"{type(self).__name__}: {self.message}"
 

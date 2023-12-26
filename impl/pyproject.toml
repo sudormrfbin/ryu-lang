@@ -5,3 +5,10 @@ pythonpath = [
 
 [tool.pyright]
 typeCheckingMode = "strict"
+
+reportImplicitOverride = true
+reportImportCycles = "warning"
+reportPropertyTypeMismatch = true
+reportShadowedImports = "warning"
+reportUninitializedInstanceVariable = true
+reportUnnecessaryTypeIgnoreComment = "information"

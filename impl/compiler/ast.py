@@ -3,6 +3,7 @@ from typing import Any, Union
 import typing
 import dataclasses
 from dataclasses import dataclass
+from typing_extensions import override
 
 from lark import Token, ast_utils
 from lark.tree import Meta as LarkMeta
@@ -102,6 +103,7 @@ class Term(_Expression):
     op: Token
     right: _Expression
 
+    @override
     def typecheck(self) -> langtypes.Type:
         left_type = self.left.typecheck()
         right_type = self.right.typecheck()
@@ -125,6 +127,7 @@ class Term(_Expression):
 
         return self.type_
 
+    @override
     def eval(self):
         left = self.left.eval()
         right = self.right.eval()
@@ -144,6 +147,7 @@ class UnaryOp(_Expression):
     op: Token
     operand: _Expression
 
+    @override
     def typecheck(self) -> langtypes.Type:
         operand_type = self.operand.typecheck()
 
@@ -161,6 +165,7 @@ class UnaryOp(_Expression):
 
         return self.type_
 
+    @override
     def eval(self):
         result = self.operand.eval()
         match self.op:
@@ -178,10 +183,12 @@ class UnaryOp(_Expression):
 class BoolLiteral(_Expression):
     value: bool
 
+    @override
     def typecheck(self) -> langtypes.Type:
         self.type_ = langtypes.BOOL
         return self.type_
 
+    @override
     def eval(self):
         return self.value
 
@@ -190,10 +197,12 @@ class BoolLiteral(_Expression):
 class IntLiteral(_Expression):
     value: int
 
+    @override
     def typecheck(self) -> langtypes.Type:
         self.type_ = langtypes.INT
         return self.type_
 
+    @override
     def eval(self):
         return self.value
 
@@ -202,9 +211,11 @@ class IntLiteral(_Expression):
 class StringLiteral(_Expression):
     value: str
 
+    @override
     def typecheck(self) -> langtypes.Type:
         self.type_ = langtypes.STRING
         return self.type_
 
+    @override
     def eval(self):
         return self.value
