@@ -5,7 +5,6 @@ from compiler.langtypes import Int
 
 def test_addition_with_positive_int():
     ast = parse_tree_to_ast(parse("1+2"))
-
     assert ast.to_dict() == {
         Term: {
             "left": {IntLiteral: {"value": 1}},
@@ -13,20 +12,17 @@ def test_addition_with_positive_int():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-
     ast.typecheck()
     assert ast.to_type_dict() == {
         Term: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-
     assert ast.eval() == 3
 
 
 def test_addition_with_negative_int_right():
     ast = parse_tree_to_ast(parse("1+-2"))
-
     assert ast.to_dict() == {
         Term: {
             "left": {IntLiteral: {"value": 1}},
@@ -39,7 +35,6 @@ def test_addition_with_negative_int_right():
             },
         }
     }
-
     ast.typecheck()
     assert ast.to_type_dict() == {
         Term: Int,
@@ -49,13 +44,11 @@ def test_addition_with_negative_int_right():
             "operand": {IntLiteral: Int},
         },
     }
-
     assert ast.eval() == -1
 
 
 def test_addition_with_negative_int_left():
     ast = parse_tree_to_ast(parse("-1+2"))
-
     assert ast.to_dict() == {
         Term: {
             "left": {
@@ -68,7 +61,6 @@ def test_addition_with_negative_int_left():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-
     ast.typecheck()
     assert ast.to_type_dict() == {
         Term: Int,
@@ -78,13 +70,11 @@ def test_addition_with_negative_int_left():
         },
         "right": {IntLiteral: Int},
     }
-
     assert ast.eval() == 1
 
 
 def test_addition_with_negative_int_both():
     ast = parse_tree_to_ast(parse("-1+-2"))
-
     assert ast.to_dict() == {
         Term: {
             "left": {
@@ -102,7 +92,6 @@ def test_addition_with_negative_int_both():
             },
         }
     }
-
     ast.typecheck()
     assert ast.to_type_dict() == {
         Term: Int,
@@ -115,13 +104,11 @@ def test_addition_with_negative_int_both():
             "operand": {IntLiteral: Int},
         },
     }
-
     assert ast.eval() == -3
 
 
 def test_subtraction_with_positive_int():
     ast = parse_tree_to_ast(parse("1-2"))
-
     assert ast.to_dict() == {
         Term: {
             "left": {IntLiteral: {"value": 1}},
@@ -129,20 +116,17 @@ def test_subtraction_with_positive_int():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-
     ast.typecheck()
     assert ast.to_type_dict() == {
         Term: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-
     assert ast.eval() == -1
 
 
 def test_subtraction_with_negative_int_right():
     ast = parse_tree_to_ast(parse("1--2"))
-
     assert ast.to_dict() == {
         Term: {
             "left": {IntLiteral: {"value": 1}},
@@ -155,7 +139,6 @@ def test_subtraction_with_negative_int_right():
             },
         }
     }
-
     ast.typecheck()
     assert ast.to_type_dict() == {
         Term: Int,
@@ -165,13 +148,11 @@ def test_subtraction_with_negative_int_right():
             "operand": {IntLiteral: Int},
         },
     }
-
     assert ast.eval() == 3
 
 
 def test_subtraction_with_negative_int_left():
     ast = parse_tree_to_ast(parse("-1-2"))
-
     assert ast.to_dict() == {
         Term: {
             "left": {
@@ -184,7 +165,6 @@ def test_subtraction_with_negative_int_left():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-
     ast.typecheck()
     assert ast.to_type_dict() == {
         Term: Int,
@@ -194,13 +174,11 @@ def test_subtraction_with_negative_int_left():
         },
         "right": {IntLiteral: Int},
     }
-
     assert ast.eval() == -3
 
 
 def test_subtraction_with_negative_int_both():
     ast = parse_tree_to_ast(parse("-1--2"))
-
     assert ast.to_dict() == {
         Term: {
             "left": {
@@ -218,7 +196,6 @@ def test_subtraction_with_negative_int_both():
             },
         }
     }
-
     ast.typecheck()
     assert ast.to_type_dict() == {
         Term: Int,
@@ -231,5 +208,4 @@ def test_subtraction_with_negative_int_both():
             "operand": {IntLiteral: Int},
         },
     }
-
     assert ast.eval() == 1
