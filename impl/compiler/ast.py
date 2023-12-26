@@ -1,3 +1,4 @@
+import abc
 from typing import Any, Union
 import dataclasses
 from dataclasses import dataclass
@@ -10,7 +11,7 @@ from . import errors
 
 _LispAst = list[Union[str, "_LispAst"]]
 
-SEXP_SKIP_KEY = "sexp_skip"
+SKIP_SERIALIZE = "skip_serialize"
 
 # TODO: Narrow down this type
 EvalResult = Any
@@ -18,28 +19,30 @@ EvalResult = Any
 
 # TODO: explain requirement of underscore by lark
 @dataclass
-class _Ast(ast_utils.Ast, ast_utils.WithMeta):
+class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
     # InitVar makes meta available on the __post_init__ method
     # and excludes it in the generated __init__.
     meta: dataclasses.InitVar[LarkMeta]
     """Line and column numbers from lark framework.
     Converted to Span for strorage within the class."""
 
-    span: errors.Span = dataclasses.field(init=False, metadata={SEXP_SKIP_KEY: True})
+    span: errors.Span = dataclasses.field(init=False, metadata={SKIP_SERIALIZE: True})
     """Line and column number information."""
 
     # kw_only is required to make dataclasses play nice with inheritance and
     # fields with default values. https://stackoverflow.com/a/69822584/7115678
     type_: langtypes.Type | None = dataclasses.field(
-        default=None, kw_only=True, metadata={SEXP_SKIP_KEY: True}
+        default=None, kw_only=True, metadata={SKIP_SERIALIZE: True}
     )
 
     def __post_init__(self, meta: LarkMeta):
         self.span = errors.Span.from_meta(meta)
 
-    def typecheck(self):
+    @abc.abstractmethod
+    def typecheck(self) -> langtypes.Type:
         pass
 
+    @abc.abstractmethod
     def eval(self) -> EvalResult:
         pass
 
@@ -47,7 +50,7 @@ class _Ast(ast_utils.Ast, ast_utils.WithMeta):
         attrs = {}
 
         for field in dataclasses.fields(self):
-            if SEXP_SKIP_KEY in field.metadata:
+            if SKIP_SERIALIZE in field.metadata:
                 continue
 
             value = getattr(self, field.name)
@@ -65,7 +68,7 @@ class _Ast(ast_utils.Ast, ast_utils.WithMeta):
         result[type(self)] = type(self.type_)
 
         for field in dataclasses.fields(self):
-            if SEXP_SKIP_KEY in field.metadata:
+            if SKIP_SERIALIZE in field.metadata:
                 continue
 
             value = getattr(self, field.name)
@@ -85,13 +88,9 @@ class Term(_Expression):
     op: Token
     right: _Expression
 
-    def typecheck(self):
-        self.left.typecheck()
-        left_type = self.left.type_
-        assert left_type
-        self.right.typecheck()
-        right_type = self.right.type_
-        assert right_type
+    def typecheck(self) -> langtypes.Type:
+        left_type = self.left.typecheck()
+        right_type = self.right.typecheck()
 
         match left_type, self.op, right_type:
             case langtypes.INT, "+" | "-", langtypes.INT:
@@ -108,7 +107,7 @@ class Term(_Expression):
                     ],
                 )
 
-        self.type_ = self.left.type_
+        return self.type_
 
     def eval(self):
         left = self.left.eval()
@@ -125,12 +124,9 @@ class UnaryOp(_Expression):
     op: Token
     operand: _Expression
 
-    def typecheck(self):
-        self.operand.typecheck()
-        operand_type = self.operand.type_
-        assert operand_type
+    def typecheck(self) -> langtypes.Type:
+        operand_type = self.operand.typecheck()
 
-        # NOTE: self.op is a lark.lexer.Token, not actually a string
         match self.op, operand_type:
             case "+" | "-", langtypes.INT:
                 self.type_ = operand_type
@@ -142,6 +138,8 @@ class UnaryOp(_Expression):
                     operator=errors.OperatorSpan(self.op, op_span),
                     operands=[errors.OperandSpan(operand_type, self.operand.span)],
                 )
+
+        return self.type_
 
     def eval(self):
         result = self.operand.eval()
@@ -156,8 +154,9 @@ class UnaryOp(_Expression):
 class BoolLiteral(_Expression):
     value: bool
 
-    def typecheck(self):
+    def typecheck(self) -> langtypes.Type:
         self.type_ = langtypes.BOOL
+        return self.type_
 
     def eval(self):
         return self.value
@@ -167,8 +166,9 @@ class BoolLiteral(_Expression):
 class IntLiteral(_Expression):
     value: int
 
-    def typecheck(self):
+    def typecheck(self) -> langtypes.Type:
         self.type_ = langtypes.INT
+        return self.type_
 
     def eval(self):
         return self.value
