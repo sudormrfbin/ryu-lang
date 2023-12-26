@@ -1,6 +1,6 @@
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import IntLiteral, UnaryOp, BoolLiteral
-from compiler.langtypes import Int, Bool
+from compiler.ast import IntLiteral, StringLiteral, UnaryOp, BoolLiteral
+from compiler.langtypes import Int, Bool, String
 
 
 def test_true_literal():
@@ -63,3 +63,27 @@ def test_positive_signed_int_literal():
         "operand": {IntLiteral: Int},
     }
     assert ast.eval() == 1
+
+
+def test_string_literal():
+    ast = parse_tree_to_ast(parse('"string"'))
+    assert ast.to_dict() == {StringLiteral: {"value": "string"}}
+    ast.typecheck()
+    assert ast.to_type_dict() == {StringLiteral: String}
+    assert ast.eval() == "string"
+
+
+def test_string_with_spaces_literal():
+    ast = parse_tree_to_ast(parse('"string with spaces"'))
+    assert ast.to_dict() == {StringLiteral: {"value": "string with spaces"}}
+    ast.typecheck()
+    assert ast.to_type_dict() == {StringLiteral: String}
+    assert ast.eval() == "string with spaces"
+
+
+def test_empty_string_literal():
+    ast = parse_tree_to_ast(parse('""'))
+    assert ast.to_dict() == {StringLiteral: {"value": ""}}
+    ast.typecheck()
+    assert ast.to_type_dict() == {StringLiteral: String}
+    assert ast.eval() == ""

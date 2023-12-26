@@ -194,3 +194,15 @@ class IntLiteral(_Expression):
 
     def eval(self):
         return self.value
+
+
+@dataclass
+class StringLiteral(_Expression):
+    value: str
+
+    def typecheck(self) -> langtypes.Type:
+        self.type_ = langtypes.STRING
+        return self.type_
+
+    def eval(self):
+        return self.value

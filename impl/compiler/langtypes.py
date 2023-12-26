@@ -12,5 +12,10 @@ class Int(Type):
     pass
 
 
+class String(Type):
+    pass
+
+
 BOOL = Bool()
 INT = Int()
+STRING = String()
