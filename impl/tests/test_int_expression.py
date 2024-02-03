@@ -244,6 +244,8 @@ def test_addition_3_ints():
     }
     assert ast.eval() == 9
 
+#For Multiplication
+    
 def test_multiplication_with_positive_int():
     ast = parse_tree_to_ast(parse("3*2"))
     assert ast.to_dict() == {
@@ -343,3 +345,105 @@ def test_multiplication_with_negative_int_both():
         },
     }
     assert ast.eval() == 6
+
+#For Division
+
+def test_division_with_positive_int():
+    ast = parse_tree_to_ast(parse("4/2"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {IntLiteral: {"value": 4}},
+            "op": "/",
+            "right": {IntLiteral: {"value": 2}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Int,
+        "left": {IntLiteral: Int},
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == 2
+
+def test_division_with_negative_int_right():
+    ast = parse_tree_to_ast(parse("4/-2"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {IntLiteral: {"value": 4}},
+            "op": "/",
+            "right": {
+                UnaryOp: {
+                    "op": "-",
+                    "operand": {IntLiteral: {"value": 2}},
+                }
+            },
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Int,
+        "left": {IntLiteral: Int},
+        "right": {
+            UnaryOp: Int,
+            "operand": {IntLiteral: Int},
+        },
+    }
+    assert ast.eval() == -2
+
+def test_division_with_negative_int_left():
+    ast = parse_tree_to_ast(parse("-4/2"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {
+                UnaryOp: {
+                    "op": "-",
+                    "operand": {IntLiteral: {"value": 4}},
+                }
+            },
+            "op": "/",
+            "right": {IntLiteral: {"value": 2}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Int,
+        "left": {
+            UnaryOp: Int,
+            "operand": {IntLiteral: Int},
+        },
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == -2
+
+def test_division_with_negative_int_both():
+    ast = parse_tree_to_ast(parse("-4/-2"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {
+                UnaryOp: {
+                    "op": "-",
+                    "operand": {IntLiteral: {"value": 4}},
+                }
+            },
+            "op": "/",
+            "right": {
+                UnaryOp: {
+                    "op": "-",
+                    "operand": {IntLiteral: {"value": 2}},
+                }
+            },
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Int,
+        "left": {
+            UnaryOp: Int,
+            "operand": {IntLiteral: Int},
+        },
+        "right": {
+            UnaryOp: Int,
+            "operand": {IntLiteral: Int},
+        },
+    }
+    assert ast.eval() == 2
