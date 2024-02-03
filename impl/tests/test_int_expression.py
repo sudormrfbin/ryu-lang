@@ -620,3 +620,106 @@ def test_and_false_and_true():
     }
     assert ast.eval() == False
 
+#for logical OR
+    
+def test_and_true_or_true():
+    ast = parse_tree_to_ast(parse("true||true"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {BoolLiteral: {"value": True}},
+            "op": "||",
+            "right": {BoolLiteral: {"value": True}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Bool,
+        "left": {BoolLiteral: Bool},
+        "right": {BoolLiteral: Bool},
+    }
+    assert ast.eval() == True
+
+def test_and_false_or_false():
+    ast = parse_tree_to_ast(parse("false||false"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {BoolLiteral: {"value": False}},
+            "op": "||",
+            "right": {BoolLiteral: {"value": False}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Bool,
+        "left": {BoolLiteral: Bool},
+        "right": {BoolLiteral: Bool},
+    }
+    assert ast.eval() == False
+
+def test_and_true_or_false():
+    ast = parse_tree_to_ast(parse("true||false"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {BoolLiteral: {"value": True}},
+            "op": "||",
+            "right": {BoolLiteral: {"value": False}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Bool,
+        "left": {BoolLiteral: Bool},
+        "right": {BoolLiteral: Bool},
+    }
+    assert ast.eval() == True
+
+def test_and_false_or_true():
+    ast = parse_tree_to_ast(parse("false||true"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {BoolLiteral: {"value": False}},
+            "op": "||",
+            "right": {BoolLiteral: {"value": True}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Bool,
+        "left": {BoolLiteral: Bool},
+        "right": {BoolLiteral: Bool},
+    }
+    assert ast.eval() == True
+
+#For Not Operator
+
+def test_not_true():
+    ast = parse_tree_to_ast(parse("!true"))
+    assert ast.to_dict() == {
+        UnaryOp: {
+            "op": "!",
+            "operand": {BoolLiteral: {"value": True}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        UnaryOp: Bool,
+        "operand": {BoolLiteral: Bool},
+    }
+    assert ast.eval() == False
+
+def test_not_false():
+    ast = parse_tree_to_ast(parse("!false"))
+    assert ast.to_dict() == {
+        UnaryOp: {
+            "op": "!",
+            "operand": {BoolLiteral: {"value": False}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        UnaryOp: Bool,
+        "operand": {BoolLiteral: Bool},
+    }
+    assert ast.eval() == True
+
+

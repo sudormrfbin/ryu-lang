@@ -113,6 +113,8 @@ class Term(_Expression):
                 self.type_ = langtypes.INT
             case langtypes.BOOL, "&&", langtypes.BOOL:
                 self.type_ = langtypes.BOOL
+            case langtypes.BOOL, "||", langtypes.BOOL:
+                self.type_ = langtypes.BOOL
             case langtypes.STRING, "+", langtypes.STRING:
                 self.type_ = langtypes.STRING
             case _:
@@ -148,13 +150,12 @@ class Term(_Expression):
                         raise errors.InternalCompilerError(
                     f"{type(self).__name__} recieved invalid operator {self.op}"
                         )
-                    
             case "%":
                 return left % right
             case "&&":
                 return left and right
-            
-          
+            case "||":
+                return left or right        
             case _:
                 raise errors.InternalCompilerError(
                     f"{type(self).__name__} recieved invalid operator {self.op}"
@@ -173,6 +174,8 @@ class UnaryOp(_Expression):
         match self.op, operand_type:
             case "+" | "-", langtypes.INT:
                 self.type_ = operand_type
+            case "!", langtypes.BOOL:
+                self.type_= operand_type
             case _:
                 op_span = errors.Span.from_token(self.op)
                 raise errors.InvalidOperationError(
@@ -192,6 +195,8 @@ class UnaryOp(_Expression):
                 return result
             case "-":
                 return -result
+            case "!":
+                return not result
             case _:
                 raise errors.InternalCompilerError(
                     f"{type(self).__name__} recieved invalid operator {self.op}"

@@ -1,9 +1,9 @@
 ?start: term
 
-?!term: unary_op ("+" | "-" | "*" | "/" | "%" | "&&") term
+?!term: unary_op ("+" | "-" | "*" | "/" | "%" | "&&" | "||") term
 	 | unary_op
 
-?!unary_op: ("+" | "-") unary_op
+?!unary_op: ("+" | "-" | "!") unary_op
 		  | atom
 
 ?atom: bool_literal | int_literal | string_literal
