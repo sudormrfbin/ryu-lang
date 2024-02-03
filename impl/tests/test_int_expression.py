@@ -1,6 +1,6 @@
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import Term, IntLiteral, UnaryOp
-from compiler.langtypes import Int
+from compiler.ast import Term, IntLiteral, UnaryOp, BoolLiteral
+from compiler.langtypes import Int, Bool  
 
 
 def test_addition_with_positive_int():
@@ -549,3 +549,74 @@ def test_modulus_with_negative_int_both():
         },
     }
     assert ast.eval() == 0
+
+    #and and 
+        
+def test_and_true_and_true():
+    ast = parse_tree_to_ast(parse("true&&true"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {BoolLiteral: {"value": True}},
+            "op": "&&",
+            "right": {BoolLiteral: {"value": True}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Bool,
+        "left": {BoolLiteral: Bool},
+        "right": {BoolLiteral: Bool},
+    }
+    assert ast.eval() == True
+
+def test_and_false_and_false():
+    ast = parse_tree_to_ast(parse("false&&false"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {BoolLiteral: {"value": False}},
+            "op": "&&",
+            "right": {BoolLiteral: {"value": False}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Bool,
+        "left": {BoolLiteral: Bool},
+        "right": {BoolLiteral: Bool},
+    }
+    assert ast.eval() == False
+
+def test_and_true_and_false():
+    ast = parse_tree_to_ast(parse("true&&false"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {BoolLiteral: {"value": True}},
+            "op": "&&",
+            "right": {BoolLiteral: {"value": False}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Bool,
+        "left": {BoolLiteral: Bool},
+        "right": {BoolLiteral: Bool},
+    }
+    assert ast.eval() == False
+
+def test_and_false_and_true():
+    ast = parse_tree_to_ast(parse("false&&true"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {BoolLiteral: {"value": False}},
+            "op": "&&",
+            "right": {BoolLiteral: {"value": True}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Bool,
+        "left": {BoolLiteral: Bool},
+        "right": {BoolLiteral: Bool},
+    }
+    assert ast.eval() == False
+
