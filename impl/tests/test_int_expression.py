@@ -722,4 +722,38 @@ def test_not_false():
     }
     assert ast.eval() == True
 
+#For Greater Than Operator
+    
+def test_greaterthan_largernum_gt_smallernum():
+    ast = parse_tree_to_ast(parse("5>3"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {IntLiteral: {"value": 5}},
+            "op": ">",
+            "right": {IntLiteral: {"value": 3}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Int,
+        "left": {IntLiteral: Int},
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == True
 
+def test_greaterthan_smallernum_gt_largernum():
+    ast = parse_tree_to_ast(parse("3>5"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {IntLiteral: {"value": 3}},
+            "op": ">",
+            "right": {IntLiteral: {"value": 5}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Int,
+        "left": {IntLiteral: Int},
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == False
