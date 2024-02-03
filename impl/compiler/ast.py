@@ -109,7 +109,7 @@ class Term(_Expression):
         right_type = self.right.typecheck()
 
         match left_type, self.op, right_type:
-            case langtypes.INT, "+" | "-" | "*" | "/", langtypes.INT:
+            case langtypes.INT, "+" | "-" | "*" | "/" | "%", langtypes.INT:
                 self.type_ = langtypes.INT
             case langtypes.STRING, "+", langtypes.STRING:
                 self.type_ = langtypes.STRING
@@ -146,6 +146,9 @@ class Term(_Expression):
                         raise errors.InternalCompilerError(
                     f"{type(self).__name__} recieved invalid operator {self.op}"
                         )
+                    
+            case "%":
+                return left % right
             case _:
                 raise errors.InternalCompilerError(
                     f"{type(self).__name__} recieved invalid operator {self.op}"
