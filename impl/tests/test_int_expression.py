@@ -760,7 +760,7 @@ def test_greaterthan_smallernum_gt_largernum():
 
 #For Lesser Than Operator
     
-def test_lesserthan_largernum_st_smallernum():
+def test_lesserthan_largernum_lt_smallernum():
     ast = parse_tree_to_ast(parse("5<3"))
     assert ast.to_dict() == {
         Term: {
@@ -777,13 +777,115 @@ def test_lesserthan_largernum_st_smallernum():
     }
     assert ast.eval() == False
 
-def test_lesserthan_smallernum_st_largernum():
+def test_lesserthan_smallernum_lt_largernum():
     ast = parse_tree_to_ast(parse("3<5"))
     assert ast.to_dict() == {
         Term: {
             "left": {IntLiteral: {"value": 3}},
             "op": "<",
             "right": {IntLiteral: {"value": 5}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Int,
+        "left": {IntLiteral: Int},
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == True
+
+def test_ltq_smallernum_ltq_largernum():
+    ast = parse_tree_to_ast(parse("3<=5"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {IntLiteral: {"value": 3}},
+            "op": "<=",
+            "right": {IntLiteral: {"value": 5}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Int,
+        "left": {IntLiteral: Int},
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == True
+
+def test_ltq_samenum_ltq_samenum():
+    ast = parse_tree_to_ast(parse("3<=3"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {IntLiteral: {"value": 3}},
+            "op": "<=",
+            "right": {IntLiteral: {"value": 3}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Int,
+        "left": {IntLiteral: Int},
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == True
+
+def test_ltq_largernum_ltq_smallernum():
+    ast = parse_tree_to_ast(parse("5<=3"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {IntLiteral: {"value": 5}},
+            "op": "<=",
+            "right": {IntLiteral: {"value": 3}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Int,
+        "left": {IntLiteral: Int},
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == False
+
+def test_gtq_smallernum_gtq_largernum():
+    ast = parse_tree_to_ast(parse("3>=5"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {IntLiteral: {"value": 3}},
+            "op": ">=",
+            "right": {IntLiteral: {"value": 5}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Int,
+        "left": {IntLiteral: Int},
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == False
+
+def test_gtq_samenum_gtq_samenum():
+    ast = parse_tree_to_ast(parse("3>=3"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {IntLiteral: {"value": 3}},
+            "op": ">=",
+            "right": {IntLiteral: {"value": 3}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Term: Int,
+        "left": {IntLiteral: Int},
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == True
+
+def test_gtq_largernum_gtq_smallernum():
+    ast = parse_tree_to_ast(parse("5>=3"))
+    assert ast.to_dict() == {
+        Term: {
+            "left": {IntLiteral: {"value": 5}},
+            "op": ">=",
+            "right": {IntLiteral: {"value": 3}},
         }
     }
     ast.typecheck()

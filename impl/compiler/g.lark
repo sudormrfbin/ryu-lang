@@ -1,6 +1,6 @@
 ?start: term
 
-?!term: unary_op ("+" | "-" | "*" | "/" | "%" | "&&" | "||" | ">" | "<") term
+?!term: unary_op ("+" | "-" | "*" | "/" | "%" | "&&" | "||" | ">" | "<" | "<=" | ">=") term
 	 | unary_op
 
 ?!unary_op: ("+" | "-" | "!") unary_op
@@ -17,3 +17,5 @@ int_literal: INT
 
 string_literal: STRING
 STRING: "\"" /.*?/ "\""
+
+

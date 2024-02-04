@@ -113,7 +113,7 @@ class Term(_Expression):
                 self.type_ = langtypes.INT
             case langtypes.BOOL, "&&", langtypes.BOOL:
                 self.type_ = langtypes.BOOL
-            case langtypes.INT, ">" | "<", langtypes.INT:
+            case langtypes.INT, ">" | "<" | "<=" | ">=", langtypes.INT:
                 self.type_ = langtypes.INT
             case langtypes.BOOL, "||", langtypes.BOOL:
                 self.type_ = langtypes.BOOL
@@ -161,7 +161,11 @@ class Term(_Expression):
             case ">":
                 return left > right  
             case "<":
-                return left < right     
+                return left < right 
+            case "<=":
+                return left <= right 
+            case ">=":
+                return left >= right     
             case _:
                 raise errors.InternalCompilerError(
                     f"{type(self).__name__} recieved invalid operator {self.op}"
