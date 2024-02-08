@@ -1,6 +1,12 @@
-?start: term
+?start: logical
 
-?!term: factor ("+" | "-" | "%" | "&&" | "||" | ">" | "<" | "<=" | ">=") term
+?!logical: comparison ( "&&" | "||" ) logical
+	 | comparison
+
+?!comparison: term ( ">" | "<" | "<=" | ">=") comparison
+	 | term
+
+?!term: factor ("+" | "-" ) term
 	 | factor
 
 ?!factor: unary_op

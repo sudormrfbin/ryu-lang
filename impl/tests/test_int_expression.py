@@ -1,5 +1,5 @@
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import Term, IntLiteral, UnaryOp, BoolLiteral, Factor
+from compiler.ast import Term, IntLiteral, UnaryOp, BoolLiteral, Factor, Comparison, Logical
 from compiler.langtypes import Int, Bool
 
 
@@ -570,7 +570,7 @@ def test_modulus_with_negative_int_both():
 def test_and_true_and_true():
     ast = parse_tree_to_ast(parse("true&&true"))
     assert ast.to_dict() == {
-        Term: {
+        Logical: {
             "left": {BoolLiteral: {"value": True}},
             "op": "&&",
             "right": {BoolLiteral: {"value": True}},
@@ -578,7 +578,7 @@ def test_and_true_and_true():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Bool,
+        Logical: Bool,
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
@@ -588,7 +588,7 @@ def test_and_true_and_true():
 def test_and_false_and_false():
     ast = parse_tree_to_ast(parse("false&&false"))
     assert ast.to_dict() == {
-        Term: {
+        Logical: {
             "left": {BoolLiteral: {"value": False}},
             "op": "&&",
             "right": {BoolLiteral: {"value": False}},
@@ -596,7 +596,7 @@ def test_and_false_and_false():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Bool,
+        Logical: Bool,
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
@@ -606,7 +606,7 @@ def test_and_false_and_false():
 def test_and_true_and_false():
     ast = parse_tree_to_ast(parse("true&&false"))
     assert ast.to_dict() == {
-        Term: {
+        Logical: {
             "left": {BoolLiteral: {"value": True}},
             "op": "&&",
             "right": {BoolLiteral: {"value": False}},
@@ -614,7 +614,7 @@ def test_and_true_and_false():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Bool,
+        Logical: Bool,
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
@@ -624,7 +624,7 @@ def test_and_true_and_false():
 def test_and_false_and_true():
     ast = parse_tree_to_ast(parse("false&&true"))
     assert ast.to_dict() == {
-        Term: {
+        Logical: {
             "left": {BoolLiteral: {"value": False}},
             "op": "&&",
             "right": {BoolLiteral: {"value": True}},
@@ -632,7 +632,7 @@ def test_and_false_and_true():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Bool,
+        Logical: Bool,
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
@@ -645,7 +645,7 @@ def test_and_false_and_true():
 def test_and_true_or_true():
     ast = parse_tree_to_ast(parse("true||true"))
     assert ast.to_dict() == {
-        Term: {
+        Logical: {
             "left": {BoolLiteral: {"value": True}},
             "op": "||",
             "right": {BoolLiteral: {"value": True}},
@@ -653,7 +653,7 @@ def test_and_true_or_true():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Bool,
+        Logical: Bool,
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
@@ -663,7 +663,7 @@ def test_and_true_or_true():
 def test_and_false_or_false():
     ast = parse_tree_to_ast(parse("false||false"))
     assert ast.to_dict() == {
-        Term: {
+        Logical: {
             "left": {BoolLiteral: {"value": False}},
             "op": "||",
             "right": {BoolLiteral: {"value": False}},
@@ -671,7 +671,7 @@ def test_and_false_or_false():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Bool,
+        Logical: Bool,
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
@@ -681,7 +681,7 @@ def test_and_false_or_false():
 def test_and_true_or_false():
     ast = parse_tree_to_ast(parse("true||false"))
     assert ast.to_dict() == {
-        Term: {
+        Logical: {
             "left": {BoolLiteral: {"value": True}},
             "op": "||",
             "right": {BoolLiteral: {"value": False}},
@@ -689,7 +689,7 @@ def test_and_true_or_false():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Bool,
+        Logical: Bool,
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
@@ -699,7 +699,7 @@ def test_and_true_or_false():
 def test_and_false_or_true():
     ast = parse_tree_to_ast(parse("false||true"))
     assert ast.to_dict() == {
-        Term: {
+        Logical: {
             "left": {BoolLiteral: {"value": False}},
             "op": "||",
             "right": {BoolLiteral: {"value": True}},
@@ -707,7 +707,7 @@ def test_and_false_or_true():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Bool,
+        Logical: Bool,
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
@@ -755,7 +755,7 @@ def test_not_false():
 def test_greaterthan_largernum_gt_smallernum():
     ast = parse_tree_to_ast(parse("5>3"))
     assert ast.to_dict() == {
-        Term: {
+        Comparison: {
             "left": {IntLiteral: {"value": 5}},
             "op": ">",
             "right": {IntLiteral: {"value": 3}},
@@ -763,7 +763,7 @@ def test_greaterthan_largernum_gt_smallernum():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Comparison: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -773,7 +773,7 @@ def test_greaterthan_largernum_gt_smallernum():
 def test_greaterthan_smallernum_gt_largernum():
     ast = parse_tree_to_ast(parse("3>5"))
     assert ast.to_dict() == {
-        Term: {
+        Comparison: {
             "left": {IntLiteral: {"value": 3}},
             "op": ">",
             "right": {IntLiteral: {"value": 5}},
@@ -781,7 +781,7 @@ def test_greaterthan_smallernum_gt_largernum():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Comparison: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -794,7 +794,7 @@ def test_greaterthan_smallernum_gt_largernum():
 def test_lesserthan_largernum_lt_smallernum():
     ast = parse_tree_to_ast(parse("5<3"))
     assert ast.to_dict() == {
-        Term: {
+        Comparison: {
             "left": {IntLiteral: {"value": 5}},
             "op": "<",
             "right": {IntLiteral: {"value": 3}},
@@ -802,7 +802,7 @@ def test_lesserthan_largernum_lt_smallernum():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Comparison: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -812,7 +812,7 @@ def test_lesserthan_largernum_lt_smallernum():
 def test_lesserthan_smallernum_lt_largernum():
     ast = parse_tree_to_ast(parse("3<5"))
     assert ast.to_dict() == {
-        Term: {
+        Comparison: {
             "left": {IntLiteral: {"value": 3}},
             "op": "<",
             "right": {IntLiteral: {"value": 5}},
@@ -820,7 +820,7 @@ def test_lesserthan_smallernum_lt_largernum():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Comparison: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -830,7 +830,7 @@ def test_lesserthan_smallernum_lt_largernum():
 def test_ltq_smallernum_ltq_largernum():
     ast = parse_tree_to_ast(parse("3<=5"))
     assert ast.to_dict() == {
-        Term: {
+        Comparison: {
             "left": {IntLiteral: {"value": 3}},
             "op": "<=",
             "right": {IntLiteral: {"value": 5}},
@@ -838,7 +838,7 @@ def test_ltq_smallernum_ltq_largernum():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Comparison: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -848,7 +848,7 @@ def test_ltq_smallernum_ltq_largernum():
 def test_ltq_samenum_ltq_samenum():
     ast = parse_tree_to_ast(parse("3<=3"))
     assert ast.to_dict() == {
-        Term: {
+        Comparison: {
             "left": {IntLiteral: {"value": 3}},
             "op": "<=",
             "right": {IntLiteral: {"value": 3}},
@@ -856,7 +856,7 @@ def test_ltq_samenum_ltq_samenum():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Comparison: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -866,7 +866,7 @@ def test_ltq_samenum_ltq_samenum():
 def test_ltq_largernum_ltq_smallernum():
     ast = parse_tree_to_ast(parse("5<=3"))
     assert ast.to_dict() == {
-        Term: {
+        Comparison: {
             "left": {IntLiteral: {"value": 5}},
             "op": "<=",
             "right": {IntLiteral: {"value": 3}},
@@ -874,7 +874,7 @@ def test_ltq_largernum_ltq_smallernum():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Comparison: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -884,7 +884,7 @@ def test_ltq_largernum_ltq_smallernum():
 def test_gtq_smallernum_gtq_largernum():
     ast = parse_tree_to_ast(parse("3>=5"))
     assert ast.to_dict() == {
-        Term: {
+        Comparison: {
             "left": {IntLiteral: {"value": 3}},
             "op": ">=",
             "right": {IntLiteral: {"value": 5}},
@@ -892,7 +892,7 @@ def test_gtq_smallernum_gtq_largernum():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Comparison: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -902,7 +902,7 @@ def test_gtq_smallernum_gtq_largernum():
 def test_gtq_samenum_gtq_samenum():
     ast = parse_tree_to_ast(parse("3>=3"))
     assert ast.to_dict() == {
-        Term: {
+        Comparison: {
             "left": {IntLiteral: {"value": 3}},
             "op": ">=",
             "right": {IntLiteral: {"value": 3}},
@@ -910,7 +910,7 @@ def test_gtq_samenum_gtq_samenum():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Comparison: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -920,7 +920,7 @@ def test_gtq_samenum_gtq_samenum():
 def test_gtq_largernum_gtq_smallernum():
     ast = parse_tree_to_ast(parse("5>=3"))
     assert ast.to_dict() == {
-        Term: {
+        Comparison: {
             "left": {IntLiteral: {"value": 5}},
             "op": ">=",
             "right": {IntLiteral: {"value": 3}},
@@ -928,7 +928,7 @@ def test_gtq_largernum_gtq_smallernum():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Comparison: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
