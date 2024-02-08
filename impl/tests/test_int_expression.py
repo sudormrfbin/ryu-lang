@@ -1,6 +1,6 @@
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import Term, IntLiteral, UnaryOp, BoolLiteral
-from compiler.langtypes import Int, Bool  
+from compiler.ast import Term, IntLiteral, UnaryOp, BoolLiteral, Factor
+from compiler.langtypes import Int, Bool
 
 
 def test_addition_with_positive_int():
@@ -244,12 +244,14 @@ def test_addition_3_ints():
     }
     assert ast.eval() == 9
 
-#For Multiplication
-    
+
+# For Multiplication
+
+
 def test_multiplication_with_positive_int():
     ast = parse_tree_to_ast(parse("3*2"))
     assert ast.to_dict() == {
-        Term: {
+        Factor: {
             "left": {IntLiteral: {"value": 3}},
             "op": "*",
             "right": {IntLiteral: {"value": 2}},
@@ -257,16 +259,17 @@ def test_multiplication_with_positive_int():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Factor: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
     assert ast.eval() == 6
+
 
 def test_multiplication_with_negative_int_right():
     ast = parse_tree_to_ast(parse("3*-2"))
     assert ast.to_dict() == {
-        Term: {
+        Factor: {
             "left": {IntLiteral: {"value": 3}},
             "op": "*",
             "right": {
@@ -279,7 +282,7 @@ def test_multiplication_with_negative_int_right():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Factor: Int,
         "left": {IntLiteral: Int},
         "right": {
             UnaryOp: Int,
@@ -288,10 +291,11 @@ def test_multiplication_with_negative_int_right():
     }
     assert ast.eval() == -6
 
+
 def test_multiplication_with_negative_int_left():
     ast = parse_tree_to_ast(parse("-3*2"))
     assert ast.to_dict() == {
-        Term: {
+        Factor: {
             "left": {
                 UnaryOp: {
                     "op": "-",
@@ -304,7 +308,7 @@ def test_multiplication_with_negative_int_left():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Factor: Int,
         "left": {
             UnaryOp: Int,
             "operand": {IntLiteral: Int},
@@ -313,10 +317,11 @@ def test_multiplication_with_negative_int_left():
     }
     assert ast.eval() == -6
 
+
 def test_multiplication_with_negative_int_both():
     ast = parse_tree_to_ast(parse("-3*-2"))
     assert ast.to_dict() == {
-        Term: {
+        Factor: {
             "left": {
                 UnaryOp: {
                     "op": "-",
@@ -334,7 +339,7 @@ def test_multiplication_with_negative_int_both():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Factor: Int,
         "left": {
             UnaryOp: Int,
             "operand": {IntLiteral: Int},
@@ -346,12 +351,14 @@ def test_multiplication_with_negative_int_both():
     }
     assert ast.eval() == 6
 
-#For Division
+
+# For Division
+
 
 def test_division_with_positive_int():
     ast = parse_tree_to_ast(parse("4/2"))
     assert ast.to_dict() == {
-        Term: {
+        Factor: {
             "left": {IntLiteral: {"value": 4}},
             "op": "/",
             "right": {IntLiteral: {"value": 2}},
@@ -359,16 +366,17 @@ def test_division_with_positive_int():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Factor: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
     assert ast.eval() == 2
+
 
 def test_division_with_negative_int_right():
     ast = parse_tree_to_ast(parse("4/-2"))
     assert ast.to_dict() == {
-        Term: {
+        Factor: {
             "left": {IntLiteral: {"value": 4}},
             "op": "/",
             "right": {
@@ -381,7 +389,7 @@ def test_division_with_negative_int_right():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Factor: Int,
         "left": {IntLiteral: Int},
         "right": {
             UnaryOp: Int,
@@ -390,10 +398,11 @@ def test_division_with_negative_int_right():
     }
     assert ast.eval() == -2
 
+
 def test_division_with_negative_int_left():
     ast = parse_tree_to_ast(parse("-4/2"))
     assert ast.to_dict() == {
-        Term: {
+        Factor: {
             "left": {
                 UnaryOp: {
                     "op": "-",
@@ -406,7 +415,7 @@ def test_division_with_negative_int_left():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Factor: Int,
         "left": {
             UnaryOp: Int,
             "operand": {IntLiteral: Int},
@@ -415,10 +424,11 @@ def test_division_with_negative_int_left():
     }
     assert ast.eval() == -2
 
+
 def test_division_with_negative_int_both():
     ast = parse_tree_to_ast(parse("-4/-2"))
     assert ast.to_dict() == {
-        Term: {
+        Factor: {
             "left": {
                 UnaryOp: {
                     "op": "-",
@@ -436,7 +446,7 @@ def test_division_with_negative_int_both():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Factor: Int,
         "left": {
             UnaryOp: Int,
             "operand": {IntLiteral: Int},
@@ -448,8 +458,9 @@ def test_division_with_negative_int_both():
     }
     assert ast.eval() == 2
 
-    #test cases for modulus
-    
+    # test cases for modulus
+
+
 def test_modulus_with_positive_int():
     ast = parse_tree_to_ast(parse("4%2"))
     assert ast.to_dict() == {
@@ -466,6 +477,7 @@ def test_modulus_with_positive_int():
         "right": {IntLiteral: Int},
     }
     assert ast.eval() == 0
+
 
 def test_modulus_with_negative_int_right():
     ast = parse_tree_to_ast(parse("7%-2"))
@@ -492,6 +504,7 @@ def test_modulus_with_negative_int_right():
     }
     assert ast.eval() == -1
 
+
 def test_modulus_with_negative_int_left():
     ast = parse_tree_to_ast(parse("-7%2"))
     assert ast.to_dict() == {
@@ -516,6 +529,7 @@ def test_modulus_with_negative_int_left():
         "right": {IntLiteral: Int},
     }
     assert ast.eval() == 1
+
 
 def test_modulus_with_negative_int_both():
     ast = parse_tree_to_ast(parse("-8%-2"))
@@ -550,8 +564,9 @@ def test_modulus_with_negative_int_both():
     }
     assert ast.eval() == 0
 
-    #and and 
-        
+    # and and
+
+
 def test_and_true_and_true():
     ast = parse_tree_to_ast(parse("true&&true"))
     assert ast.to_dict() == {
@@ -568,6 +583,7 @@ def test_and_true_and_true():
         "right": {BoolLiteral: Bool},
     }
     assert ast.eval() == True
+
 
 def test_and_false_and_false():
     ast = parse_tree_to_ast(parse("false&&false"))
@@ -586,6 +602,7 @@ def test_and_false_and_false():
     }
     assert ast.eval() == False
 
+
 def test_and_true_and_false():
     ast = parse_tree_to_ast(parse("true&&false"))
     assert ast.to_dict() == {
@@ -602,6 +619,7 @@ def test_and_true_and_false():
         "right": {BoolLiteral: Bool},
     }
     assert ast.eval() == False
+
 
 def test_and_false_and_true():
     ast = parse_tree_to_ast(parse("false&&true"))
@@ -620,8 +638,10 @@ def test_and_false_and_true():
     }
     assert ast.eval() == False
 
-#for logical OR
-    
+
+# for logical OR
+
+
 def test_and_true_or_true():
     ast = parse_tree_to_ast(parse("true||true"))
     assert ast.to_dict() == {
@@ -638,6 +658,7 @@ def test_and_true_or_true():
         "right": {BoolLiteral: Bool},
     }
     assert ast.eval() == True
+
 
 def test_and_false_or_false():
     ast = parse_tree_to_ast(parse("false||false"))
@@ -656,6 +677,7 @@ def test_and_false_or_false():
     }
     assert ast.eval() == False
 
+
 def test_and_true_or_false():
     ast = parse_tree_to_ast(parse("true||false"))
     assert ast.to_dict() == {
@@ -672,6 +694,7 @@ def test_and_true_or_false():
         "right": {BoolLiteral: Bool},
     }
     assert ast.eval() == True
+
 
 def test_and_false_or_true():
     ast = parse_tree_to_ast(parse("false||true"))
@@ -690,7 +713,9 @@ def test_and_false_or_true():
     }
     assert ast.eval() == True
 
-#For Not Operator
+
+# For Not Operator
+
 
 def test_not_true():
     ast = parse_tree_to_ast(parse("!true"))
@@ -707,6 +732,7 @@ def test_not_true():
     }
     assert ast.eval() == False
 
+
 def test_not_false():
     ast = parse_tree_to_ast(parse("!false"))
     assert ast.to_dict() == {
@@ -722,8 +748,10 @@ def test_not_false():
     }
     assert ast.eval() == True
 
-#For Greater Than Operator
-    
+
+# For Greater Than Operator
+
+
 def test_greaterthan_largernum_gt_smallernum():
     ast = parse_tree_to_ast(parse("5>3"))
     assert ast.to_dict() == {
@@ -740,6 +768,7 @@ def test_greaterthan_largernum_gt_smallernum():
         "right": {IntLiteral: Int},
     }
     assert ast.eval() == True
+
 
 def test_greaterthan_smallernum_gt_largernum():
     ast = parse_tree_to_ast(parse("3>5"))
@@ -758,8 +787,10 @@ def test_greaterthan_smallernum_gt_largernum():
     }
     assert ast.eval() == False
 
-#For Lesser Than Operator
-    
+
+# For Lesser Than Operator
+
+
 def test_lesserthan_largernum_lt_smallernum():
     ast = parse_tree_to_ast(parse("5<3"))
     assert ast.to_dict() == {
@@ -776,6 +807,7 @@ def test_lesserthan_largernum_lt_smallernum():
         "right": {IntLiteral: Int},
     }
     assert ast.eval() == False
+
 
 def test_lesserthan_smallernum_lt_largernum():
     ast = parse_tree_to_ast(parse("3<5"))
@@ -794,6 +826,7 @@ def test_lesserthan_smallernum_lt_largernum():
     }
     assert ast.eval() == True
 
+
 def test_ltq_smallernum_ltq_largernum():
     ast = parse_tree_to_ast(parse("3<=5"))
     assert ast.to_dict() == {
@@ -810,6 +843,7 @@ def test_ltq_smallernum_ltq_largernum():
         "right": {IntLiteral: Int},
     }
     assert ast.eval() == True
+
 
 def test_ltq_samenum_ltq_samenum():
     ast = parse_tree_to_ast(parse("3<=3"))
@@ -828,6 +862,7 @@ def test_ltq_samenum_ltq_samenum():
     }
     assert ast.eval() == True
 
+
 def test_ltq_largernum_ltq_smallernum():
     ast = parse_tree_to_ast(parse("5<=3"))
     assert ast.to_dict() == {
@@ -844,6 +879,7 @@ def test_ltq_largernum_ltq_smallernum():
         "right": {IntLiteral: Int},
     }
     assert ast.eval() == False
+
 
 def test_gtq_smallernum_gtq_largernum():
     ast = parse_tree_to_ast(parse("3>=5"))
@@ -862,6 +898,7 @@ def test_gtq_smallernum_gtq_largernum():
     }
     assert ast.eval() == False
 
+
 def test_gtq_samenum_gtq_samenum():
     ast = parse_tree_to_ast(parse("3>=3"))
     assert ast.to_dict() == {
@@ -878,6 +915,7 @@ def test_gtq_samenum_gtq_samenum():
         "right": {IntLiteral: Int},
     }
     assert ast.eval() == True
+
 
 def test_gtq_largernum_gtq_smallernum():
     ast = parse_tree_to_ast(parse("5>=3"))
