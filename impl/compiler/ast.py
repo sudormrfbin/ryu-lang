@@ -289,7 +289,50 @@ class Logical(_Expression):
                     f"{type(self).__name__} recieved invalid operator {self.op}"
                 )
 
+@dataclass
+class Equality(_Expression):
+    left: _Expression
+    op: Token
+    right: _Expression
 
+    @override
+    def typecheck(self) -> langtypes.Type:
+        left_type = self.left.typecheck()
+        right_type = self.right.typecheck()
+
+        match left_type, self.op, right_type:
+            case langtypes.INT, "==", langtypes.INT:
+                self.type_ = langtypes.BOOL
+            case langtypes.INT, "!=", langtypes.INT:
+                self.type_ = langtypes.BOOL
+            case _:
+                op_span = errors.Span.from_token(self.op)
+                raise errors.InvalidOperationError(
+                    message=f"Invalid operation {self.op} for types {left_type.name} and {right_type.name}",
+                    span=self.span,
+                    operator=errors.OperatorSpan(self.op, op_span),
+                    operands=[
+                        errors.OperandSpan(left_type, self.left.span),
+                        errors.OperandSpan(right_type, self.right.span),
+                    ],
+                )
+
+        return self.type_
+
+    @override
+    def eval(self):
+        left = self.left.eval()
+        right = self.right.eval()
+        match self.op:
+            case "==":
+                return left == right
+            case "!=":
+                return left != right
+            case _:
+                raise errors.InternalCompilerError(
+                    f"{type(self).__name__} recieved invalid operator {self.op}"
+                )
+            
 @dataclass
 class UnaryOp(_Expression):
     op: Token

@@ -1,4 +1,7 @@
-?start: logical
+?start: equality
+
+?!equality: logical ( "==" | "!=" ) equality
+	 | logical
 
 ?!logical: comparison ( "&&" | "||" ) logical
 	 | comparison

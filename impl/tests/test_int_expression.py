@@ -1,5 +1,5 @@
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import Term, IntLiteral, UnaryOp, BoolLiteral, Factor, Comparison, Logical
+from compiler.ast import Term, IntLiteral, UnaryOp, BoolLiteral, Factor, Comparison, Logical, Equality
 from compiler.langtypes import Int, Bool
 
 
@@ -929,6 +929,74 @@ def test_gtq_largernum_gtq_smallernum():
     ast.typecheck()
     assert ast.to_type_dict() == {
         Comparison: Int,
+        "left": {IntLiteral: Int},
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == True
+
+def test_eqeq_samenum():
+    ast = parse_tree_to_ast(parse("3==3"))
+    assert ast.to_dict() == {
+        Equality: {
+            "left": {IntLiteral: {"value": 3}},
+            "op": "==",
+            "right": {IntLiteral: {"value": 3}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Equality: Bool,
+        "left": {IntLiteral: Int},
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == True
+
+def test_eqeq_diffnum():
+    ast = parse_tree_to_ast(parse("3==4"))
+    assert ast.to_dict() == {
+        Equality: {
+            "left": {IntLiteral: {"value": 3}},
+            "op": "==",
+            "right": {IntLiteral: {"value": 4}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Equality: Bool,
+        "left": {IntLiteral: Int},
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == False
+
+def test_noteq_samenum():
+    ast = parse_tree_to_ast(parse("3!=3"))
+    assert ast.to_dict() == {
+        Equality: {
+            "left": {IntLiteral: {"value": 3}},
+            "op": "!=",
+            "right": {IntLiteral: {"value": 3}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Equality: Bool,
+        "left": {IntLiteral: Int},
+        "right": {IntLiteral: Int},
+    }
+    assert ast.eval() == False
+
+def test_noteq_diffnum():
+    ast = parse_tree_to_ast(parse("3!=4"))
+    assert ast.to_dict() == {
+        Equality: {
+            "left": {IntLiteral: {"value": 3}},
+            "op": "!=",
+            "right": {IntLiteral: {"value": 4}},
+        }
+    }
+    ast.typecheck()
+    assert ast.to_type_dict() == {
+        Equality: Bool,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
