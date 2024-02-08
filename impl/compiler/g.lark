@@ -4,7 +4,7 @@
 	 | factor
 
 ?!factor: unary_op
-	    | unary_op ("*" | "/") factor
+	    | unary_op ("*" | "/" | "%") factor
 
 ?!unary_op: ("+" | "-" | "!") unary_op
 		  | atom

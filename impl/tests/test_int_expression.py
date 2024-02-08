@@ -464,7 +464,7 @@ def test_division_with_negative_int_both():
 def test_modulus_with_positive_int():
     ast = parse_tree_to_ast(parse("4%2"))
     assert ast.to_dict() == {
-        Term: {
+        Factor: {
             "left": {IntLiteral: {"value": 4}},
             "op": "%",
             "right": {IntLiteral: {"value": 2}},
@@ -472,7 +472,7 @@ def test_modulus_with_positive_int():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Factor: Int,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -482,7 +482,7 @@ def test_modulus_with_positive_int():
 def test_modulus_with_negative_int_right():
     ast = parse_tree_to_ast(parse("7%-2"))
     assert ast.to_dict() == {
-        Term: {
+        Factor: {
             "left": {IntLiteral: {"value": 7}},
             "op": "%",
             "right": {
@@ -495,7 +495,7 @@ def test_modulus_with_negative_int_right():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Factor: Int,
         "left": {IntLiteral: Int},
         "right": {
             UnaryOp: Int,
@@ -508,7 +508,7 @@ def test_modulus_with_negative_int_right():
 def test_modulus_with_negative_int_left():
     ast = parse_tree_to_ast(parse("-7%2"))
     assert ast.to_dict() == {
-        Term: {
+        Factor: {
             "left": {
                 UnaryOp: {
                     "op": "-",
@@ -521,7 +521,7 @@ def test_modulus_with_negative_int_left():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Factor: Int,
         "left": {
             UnaryOp: Int,
             "operand": {IntLiteral: Int},
@@ -534,7 +534,7 @@ def test_modulus_with_negative_int_left():
 def test_modulus_with_negative_int_both():
     ast = parse_tree_to_ast(parse("-8%-2"))
     assert ast.to_dict() == {
-        Term: {
+        Factor: {
             "left": {
                 UnaryOp: {
                     "op": "-",
@@ -552,7 +552,7 @@ def test_modulus_with_negative_int_both():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {
-        Term: Int,
+        Factor: Int,
         "left": {
             UnaryOp: Int,
             "operand": {IntLiteral: Int},

@@ -174,7 +174,7 @@ class Factor(_Expression):
         right_type = self.right.typecheck()
 
         match left_type, self.op, right_type:
-            case langtypes.INT, "*" | "/", langtypes.INT:
+            case langtypes.INT, "*" | "/" |"%", langtypes.INT:
                 self.type_ = langtypes.INT
             case _:
                 op_span = errors.Span.from_token(self.op)
@@ -201,6 +201,14 @@ class Factor(_Expression):
                 match self.left.type_, self.right.type_:
                     case langtypes.INT, langtypes.INT:
                         return left // right
+                    case _:
+                        raise errors.InternalCompilerError(
+                            f"{type(self).__name__} recieved invalid operator {self.op}"
+                        )
+            case "%":
+                match self.left.type_, self.right.type_:
+                    case langtypes.INT, langtypes.INT:
+                        return left % right
                     case _:
                         raise errors.InternalCompilerError(
                             f"{type(self).__name__} recieved invalid operator {self.op}"
