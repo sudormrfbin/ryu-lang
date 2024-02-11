@@ -18,7 +18,7 @@
 ?!unary_op: ("+" | "-" | "!") unary_op
 		  | atom
 
-?atom: bool_literal | int_literal | string_literal | "(" logical ")"
+?atom: bool_literal | int_literal | string_literal | "(" start ")"
 
 bool_literal: TRUE | FALSE
 TRUE: "true"
