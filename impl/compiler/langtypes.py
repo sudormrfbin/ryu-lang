@@ -16,6 +16,11 @@ class String(Type):
     pass
 
 
+class Block(Type):
+    pass
+
+
 BOOL = Bool()
 INT = Int()
 STRING = String()
+BLOCK = Block()

@@ -69,6 +69,8 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
             value = getattr(self, field.name)
             if isinstance(value, _Ast):
                 attrs[field.name] = value.to_dict()
+            elif isinstance(value, list) and isinstance(value[0], _Ast):
+                attrs[field.name] = [v.to_dict() for v in value]  # type: ignore
             else:
                 attrs[field.name] = value
 
@@ -89,11 +91,35 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
             value = getattr(self, field.name)
             if isinstance(value, _Ast):
                 result[field.name] = value.to_type_dict()
+            elif isinstance(value, list) and isinstance(value[0], _Ast):
+                result[field.name] = [v.to_type_dict() for v in value]  # type: ignore
 
         return result
 
 
-class _Expression(_Ast):
+class _Statement(_Ast):
+    pass
+
+
+@dataclass
+class StatementBlock(_Ast, ast_utils.AsList):
+    stmts: list[_Statement]
+
+    @override
+    def typecheck(self) -> langtypes.Type:
+        for child in self.stmts:
+            child.typecheck()
+
+        self.type_ = langtypes.BLOCK
+        return self.type_
+
+    @override
+    def eval(self):
+        for child in self.stmts:
+            child.eval()
+
+
+class _Expression(_Statement):
     pass
 
 

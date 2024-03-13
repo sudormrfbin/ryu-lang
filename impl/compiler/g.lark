@@ -1,9 +1,9 @@
 ?start: statement_block
 
-%import common.NEWLINE
+%import common.NEWLINE -> _NL
 
 ?statement_block: statement
-			   | (statement NEWLINE)+ statement?
+			   | (statement _NL)+ statement?
 
 ?statement: expression
 
