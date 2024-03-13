@@ -6,6 +6,8 @@ from error_report.error_report import (  # pyright: ignore [reportMissingModuleS
     report_error,
 )
 
+from compiler.env import RuntimeEnvironment
+
 from . import errors
 from .errors import InvalidOperationError, OperandSpan
 from .parser import parse, parse_tree_to_ast
@@ -32,7 +34,8 @@ def _run(source: str) -> Any:
 
     ast.typecheck()
 
-    return ast.eval()
+    env = RuntimeEnvironment()
+    return ast.eval(env)
 
 
 def handle_invalid_operation(err: InvalidOperationError, source: str):

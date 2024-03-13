@@ -6,6 +6,10 @@
 			   | (statement _NL)+ statement?
 
 ?statement: expression
+		  | variable_declaration
+
+%import common.CNAME -> IDENTIFIER 
+variable_declaration: "let" IDENTIFIER "=" expression
 
 ?expression: equality
 
@@ -39,4 +43,4 @@ int_literal: INT
 string_literal: STRING
 STRING: "\"" /.*?/ "\""
 
-
+%ignore " "

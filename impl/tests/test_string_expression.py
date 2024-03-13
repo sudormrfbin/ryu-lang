@@ -1,6 +1,9 @@
+from compiler.env import RuntimeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import Term, StringLiteral
 from compiler.langtypes import String
+
+EMPTY_ENV = RuntimeEnvironment()
 
 
 def test_string_concat_2():
@@ -18,7 +21,7 @@ def test_string_concat_2():
         "left": {StringLiteral: String},
         "right": {StringLiteral: String},
     }
-    assert ast.eval() == "helloworld"
+    assert ast.eval(EMPTY_ENV) == "helloworld"
 
 
 def test_string_concat_3():
@@ -52,4 +55,4 @@ def test_string_concat_3():
             "right": {StringLiteral: String},
         },
     }
-    assert ast.eval() == "hello world"
+    assert ast.eval(EMPTY_ENV) == "hello world"

@@ -8,6 +8,8 @@ from typing_extensions import override
 from lark import Token, ast_utils
 from lark.tree import Meta as LarkMeta
 
+from .env import RuntimeEnvironment
+
 from . import langtypes
 from . import errors
 
@@ -56,7 +58,7 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
         pass
 
     @abc.abstractmethod
-    def eval(self) -> EvalResult:
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
         pass
 
     def to_dict(self) -> AstDict:
@@ -114,13 +116,29 @@ class StatementBlock(_Ast, ast_utils.AsList):
         return self.type_
 
     @override
-    def eval(self):
+    def eval(self, env: RuntimeEnvironment):
         for child in self.stmts:
-            child.eval()
+            child.eval(env)
 
 
 class _Expression(_Statement):
     pass
+
+
+@dataclass
+class VariableDeclaration(_Statement):
+    ident: str
+    rvalue: _Expression
+
+    @override
+    def typecheck(self) -> langtypes.Type:
+        self.type_ = self.rvalue.typecheck()
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        rhs = self.rvalue.eval(env)
+        env.define(self.ident, rhs)
 
 
 @dataclass
@@ -154,9 +172,9 @@ class Term(_Expression):
         return self.type_
 
     @override
-    def eval(self):
-        left = self.left.eval()
-        right = self.right.eval()
+    def eval(self, env: RuntimeEnvironment):
+        left = self.left.eval(env)
+        right = self.right.eval(env)
         match self.op:
             case "+":
                 return left + right
@@ -197,9 +215,9 @@ class Factor(_Expression):
         return self.type_
 
     @override
-    def eval(self):
-        left = self.left.eval()
-        right = self.right.eval()
+    def eval(self, env: RuntimeEnvironment):
+        left = self.left.eval(env)
+        right = self.right.eval(env)
         match self.op:
             case "*":
                 return left * right
@@ -254,9 +272,9 @@ class Comparison(_Expression):
         return self.type_
 
     @override
-    def eval(self):
-        left = self.left.eval()
-        right = self.right.eval()
+    def eval(self, env: RuntimeEnvironment):
+        left = self.left.eval(env)
+        right = self.right.eval(env)
         match self.op:
             case ">":
                 return left > right
@@ -303,9 +321,9 @@ class Logical(_Expression):
         return self.type_
 
     @override
-    def eval(self):
-        left = self.left.eval()
-        right = self.right.eval()
+    def eval(self, env: RuntimeEnvironment):
+        left = self.left.eval(env)
+        right = self.right.eval(env)
         match self.op:
             case "&&":
                 return left and right
@@ -348,9 +366,9 @@ class Equality(_Expression):
         return self.type_
 
     @override
-    def eval(self):
-        left = self.left.eval()
-        right = self.right.eval()
+    def eval(self, env: RuntimeEnvironment):
+        left = self.left.eval(env)
+        right = self.right.eval(env)
         match self.op:
             case "==":
                 return left == right
@@ -388,8 +406,8 @@ class UnaryOp(_Expression):
         return self.type_
 
     @override
-    def eval(self):
-        result = self.operand.eval()
+    def eval(self, env: RuntimeEnvironment):
+        result = self.operand.eval(env)
         match self.op:
             case "+":
                 return result
@@ -413,7 +431,7 @@ class BoolLiteral(_Expression):
         return self.type_
 
     @override
-    def eval(self):
+    def eval(self, env: RuntimeEnvironment):
         return self.value
 
 
@@ -427,7 +445,7 @@ class IntLiteral(_Expression):
         return self.type_
 
     @override
-    def eval(self):
+    def eval(self, env: RuntimeEnvironment):
         return self.value
 
 
@@ -441,5 +459,5 @@ class StringLiteral(_Expression):
         return self.type_
 
     @override
-    def eval(self):
+    def eval(self, env: RuntimeEnvironment):
         return self.value

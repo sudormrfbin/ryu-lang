@@ -1,6 +1,9 @@
+from compiler.env import RuntimeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import IntLiteral, StringLiteral, UnaryOp, BoolLiteral
 from compiler.langtypes import Int, Bool, String
+
+EMPTY_ENV = RuntimeEnvironment()
 
 
 def test_true_literal():
@@ -10,7 +13,7 @@ def test_true_literal():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {BoolLiteral: Bool}
-    assert ast.eval() is True
+    assert ast.eval(EMPTY_ENV) is True
 
 
 def test_false_literal():
@@ -20,7 +23,7 @@ def test_false_literal():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {BoolLiteral: Bool}
-    assert ast.eval() is False
+    assert ast.eval(EMPTY_ENV) is False
 
 
 def test_int_literal():
@@ -30,7 +33,7 @@ def test_int_literal():
     }
     ast.typecheck()
     assert ast.to_type_dict() == {IntLiteral: Int}
-    assert ast.eval() == 123
+    assert ast.eval(EMPTY_ENV) == 123
 
 
 def test_negative_signed_int_literal():
@@ -46,7 +49,7 @@ def test_negative_signed_int_literal():
         UnaryOp: Int,
         "operand": {IntLiteral: Int},
     }
-    assert ast.eval() == -1
+    assert ast.eval(EMPTY_ENV) == -1
 
 
 def test_positive_signed_int_literal():
@@ -62,7 +65,7 @@ def test_positive_signed_int_literal():
         UnaryOp: Int,
         "operand": {IntLiteral: Int},
     }
-    assert ast.eval() == 1
+    assert ast.eval(EMPTY_ENV) == 1
 
 
 def test_string_literal():
@@ -70,7 +73,7 @@ def test_string_literal():
     assert ast.to_dict() == {StringLiteral: {"value": "string"}}
     ast.typecheck()
     assert ast.to_type_dict() == {StringLiteral: String}
-    assert ast.eval() == "string"
+    assert ast.eval(EMPTY_ENV) == "string"
 
 
 def test_string_with_spaces_literal():
@@ -78,7 +81,7 @@ def test_string_with_spaces_literal():
     assert ast.to_dict() == {StringLiteral: {"value": "string with spaces"}}
     ast.typecheck()
     assert ast.to_type_dict() == {StringLiteral: String}
-    assert ast.eval() == "string with spaces"
+    assert ast.eval(EMPTY_ENV) == "string with spaces"
 
 
 def test_empty_string_literal():
@@ -86,4 +89,4 @@ def test_empty_string_literal():
     assert ast.to_dict() == {StringLiteral: {"value": ""}}
     ast.typecheck()
     assert ast.to_type_dict() == {StringLiteral: String}
-    assert ast.eval() == ""
+    assert ast.eval(EMPTY_ENV) == ""
