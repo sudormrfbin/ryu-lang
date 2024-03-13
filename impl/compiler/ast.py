@@ -109,7 +109,7 @@ class Term(_Expression):
         right_type = self.right.typecheck()
 
         match left_type, self.op, right_type:
-            case langtypes.INT, "+" | "-" , langtypes.INT:
+            case langtypes.INT, "+" | "-", langtypes.INT:
                 self.type_ = langtypes.INT
             case langtypes.STRING, "+", langtypes.STRING:
                 self.type_ = langtypes.STRING
@@ -154,7 +154,7 @@ class Factor(_Expression):
         right_type = self.right.typecheck()
 
         match left_type, self.op, right_type:
-            case langtypes.INT, "*" | "/" |"%", langtypes.INT:
+            case langtypes.INT, "*" | "/" | "%", langtypes.INT:
                 self.type_ = langtypes.INT
             case _:
                 op_span = errors.Span.from_token(self.op)
@@ -245,6 +245,7 @@ class Comparison(_Expression):
                     f"{type(self).__name__} recieved invalid operator {self.op}"
                 )
 
+
 @dataclass
 class Logical(_Expression):
     left: _Expression
@@ -289,6 +290,7 @@ class Logical(_Expression):
                     f"{type(self).__name__} recieved invalid operator {self.op}"
                 )
 
+
 @dataclass
 class Equality(_Expression):
     left: _Expression
@@ -332,7 +334,8 @@ class Equality(_Expression):
                 raise errors.InternalCompilerError(
                     f"{type(self).__name__} recieved invalid operator {self.op}"
                 )
-            
+
+
 @dataclass
 class UnaryOp(_Expression):
     op: Token
