@@ -1,6 +1,10 @@
-?start: statement_block
-
+%import common.INT
 %import common.NEWLINE -> _NL
+%import common.CNAME -> IDENTIFIER 
+
+%ignore " "
+
+?start: statement_block
 
 ?statement_block: statement
 			   | (statement _NL)+ statement?
@@ -8,7 +12,6 @@
 ?statement: expression
 		  | variable_declaration
 
-%import common.CNAME -> IDENTIFIER 
 variable_declaration: "let" IDENTIFIER "=" expression
 
 ?expression: equality
@@ -37,10 +40,8 @@ bool_literal: TRUE | FALSE
 TRUE: "true"
 FALSE: "false"
 
-%import common.INT
 int_literal: INT
 
 string_literal: STRING
 STRING: "\"" /.*?/ "\""
 
-%ignore " "
