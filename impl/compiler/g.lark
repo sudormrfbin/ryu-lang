@@ -1,4 +1,11 @@
-?start: expression
+?start: statement_block
+
+%import common.NEWLINE
+
+?statement_block: statement
+			   | (statement NEWLINE)+ statement?
+
+?statement: expression
 
 ?expression: equality
 
