@@ -1,4 +1,6 @@
-?start: equality
+?start: expression
+
+?expression: equality
 
 ?!equality: logical ( "==" | "!=" ) equality
 	 | logical
