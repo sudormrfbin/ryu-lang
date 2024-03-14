@@ -6,10 +6,10 @@ from error_report.error_report import (  # pyright: ignore [reportMissingModuleS
     report_error,
 )
 
-from compiler.env import RuntimeEnvironment
+from compiler.env import RuntimeEnvironment, TypeEnvironment
 
 from . import errors
-from .errors import InvalidOperationError, OperandSpan
+from .errors import InvalidOperationError, OperandSpan, UnknownVariable
 from .parser import parse, parse_tree_to_ast
 
 if TYPE_CHECKING:
@@ -19,23 +19,44 @@ if TYPE_CHECKING:
     )
 
 
-def run(source: str) -> Any:
+def run(source: str, type_env: TypeEnvironment, runtime_env: RuntimeEnvironment) -> Any:
     try:
-        return _run(source)
+        return _run(source, type_env, runtime_env)
     except errors.InvalidOperationError as err:
         handle_invalid_operation(err, source)
+    except errors.UnknownVariable as err:
+        handle_unknown_variable(err, source)
     except errors.CompilerError as err:
         print(err)
 
 
-def _run(source: str) -> Any:
+def _run(
+    source: str, type_env: TypeEnvironment, runtime_env: RuntimeEnvironment
+) -> Any:
     tree = parse(source)
     ast = parse_tree_to_ast(tree)
 
-    ast.typecheck()
+    ast.typecheck(type_env)
 
-    env = RuntimeEnvironment()
-    return ast.eval(env)
+    return ast.eval(runtime_env)
+
+
+def handle_unknown_variable(err: UnknownVariable, source: str):
+    labels: list[Mark] = [
+        (["Not defined"], err.variable, (err.span.start_pos, err.span.end_pos)),
+    ]
+    message: Message = [
+        "Variable ",
+        (err.variable, err.variable),
+        " not defined in this scope",
+    ]
+    report_error(
+        source=source,
+        start_pos=err.span.start_pos,
+        message=message,
+        code=err.code,
+        labels=labels,
+    )
 
 
 def handle_invalid_operation(err: InvalidOperationError, source: str):

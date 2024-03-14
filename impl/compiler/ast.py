@@ -8,7 +8,7 @@ from typing_extensions import override
 from lark import Token, ast_utils
 from lark.tree import Meta as LarkMeta
 
-from .env import RuntimeEnvironment
+from .env import RuntimeEnvironment, TypeEnvironment
 
 from . import langtypes
 from . import errors
@@ -54,7 +54,7 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
         self.span = errors.Span.from_meta(meta)
 
     @abc.abstractmethod
-    def typecheck(self) -> langtypes.Type:
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         pass
 
     @abc.abstractmethod
@@ -108,9 +108,9 @@ class StatementBlock(_Ast, ast_utils.AsList):
     stmts: list[_Statement]
 
     @override
-    def typecheck(self) -> langtypes.Type:
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         for child in self.stmts:
-            child.typecheck()
+            child.typecheck(env)
 
         self.type_ = langtypes.BLOCK
         return self.type_
@@ -131,8 +131,9 @@ class VariableDeclaration(_Statement):
     rvalue: _Expression
 
     @override
-    def typecheck(self) -> langtypes.Type:
-        self.type_ = self.rvalue.typecheck()
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = self.rvalue.typecheck(env)
+        env.define(self.ident, self.type_)
         return self.type_
 
     @override
@@ -148,9 +149,9 @@ class Term(_Expression):
     right: _Expression
 
     @override
-    def typecheck(self) -> langtypes.Type:
-        left_type = self.left.typecheck()
-        right_type = self.right.typecheck()
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        left_type = self.left.typecheck(env)
+        right_type = self.right.typecheck(env)
 
         match left_type, self.op, right_type:
             case langtypes.INT, "+" | "-", langtypes.INT:
@@ -193,9 +194,9 @@ class Factor(_Expression):
     right: _Expression
 
     @override
-    def typecheck(self) -> langtypes.Type:
-        left_type = self.left.typecheck()
-        right_type = self.right.typecheck()
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        left_type = self.left.typecheck(env)
+        right_type = self.right.typecheck(env)
 
         match left_type, self.op, right_type:
             case langtypes.INT, "*" | "/" | "%", langtypes.INT:
@@ -250,9 +251,9 @@ class Comparison(_Expression):
     right: _Expression
 
     @override
-    def typecheck(self) -> langtypes.Type:
-        left_type = self.left.typecheck()
-        right_type = self.right.typecheck()
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        left_type = self.left.typecheck(env)
+        right_type = self.right.typecheck(env)
 
         match left_type, self.op, right_type:
             case langtypes.INT, ">" | "<" | "<=" | ">=", langtypes.INT:
@@ -297,9 +298,9 @@ class Logical(_Expression):
     right: _Expression
 
     @override
-    def typecheck(self) -> langtypes.Type:
-        left_type = self.left.typecheck()
-        right_type = self.right.typecheck()
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        left_type = self.left.typecheck(env)
+        right_type = self.right.typecheck(env)
 
         match left_type, self.op, right_type:
             case langtypes.BOOL, "&&", langtypes.BOOL:
@@ -342,9 +343,9 @@ class Equality(_Expression):
     right: _Expression
 
     @override
-    def typecheck(self) -> langtypes.Type:
-        left_type = self.left.typecheck()
-        right_type = self.right.typecheck()
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        left_type = self.left.typecheck(env)
+        right_type = self.right.typecheck(env)
 
         match left_type, self.op, right_type:
             case langtypes.INT, "==", langtypes.INT:
@@ -386,8 +387,8 @@ class UnaryOp(_Expression):
     operand: _Expression
 
     @override
-    def typecheck(self) -> langtypes.Type:
-        operand_type = self.operand.typecheck()
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        operand_type = self.operand.typecheck(env)
 
         match self.op, operand_type:
             case "+" | "-", langtypes.INT:
@@ -426,7 +427,7 @@ class BoolLiteral(_Expression):
     value: bool
 
     @override
-    def typecheck(self) -> langtypes.Type:
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type_ = langtypes.BOOL
         return self.type_
 
@@ -440,7 +441,7 @@ class IntLiteral(_Expression):
     value: int
 
     @override
-    def typecheck(self) -> langtypes.Type:
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type_ = langtypes.INT
         return self.type_
 
@@ -454,10 +455,31 @@ class StringLiteral(_Expression):
     value: str
 
     @override
-    def typecheck(self) -> langtypes.Type:
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type_ = langtypes.STRING
         return self.type_
 
     @override
     def eval(self, env: RuntimeEnvironment):
         return self.value
+
+
+@dataclass
+class Variable(_Expression):
+    value: str
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = env.get(self.value)
+        if self.type_ is None:
+            raise errors.UnknownVariable(
+                message=f"Variable '{self.value}' not declared in this scope",
+                span=self.span,
+                variable=self.value,
+            )
+        else:
+            return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        return env.get(self.value)

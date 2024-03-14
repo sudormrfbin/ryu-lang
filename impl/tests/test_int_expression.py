@@ -1,4 +1,4 @@
-from compiler.env import RuntimeEnvironment
+from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import (
     Term,
@@ -13,6 +13,7 @@ from compiler.ast import (
 from compiler.langtypes import Int, Bool
 
 EMPTY_ENV = RuntimeEnvironment()
+EMPTY_TYPE_ENV = TypeEnvironment()
 
 
 def test_addition_with_positive_int():
@@ -24,7 +25,7 @@ def test_addition_with_positive_int():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Term: Int,
         "left": {IntLiteral: Int},
@@ -47,7 +48,7 @@ def test_addition_with_negative_int_right():
             },
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Term: Int,
         "left": {IntLiteral: Int},
@@ -73,7 +74,7 @@ def test_addition_with_negative_int_left():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Term: Int,
         "left": {
@@ -104,7 +105,7 @@ def test_addition_with_negative_int_both():
             },
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Term: Int,
         "left": {
@@ -128,7 +129,7 @@ def test_subtraction_with_positive_int():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Term: Int,
         "left": {IntLiteral: Int},
@@ -151,7 +152,7 @@ def test_subtraction_with_negative_int_right():
             },
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Term: Int,
         "left": {IntLiteral: Int},
@@ -177,7 +178,7 @@ def test_subtraction_with_negative_int_left():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Term: Int,
         "left": {
@@ -208,7 +209,7 @@ def test_subtraction_with_negative_int_both():
             },
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Term: Int,
         "left": {
@@ -244,7 +245,7 @@ def test_addition_3_ints():
             },
         },
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Term: Int,
         "left": {IntLiteral: Int},
@@ -269,7 +270,7 @@ def test_multiplication_with_positive_int():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Factor: Int,
         "left": {IntLiteral: Int},
@@ -292,7 +293,7 @@ def test_multiplication_with_negative_int_right():
             },
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Factor: Int,
         "left": {IntLiteral: Int},
@@ -318,7 +319,7 @@ def test_multiplication_with_negative_int_left():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Factor: Int,
         "left": {
@@ -349,7 +350,7 @@ def test_multiplication_with_negative_int_both():
             },
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Factor: Int,
         "left": {
@@ -376,7 +377,7 @@ def test_division_with_positive_int():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Factor: Int,
         "left": {IntLiteral: Int},
@@ -399,7 +400,7 @@ def test_division_with_negative_int_right():
             },
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Factor: Int,
         "left": {IntLiteral: Int},
@@ -425,7 +426,7 @@ def test_division_with_negative_int_left():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Factor: Int,
         "left": {
@@ -456,7 +457,7 @@ def test_division_with_negative_int_both():
             },
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Factor: Int,
         "left": {
@@ -482,7 +483,7 @@ def test_modulus_with_positive_int():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Factor: Int,
         "left": {IntLiteral: Int},
@@ -505,7 +506,7 @@ def test_modulus_with_negative_int_right():
             },
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Factor: Int,
         "left": {IntLiteral: Int},
@@ -531,7 +532,7 @@ def test_modulus_with_negative_int_left():
             "right": {IntLiteral: {"value": 2}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Factor: Int,
         "left": {
@@ -562,7 +563,7 @@ def test_modulus_with_negative_int_both():
             },
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Factor: Int,
         "left": {
@@ -588,7 +589,7 @@ def test_and_true_and_true():
             "right": {BoolLiteral: {"value": True}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Logical: Bool,
         "left": {BoolLiteral: Bool},
@@ -606,7 +607,7 @@ def test_and_false_and_false():
             "right": {BoolLiteral: {"value": False}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Logical: Bool,
         "left": {BoolLiteral: Bool},
@@ -624,7 +625,7 @@ def test_and_true_and_false():
             "right": {BoolLiteral: {"value": False}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Logical: Bool,
         "left": {BoolLiteral: Bool},
@@ -642,7 +643,7 @@ def test_and_false_and_true():
             "right": {BoolLiteral: {"value": True}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Logical: Bool,
         "left": {BoolLiteral: Bool},
@@ -663,7 +664,7 @@ def test_and_true_or_true():
             "right": {BoolLiteral: {"value": True}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Logical: Bool,
         "left": {BoolLiteral: Bool},
@@ -681,7 +682,7 @@ def test_and_false_or_false():
             "right": {BoolLiteral: {"value": False}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Logical: Bool,
         "left": {BoolLiteral: Bool},
@@ -699,7 +700,7 @@ def test_and_true_or_false():
             "right": {BoolLiteral: {"value": False}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Logical: Bool,
         "left": {BoolLiteral: Bool},
@@ -717,7 +718,7 @@ def test_and_false_or_true():
             "right": {BoolLiteral: {"value": True}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Logical: Bool,
         "left": {BoolLiteral: Bool},
@@ -737,7 +738,7 @@ def test_not_true():
             "operand": {BoolLiteral: {"value": True}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         UnaryOp: Bool,
         "operand": {BoolLiteral: Bool},
@@ -753,7 +754,7 @@ def test_not_false():
             "operand": {BoolLiteral: {"value": False}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         UnaryOp: Bool,
         "operand": {BoolLiteral: Bool},
@@ -773,7 +774,7 @@ def test_greaterthan_largernum_gt_smallernum():
             "right": {IntLiteral: {"value": 3}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Comparison: Int,
         "left": {IntLiteral: Int},
@@ -791,7 +792,7 @@ def test_greaterthan_smallernum_gt_largernum():
             "right": {IntLiteral: {"value": 5}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Comparison: Int,
         "left": {IntLiteral: Int},
@@ -812,7 +813,7 @@ def test_lesserthan_largernum_lt_smallernum():
             "right": {IntLiteral: {"value": 3}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Comparison: Int,
         "left": {IntLiteral: Int},
@@ -830,7 +831,7 @@ def test_lesserthan_smallernum_lt_largernum():
             "right": {IntLiteral: {"value": 5}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Comparison: Int,
         "left": {IntLiteral: Int},
@@ -848,7 +849,7 @@ def test_ltq_smallernum_ltq_largernum():
             "right": {IntLiteral: {"value": 5}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Comparison: Int,
         "left": {IntLiteral: Int},
@@ -866,7 +867,7 @@ def test_ltq_samenum_ltq_samenum():
             "right": {IntLiteral: {"value": 3}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Comparison: Int,
         "left": {IntLiteral: Int},
@@ -884,7 +885,7 @@ def test_ltq_largernum_ltq_smallernum():
             "right": {IntLiteral: {"value": 3}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Comparison: Int,
         "left": {IntLiteral: Int},
@@ -902,7 +903,7 @@ def test_gtq_smallernum_gtq_largernum():
             "right": {IntLiteral: {"value": 5}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Comparison: Int,
         "left": {IntLiteral: Int},
@@ -920,7 +921,7 @@ def test_gtq_samenum_gtq_samenum():
             "right": {IntLiteral: {"value": 3}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Comparison: Int,
         "left": {IntLiteral: Int},
@@ -938,7 +939,7 @@ def test_gtq_largernum_gtq_smallernum():
             "right": {IntLiteral: {"value": 3}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Comparison: Int,
         "left": {IntLiteral: Int},
@@ -956,7 +957,7 @@ def test_eqeq_samenum():
             "right": {IntLiteral: {"value": 3}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Equality: Bool,
         "left": {IntLiteral: Int},
@@ -974,7 +975,7 @@ def test_eqeq_diffnum():
             "right": {IntLiteral: {"value": 4}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Equality: Bool,
         "left": {IntLiteral: Int},
@@ -992,7 +993,7 @@ def test_noteq_samenum():
             "right": {IntLiteral: {"value": 3}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Equality: Bool,
         "left": {IntLiteral: Int},
@@ -1010,7 +1011,7 @@ def test_noteq_diffnum():
             "right": {IntLiteral: {"value": 4}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Equality: Bool,
         "left": {IntLiteral: Int},

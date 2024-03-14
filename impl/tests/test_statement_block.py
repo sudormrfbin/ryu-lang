@@ -1,12 +1,16 @@
+from compiler.env import TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import IntLiteral, StatementBlock
 from compiler.langtypes import Block, Int
 
 
+EMPTY_TYPE_ENV = TypeEnvironment()
+
+
 def test_statement_without_newline_fallsthrough_to_expression():
     ast = parse_tree_to_ast(parse("1"))
     assert ast.to_dict() == {IntLiteral: {"value": 1}}
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {IntLiteral: Int}
 
 
@@ -14,14 +18,14 @@ def test_statement_with_single_newline_fallsthrough_to_expression():
     # since there is only one statement, it fallsthrough
     ast = parse_tree_to_ast(parse("1\n"))
     assert ast.to_dict() == {IntLiteral: {"value": 1}}
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {IntLiteral: Int}
 
 
 def test_statement_with_multiple_newlines_fallsthrough_to_expression():
     ast = parse_tree_to_ast(parse("1\n\n"))
     assert ast.to_dict() == {IntLiteral: {"value": 1}}
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {IntLiteral: Int}
 
 
@@ -35,7 +39,7 @@ def test_block_with_multiple_statements():
             ]
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         StatementBlock: Block,
         "stmts": [
@@ -55,7 +59,7 @@ def test_block_with_multiple_statements_and_trailing_newline():
             ]
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         StatementBlock: Block,
         "stmts": [

@@ -96,3 +96,10 @@ class InvalidOperationError(CompilerError):
 
     operator: OperatorSpan
     operands: list[OperandSpan]
+
+
+@dataclass
+class UnknownVariable(CompilerError):
+    code = 2
+
+    variable: str

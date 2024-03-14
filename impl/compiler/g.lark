@@ -34,7 +34,11 @@ variable_declaration: "let" IDENTIFIER "=" expression
 ?!unary_op: ("+" | "-" | "!") unary_op
 		  | atom
 
-?atom: bool_literal | int_literal | string_literal | "(" start ")"
+?atom: bool_literal
+	 | int_literal
+	 | string_literal
+	 | "(" start ")"
+	 | variable
 
 bool_literal: TRUE | FALSE
 TRUE: "true"
@@ -45,3 +49,4 @@ int_literal: INT
 string_literal: STRING
 STRING: "\"" /.*?/ "\""
 
+variable: IDENTIFIER

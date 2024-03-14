@@ -1,9 +1,10 @@
-from compiler.env import RuntimeEnvironment
+from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import Term, StringLiteral
 from compiler.langtypes import String
 
 EMPTY_ENV = RuntimeEnvironment()
+EMPTY_TYPE_ENV = TypeEnvironment()
 
 
 def test_string_concat_2():
@@ -15,7 +16,7 @@ def test_string_concat_2():
             "right": {StringLiteral: {"value": "world"}},
         }
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Term: String,
         "left": {StringLiteral: String},
@@ -45,7 +46,7 @@ def test_string_concat_3():
             },
         },
     }
-    ast.typecheck()
+    ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
         Term: String,
         "left": {StringLiteral: String},

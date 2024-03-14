@@ -1,7 +1,7 @@
-from compiler.env import RuntimeEnvironment
+from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import Equality, Factor, IntLiteral, VariableDeclaration
-from compiler.langtypes import Bool, Int
+from compiler.langtypes import BOOL, INT, Bool, Int
 
 
 def test_variable_delcaration():
@@ -12,11 +12,14 @@ def test_variable_delcaration():
             "rvalue": {IntLiteral: {"value": 1}},
         }
     }
-    ast.typecheck()
+
+    type_env = TypeEnvironment()
+    ast.typecheck(type_env)
     assert ast.to_type_dict() == {
         VariableDeclaration: Int,
         "rvalue": {IntLiteral: Int},
     }
+    assert type_env.get("x") == INT
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -43,7 +46,9 @@ def test_variable_delcaration_with_expressions():
             },
         }
     }
-    ast.typecheck()
+
+    type_env = TypeEnvironment()
+    ast.typecheck(type_env)
     assert ast.to_type_dict() == {
         VariableDeclaration: Bool,
         "rvalue": {
@@ -56,6 +61,7 @@ def test_variable_delcaration_with_expressions():
             "right": {IntLiteral: Int},
         },
     }
+    assert type_env.get("variable") == BOOL
 
     env = RuntimeEnvironment()
     ast.eval(env)

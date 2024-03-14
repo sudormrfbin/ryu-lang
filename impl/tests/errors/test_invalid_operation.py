@@ -2,14 +2,18 @@ import pytest
 from _pytest.capture import CaptureFixture
 
 from compiler.compiler import run
+from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.errors import InvalidOperationError, OperandSpan
 from compiler.parser import parse, parse_tree_to_ast
+
+EMPTY_ENV = RuntimeEnvironment()
+EMPTY_TYPE_ENV = TypeEnvironment()
 
 
 def test_unary_op_bool_error():
     with pytest.raises(InvalidOperationError) as excinfo:
         ast = parse_tree_to_ast(parse("-true"))
-        ast.typecheck()
+        ast.typecheck(EMPTY_TYPE_ENV)
 
     err = excinfo.value
 
@@ -26,7 +30,7 @@ def test_unary_op_bool_error():
 
 
 def test_unary_op_bool_error_output(capfd: CaptureFixture[str], snapshot: str):
-    run("-true")
+    run("-true", EMPTY_TYPE_ENV, EMPTY_ENV)
     _, err = capfd.readouterr()
     assert snapshot == err
 
@@ -35,7 +39,7 @@ def test_binary_op_bool_error():
     with pytest.raises(InvalidOperationError) as excinfo:
         ast = parse_tree_to_ast(parse("true+false"))
         #                              123456789
-        ast.typecheck()
+        ast.typecheck(EMPTY_TYPE_ENV)
 
     err = excinfo.value
 
@@ -54,7 +58,7 @@ def test_binary_op_bool_error():
 
 
 def test_binary_op_bool_error_output(capfd: CaptureFixture[str], snapshot: str):
-    run("true+false")
+    run("true+false", EMPTY_TYPE_ENV, EMPTY_ENV)
     _, err = capfd.readouterr()
     assert snapshot == err
 
@@ -63,7 +67,7 @@ def test_binary_op_bool_int_error():
     with pytest.raises(InvalidOperationError) as excinfo:
         ast = parse_tree_to_ast(parse("24+false"))
         #                              123456789
-        ast.typecheck()
+        ast.typecheck(EMPTY_TYPE_ENV)
 
     err = excinfo.value
 
@@ -82,6 +86,6 @@ def test_binary_op_bool_int_error():
 
 
 def test_binary_op_bool_int_error_output(capfd: CaptureFixture[str], snapshot: str):
-    run("24+false")
+    run("24+false", EMPTY_TYPE_ENV, EMPTY_ENV)
     _, err = capfd.readouterr()
     assert snapshot == err
