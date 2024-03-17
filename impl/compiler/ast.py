@@ -160,7 +160,7 @@ class Assignment(_Statement):
 
         rvalue_type = self.rvalue.typecheck(env)
         if lvalue_type != rvalue_type:
-            raise errors.InternalCompilerError("Type mismatch: TODO")
+            raise errors.InternalCompilerError("Type mismatch: TODO")  # TODO
 
         self.type_ = rvalue_type
         return self.type_
