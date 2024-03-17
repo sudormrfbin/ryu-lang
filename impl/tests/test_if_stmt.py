@@ -6,7 +6,7 @@ from compiler.ast import (
     Equality,
     IfStmt,
     IntLiteral,
-    StatementBlock,
+    StatementList,
     Variable,
     VariableDeclaration,
 )
@@ -24,7 +24,7 @@ def test_if_stmt_true_literal(source: str):
     """
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == {
-        StatementBlock: {
+        StatementList: {
             "stmts": [
                 {
                     VariableDeclaration: {
@@ -50,7 +50,7 @@ def test_if_stmt_true_literal(source: str):
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == {
-        StatementBlock: Block,
+        StatementList: Block,
         "stmts": [
             {
                 VariableDeclaration: Int,
@@ -84,7 +84,7 @@ def test_if_stmt_false_literal(source: str):
     """
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == {
-        StatementBlock: {
+        StatementList: {
             "stmts": [
                 {
                     VariableDeclaration: {
@@ -110,7 +110,7 @@ def test_if_stmt_false_literal(source: str):
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == {
-        StatementBlock: Block,
+        StatementList: Block,
         "stmts": [
             {
                 VariableDeclaration: Int,
@@ -144,7 +144,7 @@ def test_if_stmt_true_expr(source: str):
     """
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == {
-        StatementBlock: {
+        StatementList: {
             "stmts": [
                 {
                     VariableDeclaration: {
@@ -178,7 +178,7 @@ def test_if_stmt_true_expr(source: str):
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == {
-        StatementBlock: Block,
+        StatementList: Block,
         "stmts": [
             {
                 VariableDeclaration: Int,

@@ -1,6 +1,6 @@
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import Assignment, IntLiteral, StatementBlock, VariableDeclaration
+from compiler.ast import Assignment, IntLiteral, StatementList, VariableDeclaration
 from compiler.langtypes import INT, Block, Int
 from tests.utils import docstring_source
 
@@ -13,7 +13,7 @@ def test_variable_assignment(source: str):
     """
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == {
-        StatementBlock: {
+        StatementList: {
             "stmts": [
                 {
                     VariableDeclaration: {
@@ -34,7 +34,7 @@ def test_variable_assignment(source: str):
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == {
-        StatementBlock: Block,
+        StatementList: Block,
         "stmts": [
             {
                 VariableDeclaration: Int,

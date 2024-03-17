@@ -104,7 +104,7 @@ class _Statement(_Ast):
 
 
 @dataclass
-class StatementBlock(_Ast, ast_utils.AsList):
+class StatementList(_Ast, ast_utils.AsList):
     stmts: list[_Statement]
 
     @override
@@ -174,7 +174,7 @@ class Assignment(_Statement):
 @dataclass
 class IfStmt(_Statement):
     cond: _Expression
-    true_block: StatementBlock
+    true_block: StatementList
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:

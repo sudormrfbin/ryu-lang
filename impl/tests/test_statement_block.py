@@ -1,6 +1,6 @@
 from compiler.env import TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import IntLiteral, StatementBlock
+from compiler.ast import IntLiteral, StatementList
 from compiler.langtypes import Block, Int
 
 
@@ -32,7 +32,7 @@ def test_statement_with_multiple_newlines_fallsthrough_to_expression():
 def test_block_with_multiple_statements():
     ast = parse_tree_to_ast(parse("1\n2"))
     assert ast.to_dict() == {
-        StatementBlock: {
+        StatementList: {
             "stmts": [
                 {IntLiteral: {"value": 1}},
                 {IntLiteral: {"value": 2}},
@@ -41,7 +41,7 @@ def test_block_with_multiple_statements():
     }
     ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
-        StatementBlock: Block,
+        StatementList: Block,
         "stmts": [
             {IntLiteral: Int},
             {IntLiteral: Int},
@@ -52,7 +52,7 @@ def test_block_with_multiple_statements():
 def test_block_with_multiple_statements_and_trailing_newline():
     ast = parse_tree_to_ast(parse("1\n2\n"))
     assert ast.to_dict() == {
-        StatementBlock: {
+        StatementList: {
             "stmts": [
                 {IntLiteral: {"value": 1}},
                 {IntLiteral: {"value": 2}},
@@ -61,7 +61,7 @@ def test_block_with_multiple_statements_and_trailing_newline():
     }
     ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
-        StatementBlock: Block,
+        StatementList: Block,
         "stmts": [
             {IntLiteral: Int},
             {IntLiteral: Int},

@@ -4,10 +4,13 @@
 
 %ignore " "
 
-?start: statement_block
+?start: statement_list
 
-?statement_block: statement
-			   | (statement _NL)+ statement?
+// Used only for global scope
+?statement_list: (statement | _NL)+
+
+// Used for child lexical scopes, starts a new lexical scope
+?statement_block: statement_list
 
 ?statement: expression
 		  | variable_declaration
