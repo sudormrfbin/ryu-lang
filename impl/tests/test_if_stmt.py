@@ -8,10 +8,11 @@ from compiler.ast import (
     IntLiteral,
     StatementBlock,
     StatementList,
+    StringLiteral,
     Variable,
     VariableDeclaration,
 )
-from compiler.langtypes import INT, Block, Bool, Int
+from compiler.langtypes import INT, STRING, Block, Bool, Int, String
 from tests.utils import docstring_source
 
 
@@ -238,3 +239,101 @@ def test_if_stmt_true_expr(source: str):
     env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("x") == 3
+
+
+@docstring_source
+def test_if_elif(source: str):
+    """
+    let x = ""
+    if false {
+        x = "true block"
+    } else {
+        x = "false block"
+    }
+    """
+    ast = parse_tree_to_ast(parse(source))
+    assert ast.to_dict() == {
+        StatementList: {
+            "stmts": [
+                {
+                    VariableDeclaration: {
+                        "ident": "x",
+                        "rvalue": {StringLiteral: {"value": ""}},
+                    },
+                },
+                {
+                    IfStmt: {
+                        "cond": {BoolLiteral: {"value": False}},
+                        "true_block": {
+                            StatementBlock: {
+                                "stmts": [
+                                    {
+                                        Assignment: {
+                                            "lvalue": "x",
+                                            "rvalue": {
+                                                StringLiteral: {"value": "true block"}
+                                            },
+                                        },
+                                    }
+                                ]
+                            },
+                        },
+                        "else_block": {
+                            StatementBlock: {
+                                "stmts": [
+                                    {
+                                        Assignment: {
+                                            "lvalue": "x",
+                                            "rvalue": {
+                                                StringLiteral: {"value": "false block"}
+                                            },
+                                        },
+                                    }
+                                ]
+                            },
+                        },
+                    },
+                },
+            ],
+        },
+    }
+
+    type_env = TypeEnvironment()
+    ast.typecheck(type_env)
+    assert ast.to_type_dict() == {
+        StatementList: Block,
+        "stmts": [
+            {
+                VariableDeclaration: String,
+                "rvalue": {StringLiteral: String},
+            },
+            {
+                IfStmt: Block,
+                "cond": {BoolLiteral: Bool},
+                "true_block": {
+                    StatementBlock: Block,
+                    "stmts": [
+                        {
+                            Assignment: String,
+                            "rvalue": {StringLiteral: String},
+                        }
+                    ],
+                },
+                "else_block": {
+                    StatementBlock: Block,
+                    "stmts": [
+                        {
+                            Assignment: String,
+                            "rvalue": {StringLiteral: String},
+                        }
+                    ],
+                },
+            },
+        ],
+    }
+
+    assert type_env.get("x") == STRING
+
+    env = RuntimeEnvironment()
+    ast.eval(env)
+    assert env.get("x") == "false block"

@@ -23,7 +23,8 @@ assignment: IDENTIFIER "=" expression
 
 // TODO: Add else statement
 // TODO: Add else if statement
-if_stmt: "if" expression "{" statement_block "}"
+if_stmt: "if" expression "{" statement_block "}" [else_block]
+?else_block: "else" "{" statement_block "}"
 
 ?expression: equality
 

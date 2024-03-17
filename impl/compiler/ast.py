@@ -1,5 +1,5 @@
 import abc
-from typing import Any, Union
+from typing import Any, Optional, Union
 import typing
 import dataclasses
 from dataclasses import dataclass
@@ -73,7 +73,7 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
                 attrs[field.name] = value.to_dict()
             elif isinstance(value, list) and isinstance(value[0], _Ast):
                 attrs[field.name] = [v.to_dict() for v in value]  # type: ignore
-            else:
+            elif value is not None:
                 attrs[field.name] = value
 
         return {type(self): attrs}
@@ -188,6 +188,7 @@ class Assignment(_Statement):
 class IfStmt(_Statement):
     cond: _Expression
     true_block: StatementBlock
+    else_block: Optional[StatementBlock]
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -201,6 +202,8 @@ class IfStmt(_Statement):
             )
 
         self.true_block.typecheck(env)
+        if self.else_block:
+            self.else_block.typecheck(env)
 
         self.type_ = langtypes.BLOCK
         return self.type_
@@ -209,6 +212,8 @@ class IfStmt(_Statement):
     def eval(self, env: RuntimeEnvironment):
         if self.cond.eval(env) is True:
             self.true_block.eval(env)
+        elif self.else_block:
+            self.else_block.eval(env)
 
 
 @dataclass
