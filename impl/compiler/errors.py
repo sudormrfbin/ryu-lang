@@ -134,3 +134,25 @@ class UndeclaredVariable(CompilerError):
     code = 3
 
     variable: str
+
+
+@dataclass
+class UnexpectedType(CompilerError):
+    """
+    Raised when an expression deviates from it's expected type.
+
+    ## Example
+    ```
+    if 1 {}
+    ```
+
+    ## Fix
+    ```
+    if true {}
+    ```
+    """
+
+    code = 4
+
+    expected_type: langtypes.Type
+    actual_type: langtypes.Type

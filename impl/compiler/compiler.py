@@ -13,6 +13,7 @@ from .errors import (
     InvalidOperationError,
     OperandSpan,
     UndeclaredVariable,
+    UnexpectedType,
     UnknownVariable,
 )
 from .parser import parse, parse_tree_to_ast
@@ -33,6 +34,8 @@ def run(source: str, type_env: TypeEnvironment, runtime_env: RuntimeEnvironment)
         handle_unknown_variable(err, source)
     except errors.UndeclaredVariable as err:
         handle_undeclared_variable(err, source)
+    except errors.UnexpectedType as err:
+        handle_unexpected_type(err, source)
     except errors.CompilerError as err:
         print(err)
 
@@ -46,6 +49,32 @@ def _run(
     ast.typecheck(type_env)
 
     return ast.eval(runtime_env)
+
+
+def handle_unexpected_type(err: UnexpectedType, source: str):
+    actual_type_msg: Message = [
+        "This is of type ",
+        (err.actual_type.name, err.actual_type.name),
+    ]
+    actual_type_label: Mark = (
+        actual_type_msg,
+        err.actual_type.name,
+        (err.span.start_pos, err.span.end_pos),
+    )
+    labels: list[Mark] = [actual_type_label]
+    message: Message = [
+        "Expected a type of ",
+        (err.expected_type.name, err.expected_type.name),
+        " but found ",
+        (err.actual_type.name, err.actual_type.name),
+    ]
+    report_error(
+        source=source,
+        start_pos=err.span.start_pos,
+        message=message,
+        code=err.code,
+        labels=labels,
+    )
 
 
 def handle_unknown_variable(err: UnknownVariable, source: str):

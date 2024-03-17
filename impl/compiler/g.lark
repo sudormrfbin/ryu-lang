@@ -12,10 +12,15 @@
 ?statement: expression
 		  | variable_declaration
 		  | assignment
+		  | if_stmt
 
 variable_declaration: "let" IDENTIFIER "=" expression
 
 assignment: IDENTIFIER "=" expression
+
+// TODO: Add else statement
+// TODO: Add else if statement
+if_stmt: "if" expression "{" _NL? statement_block "}"
 
 ?expression: equality
 
