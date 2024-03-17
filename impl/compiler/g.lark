@@ -11,8 +11,11 @@
 
 ?statement: expression
 		  | variable_declaration
+		  | assignment
 
 variable_declaration: "let" IDENTIFIER "=" expression
+
+assignment: IDENTIFIER "=" expression
 
 ?expression: equality
 

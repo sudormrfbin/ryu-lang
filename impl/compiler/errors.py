@@ -100,6 +100,37 @@ class InvalidOperationError(CompilerError):
 
 @dataclass
 class UnknownVariable(CompilerError):
+    """
+    Raised when a variable is used in an expression without declaring it prior.
+
+    ## Example
+    ```
+    print(var + 5)
+    ```
+    """
+
     code = 2
+
+    variable: str
+
+
+@dataclass
+class UndeclaredVariable(CompilerError):
+    """
+    Raised when the lvalue (the variable part) of an assignment has not
+    been declared prior to assignment.
+
+    ## Example
+    ```
+    var = 4
+    ```
+
+    ## Fix
+    ```
+    let var = 4
+    ```
+    """
+
+    code = 3
 
     variable: str

@@ -143,6 +143,35 @@ class VariableDeclaration(_Statement):
 
 
 @dataclass
+class Assignment(_Statement):
+    lvalue: Token
+    rvalue: _Expression
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        lvalue_type = env.get(self.lvalue)
+        if lvalue_type is None:
+            raise errors.UndeclaredVariable(
+                message=f"Variable '{self.lvalue}' not declared in this scope",
+                span=errors.Span.from_token(self.lvalue),
+                variable=self.lvalue,
+                # TODO: Add help message to use let
+            )
+
+        rvalue_type = self.rvalue.typecheck(env)
+        if lvalue_type != rvalue_type:
+            raise errors.InternalCompilerError("Type mismatch: TODO")
+
+        self.type_ = rvalue_type
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        rhs = self.rvalue.eval(env)
+        env.define(self.lvalue, rhs)
+
+
+@dataclass
 class Term(_Expression):
     left: _Expression
     op: Token

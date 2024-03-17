@@ -9,7 +9,12 @@ from error_report.error_report import (  # pyright: ignore [reportMissingModuleS
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 
 from . import errors
-from .errors import InvalidOperationError, OperandSpan, UnknownVariable
+from .errors import (
+    InvalidOperationError,
+    OperandSpan,
+    UndeclaredVariable,
+    UnknownVariable,
+)
 from .parser import parse, parse_tree_to_ast
 
 if TYPE_CHECKING:
@@ -26,6 +31,8 @@ def run(source: str, type_env: TypeEnvironment, runtime_env: RuntimeEnvironment)
         handle_invalid_operation(err, source)
     except errors.UnknownVariable as err:
         handle_unknown_variable(err, source)
+    except errors.UndeclaredVariable as err:
+        handle_undeclared_variable(err, source)
     except errors.CompilerError as err:
         print(err)
 
@@ -42,6 +49,24 @@ def _run(
 
 
 def handle_unknown_variable(err: UnknownVariable, source: str):
+    labels: list[Mark] = [
+        (["Not defined"], err.variable, (err.span.start_pos, err.span.end_pos)),
+    ]
+    message: Message = [
+        "Variable ",
+        (err.variable, err.variable),
+        " not defined in this scope",
+    ]
+    report_error(
+        source=source,
+        start_pos=err.span.start_pos,
+        message=message,
+        code=err.code,
+        labels=labels,
+    )
+
+
+def handle_undeclared_variable(err: UndeclaredVariable, source: str):
     labels: list[Mark] = [
         (["Not defined"], err.variable, (err.span.start_pos, err.span.end_pos)),
     ]
