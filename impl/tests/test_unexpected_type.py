@@ -3,7 +3,7 @@ from _pytest.capture import CaptureFixture
 
 from compiler.compiler import run
 from compiler.env import RuntimeEnvironment, TypeEnvironment
-from compiler.errors import UnexpectedType, UnknownVariable
+from compiler.errors import UnexpectedType
 from compiler.langtypes import BOOL, INT
 from compiler.parser import parse, parse_tree_to_ast
 

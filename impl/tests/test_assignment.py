@@ -2,15 +2,15 @@ from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import Assignment, IntLiteral, StatementBlock, VariableDeclaration
 from compiler.langtypes import INT, Block, Int
-from textwrap import dedent
+from tests.utils import docstring_source
 
 
-def test_variable_assignment():
+@docstring_source
+def test_variable_assignment(source: str):
     """
     let x = 1
     x = 4
     """
-    source = dedent(test_variable_assignment.__doc__).strip()  # type: ignore
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == {
         StatementBlock: {

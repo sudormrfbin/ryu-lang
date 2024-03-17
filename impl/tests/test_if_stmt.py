@@ -11,17 +11,17 @@ from compiler.ast import (
     VariableDeclaration,
 )
 from compiler.langtypes import INT, Block, Bool, Int
-from textwrap import dedent
+from tests.utils import docstring_source
 
 
-def test_if_stmt_true_literal():
+@docstring_source
+def test_if_stmt_true_literal(source: str):
     """
     let x = 1
     if true {
         x = 3
     }
     """
-    source = dedent(test_if_stmt_true_literal.__doc__).strip()  # type: ignore
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == {
         StatementBlock: {
@@ -74,14 +74,14 @@ def test_if_stmt_true_literal():
     assert env.get("x") == 3
 
 
-def test_if_stmt_false_literal():
+@docstring_source
+def test_if_stmt_false_literal(source: str):
     """
     let x = 1
     if false {
         x = 3
     }
     """
-    source = dedent(test_if_stmt_false_literal.__doc__).strip()  # type: ignore
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == {
         StatementBlock: {
@@ -134,14 +134,14 @@ def test_if_stmt_false_literal():
     assert env.get("x") == 1
 
 
-def test_if_stmt_true_expr():
+@docstring_source
+def test_if_stmt_true_expr(source: str):
     """
     let x = 1
     if x == 1 {
         x = 3
     }
     """
-    source = dedent(test_if_stmt_true_expr.__doc__).strip()  # type: ignore
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == {
         StatementBlock: {
