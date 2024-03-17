@@ -6,6 +6,7 @@ from compiler.ast import (
     Equality,
     IfStmt,
     IntLiteral,
+    StatementBlock,
     StatementList,
     Variable,
     VariableDeclaration,
@@ -36,9 +37,15 @@ def test_if_stmt_true_literal(source: str):
                     IfStmt: {
                         "cond": {BoolLiteral: {"value": True}},
                         "true_block": {
-                            Assignment: {
-                                "lvalue": "x",
-                                "rvalue": {IntLiteral: {"value": 3}},
+                            StatementBlock: {
+                                "stmts": [
+                                    {
+                                        Assignment: {
+                                            "lvalue": "x",
+                                            "rvalue": {IntLiteral: {"value": 3}},
+                                        },
+                                    }
+                                ]
                             },
                         },
                     },
@@ -60,8 +67,13 @@ def test_if_stmt_true_literal(source: str):
                 IfStmt: Block,
                 "cond": {BoolLiteral: Bool},
                 "true_block": {
-                    Assignment: Int,
-                    "rvalue": {IntLiteral: Int},
+                    StatementBlock: Block,
+                    "stmts": [
+                        {
+                            Assignment: Int,
+                            "rvalue": {IntLiteral: Int},
+                        }
+                    ],
                 },
             },
         ],
@@ -96,9 +108,15 @@ def test_if_stmt_false_literal(source: str):
                     IfStmt: {
                         "cond": {BoolLiteral: {"value": False}},
                         "true_block": {
-                            Assignment: {
-                                "lvalue": "x",
-                                "rvalue": {IntLiteral: {"value": 3}},
+                            StatementBlock: {
+                                "stmts": [
+                                    {
+                                        Assignment: {
+                                            "lvalue": "x",
+                                            "rvalue": {IntLiteral: {"value": 3}},
+                                        },
+                                    }
+                                ]
                             },
                         },
                     },
@@ -120,8 +138,13 @@ def test_if_stmt_false_literal(source: str):
                 IfStmt: Block,
                 "cond": {BoolLiteral: Bool},
                 "true_block": {
-                    Assignment: Int,
-                    "rvalue": {IntLiteral: Int},
+                    StatementBlock: Block,
+                    "stmts": [
+                        {
+                            Assignment: Int,
+                            "rvalue": {IntLiteral: Int},
+                        }
+                    ],
                 },
             },
         ],
@@ -164,9 +187,15 @@ def test_if_stmt_true_expr(source: str):
                             },
                         },
                         "true_block": {
-                            Assignment: {
-                                "lvalue": "x",
-                                "rvalue": {IntLiteral: {"value": 3}},
+                            StatementBlock: {
+                                "stmts": [
+                                    {
+                                        Assignment: {
+                                            "lvalue": "x",
+                                            "rvalue": {IntLiteral: {"value": 3}},
+                                        },
+                                    }
+                                ]
                             },
                         },
                     },
@@ -192,8 +221,13 @@ def test_if_stmt_true_expr(source: str):
                     "right": {IntLiteral: Int},
                 },
                 "true_block": {
-                    Assignment: Int,
-                    "rvalue": {IntLiteral: Int},
+                    StatementBlock: Block,
+                    "stmts": [
+                        {
+                            Assignment: Int,
+                            "rvalue": {IntLiteral: Int},
+                        }
+                    ],
                 },
             },
         ],

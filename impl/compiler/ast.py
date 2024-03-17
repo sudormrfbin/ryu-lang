@@ -121,6 +121,19 @@ class StatementList(_Ast, ast_utils.AsList):
             child.eval(env)
 
 
+@dataclass
+class StatementBlock(StatementList):
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        child_env = TypeEnvironment(enclosing=env)
+        return super().typecheck(child_env)
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        child_env = RuntimeEnvironment(enclosing=env)
+        return super().eval(child_env)
+
+
 class _Expression(_Statement):
     pass
 
@@ -168,13 +181,13 @@ class Assignment(_Statement):
     @override
     def eval(self, env: RuntimeEnvironment):
         rhs = self.rvalue.eval(env)
-        env.define(self.lvalue, rhs)
+        env.set(self.lvalue, rhs)
 
 
 @dataclass
 class IfStmt(_Statement):
     cond: _Expression
-    true_block: StatementList
+    true_block: StatementBlock
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
