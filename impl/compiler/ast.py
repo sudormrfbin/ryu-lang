@@ -188,6 +188,7 @@ class Assignment(_Statement):
 class IfStmt(_Statement):
     cond: _Expression
     true_block: StatementBlock
+    else_if_ladder: Optional["ElseIfLadder"]
     else_block: Optional[StatementBlock]
 
     @override
@@ -204,16 +205,53 @@ class IfStmt(_Statement):
         self.true_block.typecheck(env)
         if self.else_block:
             self.else_block.typecheck(env)
+        if self.else_if_ladder:
+            self.else_if_ladder.typecheck(env)
 
         self.type_ = langtypes.BLOCK
         return self.type_
 
     @override
-    def eval(self, env: RuntimeEnvironment):
+    def eval(self, env: RuntimeEnvironment) -> bool:
         if self.cond.eval(env) is True:
             self.true_block.eval(env)
-        elif self.else_block:
-            self.else_block.eval(env)
+            return True
+        else:
+            if self.else_if_ladder:
+                if self.else_if_ladder.eval(env) is True:
+                    return True
+            if self.else_block:
+                self.else_block.eval(env)
+
+        return False
+
+
+@dataclass
+class ElseIfStmt(IfStmt):
+    pass
+
+
+@dataclass
+class ElseIfLadder(_Statement, ast_utils.AsList):
+    blocks: list[ElseIfStmt]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        for block in self.blocks:
+            block.typecheck(env)
+
+        self.type_ = langtypes.BLOCK
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> bool:
+        """
+        Returns True if any of the else if blocks execute.
+        """
+        for block in self.blocks:
+            if block.eval(env) is True:
+                return True
+        return False
 
 
 @dataclass
