@@ -275,6 +275,102 @@ class ElseIfLadder(_Statement, ast_utils.AsList):
 
 
 @dataclass
+class CaseStmt(_Ast):
+    pattern: "BoolLiteral"
+    block: StatementBlock
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.block.typecheck(env)
+        self.type_ = self.pattern.typecheck(env)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        self.block.eval(env)
+
+
+@dataclass
+class CaseLadder(_Ast, ast_utils.AsList):
+    cases: list[CaseStmt]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        for case_ in self.cases:
+            case_.typecheck(env)
+
+        self.type_ = langtypes.BLOCK
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        pass
+
+    def ensure_exhaustive_matching_bool(self):
+        seen: dict[bool, BoolLiteral] = {}
+        for case_ in self.cases:
+            pattern = case_.pattern.value
+            if pattern in seen:
+                raise  # TODO
+                # raise errors.DuplicatedCase()
+            seen[pattern] = case_.pattern
+
+        remaining = {True, False} - set(seen)
+        if remaining:
+            raise  # TODO
+            # raise errors.InexhaustiveMatch()
+
+
+@dataclass
+class MatchStmt(_Statement):
+    expr: _Expression
+    cases: CaseLadder
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        expr_type = self.expr.typecheck(env)
+        self.cases.typecheck(env)
+
+        for case_ in self.cases.cases:
+            case_type = case_.pattern.type_
+            assert case_type is not None
+
+            if case_type != expr_type:
+                # TODO: Add spanshot test when adding more types of patterns
+                raise errors.TypeMismatch(
+                    message=f"Expected type {expr_type} but got {case_type}",
+                    span=case_.pattern.span,
+                    actual_type=case_type,
+                    expected_type=expr_type,
+                    expected_type_span=self.expr.span,
+                )
+
+        match expr_type:
+            case langtypes.BOOL:
+                self.cases.ensure_exhaustive_matching_bool()
+            case _:
+                raise errors.InternalCompilerError(
+                    "TODO: unsupported type for match expression"
+                )
+
+        self.type_ = langtypes.BLOCK
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        expr = self.expr.eval(env)
+
+        for case_ in self.cases.cases:
+            if expr == case_.pattern.value:
+                case_.eval(env)
+                break
+        else:
+            raise errors.InternalCompilerError(
+                "Match statement did not execute any case blocks"
+            )
+
+
+@dataclass
 class Term(_Expression):
     left: _Expression
     op: Token

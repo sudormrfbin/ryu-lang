@@ -156,3 +156,33 @@ class UnexpectedType(CompilerError):
 
     expected_type: langtypes.Type
     actual_type: langtypes.Type
+
+
+@dataclass
+class TypeMismatch(CompilerError):
+    """
+    Raised when an expression is expected to be of a particular type
+    because of a declaration in another point in the source code.
+
+    ## Example
+    ```
+    match true {
+        case 1 {}
+        case 2 {}
+    }
+    ```
+
+    ## Fix
+    ```
+    match 1 {
+        case 1 {}
+        case 2 {}
+    }
+    ```
+    """
+
+    code = 5
+
+    actual_type: langtypes.Type
+    expected_type: langtypes.Type
+    expected_type_span: Span
