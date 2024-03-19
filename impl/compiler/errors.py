@@ -186,3 +186,30 @@ class TypeMismatch(CompilerError):
     actual_type: langtypes.Type
     expected_type: langtypes.Type
     expected_type_span: Span
+
+
+@dataclass
+class DuplicatedCase(CompilerError):
+    """
+    Raised when a match statement has duplicated case arms.
+
+    ## Example
+    ```
+    match true {
+        case true {}
+        case false {}
+    }
+    ```
+
+    ## Fix
+    ```
+    match true {
+        case true {}
+        case false {}
+    }
+    ```
+    """
+
+    code = 6
+
+    previous_case_span: Span

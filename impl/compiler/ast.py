@@ -311,8 +311,11 @@ class CaseLadder(_Ast, ast_utils.AsList):
         for case_ in self.cases:
             pattern = case_.pattern.value
             if pattern in seen:
-                raise  # TODO
-                # raise errors.DuplicatedCase()
+                raise errors.DuplicatedCase(
+                    message="Case condition duplicated",
+                    span=case_.pattern.span,
+                    previous_case_span=seen[pattern].span,
+                )
             seen[pattern] = case_.pattern
 
         remaining = {True, False} - set(seen)
