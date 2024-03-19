@@ -306,7 +306,7 @@ class CaseLadder(_Ast, ast_utils.AsList):
     def eval(self, env: RuntimeEnvironment):
         pass
 
-    def ensure_exhaustive_matching_bool(self):
+    def ensure_exhaustive_matching_bool(self, match_stmt: "MatchStmt"):
         seen: dict[bool, BoolLiteral] = {}
         for case_ in self.cases:
             pattern = case_.pattern.value
@@ -320,8 +320,13 @@ class CaseLadder(_Ast, ast_utils.AsList):
 
         remaining = {True, False} - set(seen)
         if remaining:
-            raise  # TODO
-            # raise errors.InexhaustiveMatch()
+            raise errors.InexhaustiveMatch(
+                message="Match not exhaustive",
+                span=match_stmt.span,
+                expected_type=langtypes.BOOL,
+                expected_type_span=match_stmt.expr.span,
+                remaining_values=remaining,
+            )
 
 
 @dataclass
@@ -350,7 +355,7 @@ class MatchStmt(_Statement):
 
         match expr_type:
             case langtypes.BOOL:
-                self.cases.ensure_exhaustive_matching_bool()
+                self.cases.ensure_exhaustive_matching_bool(self)
             case _:
                 raise errors.InternalCompilerError(
                     "TODO: unsupported type for match expression"

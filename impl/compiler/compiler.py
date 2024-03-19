@@ -40,6 +40,8 @@ def run(source: str, type_env: TypeEnvironment, runtime_env: RuntimeEnvironment)
         handle_type_mismatch(err, source)
     except errors.DuplicatedCase as err:
         handle_duplicated_case(err, source)
+    except errors.InexhaustiveMatch as err:
+        handle_inexhaustive_match(err, source)
     except errors.CompilerError as err:
         print(err)
 
@@ -53,6 +55,42 @@ def _run(
     ast.typecheck(type_env)
 
     return ast.eval(runtime_env)
+
+
+def handle_inexhaustive_match(err: errors.InexhaustiveMatch, source: str):
+    expected_type_msg: Message = [
+        "This is of type ",
+        (err.expected_type.name, err.expected_type.name),
+    ]
+    expected_type_label: Mark = (
+        expected_type_msg,
+        err.expected_type.name,
+        (err.expected_type_span.start_pos, err.expected_type_span.end_pos),
+    )
+
+    remaining = ", ".join((f"`{v}`" for v in err.remaining_values))
+    add_block_msg: Message = [
+        f"Add case block for value {remaining}"
+        if len(err.remaining_values) == 1
+        else f"Add case blocks for value {remaining}"
+    ]
+    add_block_label: Mark = (
+        add_block_msg,
+        (err.span.start_pos, err.span.end_pos),
+    )
+
+    labels: list[Mark] = [expected_type_label, add_block_label]
+    message: Message = [
+        "Match does not cover all cases for type ",
+        (err.expected_type.name, err.expected_type.name),
+    ]
+    report_error(
+        source=source,
+        start_pos=err.span.start_pos,
+        message=message,
+        code=err.code,
+        labels=labels,
+    )
 
 
 def handle_duplicated_case(err: errors.DuplicatedCase, source: str):

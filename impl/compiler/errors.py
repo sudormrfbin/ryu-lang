@@ -1,4 +1,4 @@
-from typing import ClassVar
+from typing import Any, ClassVar
 import dataclasses
 from dataclasses import dataclass
 from typing_extensions import override
@@ -213,3 +213,31 @@ class DuplicatedCase(CompilerError):
     code = 6
 
     previous_case_span: Span
+
+
+@dataclass
+class InexhaustiveMatch(CompilerError):
+    """
+    Raised when a match statement is not exhaustive.
+
+    ## Example
+    ```
+    match true {
+        case true {}
+    }
+    ```
+
+    ## Fix
+    ```
+    match true {
+        case true {}
+        case false {}
+    }
+    ```
+    """
+
+    code = 7
+
+    expected_type: langtypes.Type
+    expected_type_span: Span
+    remaining_values: set[bool]
