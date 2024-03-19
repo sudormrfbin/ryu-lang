@@ -188,8 +188,6 @@ class Assignment(_Statement):
 class IfStmt(_Statement):
     cond: _Expression
     true_block: StatementBlock
-    else_if_ladder: Optional["ElseIfLadder"]
-    else_block: Optional[StatementBlock]
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -203,10 +201,6 @@ class IfStmt(_Statement):
             )
 
         self.true_block.typecheck(env)
-        if self.else_block:
-            self.else_block.typecheck(env)
-        if self.else_if_ladder:
-            self.else_if_ladder.typecheck(env)
 
         self.type_ = langtypes.BLOCK
         return self.type_
@@ -216,14 +210,40 @@ class IfStmt(_Statement):
         if self.cond.eval(env) is True:
             self.true_block.eval(env)
             return True
-        else:
-            if self.else_if_ladder:
-                if self.else_if_ladder.eval(env) is True:
-                    return True
-            if self.else_block:
-                self.else_block.eval(env)
 
         return False
+
+
+@dataclass
+class IfChain(_Statement):
+    if_stmt: IfStmt
+    else_if_ladder: Optional["ElseIfLadder"]
+    else_block: Optional[StatementBlock]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.if_stmt.typecheck(env)
+        if self.else_block:
+            self.else_block.typecheck(env)
+        if self.else_if_ladder:
+            self.else_if_ladder.typecheck(env)
+
+        self.type_ = langtypes.BLOCK
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        if self.if_stmt.eval(env):
+            # if condition evaluates to true, stop the if-chain
+            return
+
+        if self.else_if_ladder:
+            if self.else_if_ladder.eval(env) is True:
+                # one of the else-if blocks executed, stop the if-chain
+                return
+
+        if self.else_block:
+            self.else_block.eval(env)
 
 
 @dataclass

@@ -2,6 +2,7 @@ from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import (
     BoolLiteral,
+    IfChain,
     IfStmt,
     IntLiteral,
     StatementBlock,
@@ -29,51 +30,58 @@ def test_lexical_scope_variable_shadowing(source: str):
                     VariableDeclaration: {
                         "ident": "x",
                         "rvalue": {StringLiteral: {"value": "outside"}},
-                    },
+                    }
                 },
                 {
-                    IfStmt: {
-                        "cond": {BoolLiteral: {"value": True}},
-                        "true_block": {
-                            StatementBlock: {
-                                "stmts": [
-                                    {
-                                        VariableDeclaration: {
-                                            "ident": "x",
-                                            "rvalue": {
-                                                StringLiteral: {"value": "inside"}
-                                            },
-                                        },
+                    IfChain: {
+                        "if_stmt": {
+                            IfStmt: {
+                                "cond": {BoolLiteral: {"value": True}},
+                                "true_block": {
+                                    StatementBlock: {
+                                        "stmts": [
+                                            {
+                                                VariableDeclaration: {
+                                                    "ident": "x",
+                                                    "rvalue": {
+                                                        StringLiteral: {
+                                                            "value": "inside"
+                                                        }
+                                                    },
+                                                }
+                                            }
+                                        ]
                                     }
-                                ]
-                            },
-                        },
-                    },
+                                },
+                            }
+                        }
+                    }
                 },
-            ],
-        },
+            ]
+        }
     }
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
+    print(ast.to_type_dict())
     assert ast.to_type_dict() == {
         StatementList: Block,
         "stmts": [
+            {VariableDeclaration: String, "rvalue": {StringLiteral: String}},
             {
-                VariableDeclaration: String,
-                "rvalue": {StringLiteral: String},
-            },
-            {
-                IfStmt: Block,
-                "cond": {BoolLiteral: Bool},
-                "true_block": {
-                    StatementBlock: Block,
-                    "stmts": [
-                        {
-                            VariableDeclaration: String,
-                            "rvalue": {StringLiteral: String},
-                        }
-                    ],
+                IfChain: Block,
+                "if_stmt": {
+                    IfStmt: Block,
+                    "cond": {BoolLiteral: Bool},
+                    "true_block": {
+                        StatementBlock: Block,
+                        "stmts": [
+                            {
+                                VariableDeclaration: String,
+                                "rvalue": {StringLiteral: String},
+                            }
+                        ],
+                    },
                 },
             },
         ],
@@ -103,27 +111,33 @@ def test_lexical_scope_variable_type(source: str):
                     VariableDeclaration: {
                         "ident": "x",
                         "rvalue": {StringLiteral: {"value": "outside"}},
-                    },
+                    }
                 },
                 {
-                    IfStmt: {
-                        "cond": {BoolLiteral: {"value": True}},
-                        "true_block": {
-                            StatementBlock: {
-                                "stmts": [
-                                    {
-                                        VariableDeclaration: {
-                                            "ident": "x",
-                                            "rvalue": {IntLiteral: {"value": 8}},
-                                        },
+                    IfChain: {
+                        "if_stmt": {
+                            IfStmt: {
+                                "cond": {BoolLiteral: {"value": True}},
+                                "true_block": {
+                                    StatementBlock: {
+                                        "stmts": [
+                                            {
+                                                VariableDeclaration: {
+                                                    "ident": "x",
+                                                    "rvalue": {
+                                                        IntLiteral: {"value": 8}
+                                                    },
+                                                }
+                                            }
+                                        ]
                                     }
-                                ]
-                            },
-                        },
-                    },
+                                },
+                            }
+                        }
+                    }
                 },
-            ],
-        },
+            ]
+        }
     }
 
     type_env = TypeEnvironment()
@@ -131,21 +145,18 @@ def test_lexical_scope_variable_type(source: str):
     assert ast.to_type_dict() == {
         StatementList: Block,
         "stmts": [
+            {VariableDeclaration: String, "rvalue": {StringLiteral: String}},
             {
-                VariableDeclaration: String,
-                "rvalue": {StringLiteral: String},
-            },
-            {
-                IfStmt: Block,
-                "cond": {BoolLiteral: Bool},
-                "true_block": {
-                    StatementBlock: Block,
-                    "stmts": [
-                        {
-                            VariableDeclaration: Int,
-                            "rvalue": {IntLiteral: Int},
-                        }
-                    ],
+                IfChain: Block,
+                "if_stmt": {
+                    IfStmt: Block,
+                    "cond": {BoolLiteral: Bool},
+                    "true_block": {
+                        StatementBlock: Block,
+                        "stmts": [
+                            {VariableDeclaration: Int, "rvalue": {IntLiteral: Int}}
+                        ],
+                    },
                 },
             },
         ],

@@ -15,17 +15,16 @@ statement_block: statement_list
 ?statement: expression
 		  | variable_declaration
 		  | assignment
-		  | if_stmt
+		  | if_chain
 
 variable_declaration: "let" IDENTIFIER "=" expression
 
 assignment: IDENTIFIER "=" expression
 
-// TODO: Add else statement
-// TODO: Add else if statement
-if_stmt: "if" expression "{" statement_block "}" [else_if_ladder] [else_block]
+if_chain: if_stmt [else_if_ladder] [else_block]
+if_stmt: "if" expression "{" statement_block "}"
 else_if_ladder: else_if_stmt+
-else_if_stmt: "else" "if" expression "{" statement_block "}"
+else_if_stmt: "elif" expression "{" statement_block "}"
 ?else_block: "else" "{" statement_block "}"
 
 ?expression: equality
