@@ -21,6 +21,7 @@ statement_block: statement_list
 		  | assignment
 		  | if_chain
 		  | match_stmt
+		  | while_stmt
 
 variable_declaration: "let" IDENTIFIER "=" expression
 
@@ -36,6 +37,8 @@ match_stmt: "match" expression "{" case_ladder "}"
 case_ladder: (case_stmt | _NL)+
 case_stmt: "case" match_pattern "{" statement_block "}"
 ?match_pattern: bool_literal
+
+while_stmt: "while" expression "{" statement_block "}"
 
 ?expression: equality
 

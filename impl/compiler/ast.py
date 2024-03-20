@@ -377,6 +377,32 @@ class MatchStmt(_Statement):
                 "Match statement did not execute any case blocks"
             )
 
+@dataclass
+class WhileStmt(_Statement):
+    cond: _Expression
+    true_block: StatementBlock
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        expr_type = self.cond.typecheck(env)
+        if expr_type != langtypes.BOOL:
+            raise errors.UnexpectedType(
+                message="Unexpected type for while condition",
+                span=self.cond.span,
+                expected_type=langtypes.BOOL,
+                actual_type=expr_type,
+            )
+
+        self.true_block.typecheck(env)
+
+        self.type_ = langtypes.BLOCK
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> bool:
+        while self.cond.eval(env) is True:
+            self.true_block.eval(env)
+            
 
 @dataclass
 class Term(_Expression):
