@@ -4,6 +4,9 @@
 
 %ignore " "
 
+COMMENT: "//"/[^\n]/*
+%ignore COMMENT
+
 ?start: statement_list
 
 // Used only for global scope
@@ -69,3 +72,4 @@ string_literal: STRING
 STRING: "\"" /.*?/ "\""
 
 variable: IDENTIFIER
+
