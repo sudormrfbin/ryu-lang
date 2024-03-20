@@ -1,5 +1,5 @@
 from compiler.env import RuntimeEnvironment, TypeEnvironment
-from .compiler import run
+from compiler.compiler import run
 
 
 def repl() -> None:

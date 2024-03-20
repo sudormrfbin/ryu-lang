@@ -1,4 +1,4 @@
-from .repl import repl
+from compiler.repl import repl
 
 repl()
 

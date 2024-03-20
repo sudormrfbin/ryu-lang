@@ -8,10 +8,10 @@ from typing_extensions import override
 from lark import Token, ast_utils
 from lark.tree import Meta as LarkMeta
 
-from .env import RuntimeEnvironment, TypeEnvironment
+from compiler.env import RuntimeEnvironment, TypeEnvironment
 
-from . import langtypes
-from . import errors
+from compiler import langtypes
+from compiler import errors
 
 _LispAst = list[Union[str, "_LispAst"]]
 
@@ -302,6 +302,11 @@ class CaseLadder(_Ast, ast_utils.AsList):
         self.type_ = langtypes.BLOCK
         return self.type_
 
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        # eval is handled by match statement
+        pass
+
     def ensure_exhaustive_matching_bool(self, match_stmt: "MatchStmt"):
         seen: dict[bool, BoolLiteral] = {}
         for case_ in self.cases:
@@ -372,6 +377,75 @@ class MatchStmt(_Statement):
             raise errors.InternalCompilerError(
                 "Match statement did not execute any case blocks"
             )
+
+
+@dataclass
+class StructMember(_Ast):
+    name: Token
+    ident_type: Token
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = langtypes.Type.from_str(self.ident_type, env)
+        if self.type_ is None:
+            raise  # TODO
+            # raise errors.UnassignableType()
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        # eval is handled by struct statement
+        pass
+
+
+@dataclass
+class StructMembers(_Ast, ast_utils.AsList):
+    members: list[StructMember]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        for member in self.members:
+            member.typecheck(env)
+
+        self.type_ = langtypes.BLOCK
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        # eval is handled by struct statement
+        pass
+
+    def members_as_dict(self) -> dict[str, langtypes.Type]:
+        result: dict[str, langtypes.Type] = {}
+        for mem in self.members:
+            assert mem.type_ is not None
+            result[mem.name] = mem.type_
+        return result
+
+
+@dataclass
+class StructStmt(_Ast):
+    name: Token
+    members: StructMembers
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        if env.get(self.name):
+            raise  # TODO
+            # raise errors.TypeRedefinition()
+
+        self.members.typecheck(env)
+        self.type_ = langtypes.Struct(
+            struct_name=self.name,
+            members=self.members.members_as_dict(),
+        )
+        env.define(self.name, self.type_)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        # Nothing to execute since struct statements are simply declarations
+        pass
 
 
 @dataclass

@@ -1,7 +1,7 @@
 from typing import Any
 from lark import Lark, Token, Tree, ast_utils, Transformer
 
-from . import ast
+from compiler import ast
 
 
 GRAMMAR_FILE = "g.lark"

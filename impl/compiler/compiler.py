@@ -8,15 +8,15 @@ from error_report.error_report import (  # pyright: ignore [reportMissingModuleS
 
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 
-from . import errors
-from .errors import (
+from compiler import errors
+from compiler.errors import (
     InvalidOperationError,
     OperandSpan,
     UndeclaredVariable,
     UnexpectedType,
     UnknownVariable,
 )
-from .parser import parse, parse_tree_to_ast
+from compiler.parser import parse, parse_tree_to_ast
 
 if TYPE_CHECKING:
     from error_report.error_report import (  # pyright: ignore [reportMissingModuleSource]

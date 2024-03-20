@@ -18,6 +18,7 @@ statement_block: statement_list
 		  | assignment
 		  | if_chain
 		  | match_stmt
+		  | struct_stmt
 
 variable_declaration: "let" IDENTIFIER "=" expression
 
@@ -33,6 +34,10 @@ match_stmt: "match" expression "{" case_ladder "}"
 case_ladder: (case_stmt | _NL)+
 case_stmt: "case" match_pattern "{" statement_block "}"
 ?match_pattern: bool_literal
+
+struct_stmt: "struct" IDENTIFIER "{" struct_members "}"
+struct_members: (struct_member | _NL)+
+struct_member: IDENTIFIER ":" IDENTIFIER
 
 ?expression: equality
 
