@@ -302,10 +302,6 @@ class CaseLadder(_Ast, ast_utils.AsList):
         self.type_ = langtypes.BLOCK
         return self.type_
 
-    @override
-    def eval(self, env: RuntimeEnvironment):
-        pass
-
     def ensure_exhaustive_matching_bool(self, match_stmt: "MatchStmt"):
         seen: dict[bool, BoolLiteral] = {}
         for case_ in self.cases:
