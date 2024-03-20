@@ -23,6 +23,7 @@ statement_block: statement_list
 		  | match_stmt
 		  | while_stmt
 		  | struct_stmt
+		  | enum_stmt
 
 variable_declaration: "let" IDENTIFIER "=" expression
 
@@ -44,6 +45,10 @@ while_stmt: "while" expression "{" statement_block "}"
 struct_stmt: "struct" IDENTIFIER "{" struct_members "}"
 struct_members: (struct_member | _NL)+
 struct_member: IDENTIFIER ":" IDENTIFIER
+
+enum_stmt: "enum" IDENTIFIER "{" enum_members "}"
+enum_members: (enum_member | _NL)+
+enum_member: IDENTIFIER
 
 ?expression: equality
 

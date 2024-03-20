@@ -476,6 +476,72 @@ class StructStmt(_Ast):
 
 
 @dataclass
+class EnumMember(_Ast):
+    name: Token
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = langtypes.Type()  # TODO: assign separate type
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        # eval is handled by enum statement
+        pass
+
+
+@dataclass
+class EnumMembers(_Ast, ast_utils.AsList):
+    members: list[EnumMember]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        seen: set[Token] = set()
+        for member in self.members:
+            if member.name in seen:
+                raise  # TODO
+                # raise errors.DuplicatedAttribute()
+            seen.add(member.name)
+            member.typecheck(env)
+
+        self.type_ = langtypes.BLOCK
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        # eval is handled by enum statement
+        pass
+
+    def members_as_list(self) -> list[str]:
+        return [mem.name for mem in self.members]
+
+
+@dataclass
+class EnumStmt(_Ast):
+    name: Token
+    members: EnumMembers
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        if env.get(self.name):
+            raise  # TODO
+            # raise errors.TypeRedefinition()
+
+        self.members.typecheck(env)
+        self.type_ = langtypes.Enum(
+            enum_name=self.name,
+            members=self.members.members_as_list(),
+        )
+        env.define(self.name, self.type_)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        # Nothing to execute since enum statements are simply declarations
+        pass
+
+
+@dataclass
 class Term(_Expression):
     left: _Expression
     op: Token

@@ -54,6 +54,12 @@ class Struct(UserDefinedType):
     members: dict[str, Type]
 
 
+@dataclass
+class Enum(UserDefinedType):
+    enum_name: str
+    members: list[str]
+
+
 BOOL = Bool()
 INT = Int()
 STRING = String()
