@@ -1,4 +1,4 @@
-from typing import Any, ClassVar
+from typing import ClassVar
 import dataclasses
 from dataclasses import dataclass
 from typing_extensions import override

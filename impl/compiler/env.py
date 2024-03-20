@@ -1,7 +1,7 @@
 from typing import Any, Optional, Self
 
-from .errors import InternalCompilerError
-from . import langtypes
+from compiler.errors import InternalCompilerError
+from compiler import langtypes
 
 
 class TypeEnvironment:

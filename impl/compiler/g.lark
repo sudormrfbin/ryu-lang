@@ -22,6 +22,7 @@ statement_block: statement_list
 		  | if_chain
 		  | match_stmt
 		  | while_stmt
+		  | struct_stmt
 
 variable_declaration: "let" IDENTIFIER "=" expression
 
@@ -39,6 +40,10 @@ case_stmt: "case" match_pattern "{" statement_block "}"
 ?match_pattern: bool_literal
 
 while_stmt: "while" expression "{" statement_block "}"
+
+struct_stmt: "struct" IDENTIFIER "{" struct_members "}"
+struct_members: (struct_member | _NL)+
+struct_member: IDENTIFIER ":" IDENTIFIER
 
 ?expression: equality
 
