@@ -378,6 +378,7 @@ class MatchStmt(_Statement):
                 "Match statement did not execute any case blocks"
             )
 
+
 @dataclass
 class WhileStmt(_Statement):
     cond: _Expression
@@ -400,10 +401,10 @@ class WhileStmt(_Statement):
         return self.type_
 
     @override
-    def eval(self, env: RuntimeEnvironment) -> bool:
+    def eval(self, env: RuntimeEnvironment):
         while self.cond.eval(env) is True:
             self.true_block.eval(env)
-            
+
 
 @dataclass
 class StructMember(_Ast):

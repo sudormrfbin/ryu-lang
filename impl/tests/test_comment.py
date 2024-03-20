@@ -162,4 +162,3 @@ def test_if_stmt_false_literal(source: str):
     env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("x") == 1
-
