@@ -3,6 +3,7 @@
 %import common.CNAME -> IDENTIFIER 
 
 %ignore " "
+%ignore "\t"
 
 ?start: statement_list
 
