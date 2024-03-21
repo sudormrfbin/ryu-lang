@@ -1,4 +1,5 @@
-from typing import ClassVar, Container
+from abc import abstractmethod
+from typing import TYPE_CHECKING, ClassVar, Container
 import dataclasses
 from dataclasses import dataclass
 from typing_extensions import override
@@ -7,6 +8,16 @@ from lark.tree import Meta
 from lark.lexer import Token
 
 from compiler import langtypes
+
+from error_report.error_report import (  # pyright: ignore [reportMissingModuleSource]
+    report_error,
+)
+
+if TYPE_CHECKING:
+    from error_report.error_report import (  # pyright: ignore [reportMissingModuleSource]
+        Mark,
+        Message,
+    )
 
 LineCol = tuple[int, int]
 
@@ -19,6 +30,9 @@ class Span:
     end_column: int
     start_pos: int
     end_pos: int
+
+    def pos(self) -> tuple[int, int]:
+        return (self.start_pos, self.end_pos)
 
     @classmethod
     def from_meta(cls, meta: Meta) -> "Span":
@@ -76,6 +90,19 @@ class CompilerError(Exception):
     @override
     def __str__(self) -> str:
         return f"{type(self).__name__}: {self.message}"
+
+    # def _report(self, source: str, message: report.Message, labels: report.Labels):
+    #     report.report_error(
+    #         source=source,
+    #         start_pos=self.span.start_pos,
+    #         message=message,
+    #         code=self.code,
+    #         labels=labels,
+    #     )
+
+    @abstractmethod
+    def report(self, source: str):
+        pass
 
 
 @dataclass
@@ -241,3 +268,39 @@ class InexhaustiveMatch(CompilerError):
     expected_type: langtypes.Type
     expected_type_span: Span
     remaining_values: Container[bool | str]
+
+    @override
+    def report(self, source: str):
+        expected_type_msg: Message = [
+            "This is of type ",
+            (self.expected_type.name, self.expected_type.name),
+        ]
+        expected_type_label: Mark = (
+            expected_type_msg,
+            self.expected_type.name,
+            (self.expected_type_span.start_pos, self.expected_type_span.end_pos),
+        )
+
+        remaining = ", ".join((f"`{v}`" for v in self.remaining_values))
+        add_block_msg: Message = [
+            f"Add case block for value {remaining}"
+            if len(self.remaining_values) == 1
+            else f"Add case blocks for value {remaining}"
+        ]
+        add_block_label: Mark = (
+            add_block_msg,
+            (self.span.start_pos, self.span.end_pos),
+        )
+
+        labels: list[Mark] = [expected_type_label, add_block_label]
+        message: Message = [
+            "Match does not cover all cases for type ",
+            (self.expected_type.name, self.expected_type.name),
+        ]
+        report_error(
+            source=source,
+            start_pos=self.span.start_pos,
+            message=message,
+            code=self.code,
+            labels=labels,
+        )
