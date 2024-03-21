@@ -39,7 +39,7 @@ def run(source: str, type_env: TypeEnvironment, runtime_env: RuntimeEnvironment)
     except errors.TypeMismatch as err:
         handle_type_mismatch(err, source)
     except errors.DuplicatedCase as err:
-        handle_duplicated_case(err, source)
+        err.report(source)
     except errors.InexhaustiveMatch as err:
         err.report(source)
     except errors.CompilerError as err:
@@ -55,38 +55,6 @@ def _run(
     ast.typecheck(type_env)
 
     return ast.eval(runtime_env)
-
-
-def handle_duplicated_case(err: errors.DuplicatedCase, source: str):
-    first_occurance_msg: Message = [
-        "This case is handled first here...",
-    ]
-    first_occurance_label: Mark = (
-        first_occurance_msg,
-        "color1",
-        (err.previous_case_span.start_pos, err.previous_case_span.end_pos),
-    )
-
-    second_occurance_msg: Message = [
-        "...and duplicated here",
-    ]
-    second_occurance_label: Mark = (
-        second_occurance_msg,
-        "color1",
-        (err.span.start_pos, err.span.end_pos),
-    )
-
-    labels: list[Mark] = [first_occurance_label, second_occurance_label]
-    message: Message = [
-        "Duplicated case found in match expression",
-    ]
-    report_error(
-        source=source,
-        start_pos=err.span.start_pos,
-        message=message,
-        code=err.code,
-        labels=labels,
-    )
 
 
 def handle_type_mismatch(err: errors.TypeMismatch, source: str):
