@@ -214,6 +214,46 @@ class TypeMismatch(CompilerError):
     expected_type: langtypes.Type
     expected_type_span: Span
 
+    @override
+    def report(self, source: str):
+        expected_type_msg: Message = [
+            "Since this is of type ",
+            (self.expected_type.name, self.expected_type.name),
+            "...",
+        ]
+        expected_type_label: Mark = (
+            expected_type_msg,
+            self.expected_type.name,
+            (self.expected_type_span.start_pos, self.expected_type_span.end_pos),
+        )
+
+        actual_type_msg: Message = [
+            "...expected this to be ",
+            (self.expected_type.name, self.expected_type.name),
+            " too, but found ",
+            (self.actual_type.name, self.actual_type.name),
+        ]
+        actual_type_label: Mark = (
+            actual_type_msg,
+            self.actual_type.name,
+            (self.span.start_pos, self.span.end_pos),
+        )
+
+        labels: list[Mark] = [expected_type_label, actual_type_label]
+        message: Message = [
+            "Expected a type of ",
+            (self.expected_type.name, self.expected_type.name),
+            " but found ",
+            (self.actual_type.name, self.actual_type.name),
+        ]
+        report_error(
+            source=source,
+            start_pos=self.span.start_pos,
+            message=message,
+            code=self.code,
+            labels=labels,
+        )
+
 
 @dataclass
 class DuplicatedCase(CompilerError):
@@ -241,6 +281,7 @@ class DuplicatedCase(CompilerError):
 
     previous_case_span: Span
 
+    @override
     def report(self, source: str):
         first_occurance_msg: Message = [
             "This case is handled first here...",

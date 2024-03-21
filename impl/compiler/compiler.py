@@ -37,7 +37,7 @@ def run(source: str, type_env: TypeEnvironment, runtime_env: RuntimeEnvironment)
     except errors.UnexpectedType as err:
         handle_unexpected_type(err, source)
     except errors.TypeMismatch as err:
-        handle_type_mismatch(err, source)
+        err.report(source)
     except errors.DuplicatedCase as err:
         err.report(source)
     except errors.InexhaustiveMatch as err:
@@ -55,46 +55,6 @@ def _run(
     ast.typecheck(type_env)
 
     return ast.eval(runtime_env)
-
-
-def handle_type_mismatch(err: errors.TypeMismatch, source: str):
-    expected_type_msg: Message = [
-        "Since this is of type ",
-        (err.expected_type.name, err.expected_type.name),
-        "...",
-    ]
-    expected_type_label: Mark = (
-        expected_type_msg,
-        err.expected_type.name,
-        (err.expected_type_span.start_pos, err.expected_type_span.end_pos),
-    )
-
-    actual_type_msg: Message = [
-        "...expected this to be ",
-        (err.expected_type.name, err.expected_type.name),
-        " too, but found ",
-        (err.actual_type.name, err.actual_type.name),
-    ]
-    actual_type_label: Mark = (
-        actual_type_msg,
-        err.actual_type.name,
-        (err.span.start_pos, err.span.end_pos),
-    )
-
-    labels: list[Mark] = [expected_type_label, actual_type_label]
-    message: Message = [
-        "Expected a type of ",
-        (err.expected_type.name, err.expected_type.name),
-        " but found ",
-        (err.actual_type.name, err.actual_type.name),
-    ]
-    report_error(
-        source=source,
-        start_pos=err.span.start_pos,
-        message=message,
-        code=err.code,
-        labels=labels,
-    )
 
 
 def handle_unexpected_type(err: UnexpectedType, source: str):
