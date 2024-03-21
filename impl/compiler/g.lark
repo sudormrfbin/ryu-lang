@@ -24,10 +24,13 @@ statement_block: statement_list
 		  | while_stmt
 		  | struct_stmt
 		  | enum_stmt
+		  | print_stmt
 
 variable_declaration: "let" IDENTIFIER "=" expression
 
 assignment: IDENTIFIER "=" expression
+
+print_stmt: "print" expression 
 
 if_chain: if_stmt [else_if_ladder] [else_block]
 if_stmt: "if" expression "{" statement_block "}"

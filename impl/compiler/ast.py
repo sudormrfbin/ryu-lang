@@ -183,6 +183,18 @@ class Assignment(_Statement):
         rhs = self.rvalue.eval(env)
         env.set(self.lvalue, rhs)
 
+@dataclass
+class PrintStmt(_Statement):
+    expr: _Expression
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = self.expr.typecheck(env)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        print(self.expr.eval(env)) 
 
 @dataclass
 class IfStmt(_Statement):
