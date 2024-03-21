@@ -276,7 +276,7 @@ class ElseIfLadder(_Statement, ast_utils.AsList):
 
 @dataclass
 class CaseStmt(_Ast):
-    pattern: "BoolLiteral"
+    pattern: "BoolLiteral | EnumLiteral"
     block: StatementBlock
 
     @override
@@ -309,8 +309,11 @@ class CaseLadder(_Ast, ast_utils.AsList):
 
     def ensure_exhaustive_matching_bool(self, match_stmt: "MatchStmt"):
         seen: dict[bool, BoolLiteral] = {}
+
         for case_ in self.cases:
+            assert isinstance(case_.pattern, BoolLiteral)
             pattern = case_.pattern.value
+
             if pattern in seen:
                 raise errors.DuplicatedCase(
                     message="Case condition duplicated",
@@ -320,6 +323,33 @@ class CaseLadder(_Ast, ast_utils.AsList):
             seen[pattern] = case_.pattern
 
         remaining = {True, False} - set(seen)
+        if remaining:
+            raise errors.InexhaustiveMatch(
+                message="Match not exhaustive",
+                span=match_stmt.span,
+                expected_type=langtypes.BOOL,
+                expected_type_span=match_stmt.expr.span,
+                remaining_values=remaining,
+            )
+
+    def ensure_exhaustive_matching_enum(
+        self, match_stmt: "MatchStmt", variants: list[str]
+    ):
+        seen: dict[langvalues.EnumValue, EnumLiteral] = {}
+
+        for case_ in self.cases:
+            assert isinstance(case_.pattern, EnumLiteral)
+            pattern = case_.pattern.value
+
+            if pattern in seen:
+                raise errors.DuplicatedCase(
+                    message="Case condition duplicated",
+                    span=case_.pattern.span,
+                    previous_case_span=seen[pattern].span,
+                )
+            seen[pattern] = case_.pattern
+
+        remaining = set(variants) - set((s.variant for s in seen))
         if remaining:
             raise errors.InexhaustiveMatch(
                 message="Match not exhaustive",
@@ -357,6 +387,10 @@ class MatchStmt(_Statement):
         match expr_type:
             case langtypes.BOOL:
                 self.cases.ensure_exhaustive_matching_bool(self)
+            case langtypes.Enum():
+                self.cases.ensure_exhaustive_matching_enum(
+                    self, variants=expr_type.members
+                )
             case _:
                 raise errors.InternalCompilerError(
                     "TODO: unsupported type for match expression"
@@ -868,6 +902,10 @@ class EnumLiteral(_Expression):
     enum_type: Token
     variant: Token
 
+    @property
+    def value(self) -> langvalues.EnumValue:
+        return langvalues.EnumValue(ty=self.enum_type, variant=self.variant)
+
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type_ = env.get(self.enum_type)
@@ -878,7 +916,7 @@ class EnumLiteral(_Expression):
 
     @override
     def eval(self, env: RuntimeEnvironment):
-        return langvalues.EnumValue(ty=self.enum_type, variant=self.variant)
+        return self.value
 
 
 @dataclass
