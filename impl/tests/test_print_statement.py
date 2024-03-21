@@ -7,12 +7,12 @@ from tests.utils import docstring_source
 
 
 @docstring_source
-def test_variable_assignment(source: str):
+def test_print(source: str):
     """
     print "hello world"
     """
     ast = parse_tree_to_ast(parse(source))
-    
+    print(ast.to_dict())
     assert ast.to_dict() == {PrintStmt: {'expr': {StringLiteral: {'value': 'hello world'}}}}
 
     type_env = TypeEnvironment()
@@ -24,7 +24,7 @@ def test_variable_assignment(source: str):
 
 #test2
 @docstring_source
-def test_variable_assignment(source: str):
+def test_print_variable(source: str):
     """
     let x=2
     print x+1
