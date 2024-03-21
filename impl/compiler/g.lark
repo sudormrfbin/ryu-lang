@@ -25,10 +25,12 @@ statement_block: statement_list
 		  | struct_stmt
 		  | enum_stmt
 		  | print_stmt
+		  | index_assignment
 
 variable_declaration: "let" IDENTIFIER "=" expression
 
 assignment: IDENTIFIER "=" expression
+index_assignment : variable "[" POS_DIGIT "]" "=" expression
 
 print_stmt: "print" expression 
 
@@ -76,6 +78,7 @@ enum_member: IDENTIFIER
 ?indexing: atom "[" POS_DIGIT "]"
 		|atom
 
+
 POS_DIGIT: /[0-9]+/
 
 ?atom: bool_literal
@@ -85,6 +88,8 @@ POS_DIGIT: /[0-9]+/
 	 | enum_literal
 	 | "(" expression ")"
 	 | variable
+	
+
 
 bool_literal: TRUE | FALSE
 TRUE: "true"
