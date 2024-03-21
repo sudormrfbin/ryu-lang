@@ -66,10 +66,16 @@ class Enum(UserDefinedType):
         return self.enum_name
 
 
+@dataclass
+class Array(PrimitiveType):
+    ty: Type
+
+
 BOOL = Bool()
 INT = Int()
 STRING = String()
 BLOCK = Block()
+
 
 PRIMITIVE_TYPES: dict[str, Type] = {
     "bool": BOOL,
