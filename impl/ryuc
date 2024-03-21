@@ -1,0 +1,21 @@
+import sys
+import argparse
+
+from compiler.compiler import run
+from compiler.env import RuntimeEnvironment, TypeEnvironment
+
+def main():
+    parser = argparse.ArgumentParser(description='Ryuc Language Compiler')
+    parser.add_argument('file', help='Path to the Ryuc source file')
+    args = parser.parse_args()
+
+    with open(args.file, 'r') as file:
+        source = file.read()
+
+    type_env = TypeEnvironment()
+    runtime_env = RuntimeEnvironment()
+
+    run(source, type_env, runtime_env)
+
+if __name__ == '__main__':
+    main()
