@@ -27,6 +27,9 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     def INT(self, n: str) -> int:
         return int(n)
 
+    def POS_DIGIT(self, n: str) -> int:
+        return int(n)
+
     def STRING(self, s: str) -> str:
         return s[1:-1]  # remove quotes
 
