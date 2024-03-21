@@ -590,6 +590,29 @@ class Indexing(_Ast):
         return result
 
 @dataclass
+class IndexAssignment(_Ast):
+    arrayname: "Variable"
+    index: int
+    value: _Expression
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = self.arrayname.typecheck(env)
+        value_type = self.value.typecheck(env)
+        if not isinstance(self.type_, langtypes.Array):
+            raise #TODO
+        
+        if  self.type_.ty != value_type:
+            raise #TODO
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        array_name = self.arrayname.eval(env)
+        array_value= self.value.eval(env)
+        array_name[self.index] = array_value   
+        pass 
+    
+@dataclass
 class EnumMember(_Ast):
     name: Token
 
