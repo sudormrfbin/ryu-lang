@@ -746,12 +746,9 @@ class Equality(_Expression):
         left_type = self.left.typecheck(env)
         right_type = self.right.typecheck(env)
 
-        match left_type, self.op, right_type:
-            case langtypes.INT, "==", langtypes.INT:
+        if left_type == right_type and self.op in ("==", "!="):
                 self.type_ = langtypes.BOOL
-            case langtypes.INT, "!=", langtypes.INT:
-                self.type_ = langtypes.BOOL
-            case _:
+        else:
                 op_span = errors.Span.from_token(self.op)
                 raise errors.InvalidOperationError(
                     message=f"Invalid operation {self.op} for types {left_type.name} and {right_type.name}",
