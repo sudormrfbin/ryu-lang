@@ -31,7 +31,7 @@ def run(source: str, type_env: TypeEnvironment, runtime_env: RuntimeEnvironment)
     except errors.InvalidOperationError as err:
         handle_invalid_operation(err, source)
     except errors.UnknownVariable as err:
-        handle_unknown_variable(err, source)
+        err.report(source)
     except errors.UndeclaredVariable as err:
         err.report(source)
     except errors.UnexpectedType as err:
@@ -55,24 +55,6 @@ def _run(
     ast.typecheck(type_env)
 
     return ast.eval(runtime_env)
-
-
-def handle_unknown_variable(err: UnknownVariable, source: str):
-    labels: list[Mark] = [
-        (["Not defined"], err.variable, (err.span.start_pos, err.span.end_pos)),
-    ]
-    message: Message = [
-        "Variable ",
-        (err.variable, err.variable),
-        " not defined in this scope",
-    ]
-    report_error(
-        source=source,
-        start_pos=err.span.start_pos,
-        message=message,
-        code=err.code,
-        labels=labels,
-    )
 
 
 def handle_invalid_operation(err: InvalidOperationError, source: str):
