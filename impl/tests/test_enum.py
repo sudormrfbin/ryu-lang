@@ -14,6 +14,7 @@ from compiler.ast import (
     StatementBlock,
     StatementList,
     StringLiteral,
+    Variable,
     VariableDeclaration,
 )
 from compiler.langtypes import Block, Enum, String, Type
