@@ -570,6 +570,24 @@ class ArrayLiteral(_Ast):
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         return self.members.eval(env)
+    
+@dataclass
+class Indexing(_Ast):
+    element: _Expression
+    index: int
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = self.element.typecheck(env)
+        if not isinstance(self.type_, langtypes.Array):
+            raise #TODO
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        element_value = self.element.eval(env)
+        result= element_value[self.index]   #TODO : handling out of index run time error
+        return result
 
 @dataclass
 class EnumMember(_Ast):
