@@ -162,6 +162,24 @@ class UndeclaredVariable(CompilerError):
 
     variable: str
 
+    @override
+    def report(self, source: str):
+        labels: list[Mark] = [
+            (["Not defined"], self.variable, (self.span.start_pos, self.span.end_pos)),
+        ]
+        message: Message = [
+            "Variable ",
+            (self.variable, self.variable),
+            " not defined in this scope",
+        ]
+        report_error(
+            source=source,
+            start_pos=self.span.start_pos,
+            message=message,
+            code=self.code,
+            labels=labels,
+        )
+
 
 @dataclass
 class UnexpectedType(CompilerError):
