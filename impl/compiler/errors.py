@@ -241,6 +241,37 @@ class DuplicatedCase(CompilerError):
 
     previous_case_span: Span
 
+    def report(self, source: str):
+        first_occurance_msg: Message = [
+            "This case is handled first here...",
+        ]
+        first_occurance_label: Mark = (
+            first_occurance_msg,
+            "color1",
+            (self.previous_case_span.start_pos, self.previous_case_span.end_pos),
+        )
+
+        second_occurance_msg: Message = [
+            "...and duplicated here",
+        ]
+        second_occurance_label: Mark = (
+            second_occurance_msg,
+            "color1",
+            (self.span.start_pos, self.span.end_pos),
+        )
+
+        labels: list[Mark] = [first_occurance_label, second_occurance_label]
+        message: Message = [
+            "Duplicated case found in match expression",
+        ]
+        report_error(
+            source=source,
+            start_pos=self.span.start_pos,
+            message=message,
+            code=self.code,
+            labels=labels,
+        )
+
 
 @dataclass
 class InexhaustiveMatch(CompilerError):
