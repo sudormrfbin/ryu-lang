@@ -6,7 +6,7 @@ from tests.utils import docstring_source
 
 
 @docstring_source
-def test_indexing_of_array(source: str):
+def test_indexing(source: str):
     """
     let x = [2,3]
     let b=x[1]
@@ -22,5 +22,3 @@ def test_indexing_of_array(source: str):
     env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("b") == 3
-
-    
