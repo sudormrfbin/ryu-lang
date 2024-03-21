@@ -124,6 +124,45 @@ class InvalidOperationError(CompilerError):
     operator: OperatorSpan
     operands: list[OperandSpan]
 
+    @override
+    def report(self, source: str):
+        labels: list[Mark] = []
+        for op in self.operands:
+            msg: Message = ["This is of type ", (op.type_.name, op.type_.name)]
+            labels.append(
+                (
+                    msg,
+                    op.type_.name,
+                    (op.span.start_pos, op.span.end_pos),
+                )
+            )
+
+        operator = self.operator
+        message: Message
+        match self.operands:
+            case [OperandSpan(type_=t)]:
+                message = [
+                    f"Invalid operation '{operator.name}' for type ",
+                    (t.name, t.name),
+                ]
+            case [OperandSpan(type_=t1), OperandSpan(type_=t2)]:
+                message = [
+                    f"Invalid operation '{operator.name}' for types ",
+                    (t1.name, t1.name),
+                    " and ",
+                    (t2.name, t2.name),
+                ]
+            case _:
+                raise InternalCompilerError("Unhandled case")
+
+        report_error(
+            source=source,
+            start_pos=self.span.start_pos,
+            message=message,
+            code=self.code,
+            labels=labels,
+        )
+
 
 @dataclass
 class UnknownVariable(CompilerError):
