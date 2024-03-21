@@ -76,6 +76,7 @@ enum_member: IDENTIFIER
 ?atom: bool_literal
 	 | int_literal
 	 | string_literal
+	 | array_literal
 	 | "(" start ")"
 	 | variable
 
@@ -90,3 +91,6 @@ STRING: "\"" /.*?/ "\""
 
 variable: IDENTIFIER
 
+array_literal: "[" array_elements "]"
+array_elements: (array_element ("," array_element)*)?
+array_element: expression

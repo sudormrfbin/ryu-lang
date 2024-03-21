@@ -486,6 +486,54 @@ class StructStmt(_Ast):
         # Nothing to execute since struct statements are simply declarations
         pass
 
+#array
+@dataclass
+class ArrayElement(_Ast):
+    element: _Expression
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = self.element.typecheck(env)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        return self.element.eval(env)
+
+@dataclass
+class ArrayElements(_Ast, ast_utils.AsList):
+    members: list[ArrayElement]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        if len(self.members)==0:
+            raise #TODO
+        check_type=self.members[0].typecheck(env)
+        for mem in self.members:
+            if mem.typecheck(env)!=check_type:
+                raise #TODO
+        self.type_ = check_type
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        result = []
+        for mem in self.members:
+            result.append(mem.eval(env))
+        return result
+
+@dataclass
+class ArrayLiteral(_Ast):
+    members: ArrayElements
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = self.members.typecheck(env)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        return self.members.eval(env)
 
 @dataclass
 class EnumMember(_Ast):
