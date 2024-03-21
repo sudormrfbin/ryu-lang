@@ -29,7 +29,7 @@ def run(source: str, type_env: TypeEnvironment, runtime_env: RuntimeEnvironment)
     try:
         return _run(source, type_env, runtime_env)
     except errors.InvalidOperationError as err:
-        handle_invalid_operation(err, source)
+        err.report(source)
     except errors.UnknownVariable as err:
         err.report(source)
     except errors.UndeclaredVariable as err:
@@ -55,42 +55,3 @@ def _run(
     ast.typecheck(type_env)
 
     return ast.eval(runtime_env)
-
-
-def handle_invalid_operation(err: InvalidOperationError, source: str):
-    labels: list[Mark] = []
-    for op in err.operands:
-        msg: Message = ["This is of type ", (op.type_.name, op.type_.name)]
-        labels.append(
-            (
-                msg,
-                op.type_.name,
-                (op.span.start_pos, op.span.end_pos),
-            )
-        )
-
-    operator = err.operator
-    message: Message
-    match err.operands:
-        case [OperandSpan(type_=t)]:
-            message = [
-                f"Invalid operation '{operator.name}' for type ",
-                (t.name, t.name),
-            ]
-        case [OperandSpan(type_=t1), OperandSpan(type_=t2)]:
-            message = [
-                f"Invalid operation '{operator.name}' for types ",
-                (t1.name, t1.name),
-                " and ",
-                (t2.name, t2.name),
-            ]
-        case _:
-            raise errors.InternalCompilerError("Unhandled case")
-
-    report_error(
-        source=source,
-        start_pos=err.span.start_pos,
-        message=message,
-        code=err.code,
-        labels=labels,
-    )
