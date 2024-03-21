@@ -184,6 +184,32 @@ class UnexpectedType(CompilerError):
     expected_type: langtypes.Type
     actual_type: langtypes.Type
 
+    @override
+    def report(self, source: str):
+        actual_type_msg: Message = [
+            "This is of type ",
+            (self.actual_type.name, self.actual_type.name),
+        ]
+        actual_type_label: Mark = (
+            actual_type_msg,
+            self.actual_type.name,
+            (self.span.start_pos, self.span.end_pos),
+        )
+        labels: list[Mark] = [actual_type_label]
+        message: Message = [
+            "Expected a type of ",
+            (self.expected_type.name, self.expected_type.name),
+            " but found ",
+            (self.actual_type.name, self.actual_type.name),
+        ]
+        report_error(
+            source=source,
+            start_pos=self.span.start_pos,
+            message=message,
+            code=self.code,
+            labels=labels,
+        )
+
 
 @dataclass
 class TypeMismatch(CompilerError):
