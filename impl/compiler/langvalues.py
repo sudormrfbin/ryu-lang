@@ -10,3 +10,7 @@ class EnumValue:
     @override
     def __str__(self) -> str:
         return f"{self.ty}::{self.variant}"
+
+    @override
+    def __hash__(self) -> int:
+        return hash(repr(self))
