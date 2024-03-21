@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Optional
+from typing_extensions import override
 
 if TYPE_CHECKING:
     from compiler.env import TypeEnvironment
@@ -58,6 +59,11 @@ class Struct(UserDefinedType):
 class Enum(UserDefinedType):
     enum_name: str
     members: list[str]
+
+    @property
+    @override
+    def name(self) -> str:
+        return self.enum_name
 
 
 BOOL = Bool()

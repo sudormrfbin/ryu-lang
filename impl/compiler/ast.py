@@ -10,7 +10,7 @@ from lark.tree import Meta as LarkMeta
 
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 
-from compiler import langtypes
+from compiler import langtypes, langvalues
 from compiler import errors
 
 _LispAst = list[Union[str, "_LispAst"]]
@@ -861,6 +861,24 @@ class StringLiteral(_Expression):
     @override
     def eval(self, env: RuntimeEnvironment):
         return self.value
+
+
+@dataclass
+class EnumLiteral(_Expression):
+    enum_type: Token
+    variant: Token
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = env.get(self.enum_type)
+        if self.type_ is None:
+            raise  # TODO
+            # raise errors.UndeclaredType()
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        return langvalues.EnumValue(ty=self.enum_type, variant=self.variant)
 
 
 @dataclass

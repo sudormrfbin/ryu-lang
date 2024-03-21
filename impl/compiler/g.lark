@@ -73,6 +73,7 @@ enum_member: IDENTIFIER
 ?atom: bool_literal
 	 | int_literal
 	 | string_literal
+	 | enum_literal
 	 | "(" start ")"
 	 | variable
 
@@ -84,6 +85,8 @@ int_literal: INT
 
 string_literal: STRING
 STRING: "\"" /.*?/ "\""
+
+enum_literal: IDENTIFIER "::" IDENTIFIER
 
 variable: IDENTIFIER
 
