@@ -776,7 +776,7 @@ def test_greaterthan_largernum_gt_smallernum():
     }
     ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
-        Comparison: Int,
+        Comparison: Bool,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -794,7 +794,7 @@ def test_greaterthan_smallernum_gt_largernum():
     }
     ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
-        Comparison: Int,
+        Comparison: Bool,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -815,7 +815,7 @@ def test_lesserthan_largernum_lt_smallernum():
     }
     ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
-        Comparison: Int,
+        Comparison: Bool,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -833,7 +833,7 @@ def test_lesserthan_smallernum_lt_largernum():
     }
     ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
-        Comparison: Int,
+        Comparison: Bool,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -851,7 +851,7 @@ def test_ltq_smallernum_ltq_largernum():
     }
     ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
-        Comparison: Int,
+        Comparison: Bool,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -869,7 +869,7 @@ def test_ltq_samenum_ltq_samenum():
     }
     ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
-        Comparison: Int,
+        Comparison: Bool,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -887,7 +887,7 @@ def test_ltq_largernum_ltq_smallernum():
     }
     ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
-        Comparison: Int,
+        Comparison: Bool,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -905,7 +905,7 @@ def test_gtq_smallernum_gtq_largernum():
     }
     ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
-        Comparison: Int,
+        Comparison: Bool,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -923,7 +923,7 @@ def test_gtq_samenum_gtq_samenum():
     }
     ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
-        Comparison: Int,
+        Comparison: Bool,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
@@ -941,7 +941,7 @@ def test_gtq_largernum_gtq_smallernum():
     }
     ast.typecheck(EMPTY_TYPE_ENV)
     assert ast.to_type_dict() == {
-        Comparison: Int,
+        Comparison: Bool,
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
