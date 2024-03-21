@@ -9,6 +9,8 @@ from lark.lexer import Token
 
 from compiler import langtypes
 
+# error_report submodule is generated dynamically by pyo3 on the rust
+# side. Hence pyright cannot detect the source file.
 from error_report.error_report import (  # pyright: ignore [reportMissingModuleSource]
     report_error,
 )
@@ -102,7 +104,7 @@ class CompilerError(Exception):
 
     @abstractmethod
     def report(self, source: str):
-        pass
+        print(self)
 
 
 @dataclass
