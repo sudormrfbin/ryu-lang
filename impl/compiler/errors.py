@@ -1,4 +1,4 @@
-from typing import ClassVar
+from typing import ClassVar, Container
 import dataclasses
 from dataclasses import dataclass
 from typing_extensions import override
@@ -240,4 +240,4 @@ class InexhaustiveMatch(CompilerError):
 
     expected_type: langtypes.Type
     expected_type_span: Span
-    remaining_values: set[bool]
+    remaining_values: Container[bool | str]

@@ -41,7 +41,7 @@ else_if_stmt: "elif" expression "{" statement_block "}"
 match_stmt: "match" expression "{" case_ladder "}"
 case_ladder: (case_stmt | _NL)+
 case_stmt: "case" match_pattern "{" statement_block "}"
-?match_pattern: bool_literal
+?match_pattern: bool_literal | enum_literal
 
 while_stmt: "while" expression "{" statement_block "}"
 
@@ -77,6 +77,7 @@ enum_member: IDENTIFIER
 	 | int_literal
 	 | string_literal
 	 | array_literal
+	 | enum_literal
 	 | "(" start ")"
 	 | variable
 
@@ -88,6 +89,8 @@ int_literal: INT
 
 string_literal: STRING
 STRING: "\"" /.*?/ "\""
+
+enum_literal: IDENTIFIER "::" IDENTIFIER
 
 variable: IDENTIFIER
 
