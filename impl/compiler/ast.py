@@ -656,7 +656,7 @@ class Comparison(_Expression):
 
         match left_type, self.op, right_type:
             case langtypes.INT, ">" | "<" | "<=" | ">=", langtypes.INT:
-                self.type_ = langtypes.INT
+                self.type_ = langtypes.BOOL
             case _:
                 op_span = errors.Span.from_token(self.op)
                 raise errors.InvalidOperationError(
