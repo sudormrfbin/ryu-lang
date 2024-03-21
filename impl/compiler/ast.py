@@ -534,7 +534,67 @@ class ArrayLiteral(_Ast):
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         return self.members.eval(env)
+    
+@dataclass
+class Argument(_Ast):
+    name: Token
+    arg_type: Token
 
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = langtypes.Type.from_str(self.arg_type, env)
+        if self.type_ is None:
+            raise  # TODO
+            # raise errors.UnassignableType()
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        pass
+
+@dataclass
+class Arguments(_Ast, ast_utils.AsList):
+    args: list[Argument]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        for arg in self.args:
+            arg.typecheck(env)
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        pass
+    
+    def args_as_list(self) -> list[str]:
+        return [arg.name for arg in self.args]
+
+@dataclass
+class FunctionDefinition(_Ast):
+    name: Token
+    args: Arguments
+    return_type: Token
+    body: StatementBlock
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        if env.get(self.name):
+            raise #TODO
+        for arg in self.args.args:
+            arg.typecheck(env)
+        ret_type = langtypes.Type.from_str(self.return_type, env)
+        if ret_type is None:
+            raise  # TODO
+        self.type_ = langtypes.Function(
+            function_name=self.name,
+            arguments=self.args.args_as_list(),
+            return_type=self.return_type,
+        )
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        pass #TODO
+        
 @dataclass
 class EnumMember(_Ast):
     name: Token

@@ -63,6 +63,12 @@ class Enum(UserDefinedType):
 class Array(PrimitiveType):
     ty: Type
 
+@dataclass
+class Function(UserDefinedType):
+    function_name:str
+    arguments: list[tuple[str, Type]]
+    return_type: Type
+
 BOOL = Bool()
 INT = Int()
 STRING = String()

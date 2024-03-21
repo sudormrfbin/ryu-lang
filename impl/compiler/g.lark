@@ -25,6 +25,7 @@ statement_block: statement_list
 		  | struct_stmt
 		  | enum_stmt
 		  | print_stmt
+		  | function_definition	
 
 variable_declaration: "let" IDENTIFIER "=" expression
 
@@ -52,6 +53,10 @@ struct_member: IDENTIFIER ":" IDENTIFIER
 enum_stmt: "enum" IDENTIFIER "{" enum_members "}"
 enum_members: (enum_member | _NL)+
 enum_member: IDENTIFIER
+
+function_definition: "fn" IDENTIFIER "(" [arguments] ")" "->" IDENTIFIER "{" statement_block "}"
+arguments: (argument ("," argument)*)?
+argument: IDENTIFIER ":" IDENTIFIER
 
 ?expression: equality
 
@@ -92,5 +97,5 @@ STRING: "\"" /.*?/ "\""
 variable: IDENTIFIER
 
 array_literal: "[" array_elements "]"
-array_elements: (array_element ("," array_element)*)?
+array_elements: (array_element(","array_element)*)?
 array_element: expression
