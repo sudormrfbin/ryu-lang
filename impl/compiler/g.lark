@@ -71,14 +71,19 @@ enum_member: IDENTIFIER
 	    | unary_op ("*" | "/" | "%") factor
 
 ?!unary_op: ("+" | "-" | "!") unary_op
-		  | atom
+		  | indexing
+
+?indexing: atom "[" POS_DIGIT "]"
+		|atom
+
+POS_DIGIT: /[0-9]+/
 
 ?atom: bool_literal
 	 | int_literal
 	 | string_literal
 	 | array_literal
 	 | enum_literal
-	 | "(" start ")"
+	 | "(" expression ")"
 	 | variable
 
 bool_literal: TRUE | FALSE
