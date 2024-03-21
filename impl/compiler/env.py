@@ -1,4 +1,5 @@
-from typing import Any, Optional, Self
+from typing import Any, Optional
+from typing_extensions import Self
 
 from compiler.errors import InternalCompilerError
 from compiler import langtypes
