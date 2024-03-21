@@ -512,7 +512,7 @@ class ArrayElements(_Ast, ast_utils.AsList):
         for mem in self.members:
             if mem.typecheck(env)!=check_type:
                 raise #TODO
-        self.type_ = check_type
+        self.type_ = langtypes.Array(check_type)
         return self.type_
 
     @override
