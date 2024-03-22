@@ -25,6 +25,10 @@ class Type:
         return None
 
 
+class Placeholder(Type):
+    pass
+
+
 class PrimitiveType(Type):
     pass
 
@@ -71,10 +75,18 @@ class Array(PrimitiveType):
     ty: Type
 
 
+@dataclass
+class Function(PrimitiveType):
+    function_name: str
+    arguments: list[Type]
+    return_type: Type
+
+
 BOOL = Bool()
 INT = Int()
 STRING = String()
 BLOCK = Block()
+PLACEHOLDER = Placeholder()
 
 
 PRIMITIVE_TYPES: dict[str, Type] = {

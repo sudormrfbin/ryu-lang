@@ -522,7 +522,8 @@ class StructStmt(_Ast):
         # Nothing to execute since struct statements are simply declarations
         pass
 
-#array
+
+# array
 @dataclass
 class ArrayElement(_Ast):
     element: _Expression
@@ -536,18 +537,19 @@ class ArrayElement(_Ast):
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         return self.element.eval(env)
 
+
 @dataclass
 class ArrayElements(_Ast, ast_utils.AsList):
     members: list[ArrayElement]
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        if len(self.members)==0:
-            raise #TODO
-        check_type=self.members[0].typecheck(env)
+        if len(self.members) == 0:
+            raise  # TODO
+        check_type = self.members[0].typecheck(env)
         for mem in self.members:
-            if mem.typecheck(env)!=check_type:
-                raise #TODO
+            if mem.typecheck(env) != check_type:
+                raise  # TODO
         self.type_ = langtypes.Array(check_type)
         return self.type_
 
@@ -557,6 +559,7 @@ class ArrayElements(_Ast, ast_utils.AsList):
         for mem in self.members:
             result.append(mem.eval(env))
         return result
+
 
 @dataclass
 class ArrayLiteral(_Ast):
@@ -570,7 +573,8 @@ class ArrayLiteral(_Ast):
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         return self.members.eval(env)
-    
+
+
 @dataclass
 class Indexing(_Ast):
     element: _Expression
@@ -580,38 +584,43 @@ class Indexing(_Ast):
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type_ = self.element.typecheck(env)
         if not isinstance(self.type_, langtypes.Array):
-            raise #TODO
+            raise  # TODO
         return self.type_
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         element_value = self.element.eval(env)
-        result= element_value[self.index]   #TODO : handling out of index run time error
+        result = element_value[
+            self.index
+        ]  # TODO : handling out of index run time error
         return result
+
 
 @dataclass
 class IndexAssignment(_Ast):
     arrayname: "Variable"
     index: int
     value: _Expression
+
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type_ = self.arrayname.typecheck(env)
         value_type = self.value.typecheck(env)
         if not isinstance(self.type_, langtypes.Array):
-            raise #TODO
-        
-        if  self.type_.ty != value_type:
-            raise #TODO
+            raise  # TODO
+
+        if self.type_.ty != value_type:
+            raise  # TODO
         return self.type_
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         array_name = self.arrayname.eval(env)
-        array_value= self.value.eval(env)
-        array_name[self.index] = array_value   
-        pass 
-    
+        array_value = self.value.eval(env)
+        array_name[self.index] = array_value
+        pass
+
+
 @dataclass
 class EnumMember(_Ast):
     name: Token
@@ -675,6 +684,79 @@ class EnumStmt(_Ast):
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         # Nothing to execute since enum statements are simply declarations
+        pass
+
+
+@dataclass
+class FunctionArg(_Ast):
+    name: Token
+    arg_type: Token
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = langtypes.Type.from_str(self.arg_type, env)
+        if self.type_ is None:
+            raise  # TODO
+            # raise errors.UnassignableType()
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        pass
+
+
+@dataclass
+class FunctionArgs(_Ast, ast_utils.AsList):
+    args: list[FunctionArg]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        for arg in self.args:
+            arg.typecheck(env)
+
+        self.type_ = langtypes.PLACEHOLDER
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        pass
+
+    def arg_types_as_list(self) -> list[langtypes.Type]:
+        result: list[langtypes.Type] = []
+        for arg in self.args:
+            assert arg.type_ is not None
+            result.append(arg.type_)
+        return result
+
+
+@dataclass
+class FunctionDefinition(_Ast):
+    name: Token
+    args: FunctionArgs
+    return_type: Token
+    body: StatementBlock
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.args.typecheck(env)
+        ret_type = langtypes.Type.from_str(self.return_type, env)
+        if ret_type is None:
+            raise  # TODO
+
+        # TODO: ensure return statements have same type as annotated type
+        self.body.typecheck(env)
+
+        self.type_ = langtypes.Function(
+            function_name=self.name,
+            arguments=self.args.arg_types_as_list(),
+            return_type=ret_type,
+        )
+        env.define(self.name, self.type_)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        # Nothing to execute since this is simply a declaration
         pass
 
 
