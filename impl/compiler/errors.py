@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import TYPE_CHECKING, ClassVar, Container
+from typing import ClassVar, Container
 import dataclasses
 from dataclasses import dataclass
 from typing_extensions import override
@@ -10,19 +10,7 @@ from lark.lexer import Token
 from compiler import langtypes
 from compiler import report
 
-from compiler.report import Text, Label
-
-# error_report submodule is generated dynamically by pyo3 on the rust
-# side. Hence pyright cannot detect the source file.
-from error_report.error_report import (  # pyright: ignore [reportMissingModuleSource]
-    report_error,
-)
-
-if TYPE_CHECKING:
-    from error_report.error_report import (  # pyright: ignore [reportMissingModuleSource]
-        Mark,
-        Message,
-    )
+from compiler.report import Labels, Text, Label
 
 LineCol = tuple[int, int]
 
@@ -131,42 +119,35 @@ class InvalidOperationError(CompilerError):
 
     @override
     def report(self, source: str):
-        labels: list[Mark] = []
-        for op in self.operands:
-            msg: Message = ["This is of type ", (op.type_.name, op.type_.name)]
-            labels.append(
-                (
-                    msg,
-                    op.type_.name,
-                    (op.span.start_pos, op.span.end_pos),
-                )
-            )
-
         operator = self.operator
-        message: Message
+        description: Text
         match self.operands:
             case [OperandSpan(type_=t)]:
-                message = [
+                description = Text(
                     f"Invalid operation '{operator.name}' for type ",
-                    (t.name, t.name),
-                ]
+                    Text.colored(t.name),
+                )
             case [OperandSpan(type_=t1), OperandSpan(type_=t2)]:
-                message = [
+                description = Text(
                     f"Invalid operation '{operator.name}' for types ",
-                    (t1.name, t1.name),
+                    Text.colored(t1.name),
                     " and ",
-                    (t2.name, t2.name),
-                ]
+                    Text.colored(t2.name),
+                )
             case _:
                 raise InternalCompilerError("Unhandled case")
 
-        report_error(
-            source=source,
-            start_pos=self.span.start_pos,
-            message=message,
-            code=self.code,
-            labels=labels,
-        )
+        labels: Labels = []
+        for op in self.operands:
+            labels.append(
+                Label.colored_text(
+                    Text("This is of type ", Text.colored(op.type_.name)),
+                    color_id=op.type_.name,
+                    span=op.span,
+                )
+            )
+
+        self._report(source, description, labels)
 
 
 @dataclass
@@ -261,29 +242,22 @@ class UnexpectedType(CompilerError):
 
     @override
     def report(self, source: str):
-        actual_type_msg: Message = [
-            "This is of type ",
-            (self.actual_type.name, self.actual_type.name),
-        ]
-        actual_type_label: Mark = (
-            actual_type_msg,
-            self.actual_type.name,
-            (self.span.start_pos, self.span.end_pos),
-        )
-        labels: list[Mark] = [actual_type_label]
-        message: Message = [
+        description = Text(
             "Expected a type of ",
-            (self.expected_type.name, self.expected_type.name),
+            Text.colored(self.expected_type.name),
             " but found ",
-            (self.actual_type.name, self.actual_type.name),
-        ]
-        report_error(
-            source=source,
-            start_pos=self.span.start_pos,
-            message=message,
-            code=self.code,
-            labels=labels,
+            Text.colored(self.actual_type.name),
         )
+
+        labels = [
+            Label.colored_text(
+                Text("This is of type ", Text.colored(self.actual_type.name)),
+                color_id=self.actual_type.name,
+                span=self.span,
+            )
+        ]
+
+        self._report(source, description, labels)
 
 
 @dataclass
@@ -317,43 +291,37 @@ class TypeMismatch(CompilerError):
 
     @override
     def report(self, source: str):
-        expected_type_msg: Message = [
-            "Since this is of type ",
-            (self.expected_type.name, self.expected_type.name),
-            "...",
-        ]
-        expected_type_label: Mark = (
-            expected_type_msg,
-            self.expected_type.name,
-            (self.expected_type_span.start_pos, self.expected_type_span.end_pos),
-        )
-
-        actual_type_msg: Message = [
-            "...expected this to be ",
-            (self.expected_type.name, self.expected_type.name),
-            " too, but found ",
-            (self.actual_type.name, self.actual_type.name),
-        ]
-        actual_type_label: Mark = (
-            actual_type_msg,
-            self.actual_type.name,
-            (self.span.start_pos, self.span.end_pos),
-        )
-
-        labels: list[Mark] = [expected_type_label, actual_type_label]
-        message: Message = [
+        description = Text(
             "Expected a type of ",
-            (self.expected_type.name, self.expected_type.name),
+            Text.colored(self.expected_type.name),
             " but found ",
-            (self.actual_type.name, self.actual_type.name),
-        ]
-        report_error(
-            source=source,
-            start_pos=self.span.start_pos,
-            message=message,
-            code=self.code,
-            labels=labels,
+            Text.colored(self.actual_type.name),
         )
+
+        expected_type_label = Label.colored_text(
+            Text(
+                "Since this is of type ",
+                Text.colored(self.expected_type.name),
+                "...",
+            ),
+            color_id=self.expected_type.name,
+            span=self.expected_type_span,
+        )
+
+        actual_type_label = Label.colored_text(
+            Text(
+                "...expected this to be ",
+                Text.colored(self.expected_type.name),
+                " too, but found ",
+                Text.colored(self.actual_type.name),
+            ),
+            color_id=self.actual_type.name,
+            span=self.span,
+        )
+
+        labels = [expected_type_label, actual_type_label]
+
+        self._report(source, description, labels)
 
 
 @dataclass
@@ -384,35 +352,23 @@ class DuplicatedCase(CompilerError):
 
     @override
     def report(self, source: str):
-        first_occurance_msg: Message = [
-            "This case is handled first here...",
-        ]
-        first_occurance_label: Mark = (
-            first_occurance_msg,
-            "color1",
-            (self.previous_case_span.start_pos, self.previous_case_span.end_pos),
+        description = Text("Duplicated case found in match expression")
+
+        first_occurance_label = Label.colored_text(
+            Text("This case is handled first here..."),
+            color_id="color1",
+            span=self.previous_case_span,
         )
 
-        second_occurance_msg: Message = [
-            "...and duplicated here",
-        ]
-        second_occurance_label: Mark = (
-            second_occurance_msg,
-            "color1",
-            (self.span.start_pos, self.span.end_pos),
+        second_occurance_label = Label.colored_text(
+            Text("...and duplicated here"),
+            color_id="color1",
+            span=self.span,
         )
 
-        labels: list[Mark] = [first_occurance_label, second_occurance_label]
-        message: Message = [
-            "Duplicated case found in match expression",
-        ]
-        report_error(
-            source=source,
-            start_pos=self.span.start_pos,
-            message=message,
-            code=self.code,
-            labels=labels,
-        )
+        labels = [first_occurance_label, second_occurance_label]
+
+        self._report(source, description, labels)
 
 
 @dataclass
@@ -444,36 +400,31 @@ class InexhaustiveMatch(CompilerError):
 
     @override
     def report(self, source: str):
-        expected_type_msg: Message = [
-            "This is of type ",
-            (self.expected_type.name, self.expected_type.name),
-        ]
-        expected_type_label: Mark = (
-            expected_type_msg,
-            self.expected_type.name,
-            (self.expected_type_span.start_pos, self.expected_type_span.end_pos),
+        description = Text(
+            "Match does not cover all cases for type ",
+            Text.colored(self.expected_type.name),
+        )
+
+        expected_type_label = Label.colored_text(
+            Text(
+                "This is of type ",
+                Text.colored(self.expected_type.name),
+            ),
+            color_id=self.expected_type.name,
+            span=self.expected_type_span,
         )
 
         remaining = ", ".join((f"`{v}`" for v in self.remaining_values))
-        add_block_msg: Message = [
+        add_block_msg = Text(
             f"Add case block for value {remaining}"
             if len(self.remaining_values) == 1
             else f"Add case blocks for value {remaining}"
-        ]
-        add_block_label: Mark = (
+        )
+        add_block_label = Label.text(
             add_block_msg,
-            (self.span.start_pos, self.span.end_pos),
+            span=self.span,
         )
 
-        labels: list[Mark] = [expected_type_label, add_block_label]
-        message: Message = [
-            "Match does not cover all cases for type ",
-            (self.expected_type.name, self.expected_type.name),
-        ]
-        report_error(
-            source=source,
-            start_pos=self.span.start_pos,
-            message=message,
-            code=self.code,
-            labels=labels,
-        )
+        labels = [expected_type_label, add_block_label]
+
+        self._report(source, description, labels)
