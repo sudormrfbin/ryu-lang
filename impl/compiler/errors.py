@@ -8,6 +8,7 @@ from lark.tree import Meta
 from lark.lexer import Token
 
 from compiler import langtypes
+from compiler import report
 
 # error_report submodule is generated dynamically by pyo3 on the rust
 # side. Hence pyright cannot detect the source file.
@@ -93,14 +94,14 @@ class CompilerError(Exception):
     def __str__(self) -> str:
         return f"{type(self).__name__}: {self.message}"
 
-    # def _report(self, source: str, message: report.Message, labels: report.Labels):
-    #     report.report_error(
-    #         source=source,
-    #         start_pos=self.span.start_pos,
-    #         message=message,
-    #         code=self.code,
-    #         labels=labels,
-    #     )
+    def _report(self, source: str, description: report.Text, labels: report.Labels):
+        report.report_error(
+            source=source,
+            start_pos=self.span.start_pos,
+            description=description,
+            code=self.code,
+            labels=labels,
+        )
 
     @abstractmethod
     def report(self, source: str):
@@ -183,21 +184,20 @@ class UnknownVariable(CompilerError):
 
     @override
     def report(self, source: str):
-        labels: list[Mark] = [
-            (["Not defined"], self.variable, (self.span.start_pos, self.span.end_pos)),
-        ]
-        message: Message = [
+        from compiler.report import Text, Label
+
+        description = Text(
             "Variable ",
-            (self.variable, self.variable),
+            Text.colored(self.variable),
             " not defined in this scope",
-        ]
-        report_error(
-            source=source,
-            start_pos=self.span.start_pos,
-            message=message,
-            code=self.code,
-            labels=labels,
         )
+        labels = [
+            Label.colored_text(
+                Text("Not defined"), color_id=self.variable, span=self.span
+            )
+        ]
+
+        self._report(source, description, labels)
 
 
 @dataclass
