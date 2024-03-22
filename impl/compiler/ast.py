@@ -10,7 +10,7 @@ from lark.tree import Meta as LarkMeta
 
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 
-from compiler import langtypes, langvalues
+from compiler import langtypes, langvalues, runtime
 from compiler import errors
 
 _LispAst = list[Union[str, "_LispAst"]]
@@ -108,11 +108,10 @@ class StatementList(_Ast, ast_utils.AsList):
     stmts: list[_Statement]
 
     @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        for child in self.stmts:
-            child.typecheck(env)
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Block:
+        types = [stmt.typecheck(env) for stmt in self.stmts]
 
-        self.type_ = langtypes.BLOCK
+        self.type_ = langtypes.resolve_blocks_type(types)
         return self.type_
 
     @override
@@ -124,7 +123,7 @@ class StatementList(_Ast, ast_utils.AsList):
 @dataclass
 class StatementBlock(StatementList):
     @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Block:
         child_env = TypeEnvironment(enclosing=env)
         return super().typecheck(child_env)
 
@@ -204,7 +203,7 @@ class IfStmt(_Statement):
     true_block: StatementBlock
 
     @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Block:
         expr_type = self.cond.typecheck(env)
         if expr_type != langtypes.BOOL:
             raise errors.UnexpectedType(
@@ -214,9 +213,7 @@ class IfStmt(_Statement):
                 actual_type=expr_type,
             )
 
-        self.true_block.typecheck(env)
-
-        self.type_ = langtypes.BLOCK
+        self.type_ = self.true_block.typecheck(env)
         return self.type_
 
     @override
@@ -236,13 +233,15 @@ class IfChain(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.if_stmt.typecheck(env)
-        if self.else_block:
-            self.else_block.typecheck(env)
-        if self.else_if_ladder:
-            self.else_if_ladder.typecheck(env)
+        types: list[langtypes.Type] = []
 
-        self.type_ = langtypes.BLOCK
+        types.append(self.if_stmt.typecheck(env))
+        if self.else_block:
+            types.append(self.else_block.typecheck(env))
+        if self.else_if_ladder:
+            types.append(self.else_if_ladder.typecheck(env))
+
+        self.type_ = langtypes.resolve_blocks_type(types)
         return self.type_
 
     @override
@@ -271,10 +270,8 @@ class ElseIfLadder(_Statement, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        for block in self.blocks:
-            block.typecheck(env)
-
-        self.type_ = langtypes.BLOCK
+        types = [block.typecheck(env) for block in self.blocks]
+        self.type_ = langtypes.resolve_blocks_type(types)
         return self.type_
 
     @override
@@ -310,10 +307,13 @@ class CaseLadder(_Ast, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        types: list[langtypes.Type] = []
         for case_ in self.cases:
             case_.typecheck(env)
+            assert case_.block.type_ is not None
+            types.append(case_.block.type_)
 
-        self.type_ = langtypes.BLOCK
+        self.type_ = langtypes.resolve_blocks_type(types)
         return self.type_
 
     @override
@@ -382,7 +382,7 @@ class MatchStmt(_Statement):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         expr_type = self.expr.typecheck(env)
-        self.cases.typecheck(env)
+        self.type_ = self.cases.typecheck(env)
 
         for case_ in self.cases.cases:
             case_type = case_.pattern.type_
@@ -410,7 +410,6 @@ class MatchStmt(_Statement):
                     "TODO: unsupported type for match expression"
                 )
 
-        self.type_ = langtypes.BLOCK
         return self.type_
 
     @override
@@ -443,9 +442,7 @@ class WhileStmt(_Statement):
                 actual_type=expr_type,
             )
 
-        self.true_block.typecheck(env)
-
-        self.type_ = langtypes.BLOCK
+        self.type_ = self.true_block.typecheck(env)
         return self.type_
 
     @override
@@ -732,23 +729,35 @@ class FunctionArgs(_Ast, ast_utils.AsList):
 @dataclass
 class FunctionDefinition(_Ast):
     name: Token
-    args: FunctionArgs
+    args: Optional[FunctionArgs]
     return_type: Token
     body: StatementBlock
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.args.typecheck(env)
         ret_type = langtypes.Type.from_str(self.return_type, env)
         if ret_type is None:
             raise  # TODO
 
-        # TODO: ensure return statements have same type as annotated type
-        self.body.typecheck(env)
+        if self.args:
+            self.args.typecheck(env)
+            child_env = TypeEnvironment(enclosing=env)
+            for arg in self.args.args:
+                assert arg.type_ is not None
+                child_env.define(arg.name, arg.type_)
+            body_block_type = self.body.typecheck(child_env)
+        else:
+            body_block_type = self.body.typecheck(env)
+
+        if not isinstance(body_block_type, langtypes.ReturnBlock):
+            raise  # TODO
+
+        if body_block_type.return_type != ret_type:
+            raise  # TODO
 
         self.type_ = langtypes.Function(
             function_name=self.name,
-            arguments=self.args.arg_types_as_list(),
+            arguments=self.args.arg_types_as_list() if self.args else [],
             return_type=ret_type,
         )
         env.define(self.name, self.type_)
@@ -758,6 +767,23 @@ class FunctionDefinition(_Ast):
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         # Nothing to execute since this is simply a declaration
         pass
+
+
+@dataclass
+class ReturnStmt(_Statement):
+    return_value: _Expression
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        return_type = self.return_value.typecheck(env)
+
+        self.type_ = langtypes.ReturnBlock(return_type, self.span)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        value = self.return_value.eval(env)
+        raise runtime.FunctionReturn(value)
 
 
 @dataclass

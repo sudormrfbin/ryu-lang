@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Any, Optional, Sequence
 from typing_extensions import override
+
 
 if TYPE_CHECKING:
     from compiler.env import TypeEnvironment
+    from compiler.errors import Span
 
 
 class Type:
@@ -54,6 +56,12 @@ class Block(Type):
 
 
 @dataclass
+class ReturnBlock(Block):
+    return_type: Type
+    return_stmt_span: Span
+
+
+@dataclass
 class Struct(UserDefinedType):
     struct_name: str
     members: dict[str, Type]
@@ -94,3 +102,18 @@ PRIMITIVE_TYPES: dict[str, Type] = {
     "int": INT,
     "string": STRING,
 }
+
+
+def resolve_blocks_type(types: Sequence[Type]) -> Block:
+    resolved = BLOCK
+    for ty in types:
+        match (resolved, ty):
+            case (Block(), ReturnBlock()):
+                resolved = ty
+            case (ReturnBlock(), ReturnBlock()):
+                if resolved.return_type != ty.return_type:
+                    raise  # TODO different return types
+            case _:
+                pass
+
+    return resolved
