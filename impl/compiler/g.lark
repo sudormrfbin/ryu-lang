@@ -22,6 +22,7 @@ statement_block: statement_list
 		  | if_chain
 		  | match_stmt
 		  | while_stmt
+		  | for_stmt
 		  | struct_stmt
 		  | enum_stmt
 		  | print_stmt
@@ -44,6 +45,8 @@ case_stmt: "case" match_pattern "{" statement_block "}"
 ?match_pattern: bool_literal | enum_literal
 
 while_stmt: "while" expression "{" statement_block "}"
+
+for_stmt: "for" IDENTIFIER "in" expression "{" statement_block "}"
 
 struct_stmt: "struct" IDENTIFIER "{" struct_members "}"
 struct_members: (struct_member | _NL)+
