@@ -1,7 +1,7 @@
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import ArrayElement, ArrayElements, ArrayLiteral, Assignment, IntLiteral, StatementList, Term, VariableDeclaration
-from compiler.langtypes import INT, Array, Block, Int
+from compiler.ast import ArrayElement, ArrayElements, ArrayLiteral, IntLiteral, Term, VariableDeclaration
+from compiler.langtypes import INT, Array, Int
 from tests.utils import docstring_source
 
 

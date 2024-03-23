@@ -1,8 +1,8 @@
 from lark import Token
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import Assignment, IntLiteral, PrintStmt, StatementList, Term, Variable, VariableDeclaration,StringLiteral
-from compiler.langtypes import INT, Block, Int, String
+from compiler.ast import  IntLiteral, PrintStmt, StatementList, Term, Variable, VariableDeclaration,StringLiteral
+from compiler.langtypes import Block, Int, String
 from tests.utils import docstring_source
 
 
