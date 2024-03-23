@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Optional, Sequence
+from typing import TYPE_CHECKING, Optional, Sequence
 from typing_extensions import override
 
 
@@ -93,6 +93,9 @@ class Function(PrimitiveType):
 @dataclass
 class Params(PrimitiveType):
     types: list[Type]
+
+    def __len__(self) -> int:
+        return len(self.types)
 
 
 BOOL = Bool()

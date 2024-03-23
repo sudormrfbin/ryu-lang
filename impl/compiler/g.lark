@@ -83,11 +83,14 @@ return_stmt: "return" expression
 ?!unary_op: ("+" | "-" | "!") unary_op
 		  | indexing
 
-?indexing: atom "[" POS_DIGIT "]"
-		|atom
-
+?indexing: function_call "[" POS_DIGIT "]"
+		| function_call
 
 POS_DIGIT: /[0-9]+/
+
+?function_call: atom "(" [function_args] ")"
+	   | atom
+function_args: expression ("," expression)*
 
 ?atom: bool_literal
 	 | int_literal

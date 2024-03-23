@@ -716,6 +716,9 @@ class FunctionParams(_Ast, ast_utils.AsList):
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         pass
 
+    def param_names(self) -> list[str]:
+        return [param.name for param in self.args]
+
 
 @dataclass
 class FunctionDefinition(_Ast):
@@ -757,8 +760,8 @@ class FunctionDefinition(_Ast):
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        # Nothing to execute since this is simply a declaration
-        pass
+        param_names = self.args.param_names() if self.args else []
+        env.define(self.name, langvalues.RyuFunction(param_names, self.body))
 
 
 @dataclass
@@ -776,6 +779,58 @@ class ReturnStmt(_Statement):
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         value = self.return_value.eval(env)
         raise runtime.FunctionReturn(value)
+
+
+@dataclass
+class FunctionArgs(_Ast, ast_utils.AsList):
+    args: list[_Expression]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Params:
+        types = [arg.typecheck(env) for arg in self.args]
+        self.type_ = langtypes.Params(types)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> list[EvalResult]:
+        return [arg.eval(env) for arg in self.args]
+
+
+@dataclass
+class FunctionCall(_Expression):
+    callee: _Expression
+    args: Optional[FunctionArgs]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        callee_type = self.callee.typecheck(env)
+        if not isinstance(callee_type, langtypes.Function):
+            raise  # TODO
+
+        if self.args:
+            args_type = self.args.typecheck(env)
+        else:
+            args_type = langtypes.Params([])
+
+        arg_len, param_len = len(args_type), len(callee_type.arguments)
+        if arg_len < param_len:
+            raise  # TODO insufficient args
+        if arg_len > param_len:
+            raise  # TODO too many args
+        if args_type != callee_type.arguments:
+            raise  # TODO type mismatch
+
+        self.type_ = callee_type.return_type
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        fn = self.callee.eval(env)
+        assert isinstance(fn, langvalues.Function)
+
+        args = self.args.eval(env) if self.args else []
+
+        return fn.call(args, env)
 
 
 @dataclass
