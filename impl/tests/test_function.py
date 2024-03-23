@@ -18,7 +18,7 @@ from compiler.langtypes import (
     Bool,
     Function,
     Int,
-    Placeholder,
+    Params,
     ReturnBlock,
 )
 from tests.utils import docstring_source
@@ -65,7 +65,7 @@ def test_function_def_zero_args(source: str):
     }
 
     assert type_env.get("one") == Function(
-        function_name="one", arguments=[], return_type=INT
+        function_name="one", arguments=Params([]), return_type=INT
     )
 
 
@@ -104,7 +104,7 @@ def test_function_def_one_arg(source: str):
     assert ast.to_type_dict() == {
         FunctionDefinition: Function,
         "args": {
-            FunctionParams: Placeholder,
+            FunctionParams: Params,
             "args": [{FunctionParam: Int}],
         },
         "body": {
@@ -121,7 +121,7 @@ def test_function_def_one_arg(source: str):
     }
 
     assert type_env.get("identity") == Function(
-        function_name="identity", arguments=[INT], return_type=INT
+        function_name="identity", arguments=Params([INT]), return_type=INT
     )
 
 
@@ -171,7 +171,7 @@ def test_function_def_multiple_args(source: str):
     assert ast.to_type_dict() == {
         FunctionDefinition: Function,
         "args": {
-            FunctionParams: Placeholder,
+            FunctionParams: Params,
             "args": [{FunctionParam: Int}, {FunctionParam: Int}],
         },
         "body": {
@@ -190,7 +190,7 @@ def test_function_def_multiple_args(source: str):
     }
 
     assert type_env.get("sum") == Function(
-        function_name="sum", arguments=[INT, INT], return_type=INT
+        function_name="sum", arguments=Params([INT, INT]), return_type=INT
     )
 
 
@@ -274,7 +274,7 @@ def test_function_def_multiple_returns(source: str):
     assert ast.to_type_dict() == {
         FunctionDefinition: Function,
         "args": {
-            FunctionParams: Placeholder,
+            FunctionParams: Params,
             "args": [{FunctionParam: Int}, {FunctionParam: Int}],
         },
         "body": {
@@ -311,5 +311,5 @@ def test_function_def_multiple_returns(source: str):
     }
 
     assert type_env.get("max") == Function(
-        function_name="max", arguments=[INT, INT], return_type=INT
+        function_name="max", arguments=Params([INT, INT]), return_type=INT
     )

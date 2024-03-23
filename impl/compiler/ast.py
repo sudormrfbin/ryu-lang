@@ -707,23 +707,14 @@ class FunctionParams(_Ast, ast_utils.AsList):
     args: list[FunctionParam]
 
     @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        for arg in self.args:
-            arg.typecheck(env)
-
-        self.type_ = langtypes.PLACEHOLDER
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Params:
+        types = [arg.typecheck(env) for arg in self.args]
+        self.type_ = langtypes.Params(types)
         return self.type_
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         pass
-
-    def arg_types_as_list(self) -> list[langtypes.Type]:
-        result: list[langtypes.Type] = []
-        for arg in self.args:
-            assert arg.type_ is not None
-            result.append(arg.type_)
-        return result
 
 
 @dataclass
@@ -740,13 +731,14 @@ class FunctionDefinition(_Ast):
             raise  # TODO
 
         if self.args:
-            self.args.typecheck(env)
+            params = self.args.typecheck(env)
             child_env = TypeEnvironment(enclosing=env)
             for arg in self.args.args:
                 assert arg.type_ is not None
                 child_env.define(arg.name, arg.type_)
             body_block_type = self.body.typecheck(child_env)
         else:
+            params = langtypes.Params([])
             body_block_type = self.body.typecheck(env)
 
         if not isinstance(body_block_type, langtypes.ReturnBlock):
@@ -757,7 +749,7 @@ class FunctionDefinition(_Ast):
 
         self.type_ = langtypes.Function(
             function_name=self.name,
-            arguments=self.args.arg_types_as_list() if self.args else [],
+            arguments=params,
             return_type=ret_type,
         )
         env.define(self.name, self.type_)

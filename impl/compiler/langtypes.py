@@ -86,8 +86,13 @@ class Array(PrimitiveType):
 @dataclass
 class Function(PrimitiveType):
     function_name: str
-    arguments: list[Type]
+    arguments: Params
     return_type: Type
+
+
+@dataclass
+class Params(PrimitiveType):
+    types: list[Type]
 
 
 BOOL = Bool()
