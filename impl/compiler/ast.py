@@ -685,7 +685,7 @@ class EnumStmt(_Ast):
 
 
 @dataclass
-class FunctionArg(_Ast):
+class FunctionParam(_Ast):
     name: Token
     arg_type: Token
 
@@ -703,8 +703,8 @@ class FunctionArg(_Ast):
 
 
 @dataclass
-class FunctionArgs(_Ast, ast_utils.AsList):
-    args: list[FunctionArg]
+class FunctionParams(_Ast, ast_utils.AsList):
+    args: list[FunctionParam]
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -729,7 +729,7 @@ class FunctionArgs(_Ast, ast_utils.AsList):
 @dataclass
 class FunctionDefinition(_Ast):
     name: Token
-    args: Optional[FunctionArgs]
+    args: Optional[FunctionParams]
     return_type: Token
     body: StatementBlock
 

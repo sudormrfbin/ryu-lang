@@ -2,8 +2,8 @@ from compiler.env import TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import (
     Comparison,
-    FunctionArg,
-    FunctionArgs,
+    FunctionParam,
+    FunctionParams,
     FunctionDefinition,
     IfChain,
     IfStmt,
@@ -81,9 +81,9 @@ def test_function_def_one_arg(source: str):
         FunctionDefinition: {
             "name": "identity",
             "args": {
-                FunctionArgs: {
+                FunctionParams: {
                     "args": [
-                        {FunctionArg: {"name": "a", "arg_type": "int"}},
+                        {FunctionParam: {"name": "a", "arg_type": "int"}},
                     ]
                 }
             },
@@ -104,8 +104,8 @@ def test_function_def_one_arg(source: str):
     assert ast.to_type_dict() == {
         FunctionDefinition: Function,
         "args": {
-            FunctionArgs: Placeholder,
-            "args": [{FunctionArg: Int}],
+            FunctionParams: Placeholder,
+            "args": [{FunctionParam: Int}],
         },
         "body": {
             StatementBlock: ReturnBlock,
@@ -137,10 +137,10 @@ def test_function_def_multiple_args(source: str):
         FunctionDefinition: {
             "name": "sum",
             "args": {
-                FunctionArgs: {
+                FunctionParams: {
                     "args": [
-                        {FunctionArg: {"name": "a", "arg_type": "int"}},
-                        {FunctionArg: {"name": "b", "arg_type": "int"}},
+                        {FunctionParam: {"name": "a", "arg_type": "int"}},
+                        {FunctionParam: {"name": "b", "arg_type": "int"}},
                     ]
                 }
             },
@@ -171,8 +171,8 @@ def test_function_def_multiple_args(source: str):
     assert ast.to_type_dict() == {
         FunctionDefinition: Function,
         "args": {
-            FunctionArgs: Placeholder,
-            "args": [{FunctionArg: Int}, {FunctionArg: Int}],
+            FunctionParams: Placeholder,
+            "args": [{FunctionParam: Int}, {FunctionParam: Int}],
         },
         "body": {
             StatementBlock: ReturnBlock,
@@ -210,10 +210,10 @@ def test_function_def_multiple_returns(source: str):
         FunctionDefinition: {
             "name": "max",
             "args": {
-                FunctionArgs: {
+                FunctionParams: {
                     "args": [
-                        {FunctionArg: {"name": "a", "arg_type": "int"}},
-                        {FunctionArg: {"name": "b", "arg_type": "int"}},
+                        {FunctionParam: {"name": "a", "arg_type": "int"}},
+                        {FunctionParam: {"name": "b", "arg_type": "int"}},
                     ]
                 }
             },
@@ -274,8 +274,8 @@ def test_function_def_multiple_returns(source: str):
     assert ast.to_type_dict() == {
         FunctionDefinition: Function,
         "args": {
-            FunctionArgs: Placeholder,
-            "args": [{FunctionArg: Int}, {FunctionArg: Int}],
+            FunctionParams: Placeholder,
+            "args": [{FunctionParam: Int}, {FunctionParam: Int}],
         },
         "body": {
             StatementBlock: ReturnBlock,
