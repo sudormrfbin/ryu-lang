@@ -287,7 +287,7 @@ class ElseIfLadder(_Statement, ast_utils.AsList):
 
 @dataclass
 class CaseStmt(_Ast):
-    pattern: "BoolLiteral | EnumLiteral"
+    pattern: "BoolLiteral | EnumLiteral | WildcardPattern"
     block: StatementBlock
 
     @override
@@ -325,6 +325,9 @@ class CaseLadder(_Ast, ast_utils.AsList):
         seen: dict[bool, BoolLiteral] = {}
 
         for case_ in self.cases:
+            if isinstance(case_.pattern, WildcardPattern):
+                # TODO: show warning if there are more cases after wildcard
+                return
             assert isinstance(case_.pattern, BoolLiteral)
             pattern = case_.pattern.value
 
@@ -352,6 +355,9 @@ class CaseLadder(_Ast, ast_utils.AsList):
         seen: dict[langvalues.EnumValue, EnumLiteral] = {}
 
         for case_ in self.cases:
+            if isinstance(case_.pattern, WildcardPattern):
+                # TODO: show warning if there are more cases after wildcard
+                return
             assert isinstance(case_.pattern, EnumLiteral)
             pattern = case_.pattern.value
 
@@ -388,7 +394,9 @@ class MatchStmt(_Statement):
             case_type = case_.pattern.type_
             assert case_type is not None
 
-            if case_type != expr_type:
+            if case_type != expr_type and not isinstance(
+                case_.pattern, WildcardPattern
+            ):
                 # TODO: Add spanshot test when adding more types of patterns
                 raise errors.TypeMismatch(
                     message=f"Expected type {expr_type} but got {case_type}",
@@ -417,7 +425,10 @@ class MatchStmt(_Statement):
         expr = self.expr.eval(env)
 
         for case_ in self.cases.cases:
-            if expr == case_.pattern.value:
+            if isinstance(case_.pattern, WildcardPattern):
+                case_.eval(env)
+                break
+            elif expr == case_.pattern.value:
                 case_.eval(env)
                 break
         else:
@@ -1193,3 +1204,14 @@ class Variable(_Expression):
     @override
     def eval(self, env: RuntimeEnvironment):
         return env.get(self.value)
+
+
+class WildcardPattern(_Ast):
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = langtypes.PLACEHOLDER
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        pass

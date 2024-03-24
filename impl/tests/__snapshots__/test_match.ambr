@@ -1,0 +1,336 @@
+# serializer version: 1
+# name: test_enum_pattern_match_wildcard[ast]
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.EnumStmt'>: dict({
+            'members': dict({
+              <class 'compiler.ast.EnumMembers'>: dict({
+                'members': list([
+                  dict({
+                    <class 'compiler.ast.EnumMember'>: dict({
+                      'name': Token('IDENTIFIER', 'Malayalam'),
+                    }),
+                  }),
+                  dict({
+                    <class 'compiler.ast.EnumMember'>: dict({
+                      'name': Token('IDENTIFIER', 'English'),
+                    }),
+                  }),
+                  dict({
+                    <class 'compiler.ast.EnumMember'>: dict({
+                      'name': Token('IDENTIFIER', 'Japanese'),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'name': Token('IDENTIFIER', 'Langs'),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.FunctionDefinition'>: dict({
+            'args': dict({
+              <class 'compiler.ast.FunctionParams'>: dict({
+                'args': list([
+                  dict({
+                    <class 'compiler.ast.FunctionParam'>: dict({
+                      'arg_type': Token('IDENTIFIER', 'Langs'),
+                      'name': Token('IDENTIFIER', 'lang'),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'body': dict({
+              <class 'compiler.ast.StatementBlock'>: dict({
+                'stmts': list([
+                  dict({
+                    <class 'compiler.ast.MatchStmt'>: dict({
+                      'cases': dict({
+                        <class 'compiler.ast.CaseLadder'>: dict({
+                          'cases': list([
+                            dict({
+                              <class 'compiler.ast.CaseStmt'>: dict({
+                                'block': dict({
+                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                    'stmts': list([
+                                      dict({
+                                        <class 'compiler.ast.ReturnStmt'>: dict({
+                                          'return_value': dict({
+                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                              'value': True,
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                    ]),
+                                  }),
+                                }),
+                                'pattern': dict({
+                                  <class 'compiler.ast.EnumLiteral'>: dict({
+                                    'enum_type': Token('IDENTIFIER', 'Langs'),
+                                    'variant': Token('IDENTIFIER', 'English'),
+                                  }),
+                                }),
+                              }),
+                            }),
+                            dict({
+                              <class 'compiler.ast.CaseStmt'>: dict({
+                                'block': dict({
+                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                    'stmts': list([
+                                      dict({
+                                        <class 'compiler.ast.ReturnStmt'>: dict({
+                                          'return_value': dict({
+                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                              'value': False,
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                    ]),
+                                  }),
+                                }),
+                                'pattern': dict({
+                                  <class 'compiler.ast.WildcardPattern'>: dict({
+                                  }),
+                                }),
+                              }),
+                            }),
+                          ]),
+                        }),
+                      }),
+                      'expr': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'value': Token('IDENTIFIER', 'lang'),
+                        }),
+                      }),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'name': Token('IDENTIFIER', 'is_eng'),
+            'return_type': Token('IDENTIFIER', 'bool'),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'with_eng'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.EnumLiteral'>: dict({
+                          'enum_type': Token('IDENTIFIER', 'Langs'),
+                          'variant': Token('IDENTIFIER', 'English'),
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'is_eng'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'with_mal'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.EnumLiteral'>: dict({
+                          'enum_type': Token('IDENTIFIER', 'Langs'),
+                          'variant': Token('IDENTIFIER', 'Malayalam'),
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'is_eng'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'with_jp'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.EnumLiteral'>: dict({
+                          'enum_type': Token('IDENTIFIER', 'Langs'),
+                          'variant': Token('IDENTIFIER', 'Japanese'),
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'is_eng'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_enum_pattern_match_wildcard[typed-ast]
+  dict({
+    'stmts': list([
+      dict({
+        'members': dict({
+          'members': list([
+            dict({
+              <class 'compiler.ast.EnumMember'>: <class 'compiler.langtypes.Type'>,
+            }),
+            dict({
+              <class 'compiler.ast.EnumMember'>: <class 'compiler.langtypes.Type'>,
+            }),
+            dict({
+              <class 'compiler.ast.EnumMember'>: <class 'compiler.langtypes.Type'>,
+            }),
+          ]),
+          <class 'compiler.ast.EnumMembers'>: <class 'compiler.langtypes.Block'>,
+        }),
+        <class 'compiler.ast.EnumStmt'>: <class 'compiler.langtypes.Enum'>,
+      }),
+      dict({
+        'args': dict({
+          'args': list([
+            dict({
+              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Enum'>,
+            }),
+          ]),
+          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+        }),
+        'body': dict({
+          'stmts': list([
+            dict({
+              'cases': dict({
+                'cases': list([
+                  dict({
+                    'block': dict({
+                      'stmts': list([
+                        dict({
+                          'return_value': dict({
+                            <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+                          }),
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                        }),
+                      ]),
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                    }),
+                    'pattern': dict({
+                      <class 'compiler.ast.EnumLiteral'>: <class 'compiler.langtypes.Enum'>,
+                    }),
+                    <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Enum'>,
+                  }),
+                  dict({
+                    'block': dict({
+                      'stmts': list([
+                        dict({
+                          'return_value': dict({
+                            <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+                          }),
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                        }),
+                      ]),
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                    }),
+                    'pattern': dict({
+                      <class 'compiler.ast.WildcardPattern'>: <class 'compiler.langtypes.Placeholder'>,
+                    }),
+                    <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Placeholder'>,
+                  }),
+                ]),
+                <class 'compiler.ast.CaseLadder'>: <class 'compiler.langtypes.ReturnBlock'>,
+              }),
+              'expr': dict({
+                <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Enum'>,
+              }),
+              <class 'compiler.ast.MatchStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+            }),
+          ]),
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+        <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                <class 'compiler.ast.EnumLiteral'>: <class 'compiler.langtypes.Enum'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Bool'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Bool'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                <class 'compiler.ast.EnumLiteral'>: <class 'compiler.langtypes.Enum'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Bool'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Bool'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                <class 'compiler.ast.EnumLiteral'>: <class 'compiler.langtypes.Enum'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Bool'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Bool'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---

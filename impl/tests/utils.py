@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Any, Callable
 from textwrap import dedent
 
 
@@ -11,5 +11,16 @@ def docstring_source(func: Callable[[str], None]) -> Callable[[], None]:
 
     def wrapper():
         func(source)
+
+    return wrapper
+
+
+def docstring_source_with_snapshot(
+    func: Callable[[str, Any], None],
+) -> Callable[[Any], None]:
+    source = multiline_sanitize(func.__doc__ or "")
+
+    def wrapper(snapshot: Any):
+        func(source, snapshot)
 
     return wrapper

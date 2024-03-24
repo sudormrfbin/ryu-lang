@@ -45,7 +45,9 @@ else_if_stmt: "elif" expression "{" statement_block "}"
 match_stmt: "match" expression "{" case_ladder "}"
 case_ladder: (case_stmt | _NL)+
 case_stmt: "case" match_pattern "{" statement_block "}"
-?match_pattern: bool_literal | enum_literal
+?match_pattern: bool_literal | enum_literal | wildcard_pattern
+
+wildcard_pattern: "_"
 
 while_stmt: "while" expression "{" statement_block "}"
 
