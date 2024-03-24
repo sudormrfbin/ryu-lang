@@ -552,7 +552,7 @@ class ArrayElements(_Ast, ast_utils.AsList):
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        result = []
+        result: list[Any] = []
         for mem in self.members:
             result.append(mem.eval(env))
         return result
@@ -1038,7 +1038,7 @@ class Equality(_Expression):
         left_type = self.left.typecheck(env)
         right_type = self.right.typecheck(env)
 
-        if left_type == right_type and self.op in ("==", "!="):
+        if left_type == right_type and self.op in ("==", "!="):  # pyright: ignore [reportUnnecessaryContains]
             self.type_ = langtypes.BOOL
         else:
             op_span = errors.Span.from_token(self.op)
