@@ -4,13 +4,11 @@ from compiler.ast import (
     ArrayElement,
     ArrayElements,
     ArrayLiteral,
-    Assignment,
     IntLiteral,
-    StatementList,
     Term,
     VariableDeclaration,
 )
-from compiler.langtypes import INT, Array, Block, Int
+from compiler.langtypes import INT, Array, Int
 from tests.utils import docstring_source
 
 

@@ -2,22 +2,16 @@ from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import (
     Assignment,
-    BoolLiteral,
-    ElseIfLadder,
-    ElseIfStmt,
     Equality,
-    IfChain,
-    IfStmt,
     IntLiteral,
     StatementBlock,
     StatementList,
-    StringLiteral,
     Term,
     Variable,
     VariableDeclaration,
     WhileStmt,
 )
-from compiler.langtypes import INT, STRING, Block, Bool, Int, String
+from compiler.langtypes import INT, Block, Bool, Int
 from tests.utils import docstring_source
 
 

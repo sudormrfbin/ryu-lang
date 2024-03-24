@@ -4,11 +4,9 @@ from compiler.ast import (
     ArrayElement,
     ArrayElements,
     ArrayLiteral,
-    Assignment,
     Indexing,
     IntLiteral,
     StatementList,
-    Term,
     Variable,
     VariableDeclaration,
 )
