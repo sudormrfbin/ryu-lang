@@ -57,7 +57,11 @@
               }),
             }),
             'name': Token('IDENTIFIER', 'sum'),
-            'return_type': Token('IDENTIFIER', 'int'),
+            'return_type': dict({
+              <class 'compiler.ast.TypeAnnotation'>: dict({
+                'ty': Token('IDENTIFIER', 'int'),
+              }),
+            }),
           }),
         }),
         dict({
@@ -131,6 +135,9 @@
             }),
           ]),
           <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
         }),
         <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
       }),
@@ -250,7 +257,11 @@
               }),
             }),
             'name': Token('IDENTIFIER', 'max'),
-            'return_type': Token('IDENTIFIER', 'int'),
+            'return_type': dict({
+              <class 'compiler.ast.TypeAnnotation'>: dict({
+                'ty': Token('IDENTIFIER', 'int'),
+              }),
+            }),
           }),
         }),
         dict({
@@ -350,6 +361,9 @@
           ]),
           <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
         }),
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+        }),
         <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
       }),
       dict({
@@ -414,7 +428,11 @@
               }),
             }),
             'name': Token('IDENTIFIER', 'identity'),
-            'return_type': Token('IDENTIFIER', 'int'),
+            'return_type': dict({
+              <class 'compiler.ast.TypeAnnotation'>: dict({
+                'ty': Token('IDENTIFIER', 'int'),
+              }),
+            }),
           }),
         }),
         dict({
@@ -472,6 +490,9 @@
           ]),
           <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
         }),
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+        }),
         <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
       }),
       dict({
@@ -517,7 +538,11 @@
               }),
             }),
             'name': Token('IDENTIFIER', 'one'),
-            'return_type': Token('IDENTIFIER', 'int'),
+            'return_type': dict({
+              <class 'compiler.ast.TypeAnnotation'>: dict({
+                'ty': Token('IDENTIFIER', 'int'),
+              }),
+            }),
           }),
         }),
         dict({
@@ -552,6 +577,9 @@
             }),
           ]),
           <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
         }),
         <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
       }),
@@ -608,7 +636,11 @@
         }),
       }),
       'name': Token('IDENTIFIER', 'one'),
-      'return_type': Token('IDENTIFIER', 'int'),
+      'return_type': dict({
+        <class 'compiler.ast.TypeAnnotation'>: dict({
+          'ty': Token('IDENTIFIER', 'int'),
+        }),
+      }),
     }),
   })
 # ---
@@ -638,6 +670,9 @@
         }),
       ]),
       <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+    }),
+    'return_type': dict({
+      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
     }),
     <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
   })
@@ -697,7 +732,11 @@
         }),
       }),
       'name': Token('IDENTIFIER', 'sum'),
-      'return_type': Token('IDENTIFIER', 'int'),
+      'return_type': dict({
+        <class 'compiler.ast.TypeAnnotation'>: dict({
+          'ty': Token('IDENTIFIER', 'int'),
+        }),
+      }),
     }),
   })
 # ---
@@ -736,6 +775,9 @@
         }),
       ]),
       <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+    }),
+    'return_type': dict({
+      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
     }),
     <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
   })
@@ -829,7 +871,11 @@
         }),
       }),
       'name': Token('IDENTIFIER', 'max'),
-      'return_type': Token('IDENTIFIER', 'int'),
+      'return_type': dict({
+        <class 'compiler.ast.TypeAnnotation'>: dict({
+          'ty': Token('IDENTIFIER', 'int'),
+        }),
+      }),
     }),
   })
 # ---
@@ -894,6 +940,9 @@
       ]),
       <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
     }),
+    'return_type': dict({
+      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+    }),
     <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
   })
 # ---
@@ -932,7 +981,11 @@
         }),
       }),
       'name': Token('IDENTIFIER', 'identity'),
-      'return_type': Token('IDENTIFIER', 'int'),
+      'return_type': dict({
+        <class 'compiler.ast.TypeAnnotation'>: dict({
+          'ty': Token('IDENTIFIER', 'int'),
+        }),
+      }),
     }),
   })
 # ---
@@ -960,6 +1013,9 @@
       ]),
       <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
     }),
+    'return_type': dict({
+      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+    }),
     <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
   })
 # ---
@@ -982,7 +1038,11 @@
         }),
       }),
       'name': Token('IDENTIFIER', 'one'),
-      'return_type': Token('IDENTIFIER', 'int'),
+      'return_type': dict({
+        <class 'compiler.ast.TypeAnnotation'>: dict({
+          'ty': Token('IDENTIFIER', 'int'),
+        }),
+      }),
     }),
   })
 # ---
@@ -998,6 +1058,9 @@
         }),
       ]),
       <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+    }),
+    'return_type': dict({
+      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
     }),
     <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
   })

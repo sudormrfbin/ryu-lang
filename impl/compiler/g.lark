@@ -59,7 +59,7 @@ enum_stmt: "enum" IDENTIFIER "{" enum_members "}"
 enum_members: (enum_member | _NL)+
 enum_member: IDENTIFIER
 
-function_definition: "fn" IDENTIFIER "(" [function_params] ")" "->" IDENTIFIER "{" statement_block "}"
+function_definition: "fn" IDENTIFIER "(" [function_params] ")" "->" type_annotation "{" statement_block "}"
 function_params: function_param ("," function_param)*
 function_param: IDENTIFIER ":" type_annotation
 

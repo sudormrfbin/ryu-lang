@@ -838,14 +838,12 @@ class FunctionParams(_Ast, ast_utils.AsList):
 class FunctionDefinition(_Ast):
     name: Token
     args: Optional[FunctionParams]
-    return_type: Token
+    return_type: TypeAnnotation
     body: StatementBlock
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        ret_type = langtypes.Type.from_str(self.return_type, env)
-        if ret_type is None:
-            raise  # TODO
+        ret_type = self.return_type.typecheck(env)
 
         if self.args:
             params = self.args.typecheck(env)

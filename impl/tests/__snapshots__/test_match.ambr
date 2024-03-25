@@ -117,7 +117,11 @@
               }),
             }),
             'name': Token('IDENTIFIER', 'is_eng'),
-            'return_type': Token('IDENTIFIER', 'bool'),
+            'return_type': dict({
+              <class 'compiler.ast.TypeAnnotation'>: dict({
+                'ty': Token('IDENTIFIER', 'bool'),
+              }),
+            }),
           }),
         }),
         dict({
@@ -283,6 +287,9 @@
             }),
           ]),
           <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Bool'>,
         }),
         <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
       }),
