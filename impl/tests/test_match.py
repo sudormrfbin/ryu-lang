@@ -176,3 +176,27 @@ def test_enum_pattern_match_wildcard(source: str, snapshot: Any):
     assert env.get("with_eng") is True
     assert env.get("with_mal") is False
     assert env.get("with_jp") is False
+
+
+@docstring_source_with_snapshot
+def test_match_array(source: str, snapshot: Any):
+    """
+    let len = 0
+
+    match [1, 2] {
+        case [1] { len = 1 }
+        case [1, 2] { len = 2 }
+        case [1, 2, 3] { len = 3 }
+        case _ { len = -1 }
+    }
+    """
+    ast = parse_tree_to_ast(parse(source))
+    assert ast.to_dict() == snapshot(name="ast")
+
+    type_env = TypeEnvironment()
+    ast.typecheck(type_env)
+    assert ast.to_type_dict() == snapshot(name="typed-ast")
+
+    env = RuntimeEnvironment()
+    ast.eval(env)
+    assert env.get("len") == 2

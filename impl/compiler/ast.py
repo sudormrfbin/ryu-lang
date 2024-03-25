@@ -286,8 +286,48 @@ class ElseIfLadder(_Statement, ast_utils.AsList):
 
 
 @dataclass
+class ArrayPatternElement(_Ast):
+    literal: "IntLiteral"
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = self.literal.typecheck(env)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        return self.literal.eval(env)
+
+
+@dataclass
+class ArrayPattern(_Ast, ast_utils.AsList):
+    elements: list[ArrayPatternElement]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        assert len(self.elements) > 0
+        ty = self.elements[0].typecheck(env)
+        for el in self.elements[1:]:
+            if ty != el.typecheck(env):
+                raise  # TODO
+
+        self.type_ = langtypes.Array(ty)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> list[Any]:
+        return [el.eval(env) for el in self.elements]
+
+    def pattern_as_list(self) -> list[int]:
+        return [el.literal.value for el in self.elements]
+
+    def matches(self, expr: list[Any]) -> bool:
+        return expr == self.pattern_as_list()
+
+
+@dataclass
 class CaseStmt(_Ast):
-    pattern: "BoolLiteral | EnumLiteral | WildcardPattern"
+    pattern: "BoolLiteral | EnumLiteral | WildcardPattern | ArrayPattern"
     block: StatementBlock
 
     @override
@@ -299,6 +339,16 @@ class CaseStmt(_Ast):
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         self.block.eval(env)
+
+    def matches(self, expr: Any) -> bool:
+        match self.pattern:
+            case BoolLiteral() | EnumLiteral():
+                return self.pattern.value == expr
+            case WildcardPattern():
+                return True
+            case ArrayPattern():
+                assert isinstance(expr, list)
+                return self.pattern.matches(expr)  # pyright: ignore [reportUnknownArgumentType]
 
 
 @dataclass
@@ -350,7 +400,10 @@ class CaseLadder(_Ast, ast_utils.AsList):
             )
 
     def ensure_exhaustive_matching_enum(
-        self, match_stmt: "MatchStmt", variants: list[str]
+        self,
+        match_stmt: "MatchStmt",
+        variants: list[str],
+        expected_type: langtypes.Type,
     ):
         seen: dict[langvalues.EnumValue, EnumLiteral] = {}
 
@@ -374,10 +427,39 @@ class CaseLadder(_Ast, ast_utils.AsList):
             raise errors.InexhaustiveMatch(
                 message="Match not exhaustive",
                 span=match_stmt.span,
-                expected_type=langtypes.BOOL,
+                expected_type=expected_type,
                 expected_type_span=match_stmt.expr.span,
                 remaining_values=remaining,
             )
+
+    def ensure_exhaustive_matching_array(
+        self, match_stmt: "MatchStmt", ty: langtypes.Type
+    ):
+        seen: dict[tuple[int, ...], ArrayPattern] = {}
+
+        for case_ in self.cases:
+            if isinstance(case_.pattern, WildcardPattern):
+                # TODO: show warning if there are more cases after wildcard
+                return
+            assert isinstance(case_.pattern, ArrayPattern)
+            pattern = case_.pattern.pattern_as_list()
+
+            if tuple(pattern) in seen:
+                raise errors.DuplicatedCase(
+                    message="Case condition duplicated",
+                    span=case_.pattern.span,
+                    previous_case_span=seen[tuple(pattern)].span,
+                )
+            seen[tuple(pattern)] = case_.pattern
+
+        # TODO: separate error for not handling wildcard pattern
+        raise errors.InexhaustiveMatch(
+            message="Match not exhaustive",
+            span=match_stmt.span,
+            expected_type=langtypes.Array(ty),
+            expected_type_span=match_stmt.expr.span,
+            remaining_values={"_"},
+        )
 
 
 @dataclass
@@ -411,8 +493,12 @@ class MatchStmt(_Statement):
                 self.cases.ensure_exhaustive_matching_bool(self)
             case langtypes.Enum():
                 self.cases.ensure_exhaustive_matching_enum(
-                    self, variants=expr_type.members
+                    self,
+                    variants=expr_type.members,
+                    expected_type=expr_type,
                 )
+            case langtypes.Array(ty=langtypes.INT):
+                self.cases.ensure_exhaustive_matching_array(self, expr_type.ty)
             case _:
                 raise errors.InternalCompilerError(
                     "TODO: unsupported type for match expression"
@@ -425,10 +511,7 @@ class MatchStmt(_Statement):
         expr = self.expr.eval(env)
 
         for case_ in self.cases.cases:
-            if isinstance(case_.pattern, WildcardPattern):
-                case_.eval(env)
-                break
-            elif expr == case_.pattern.value:
+            if case_.matches(expr):
                 case_.eval(env)
                 break
         else:
