@@ -74,7 +74,7 @@ def test_index_assignment(source: str):
                 "rvalue": {
                     ArrayLiteral: Array,
                     "members": {
-                        ArrayElements: Array,
+                        ArrayElements: Int,
                         "members": [
                             {ArrayElement: Int, "element": {IntLiteral: Int}},
                             {ArrayElement: Int, "element": {IntLiteral: Int}},

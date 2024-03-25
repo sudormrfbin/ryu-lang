@@ -96,6 +96,11 @@ class Array(PrimitiveType):
 
 
 @dataclass
+class UntypedArray(PrimitiveType):
+    pass
+
+
+@dataclass
 class Function(PrimitiveType):
     function_name: str
     arguments: Params

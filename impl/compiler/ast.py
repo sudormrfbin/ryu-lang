@@ -636,12 +636,12 @@ class ArrayElements(_Ast, ast_utils.AsList):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         if len(self.members) == 0:
-            raise  # TODO
+            return langtypes.UntypedArray()
         check_type = self.members[0].typecheck(env)
         for mem in self.members:
             if mem.typecheck(env) != check_type:
                 raise  # TODO
-        self.type_ = langtypes.Array(check_type)
+        self.type_ = check_type
         return self.type_
 
     @override
@@ -654,11 +654,26 @@ class ArrayElements(_Ast, ast_utils.AsList):
 
 @dataclass
 class ArrayLiteral(_Ast):
+    declared_type: Optional["TypeAnnotation"]
     members: ArrayElements
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = self.members.typecheck(env)
+        inferred_type = self.members.typecheck(env)
+        declared_type = None
+        if self.declared_type:
+            declared_type = self.declared_type.typecheck(env)
+
+        match (declared_type, inferred_type):
+            case (None, langtypes.UntypedArray()):
+                raise  # TODO empty array without type annotation
+            case (None, infer):
+                self.type_ = langtypes.Array(infer)
+            case (decl, infer) if decl == infer:
+                self.type_ = langtypes.Array(decl)
+            case _:
+                raise  # TODO mismatch
+
         return self.type_
 
     @override

@@ -1,3 +1,4 @@
+from typing import Any
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import (
@@ -9,7 +10,7 @@ from compiler.ast import (
     VariableDeclaration,
 )
 from compiler.langtypes import INT, Array, Int
-from tests.utils import docstring_source
+from tests.utils import docstring_source, docstring_source_with_snapshot
 
 
 @docstring_source
@@ -53,7 +54,7 @@ def test_array_statement_basic(source: str):
         "rvalue": {
             ArrayLiteral: Array,
             "members": {
-                ArrayElements: Array,
+                ArrayElements: Int,
                 "members": [
                     {ArrayElement: Int, "element": {IntLiteral: Int}},
                     {
@@ -74,3 +75,22 @@ def test_array_statement_basic(source: str):
     env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("x") == [2, 6]
+
+
+@docstring_source_with_snapshot
+def test_array_with_annotation(source: str, snapshot: Any):
+    """
+    let x = <int>[1]
+    """
+    ast = parse_tree_to_ast(parse(source))
+    assert ast.to_dict() == snapshot
+
+    type_env = TypeEnvironment()
+    ast.typecheck(type_env)
+    assert ast.to_type_dict() == snapshot
+
+    assert type_env.get("x") == Array(INT)
+
+    env = RuntimeEnvironment()
+    ast.eval(env)
+    assert env.get("x") == [1]

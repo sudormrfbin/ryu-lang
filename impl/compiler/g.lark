@@ -119,7 +119,7 @@ enum_literal: IDENTIFIER "::" IDENTIFIER
 
 variable: IDENTIFIER
 
-array_literal: "[" array_elements "]"
+array_literal: ["<" type_annotation ">"] "[" array_elements "]"
 array_elements: (array_element ("," array_element)*)?
 array_element: expression
 
