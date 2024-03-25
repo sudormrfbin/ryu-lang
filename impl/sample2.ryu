@@ -1,0 +1,8 @@
+let result = -1
+
+    match true {
+        case true { result = 1 }
+        case false { result = 0 }
+    }
+
+print result
