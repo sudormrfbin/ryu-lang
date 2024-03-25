@@ -124,4 +124,4 @@ array_elements: array_element ("," array_element)*
 array_element: expression
 
 array_pattern: "[" (array_pattern_element ("," array_pattern_element)*)? "]"
-array_pattern_element: int_literal
+array_pattern_element: int_literal | wildcard_pattern

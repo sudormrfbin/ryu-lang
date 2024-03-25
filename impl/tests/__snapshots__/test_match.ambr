@@ -1681,3 +1681,844 @@
     <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
   })
 # ---
+# name: test_match_array_wildcard_element[ast]
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.FunctionDefinition'>: dict({
+            'args': dict({
+              <class 'compiler.ast.FunctionParams'>: dict({
+                'args': list([
+                  dict({
+                    <class 'compiler.ast.FunctionParam'>: dict({
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'generics': dict({
+                            <class 'compiler.ast.TypeAnnotation'>: dict({
+                              'ty': Token('IDENTIFIER', 'int'),
+                            }),
+                          }),
+                          'ty': Token('IDENTIFIER', 'array'),
+                        }),
+                      }),
+                      'name': Token('IDENTIFIER', 'arr'),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'body': dict({
+              <class 'compiler.ast.StatementBlock'>: dict({
+                'stmts': list([
+                  dict({
+                    <class 'compiler.ast.MatchStmt'>: dict({
+                      'cases': dict({
+                        <class 'compiler.ast.CaseLadder'>: dict({
+                          'cases': list([
+                            dict({
+                              <class 'compiler.ast.CaseStmt'>: dict({
+                                'block': dict({
+                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                    'stmts': list([
+                                      dict({
+                                        <class 'compiler.ast.ReturnStmt'>: dict({
+                                          'return_value': dict({
+                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                              'value': True,
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                    ]),
+                                  }),
+                                }),
+                                'pattern': dict({
+                                  <class 'compiler.ast.ArrayPattern'>: dict({
+                                    'elements': list([
+                                      dict({
+                                        <class 'compiler.ast.ArrayPatternElement'>: dict({
+                                          'literal': dict({
+                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                              'value': 1,
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                      dict({
+                                        <class 'compiler.ast.ArrayPatternElement'>: dict({
+                                          'literal': dict({
+                                            <class 'compiler.ast.WildcardPattern'>: dict({
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                      dict({
+                                        <class 'compiler.ast.ArrayPatternElement'>: dict({
+                                          'literal': dict({
+                                            <class 'compiler.ast.WildcardPattern'>: dict({
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                    ]),
+                                  }),
+                                }),
+                              }),
+                            }),
+                            dict({
+                              <class 'compiler.ast.CaseStmt'>: dict({
+                                'block': dict({
+                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                    'stmts': list([
+                                      dict({
+                                        <class 'compiler.ast.ReturnStmt'>: dict({
+                                          'return_value': dict({
+                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                              'value': True,
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                    ]),
+                                  }),
+                                }),
+                                'pattern': dict({
+                                  <class 'compiler.ast.ArrayPattern'>: dict({
+                                    'elements': list([
+                                      dict({
+                                        <class 'compiler.ast.ArrayPatternElement'>: dict({
+                                          'literal': dict({
+                                            <class 'compiler.ast.WildcardPattern'>: dict({
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                      dict({
+                                        <class 'compiler.ast.ArrayPatternElement'>: dict({
+                                          'literal': dict({
+                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                              'value': 1,
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                      dict({
+                                        <class 'compiler.ast.ArrayPatternElement'>: dict({
+                                          'literal': dict({
+                                            <class 'compiler.ast.WildcardPattern'>: dict({
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                    ]),
+                                  }),
+                                }),
+                              }),
+                            }),
+                            dict({
+                              <class 'compiler.ast.CaseStmt'>: dict({
+                                'block': dict({
+                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                    'stmts': list([
+                                      dict({
+                                        <class 'compiler.ast.ReturnStmt'>: dict({
+                                          'return_value': dict({
+                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                              'value': True,
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                    ]),
+                                  }),
+                                }),
+                                'pattern': dict({
+                                  <class 'compiler.ast.ArrayPattern'>: dict({
+                                    'elements': list([
+                                      dict({
+                                        <class 'compiler.ast.ArrayPatternElement'>: dict({
+                                          'literal': dict({
+                                            <class 'compiler.ast.WildcardPattern'>: dict({
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                      dict({
+                                        <class 'compiler.ast.ArrayPatternElement'>: dict({
+                                          'literal': dict({
+                                            <class 'compiler.ast.WildcardPattern'>: dict({
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                      dict({
+                                        <class 'compiler.ast.ArrayPatternElement'>: dict({
+                                          'literal': dict({
+                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                              'value': 1,
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                    ]),
+                                  }),
+                                }),
+                              }),
+                            }),
+                            dict({
+                              <class 'compiler.ast.CaseStmt'>: dict({
+                                'block': dict({
+                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                    'stmts': list([
+                                      dict({
+                                        <class 'compiler.ast.ReturnStmt'>: dict({
+                                          'return_value': dict({
+                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                              'value': False,
+                                            }),
+                                          }),
+                                        }),
+                                      }),
+                                    ]),
+                                  }),
+                                }),
+                                'pattern': dict({
+                                  <class 'compiler.ast.WildcardPattern'>: dict({
+                                  }),
+                                }),
+                              }),
+                            }),
+                          ]),
+                        }),
+                      }),
+                      'expr': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'value': Token('IDENTIFIER', 'arr'),
+                        }),
+                      }),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'name': Token('IDENTIFIER', 'contains_one'),
+            'return_type': dict({
+              <class 'compiler.ast.TypeAnnotation'>: dict({
+                'ty': Token('IDENTIFIER', 'bool'),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'no'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.ArrayLiteral'>: dict({
+                          'declared_type': dict({
+                            <class 'compiler.ast.TypeAnnotation'>: dict({
+                              'ty': Token('IDENTIFIER', 'int'),
+                            }),
+                          }),
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'contains_one'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'one'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.ArrayLiteral'>: dict({
+                          'members': dict({
+                            <class 'compiler.ast.ArrayElements'>: dict({
+                              'members': list([
+                                dict({
+                                  <class 'compiler.ast.ArrayElement'>: dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'value': 1,
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                                dict({
+                                  <class 'compiler.ast.ArrayElement'>: dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'value': 2,
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                                dict({
+                                  <class 'compiler.ast.ArrayElement'>: dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'value': 3,
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                              ]),
+                            }),
+                          }),
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'contains_one'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'two'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.ArrayLiteral'>: dict({
+                          'members': dict({
+                            <class 'compiler.ast.ArrayElements'>: dict({
+                              'members': list([
+                                dict({
+                                  <class 'compiler.ast.ArrayElement'>: dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'value': 3,
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                                dict({
+                                  <class 'compiler.ast.ArrayElement'>: dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'value': 1,
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                                dict({
+                                  <class 'compiler.ast.ArrayElement'>: dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'value': 2,
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                              ]),
+                            }),
+                          }),
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'contains_one'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'three'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.ArrayLiteral'>: dict({
+                          'members': dict({
+                            <class 'compiler.ast.ArrayElements'>: dict({
+                              'members': list([
+                                dict({
+                                  <class 'compiler.ast.ArrayElement'>: dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'value': 2,
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                                dict({
+                                  <class 'compiler.ast.ArrayElement'>: dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'value': 3,
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                                dict({
+                                  <class 'compiler.ast.ArrayElement'>: dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'value': 1,
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                              ]),
+                            }),
+                          }),
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'contains_one'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'no2'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.ArrayLiteral'>: dict({
+                          'members': dict({
+                            <class 'compiler.ast.ArrayElements'>: dict({
+                              'members': list([
+                                dict({
+                                  <class 'compiler.ast.ArrayElement'>: dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'value': 2,
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                                dict({
+                                  <class 'compiler.ast.ArrayElement'>: dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'value': 3,
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                                dict({
+                                  <class 'compiler.ast.ArrayElement'>: dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'value': 3,
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                              ]),
+                            }),
+                          }),
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'contains_one'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_match_array_wildcard_element[typed-ast]
+  dict({
+    'stmts': list([
+      dict({
+        'args': dict({
+          'args': list([
+            dict({
+              'arg_type': dict({
+                'generics': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+                }),
+                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Array'>,
+              }),
+              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Array'>,
+            }),
+          ]),
+          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+        }),
+        'body': dict({
+          'stmts': list([
+            dict({
+              'cases': dict({
+                'cases': list([
+                  dict({
+                    'block': dict({
+                      'stmts': list([
+                        dict({
+                          'return_value': dict({
+                            <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+                          }),
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                        }),
+                      ]),
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                    }),
+                    'pattern': dict({
+                      'elements': list([
+                        dict({
+                          'literal': dict({
+                            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                          }),
+                          <class 'compiler.ast.ArrayPatternElement'>: <class 'compiler.langtypes.Int'>,
+                        }),
+                        dict({
+                          'literal': dict({
+                            <class 'compiler.ast.WildcardPattern'>: <class 'compiler.langtypes.Placeholder'>,
+                          }),
+                          <class 'compiler.ast.ArrayPatternElement'>: <class 'compiler.langtypes.Placeholder'>,
+                        }),
+                        dict({
+                          'literal': dict({
+                            <class 'compiler.ast.WildcardPattern'>: <class 'compiler.langtypes.Placeholder'>,
+                          }),
+                          <class 'compiler.ast.ArrayPatternElement'>: <class 'compiler.langtypes.Placeholder'>,
+                        }),
+                      ]),
+                      <class 'compiler.ast.ArrayPattern'>: <class 'compiler.langtypes.Array'>,
+                    }),
+                    <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Array'>,
+                  }),
+                  dict({
+                    'block': dict({
+                      'stmts': list([
+                        dict({
+                          'return_value': dict({
+                            <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+                          }),
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                        }),
+                      ]),
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                    }),
+                    'pattern': dict({
+                      'elements': list([
+                        dict({
+                          'literal': dict({
+                            <class 'compiler.ast.WildcardPattern'>: <class 'compiler.langtypes.Placeholder'>,
+                          }),
+                          <class 'compiler.ast.ArrayPatternElement'>: <class 'compiler.langtypes.Placeholder'>,
+                        }),
+                        dict({
+                          'literal': dict({
+                            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                          }),
+                          <class 'compiler.ast.ArrayPatternElement'>: <class 'compiler.langtypes.Int'>,
+                        }),
+                        dict({
+                          'literal': dict({
+                            <class 'compiler.ast.WildcardPattern'>: <class 'compiler.langtypes.Placeholder'>,
+                          }),
+                          <class 'compiler.ast.ArrayPatternElement'>: <class 'compiler.langtypes.Placeholder'>,
+                        }),
+                      ]),
+                      <class 'compiler.ast.ArrayPattern'>: <class 'compiler.langtypes.Array'>,
+                    }),
+                    <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Array'>,
+                  }),
+                  dict({
+                    'block': dict({
+                      'stmts': list([
+                        dict({
+                          'return_value': dict({
+                            <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+                          }),
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                        }),
+                      ]),
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                    }),
+                    'pattern': dict({
+                      'elements': list([
+                        dict({
+                          'literal': dict({
+                            <class 'compiler.ast.WildcardPattern'>: <class 'compiler.langtypes.Placeholder'>,
+                          }),
+                          <class 'compiler.ast.ArrayPatternElement'>: <class 'compiler.langtypes.Placeholder'>,
+                        }),
+                        dict({
+                          'literal': dict({
+                            <class 'compiler.ast.WildcardPattern'>: <class 'compiler.langtypes.Placeholder'>,
+                          }),
+                          <class 'compiler.ast.ArrayPatternElement'>: <class 'compiler.langtypes.Placeholder'>,
+                        }),
+                        dict({
+                          'literal': dict({
+                            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                          }),
+                          <class 'compiler.ast.ArrayPatternElement'>: <class 'compiler.langtypes.Int'>,
+                        }),
+                      ]),
+                      <class 'compiler.ast.ArrayPattern'>: <class 'compiler.langtypes.Array'>,
+                    }),
+                    <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Array'>,
+                  }),
+                  dict({
+                    'block': dict({
+                      'stmts': list([
+                        dict({
+                          'return_value': dict({
+                            <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+                          }),
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                        }),
+                      ]),
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                    }),
+                    'pattern': dict({
+                      <class 'compiler.ast.WildcardPattern'>: <class 'compiler.langtypes.Placeholder'>,
+                    }),
+                    <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Placeholder'>,
+                  }),
+                ]),
+                <class 'compiler.ast.CaseLadder'>: <class 'compiler.langtypes.ReturnBlock'>,
+              }),
+              'expr': dict({
+                <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Array'>,
+              }),
+              <class 'compiler.ast.MatchStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+            }),
+          ]),
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Bool'>,
+        }),
+        <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                'declared_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+                }),
+                <class 'compiler.ast.ArrayLiteral'>: <class 'compiler.langtypes.Array'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Bool'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Bool'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                'members': dict({
+                  'members': list([
+                    dict({
+                      'element': dict({
+                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                    dict({
+                      'element': dict({
+                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                    dict({
+                      'element': dict({
+                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                  ]),
+                  <class 'compiler.ast.ArrayElements'>: <class 'compiler.langtypes.Int'>,
+                }),
+                <class 'compiler.ast.ArrayLiteral'>: <class 'compiler.langtypes.Array'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Bool'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Bool'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                'members': dict({
+                  'members': list([
+                    dict({
+                      'element': dict({
+                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                    dict({
+                      'element': dict({
+                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                    dict({
+                      'element': dict({
+                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                  ]),
+                  <class 'compiler.ast.ArrayElements'>: <class 'compiler.langtypes.Int'>,
+                }),
+                <class 'compiler.ast.ArrayLiteral'>: <class 'compiler.langtypes.Array'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Bool'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Bool'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                'members': dict({
+                  'members': list([
+                    dict({
+                      'element': dict({
+                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                    dict({
+                      'element': dict({
+                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                    dict({
+                      'element': dict({
+                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                  ]),
+                  <class 'compiler.ast.ArrayElements'>: <class 'compiler.langtypes.Int'>,
+                }),
+                <class 'compiler.ast.ArrayLiteral'>: <class 'compiler.langtypes.Array'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Bool'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Bool'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                'members': dict({
+                  'members': list([
+                    dict({
+                      'element': dict({
+                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                    dict({
+                      'element': dict({
+                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                    dict({
+                      'element': dict({
+                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                  ]),
+                  <class 'compiler.ast.ArrayElements'>: <class 'compiler.langtypes.Int'>,
+                }),
+                <class 'compiler.ast.ArrayLiteral'>: <class 'compiler.langtypes.Array'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Bool'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Bool'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---

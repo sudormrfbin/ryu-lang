@@ -300,7 +300,7 @@ class ElseIfLadder(_Statement, ast_utils.AsList):
 
 @dataclass
 class ArrayPatternElement(_Ast):
-    literal: "IntLiteral"
+    literal: "IntLiteral | WildcardPattern"
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -311,6 +311,13 @@ class ArrayPatternElement(_Ast):
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         return self.literal.eval(env)
 
+    def matches(self, expr: Any) -> bool:
+        match self.literal:
+            case IntLiteral(value=value):
+                return value == expr
+            case WildcardPattern():
+                return True
+
 
 @dataclass
 class ArrayPattern(_Ast, ast_utils.AsList):
@@ -318,28 +325,42 @@ class ArrayPattern(_Ast, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        if self.elements:
-            assert len(self.elements) > 0
-            print(self.elements)
-            ty = self.elements[0].typecheck(env)
-            for el in self.elements[1:]:
-                if ty != el.typecheck(env):
-                    raise  # TODO
-            self.type_ = langtypes.Array(ty)
-        else:
-            self.type_ = langtypes.UntypedArray()
+        ty = langtypes.UntypedArray()
 
+        for el in self.elements:
+            el_type = el.typecheck(env)
+            match (ty, el.literal):
+                case (_, WildcardPattern()):
+                    pass  # type stays the same
+                case (langtypes.UntypedArray(), _):
+                    ty = langtypes.Array(el_type)
+                case (_, _) if el_type == ty.ty:
+                    pass
+                case _:
+                    raise  # TODO
+
+        self.type_ = ty
         return self.type_
 
     @override
     def eval(self, env: RuntimeEnvironment) -> list[Any]:
         return [el.eval(env) for el in self.elements]
 
-    def pattern_as_list(self) -> list[int]:
-        return [el.literal.value for el in self.elements]
+    def pattern_as_list(self) -> list[int | None]:
+        results: list[int | None] = []
+        for el in self.elements:
+            match el.literal:
+                case IntLiteral(value=value):
+                    results.append(value)
+                case WildcardPattern():
+                    results.append(None)
+        return results
 
     def matches(self, expr: list[Any]) -> bool:
-        return expr == self.pattern_as_list()
+        if len(self.elements) != len(expr):
+            return False
+
+        return all(pat.matches(e) for pat, e in zip(self.elements, expr))
 
 
 @dataclass
@@ -452,7 +473,7 @@ class CaseLadder(_Ast, ast_utils.AsList):
     def ensure_exhaustive_matching_array(
         self, match_stmt: "MatchStmt", ty: langtypes.Type
     ):
-        seen: dict[tuple[int, ...], ArrayPattern] = {}
+        seen: dict[tuple[int | None, ...], ArrayPattern] = {}
 
         for case_ in self.cases:
             if isinstance(case_.pattern, WildcardPattern):
