@@ -78,7 +78,7 @@ def test_indexing(source: str):
                 "rvalue": {
                     ArrayLiteral: Array,
                     "members": {
-                        ArrayElements: Array,
+                        ArrayElements: Int,
                         "members": [
                             {ArrayElement: Int, "element": {IntLiteral: Int}},
                             {ArrayElement: Int, "element": {IntLiteral: Int}},

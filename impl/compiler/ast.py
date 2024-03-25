@@ -28,7 +28,8 @@ AstDict = dict[typing.Type["_Ast"], dict[str, Any]]
 # Since this cannot be expressed in the type system, we settle for a union type
 # which introduces two extra invalid states (_Ast -> AstTypeDict & str -> Type)
 AstTypeDict = dict[
-    typing.Type["_Ast"] | str, typing.Type[langtypes.Type] | "AstTypeDict"
+    typing.Type["_Ast"] | str,
+    typing.Type[langtypes.Type] | "AstTypeDict",
 ]
 
 
@@ -71,8 +72,14 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
             value = getattr(self, field.name)
             if isinstance(value, _Ast):
                 attrs[field.name] = value.to_dict()
-            elif isinstance(value, list) and isinstance(value[0], _Ast):
-                attrs[field.name] = [v.to_dict() for v in value]  # type: ignore
+            elif isinstance(value, list):
+                match value:
+                    case []:
+                        attrs[field.name] = []
+                    case [_Ast(), *_]:  # type: ignore
+                        attrs[field.name] = [v.to_dict() for v in value]  # type: ignore
+                    case _:  # type: ignore
+                        pass
             elif value is not None:
                 attrs[field.name] = value
 
@@ -93,8 +100,14 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
             value = getattr(self, field.name)
             if isinstance(value, _Ast):
                 result[field.name] = value.to_type_dict()
-            elif isinstance(value, list) and isinstance(value[0], _Ast):
-                result[field.name] = [v.to_type_dict() for v in value]  # type: ignore
+            elif isinstance(value, list):
+                match value:
+                    case []:
+                        result[field.name] = []  # type: ignore
+                    case [_Ast(), *_]:  # type: ignore
+                        result[field.name] = [v.to_type_dict() for v in value]  # type: ignore
+                    case _:  # type: ignore
+                        pass
 
         return result
 
@@ -286,8 +299,73 @@ class ElseIfLadder(_Statement, ast_utils.AsList):
 
 
 @dataclass
+class ArrayPatternElement(_Ast):
+    literal: "IntLiteral | WildcardPattern"
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = self.literal.typecheck(env)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        return self.literal.eval(env)
+
+    def matches(self, expr: Any) -> bool:
+        match self.literal:
+            case IntLiteral(value=value):
+                return value == expr
+            case WildcardPattern():
+                return True
+
+
+@dataclass
+class ArrayPattern(_Ast, ast_utils.AsList):
+    elements: list[ArrayPatternElement]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        ty = langtypes.UntypedArray()
+
+        for el in self.elements:
+            el_type = el.typecheck(env)
+            match (ty, el.literal):
+                case (_, WildcardPattern()):
+                    pass  # type stays the same
+                case (langtypes.UntypedArray(), _):
+                    ty = langtypes.Array(el_type)
+                case (_, _) if el_type == ty.ty:
+                    pass
+                case _:
+                    raise  # TODO
+
+        self.type_ = ty
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> list[Any]:
+        return [el.eval(env) for el in self.elements]
+
+    def pattern_as_list(self) -> list[int | None]:
+        results: list[int | None] = []
+        for el in self.elements:
+            match el.literal:
+                case IntLiteral(value=value):
+                    results.append(value)
+                case WildcardPattern():
+                    results.append(None)
+        return results
+
+    def matches(self, expr: list[Any]) -> bool:
+        if len(self.elements) != len(expr):
+            return False
+
+        return all(pat.matches(e) for pat, e in zip(self.elements, expr))
+
+
+@dataclass
 class CaseStmt(_Ast):
-    pattern: "BoolLiteral | EnumLiteral"
+    pattern: "BoolLiteral | EnumLiteral | WildcardPattern | ArrayPattern"
     block: StatementBlock
 
     @override
@@ -299,6 +377,16 @@ class CaseStmt(_Ast):
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         self.block.eval(env)
+
+    def matches(self, expr: Any) -> bool:
+        match self.pattern:
+            case BoolLiteral() | EnumLiteral():
+                return self.pattern.value == expr
+            case WildcardPattern():
+                return True
+            case ArrayPattern():
+                assert isinstance(expr, list)
+                return self.pattern.matches(expr)  # pyright: ignore [reportUnknownArgumentType]
 
 
 @dataclass
@@ -325,6 +413,9 @@ class CaseLadder(_Ast, ast_utils.AsList):
         seen: dict[bool, BoolLiteral] = {}
 
         for case_ in self.cases:
+            if isinstance(case_.pattern, WildcardPattern):
+                # TODO: show warning if there are more cases after wildcard
+                return
             assert isinstance(case_.pattern, BoolLiteral)
             pattern = case_.pattern.value
 
@@ -347,11 +438,17 @@ class CaseLadder(_Ast, ast_utils.AsList):
             )
 
     def ensure_exhaustive_matching_enum(
-        self, match_stmt: "MatchStmt", variants: list[str]
+        self,
+        match_stmt: "MatchStmt",
+        variants: list[str],
+        expected_type: langtypes.Type,
     ):
         seen: dict[langvalues.EnumValue, EnumLiteral] = {}
 
         for case_ in self.cases:
+            if isinstance(case_.pattern, WildcardPattern):
+                # TODO: show warning if there are more cases after wildcard
+                return
             assert isinstance(case_.pattern, EnumLiteral)
             pattern = case_.pattern.value
 
@@ -368,10 +465,39 @@ class CaseLadder(_Ast, ast_utils.AsList):
             raise errors.InexhaustiveMatch(
                 message="Match not exhaustive",
                 span=match_stmt.span,
-                expected_type=langtypes.BOOL,
+                expected_type=expected_type,
                 expected_type_span=match_stmt.expr.span,
                 remaining_values=remaining,
             )
+
+    def ensure_exhaustive_matching_array(
+        self, match_stmt: "MatchStmt", ty: langtypes.Type
+    ):
+        seen: dict[tuple[int | None, ...], ArrayPattern] = {}
+
+        for case_ in self.cases:
+            if isinstance(case_.pattern, WildcardPattern):
+                # TODO: show warning if there are more cases after wildcard
+                return
+            assert isinstance(case_.pattern, ArrayPattern)
+            pattern = case_.pattern.pattern_as_list()
+
+            if tuple(pattern) in seen:
+                raise errors.DuplicatedCase(
+                    message="Case condition duplicated",
+                    span=case_.pattern.span,
+                    previous_case_span=seen[tuple(pattern)].span,
+                )
+            seen[tuple(pattern)] = case_.pattern
+
+        # TODO: separate error for not handling wildcard pattern
+        raise errors.InexhaustiveMatch(
+            message="Match not exhaustive",
+            span=match_stmt.span,
+            expected_type=langtypes.Array(ty),
+            expected_type_span=match_stmt.expr.span,
+            remaining_values={"_"},
+        )
 
 
 @dataclass
@@ -388,23 +514,37 @@ class MatchStmt(_Statement):
             case_type = case_.pattern.type_
             assert case_type is not None
 
-            if case_type != expr_type:
-                # TODO: Add spanshot test when adding more types of patterns
-                raise errors.TypeMismatch(
-                    message=f"Expected type {expr_type} but got {case_type}",
-                    span=case_.pattern.span,
-                    actual_type=case_type,
-                    expected_type=expr_type,
-                    expected_type_span=self.expr.span,
-                )
+            if isinstance(case_.pattern, WildcardPattern):
+                continue
+
+            if case_type == expr_type:
+                continue
+
+            case_is_untyped_array = isinstance(case_type, langtypes.UntypedArray)
+            expr_is_array = isinstance(expr_type, langtypes.Array)
+            if case_is_untyped_array and expr_is_array:
+                continue
+
+            # TODO: Add spanshot test when adding more types of patterns
+            raise errors.TypeMismatch(
+                message=f"Expected type {expr_type} but got {case_type}",
+                span=case_.pattern.span,
+                actual_type=case_type,
+                expected_type=expr_type,
+                expected_type_span=self.expr.span,
+            )
 
         match expr_type:
             case langtypes.BOOL:
                 self.cases.ensure_exhaustive_matching_bool(self)
             case langtypes.Enum():
                 self.cases.ensure_exhaustive_matching_enum(
-                    self, variants=expr_type.members
+                    self,
+                    variants=expr_type.members,
+                    expected_type=expr_type,
                 )
+            case langtypes.Array(ty=langtypes.INT):
+                self.cases.ensure_exhaustive_matching_array(self, expr_type.ty)
             case _:
                 raise errors.InternalCompilerError(
                     "TODO: unsupported type for match expression"
@@ -417,7 +557,7 @@ class MatchStmt(_Statement):
         expr = self.expr.eval(env)
 
         for case_ in self.cases.cases:
-            if expr == case_.pattern.value:
+            if case_.matches(expr):
                 case_.eval(env)
                 break
         else:
@@ -541,13 +681,12 @@ class ArrayElements(_Ast, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        if len(self.members) == 0:
-            raise  # TODO
+        assert len(self.members) > 0
         check_type = self.members[0].typecheck(env)
         for mem in self.members:
             if mem.typecheck(env) != check_type:
                 raise  # TODO
-        self.type_ = langtypes.Array(check_type)
+        self.type_ = check_type
         return self.type_
 
     @override
@@ -560,16 +699,33 @@ class ArrayElements(_Ast, ast_utils.AsList):
 
 @dataclass
 class ArrayLiteral(_Ast):
-    members: ArrayElements
+    declared_type: Optional["TypeAnnotation"]
+    members: Optional[ArrayElements]
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = self.members.typecheck(env)
+        inferred_type = self.members.typecheck(env) if self.members else None
+        declared_type = None
+        if self.declared_type:
+            declared_type = self.declared_type.typecheck(env)
+
+        match (declared_type, inferred_type):
+            case (None, None):
+                raise  # TODO empty array without type annotation
+            case (None, infer) if infer is not None:
+                self.type_ = langtypes.Array(infer)
+            case (decl, None) if decl is not None:
+                self.type_ = langtypes.Array(decl)
+            case (decl, infer) if decl == infer and decl is not None:
+                self.type_ = langtypes.Array(decl)
+            case _:
+                raise  # TODO mismatch
+
         return self.type_
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        return self.members.eval(env)
+        return self.members.eval(env) if self.members else []
 
 
 @dataclass
@@ -685,16 +841,36 @@ class EnumStmt(_Ast):
 
 
 @dataclass
-class FunctionParam(_Ast):
-    name: Token
-    arg_type: Token
+class TypeAnnotation(_Ast):
+    ty: Token
+    generics: Optional["TypeAnnotation"]
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = langtypes.Type.from_str(self.arg_type, env)
+        if self.generics:
+            generics = self.generics.typecheck(env)
+            self.type_ = langtypes.Type.from_str_with_generics(self.ty, generics, env)
+        else:
+            self.type_ = langtypes.Type.from_str(self.ty, env)
+
         if self.type_ is None:
             raise  # TODO
             # raise errors.UnassignableType()
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        pass
+
+
+@dataclass
+class FunctionParam(_Ast):
+    name: Token
+    arg_type: TypeAnnotation
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = self.arg_type.typecheck(env)
         return self.type_
 
     @override
@@ -724,14 +900,12 @@ class FunctionParams(_Ast, ast_utils.AsList):
 class FunctionDefinition(_Ast):
     name: Token
     args: Optional[FunctionParams]
-    return_type: Token
+    return_type: TypeAnnotation
     body: StatementBlock
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        ret_type = langtypes.Type.from_str(self.return_type, env)
-        if ret_type is None:
-            raise  # TODO
+        ret_type = self.return_type.typecheck(env)
 
         if self.args:
             params = self.args.typecheck(env)
@@ -1193,3 +1367,14 @@ class Variable(_Expression):
     @override
     def eval(self, env: RuntimeEnvironment):
         return env.get(self.value)
+
+
+class WildcardPattern(_Ast):
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = langtypes.PLACEHOLDER
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        pass

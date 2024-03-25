@@ -45,7 +45,9 @@ else_if_stmt: "elif" expression "{" statement_block "}"
 match_stmt: "match" expression "{" case_ladder "}"
 case_ladder: (case_stmt | _NL)+
 case_stmt: "case" match_pattern "{" statement_block "}"
-?match_pattern: bool_literal | enum_literal
+?match_pattern: bool_literal | enum_literal | wildcard_pattern | array_pattern
+
+wildcard_pattern: "_"
 
 while_stmt: "while" expression "{" statement_block "}"
 
@@ -57,9 +59,11 @@ enum_stmt: "enum" IDENTIFIER "{" enum_members "}"
 enum_members: (enum_member | _NL)+
 enum_member: IDENTIFIER
 
-function_definition: "fn" IDENTIFIER "(" [function_params] ")" "->" IDENTIFIER "{" statement_block "}"
+function_definition: "fn" IDENTIFIER "(" [function_params] ")" "->" type_annotation "{" statement_block "}"
 function_params: function_param ("," function_param)*
-function_param: IDENTIFIER ":" IDENTIFIER
+function_param: IDENTIFIER ":" type_annotation
+
+type_annotation: IDENTIFIER ["<" type_annotation ">"]
 
 return_stmt: "return" expression
 
@@ -115,6 +119,9 @@ enum_literal: IDENTIFIER "::" IDENTIFIER
 
 variable: IDENTIFIER
 
-array_literal: "[" array_elements "]"
-array_elements: (array_element ("," array_element)*)?
+array_literal: ["<" type_annotation ">"] "[" [array_elements] "]"
+array_elements: array_element ("," array_element)*
 array_element: expression
+
+array_pattern: "[" (array_pattern_element ("," array_pattern_element)*)? "]"
+array_pattern_element: int_literal | wildcard_pattern
