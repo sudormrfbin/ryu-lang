@@ -28,7 +28,8 @@ AstDict = dict[typing.Type["_Ast"], dict[str, Any]]
 # Since this cannot be expressed in the type system, we settle for a union type
 # which introduces two extra invalid states (_Ast -> AstTypeDict & str -> Type)
 AstTypeDict = dict[
-    typing.Type["_Ast"] | str, typing.Type[langtypes.Type] | "AstTypeDict"
+    typing.Type["_Ast"] | str,
+    typing.Type[langtypes.Type] | "AstTypeDict",
 ]
 
 
@@ -71,8 +72,14 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
             value = getattr(self, field.name)
             if isinstance(value, _Ast):
                 attrs[field.name] = value.to_dict()
-            elif isinstance(value, list) and isinstance(value[0], _Ast):
-                attrs[field.name] = [v.to_dict() for v in value]  # type: ignore
+            elif isinstance(value, list):
+                match value:
+                    case []:
+                        attrs[field.name] = []
+                    case [_Ast(), *_]:  # type: ignore
+                        attrs[field.name] = [v.to_dict() for v in value]  # type: ignore
+                    case _:  # type: ignore
+                        pass
             elif value is not None:
                 attrs[field.name] = value
 
@@ -93,8 +100,14 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
             value = getattr(self, field.name)
             if isinstance(value, _Ast):
                 result[field.name] = value.to_type_dict()
-            elif isinstance(value, list) and isinstance(value[0], _Ast):
-                result[field.name] = [v.to_type_dict() for v in value]  # type: ignore
+            elif isinstance(value, list):
+                match value:
+                    case []:
+                        result[field.name] = []  # type: ignore
+                    case [_Ast(), *_]:  # type: ignore
+                        result[field.name] = [v.to_type_dict() for v in value]  # type: ignore
+                    case _:  # type: ignore
+                        pass
 
         return result
 
@@ -305,13 +318,17 @@ class ArrayPattern(_Ast, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        assert len(self.elements) > 0
-        ty = self.elements[0].typecheck(env)
-        for el in self.elements[1:]:
-            if ty != el.typecheck(env):
-                raise  # TODO
+        if self.elements:
+            assert len(self.elements) > 0
+            print(self.elements)
+            ty = self.elements[0].typecheck(env)
+            for el in self.elements[1:]:
+                if ty != el.typecheck(env):
+                    raise  # TODO
+            self.type_ = langtypes.Array(ty)
+        else:
+            self.type_ = langtypes.UntypedArray()
 
-        self.type_ = langtypes.Array(ty)
         return self.type_
 
     @override
@@ -476,17 +493,25 @@ class MatchStmt(_Statement):
             case_type = case_.pattern.type_
             assert case_type is not None
 
-            if case_type != expr_type and not isinstance(
-                case_.pattern, WildcardPattern
-            ):
-                # TODO: Add spanshot test when adding more types of patterns
-                raise errors.TypeMismatch(
-                    message=f"Expected type {expr_type} but got {case_type}",
-                    span=case_.pattern.span,
-                    actual_type=case_type,
-                    expected_type=expr_type,
-                    expected_type_span=self.expr.span,
-                )
+            if isinstance(case_.pattern, WildcardPattern):
+                continue
+
+            if case_type == expr_type:
+                continue
+
+            case_is_untyped_array = isinstance(case_type, langtypes.UntypedArray)
+            expr_is_array = isinstance(expr_type, langtypes.Array)
+            if case_is_untyped_array and expr_is_array:
+                continue
+
+            # TODO: Add spanshot test when adding more types of patterns
+            raise errors.TypeMismatch(
+                message=f"Expected type {expr_type} but got {case_type}",
+                span=case_.pattern.span,
+                actual_type=case_type,
+                expected_type=expr_type,
+                expected_type_span=self.expr.span,
+            )
 
         match expr_type:
             case langtypes.BOOL:

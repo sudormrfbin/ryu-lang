@@ -208,3 +208,35 @@ def test_match_array(source: str, snapshot: Any):
     assert env.get("two") == 2
     assert env.get("three") == 3
     assert env.get("more") == -1
+
+
+@docstring_source_with_snapshot
+def test_match_array_empty_case(source: str, snapshot: Any):
+    """
+    fn len(arr: array<int>) -> int {
+        match arr {
+            case [] { return 0 }
+            case _ { return -1 }
+        }
+    }
+
+    let zero = len(<int>[])
+    let one = len([1])
+    let two = len([1, 2])
+    let three = len([1, 2, 3])
+    let more = len([1, 2, 3, 4])
+    """
+    ast = parse_tree_to_ast(parse(source))
+    assert ast.to_dict() == snapshot(name="ast")
+
+    type_env = TypeEnvironment()
+    ast.typecheck(type_env)
+    assert ast.to_type_dict() == snapshot(name="typed-ast")
+
+    env = RuntimeEnvironment()
+    ast.eval(env)
+    assert env.get("zero") == 0
+    assert env.get("one") == -1
+    assert env.get("two") == -1
+    assert env.get("three") == -1
+    assert env.get("more") == -1
