@@ -181,14 +181,19 @@ def test_enum_pattern_match_wildcard(source: str, snapshot: Any):
 @docstring_source_with_snapshot
 def test_match_array(source: str, snapshot: Any):
     """
-    let len = 0
-
-    match [1, 2] {
-        case [1] { len = 1 }
-        case [1, 2] { len = 2 }
-        case [1, 2, 3] { len = 3 }
-        case _ { len = -1 }
+    fn len(arr: array<int>) -> int {
+        match arr {
+            case [1] { return 1 }
+            case [1, 2] { return 2 }
+            case [1, 2, 3] { return 3 }
+            case _ { return -1 }
+        }
     }
+
+    let one = len([1])
+    let two = len([1, 2])
+    let three = len([1, 2, 3])
+    let more = len([1, 2, 3, 4])
     """
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot(name="ast")
@@ -199,4 +204,7 @@ def test_match_array(source: str, snapshot: Any):
 
     env = RuntimeEnvironment()
     ast.eval(env)
-    assert env.get("len") == 2
+    assert env.get("one") == 1
+    assert env.get("two") == 2
+    assert env.get("three") == 3
+    assert env.get("more") == -1
