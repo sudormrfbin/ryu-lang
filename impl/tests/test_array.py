@@ -94,3 +94,22 @@ def test_array_with_annotation(source: str, snapshot: Any):
     env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("x") == [1]
+
+
+@docstring_source_with_snapshot
+def test_empty_array(source: str, snapshot: Any):
+    """
+    let x = <int>[]
+    """
+    ast = parse_tree_to_ast(parse(source))
+    assert ast.to_dict() == snapshot
+
+    type_env = TypeEnvironment()
+    ast.typecheck(type_env)
+    assert ast.to_type_dict() == snapshot
+
+    assert type_env.get("x") == Array(INT)
+
+    env = RuntimeEnvironment()
+    ast.eval(env)
+    assert env.get("x") == []

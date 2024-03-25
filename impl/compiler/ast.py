@@ -635,8 +635,7 @@ class ArrayElements(_Ast, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        if len(self.members) == 0:
-            return langtypes.UntypedArray()
+        assert len(self.members) > 0
         check_type = self.members[0].typecheck(env)
         for mem in self.members:
             if mem.typecheck(env) != check_type:
@@ -655,21 +654,23 @@ class ArrayElements(_Ast, ast_utils.AsList):
 @dataclass
 class ArrayLiteral(_Ast):
     declared_type: Optional["TypeAnnotation"]
-    members: ArrayElements
+    members: Optional[ArrayElements]
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        inferred_type = self.members.typecheck(env)
+        inferred_type = self.members.typecheck(env) if self.members else None
         declared_type = None
         if self.declared_type:
             declared_type = self.declared_type.typecheck(env)
 
         match (declared_type, inferred_type):
-            case (None, langtypes.UntypedArray()):
+            case (None, None):
                 raise  # TODO empty array without type annotation
-            case (None, infer):
+            case (None, infer) if infer is not None:
                 self.type_ = langtypes.Array(infer)
-            case (decl, infer) if decl == infer:
+            case (decl, None) if decl is not None:
+                self.type_ = langtypes.Array(decl)
+            case (decl, infer) if decl == infer and decl is not None:
                 self.type_ = langtypes.Array(decl)
             case _:
                 raise  # TODO mismatch
@@ -678,7 +679,7 @@ class ArrayLiteral(_Ast):
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        return self.members.eval(env)
+        return self.members.eval(env) if self.members else []
 
 
 @dataclass
