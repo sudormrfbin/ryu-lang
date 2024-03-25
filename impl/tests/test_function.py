@@ -3,6 +3,7 @@ from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.langtypes import (
     INT,
+    Array,
     Function,
     Params,
 )
@@ -195,3 +196,23 @@ def test_function_call_multiple_returns(source: str, snapshot: Any):
     env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("m") == 9
+
+
+@docstring_source_with_snapshot
+def test_function_def_array_arg(source: str, snapshot: Any):
+    """
+    fn one(arr: array<int>) -> int {
+        return 1
+    }
+    """
+    ast = parse_tree_to_ast(parse(source))
+    assert ast.to_dict() == snapshot
+
+    type_env = TypeEnvironment()
+    ast.typecheck(type_env)
+    print(ast.to_type_dict())
+    assert ast.to_type_dict() == snapshot
+
+    assert type_env.get("one") == Function(
+        function_name="one", arguments=Params([Array(INT)]), return_type=INT
+    )
