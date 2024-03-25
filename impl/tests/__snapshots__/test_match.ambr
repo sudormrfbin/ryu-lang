@@ -36,7 +36,11 @@
                 'args': list([
                   dict({
                     <class 'compiler.ast.FunctionParam'>: dict({
-                      'arg_type': Token('IDENTIFIER', 'Langs'),
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'ty': Token('IDENTIFIER', 'Langs'),
+                        }),
+                      }),
                       'name': Token('IDENTIFIER', 'lang'),
                     }),
                   }),
@@ -222,6 +226,9 @@
         'args': dict({
           'args': list([
             dict({
+              'arg_type': dict({
+                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Enum'>,
+              }),
               <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Enum'>,
             }),
           ]),

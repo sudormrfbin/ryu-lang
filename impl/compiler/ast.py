@@ -779,16 +779,36 @@ class EnumStmt(_Ast):
 
 
 @dataclass
-class FunctionParam(_Ast):
-    name: Token
-    arg_type: Token
+class TypeAnnotation(_Ast):
+    ty: Token
+    generics: Optional["TypeAnnotation"]
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = langtypes.Type.from_str(self.arg_type, env)
+        if self.generics:
+            generics = self.generics.typecheck(env)
+            self.type_ = langtypes.Type.from_str_with_generics(self.ty, generics, env)
+        else:
+            self.type_ = langtypes.Type.from_str(self.ty, env)
+
         if self.type_ is None:
             raise  # TODO
             # raise errors.UnassignableType()
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        pass
+
+
+@dataclass
+class FunctionParam(_Ast):
+    name: Token
+    arg_type: TypeAnnotation
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = self.arg_type.typecheck(env)
         return self.type_
 
     @override

@@ -61,7 +61,9 @@ enum_member: IDENTIFIER
 
 function_definition: "fn" IDENTIFIER "(" [function_params] ")" "->" IDENTIFIER "{" statement_block "}"
 function_params: function_param ("," function_param)*
-function_param: IDENTIFIER ":" IDENTIFIER
+function_param: IDENTIFIER ":" type_annotation
+
+type_annotation: IDENTIFIER ["<" type_annotation ">"]
 
 return_stmt: "return" expression
 

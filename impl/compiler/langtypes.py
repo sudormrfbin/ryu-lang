@@ -26,6 +26,18 @@ class Type:
 
         return None
 
+    @classmethod
+    def from_str_with_generics(
+        cls,
+        ident: str,
+        generics: Type,
+        env: TypeEnvironment,
+    ) -> Optional["Type"]:
+        if ident == "array":
+            return Array(generics)
+
+        return None
+
 
 class Placeholder(Type):
     pass
