@@ -592,6 +592,34 @@ class WhileStmt(_Statement):
 
 
 @dataclass
+class ForStmt(_Statement):
+    var: Token
+    arr_name: _Expression
+    stmts: StatementBlock
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        array_type = self.arr_name.typecheck(env)
+        if not isinstance(array_type, langtypes.Array):
+            raise  # TODO
+
+        child_env = TypeEnvironment(enclosing=env)
+        child_env.define(self.var, array_type.ty)
+
+        self.type_ = self.stmts.typecheck(child_env)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> RuntimeEnvironment:
+        array = self.arr_name.eval(env)
+        for element in array:
+            loop_env = RuntimeEnvironment(env)
+            loop_env.define(self.var, element)
+            self.stmts.eval(loop_env)
+        return env
+
+
+@dataclass
 class StructMember(_Ast):
     name: Token
     ident_type: Token

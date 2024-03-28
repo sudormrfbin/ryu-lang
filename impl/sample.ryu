@@ -1,6 +1,4 @@
-let x = "outside"
-    if true {
-        let x = "inside"
-        print x
-    }
-print x
+let a = 2
+while a!= 10 {
+a = a + 1
+print a
