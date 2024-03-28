@@ -590,6 +590,7 @@ class WhileStmt(_Statement):
         while self.cond.eval(env) is True:
             self.true_block.eval(env)
 
+
 @dataclass
 class ForStmt(_Statement):
     var: Token
@@ -600,22 +601,24 @@ class ForStmt(_Statement):
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         array_type = self.arr_name.typecheck(env)
         if not isinstance(array_type, langtypes.Array):
-            raise TypeError("Expected array type")
+            raise  # TODO
+
         child_env = TypeEnvironment(enclosing=env)
         child_env.define(self.var, array_type.ty)
-        self.stmts.typecheck(child_env)
-        self.type_ = langtypes.BLOCK
+
+        self.type_ = self.stmts.typecheck(child_env)
         return self.type_
 
     @override
     def eval(self, env: RuntimeEnvironment) -> RuntimeEnvironment:
-        array = self.arr_name.eval(env) 
+        array = self.arr_name.eval(env)
         for element in array:
             loop_env = RuntimeEnvironment(env)
-            loop_env.define(self.var, element)       
+            loop_env.define(self.var, element)
             self.stmts.eval(loop_env)
         return env
-    
+
+
 @dataclass
 class StructMember(_Ast):
     name: Token
