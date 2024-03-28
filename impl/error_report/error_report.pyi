@@ -1,3 +1,5 @@
+from typing import Sequence
+
 ColorId = str
 MessageSpan = str | tuple[str, ColorId]
 Message = list[MessageSpan]
@@ -14,5 +16,5 @@ def report_error(
     start_pos: int,
     message: Message,
     code: int,
-    labels: list[Mark],
+    labels: Sequence[Mark],
 ) -> None: ...

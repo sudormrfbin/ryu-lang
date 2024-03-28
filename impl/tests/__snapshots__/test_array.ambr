@@ -1,0 +1,81 @@
+# serializer version: 1
+# name: test_array_with_annotation
+  dict({
+    <class 'compiler.ast.VariableDeclaration'>: dict({
+      'ident': Token('IDENTIFIER', 'x'),
+      'rvalue': dict({
+        <class 'compiler.ast.ArrayLiteral'>: dict({
+          'declared_type': dict({
+            <class 'compiler.ast.TypeAnnotation'>: dict({
+              'ty': Token('IDENTIFIER', 'int'),
+            }),
+          }),
+          'members': dict({
+            <class 'compiler.ast.ArrayElements'>: dict({
+              'members': list([
+                dict({
+                  <class 'compiler.ast.ArrayElement'>: dict({
+                    'element': dict({
+                      <class 'compiler.ast.IntLiteral'>: dict({
+                        'value': 1,
+                      }),
+                    }),
+                  }),
+                }),
+              ]),
+            }),
+          }),
+        }),
+      }),
+    }),
+  })
+# ---
+# name: test_array_with_annotation.1
+  dict({
+    'rvalue': dict({
+      'declared_type': dict({
+        <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+      }),
+      'members': dict({
+        'members': list([
+          dict({
+            'element': dict({
+              <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+            }),
+            <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+          }),
+        ]),
+        <class 'compiler.ast.ArrayElements'>: <class 'compiler.langtypes.Int'>,
+      }),
+      <class 'compiler.ast.ArrayLiteral'>: <class 'compiler.langtypes.Array'>,
+    }),
+    <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Array'>,
+  })
+# ---
+# name: test_empty_array
+  dict({
+    <class 'compiler.ast.VariableDeclaration'>: dict({
+      'ident': Token('IDENTIFIER', 'x'),
+      'rvalue': dict({
+        <class 'compiler.ast.ArrayLiteral'>: dict({
+          'declared_type': dict({
+            <class 'compiler.ast.TypeAnnotation'>: dict({
+              'ty': Token('IDENTIFIER', 'int'),
+            }),
+          }),
+        }),
+      }),
+    }),
+  })
+# ---
+# name: test_empty_array.1
+  dict({
+    'rvalue': dict({
+      'declared_type': dict({
+        <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+      }),
+      <class 'compiler.ast.ArrayLiteral'>: <class 'compiler.langtypes.Array'>,
+    }),
+    <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Array'>,
+  })
+# ---

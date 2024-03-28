@@ -1,4 +1,4 @@
-let  a = ["abc","gfg","trt"]
-for i in a {
-    print i
-}
+let a = 2
+while a!= 10 {
+a = a + 1
+print a

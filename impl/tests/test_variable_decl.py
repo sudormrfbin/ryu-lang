@@ -65,4 +65,4 @@ def test_variable_delcaration_with_expressions():
 
     env = RuntimeEnvironment()
     ast.eval(env)
-    assert env.get("variable") == False
+    assert env.get("variable") is False

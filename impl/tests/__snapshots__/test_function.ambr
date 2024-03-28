@@ -1,0 +1,1067 @@
+# serializer version: 1
+# name: test_function_call_multiple_args
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.FunctionDefinition'>: dict({
+            'args': dict({
+              <class 'compiler.ast.FunctionParams'>: dict({
+                'args': list([
+                  dict({
+                    <class 'compiler.ast.FunctionParam'>: dict({
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'ty': Token('IDENTIFIER', 'int'),
+                        }),
+                      }),
+                      'name': Token('IDENTIFIER', 'a'),
+                    }),
+                  }),
+                  dict({
+                    <class 'compiler.ast.FunctionParam'>: dict({
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'ty': Token('IDENTIFIER', 'int'),
+                        }),
+                      }),
+                      'name': Token('IDENTIFIER', 'b'),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'body': dict({
+              <class 'compiler.ast.StatementBlock'>: dict({
+                'stmts': list([
+                  dict({
+                    <class 'compiler.ast.ReturnStmt'>: dict({
+                      'return_value': dict({
+                        <class 'compiler.ast.Term'>: dict({
+                          'left': dict({
+                            <class 'compiler.ast.Variable'>: dict({
+                              'value': Token('IDENTIFIER', 'a'),
+                            }),
+                          }),
+                          'op': Token('PLUS', '+'),
+                          'right': dict({
+                            <class 'compiler.ast.Variable'>: dict({
+                              'value': Token('IDENTIFIER', 'b'),
+                            }),
+                          }),
+                        }),
+                      }),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'name': Token('IDENTIFIER', 'sum'),
+            'return_type': dict({
+              <class 'compiler.ast.TypeAnnotation'>: dict({
+                'ty': Token('IDENTIFIER', 'int'),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 's'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'value': 1,
+                        }),
+                      }),
+                      dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'value': 2,
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'sum'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_function_call_multiple_args.1
+  dict({
+    'stmts': list([
+      dict({
+        'args': dict({
+          'args': list([
+            dict({
+              'arg_type': dict({
+                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+              }),
+              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
+            }),
+            dict({
+              'arg_type': dict({
+                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+              }),
+              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
+            }),
+          ]),
+          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+        }),
+        'body': dict({
+          'stmts': list([
+            dict({
+              'return_value': dict({
+                'left': dict({
+                  <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                }),
+                'right': dict({
+                  <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                }),
+                <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
+              }),
+              <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+            }),
+          ]),
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+              dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---
+# name: test_function_call_multiple_returns
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.FunctionDefinition'>: dict({
+            'args': dict({
+              <class 'compiler.ast.FunctionParams'>: dict({
+                'args': list([
+                  dict({
+                    <class 'compiler.ast.FunctionParam'>: dict({
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'ty': Token('IDENTIFIER', 'int'),
+                        }),
+                      }),
+                      'name': Token('IDENTIFIER', 'a'),
+                    }),
+                  }),
+                  dict({
+                    <class 'compiler.ast.FunctionParam'>: dict({
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'ty': Token('IDENTIFIER', 'int'),
+                        }),
+                      }),
+                      'name': Token('IDENTIFIER', 'b'),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'body': dict({
+              <class 'compiler.ast.StatementBlock'>: dict({
+                'stmts': list([
+                  dict({
+                    <class 'compiler.ast.IfChain'>: dict({
+                      'else_block': dict({
+                        <class 'compiler.ast.StatementBlock'>: dict({
+                          'stmts': list([
+                            dict({
+                              <class 'compiler.ast.ReturnStmt'>: dict({
+                                'return_value': dict({
+                                  <class 'compiler.ast.Variable'>: dict({
+                                    'value': Token('IDENTIFIER', 'b'),
+                                  }),
+                                }),
+                              }),
+                            }),
+                          ]),
+                        }),
+                      }),
+                      'if_stmt': dict({
+                        <class 'compiler.ast.IfStmt'>: dict({
+                          'cond': dict({
+                            <class 'compiler.ast.Comparison'>: dict({
+                              'left': dict({
+                                <class 'compiler.ast.Variable'>: dict({
+                                  'value': Token('IDENTIFIER', 'a'),
+                                }),
+                              }),
+                              'op': Token('MORETHAN', '>'),
+                              'right': dict({
+                                <class 'compiler.ast.Variable'>: dict({
+                                  'value': Token('IDENTIFIER', 'b'),
+                                }),
+                              }),
+                            }),
+                          }),
+                          'true_block': dict({
+                            <class 'compiler.ast.StatementBlock'>: dict({
+                              'stmts': list([
+                                dict({
+                                  <class 'compiler.ast.ReturnStmt'>: dict({
+                                    'return_value': dict({
+                                      <class 'compiler.ast.Variable'>: dict({
+                                        'value': Token('IDENTIFIER', 'a'),
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                              ]),
+                            }),
+                          }),
+                        }),
+                      }),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'name': Token('IDENTIFIER', 'max'),
+            'return_type': dict({
+              <class 'compiler.ast.TypeAnnotation'>: dict({
+                'ty': Token('IDENTIFIER', 'int'),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'm'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'value': 3,
+                        }),
+                      }),
+                      dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'value': 9,
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'max'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_function_call_multiple_returns.1
+  dict({
+    'stmts': list([
+      dict({
+        'args': dict({
+          'args': list([
+            dict({
+              'arg_type': dict({
+                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+              }),
+              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
+            }),
+            dict({
+              'arg_type': dict({
+                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+              }),
+              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
+            }),
+          ]),
+          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+        }),
+        'body': dict({
+          'stmts': list([
+            dict({
+              'else_block': dict({
+                'stmts': list([
+                  dict({
+                    'return_value': dict({
+                      <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                    <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                  }),
+                ]),
+                <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+              }),
+              'if_stmt': dict({
+                'cond': dict({
+                  'left': dict({
+                    <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                  }),
+                  'right': dict({
+                    <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                  }),
+                  <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
+                }),
+                'true_block': dict({
+                  'stmts': list([
+                    dict({
+                      'return_value': dict({
+                        <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                    }),
+                  ]),
+                  <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                }),
+                <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+              }),
+              <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.ReturnBlock'>,
+            }),
+          ]),
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+              dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---
+# name: test_function_call_one_arg
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.FunctionDefinition'>: dict({
+            'args': dict({
+              <class 'compiler.ast.FunctionParams'>: dict({
+                'args': list([
+                  dict({
+                    <class 'compiler.ast.FunctionParam'>: dict({
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'ty': Token('IDENTIFIER', 'int'),
+                        }),
+                      }),
+                      'name': Token('IDENTIFIER', 'a'),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'body': dict({
+              <class 'compiler.ast.StatementBlock'>: dict({
+                'stmts': list([
+                  dict({
+                    <class 'compiler.ast.ReturnStmt'>: dict({
+                      'return_value': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'value': Token('IDENTIFIER', 'a'),
+                        }),
+                      }),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'name': Token('IDENTIFIER', 'identity'),
+            'return_type': dict({
+              <class 'compiler.ast.TypeAnnotation'>: dict({
+                'ty': Token('IDENTIFIER', 'int'),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'i'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'value': 8,
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'identity'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_function_call_one_arg.1
+  dict({
+    'stmts': list([
+      dict({
+        'args': dict({
+          'args': list([
+            dict({
+              'arg_type': dict({
+                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+              }),
+              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
+            }),
+          ]),
+          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+        }),
+        'body': dict({
+          'stmts': list([
+            dict({
+              'return_value': dict({
+                <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+              }),
+              <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+            }),
+          ]),
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---
+# name: test_function_call_zero_args
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.FunctionDefinition'>: dict({
+            'body': dict({
+              <class 'compiler.ast.StatementBlock'>: dict({
+                'stmts': list([
+                  dict({
+                    <class 'compiler.ast.ReturnStmt'>: dict({
+                      'return_value': dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'value': 1,
+                        }),
+                      }),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'name': Token('IDENTIFIER', 'one'),
+            'return_type': dict({
+              <class 'compiler.ast.TypeAnnotation'>: dict({
+                'ty': Token('IDENTIFIER', 'int'),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'o'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'one'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_function_call_zero_args.1
+  dict({
+    'stmts': list([
+      dict({
+        'body': dict({
+          'stmts': list([
+            dict({
+              'return_value': dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+              <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+            }),
+          ]),
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---
+# name: test_function_def_array_arg
+  dict({
+    <class 'compiler.ast.FunctionDefinition'>: dict({
+      'args': dict({
+        <class 'compiler.ast.FunctionParams'>: dict({
+          'args': list([
+            dict({
+              <class 'compiler.ast.FunctionParam'>: dict({
+                'arg_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                    'generics': dict({
+                      <class 'compiler.ast.TypeAnnotation'>: dict({
+                        'ty': Token('IDENTIFIER', 'int'),
+                      }),
+                    }),
+                    'ty': Token('IDENTIFIER', 'array'),
+                  }),
+                }),
+                'name': Token('IDENTIFIER', 'arr'),
+              }),
+            }),
+          ]),
+        }),
+      }),
+      'body': dict({
+        <class 'compiler.ast.StatementBlock'>: dict({
+          'stmts': list([
+            dict({
+              <class 'compiler.ast.ReturnStmt'>: dict({
+                'return_value': dict({
+                  <class 'compiler.ast.IntLiteral'>: dict({
+                    'value': 1,
+                  }),
+                }),
+              }),
+            }),
+          ]),
+        }),
+      }),
+      'name': Token('IDENTIFIER', 'one'),
+      'return_type': dict({
+        <class 'compiler.ast.TypeAnnotation'>: dict({
+          'ty': Token('IDENTIFIER', 'int'),
+        }),
+      }),
+    }),
+  })
+# ---
+# name: test_function_def_array_arg.1
+  dict({
+    'args': dict({
+      'args': list([
+        dict({
+          'arg_type': dict({
+            'generics': dict({
+              <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+            }),
+            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Array'>,
+          }),
+          <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Array'>,
+        }),
+      ]),
+      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+    }),
+    'body': dict({
+      'stmts': list([
+        dict({
+          'return_value': dict({
+            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+      ]),
+      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+    }),
+    'return_type': dict({
+      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+    }),
+    <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
+  })
+# ---
+# name: test_function_def_multiple_args
+  dict({
+    <class 'compiler.ast.FunctionDefinition'>: dict({
+      'args': dict({
+        <class 'compiler.ast.FunctionParams'>: dict({
+          'args': list([
+            dict({
+              <class 'compiler.ast.FunctionParam'>: dict({
+                'arg_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                    'ty': Token('IDENTIFIER', 'int'),
+                  }),
+                }),
+                'name': Token('IDENTIFIER', 'a'),
+              }),
+            }),
+            dict({
+              <class 'compiler.ast.FunctionParam'>: dict({
+                'arg_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                    'ty': Token('IDENTIFIER', 'int'),
+                  }),
+                }),
+                'name': Token('IDENTIFIER', 'b'),
+              }),
+            }),
+          ]),
+        }),
+      }),
+      'body': dict({
+        <class 'compiler.ast.StatementBlock'>: dict({
+          'stmts': list([
+            dict({
+              <class 'compiler.ast.ReturnStmt'>: dict({
+                'return_value': dict({
+                  <class 'compiler.ast.Term'>: dict({
+                    'left': dict({
+                      <class 'compiler.ast.Variable'>: dict({
+                        'value': Token('IDENTIFIER', 'a'),
+                      }),
+                    }),
+                    'op': Token('PLUS', '+'),
+                    'right': dict({
+                      <class 'compiler.ast.Variable'>: dict({
+                        'value': Token('IDENTIFIER', 'b'),
+                      }),
+                    }),
+                  }),
+                }),
+              }),
+            }),
+          ]),
+        }),
+      }),
+      'name': Token('IDENTIFIER', 'sum'),
+      'return_type': dict({
+        <class 'compiler.ast.TypeAnnotation'>: dict({
+          'ty': Token('IDENTIFIER', 'int'),
+        }),
+      }),
+    }),
+  })
+# ---
+# name: test_function_def_multiple_args.1
+  dict({
+    'args': dict({
+      'args': list([
+        dict({
+          'arg_type': dict({
+            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
+        }),
+        dict({
+          'arg_type': dict({
+            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
+        }),
+      ]),
+      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+    }),
+    'body': dict({
+      'stmts': list([
+        dict({
+          'return_value': dict({
+            'left': dict({
+              <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+            }),
+            'right': dict({
+              <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+            }),
+            <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+      ]),
+      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+    }),
+    'return_type': dict({
+      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+    }),
+    <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
+  })
+# ---
+# name: test_function_def_multiple_returns
+  dict({
+    <class 'compiler.ast.FunctionDefinition'>: dict({
+      'args': dict({
+        <class 'compiler.ast.FunctionParams'>: dict({
+          'args': list([
+            dict({
+              <class 'compiler.ast.FunctionParam'>: dict({
+                'arg_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                    'ty': Token('IDENTIFIER', 'int'),
+                  }),
+                }),
+                'name': Token('IDENTIFIER', 'a'),
+              }),
+            }),
+            dict({
+              <class 'compiler.ast.FunctionParam'>: dict({
+                'arg_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                    'ty': Token('IDENTIFIER', 'int'),
+                  }),
+                }),
+                'name': Token('IDENTIFIER', 'b'),
+              }),
+            }),
+          ]),
+        }),
+      }),
+      'body': dict({
+        <class 'compiler.ast.StatementBlock'>: dict({
+          'stmts': list([
+            dict({
+              <class 'compiler.ast.IfChain'>: dict({
+                'else_block': dict({
+                  <class 'compiler.ast.StatementBlock'>: dict({
+                    'stmts': list([
+                      dict({
+                        <class 'compiler.ast.ReturnStmt'>: dict({
+                          'return_value': dict({
+                            <class 'compiler.ast.Variable'>: dict({
+                              'value': Token('IDENTIFIER', 'b'),
+                            }),
+                          }),
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'if_stmt': dict({
+                  <class 'compiler.ast.IfStmt'>: dict({
+                    'cond': dict({
+                      <class 'compiler.ast.Comparison'>: dict({
+                        'left': dict({
+                          <class 'compiler.ast.Variable'>: dict({
+                            'value': Token('IDENTIFIER', 'a'),
+                          }),
+                        }),
+                        'op': Token('MORETHAN', '>'),
+                        'right': dict({
+                          <class 'compiler.ast.Variable'>: dict({
+                            'value': Token('IDENTIFIER', 'b'),
+                          }),
+                        }),
+                      }),
+                    }),
+                    'true_block': dict({
+                      <class 'compiler.ast.StatementBlock'>: dict({
+                        'stmts': list([
+                          dict({
+                            <class 'compiler.ast.ReturnStmt'>: dict({
+                              'return_value': dict({
+                                <class 'compiler.ast.Variable'>: dict({
+                                  'value': Token('IDENTIFIER', 'a'),
+                                }),
+                              }),
+                            }),
+                          }),
+                        ]),
+                      }),
+                    }),
+                  }),
+                }),
+              }),
+            }),
+          ]),
+        }),
+      }),
+      'name': Token('IDENTIFIER', 'max'),
+      'return_type': dict({
+        <class 'compiler.ast.TypeAnnotation'>: dict({
+          'ty': Token('IDENTIFIER', 'int'),
+        }),
+      }),
+    }),
+  })
+# ---
+# name: test_function_def_multiple_returns.1
+  dict({
+    'args': dict({
+      'args': list([
+        dict({
+          'arg_type': dict({
+            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
+        }),
+        dict({
+          'arg_type': dict({
+            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
+        }),
+      ]),
+      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+    }),
+    'body': dict({
+      'stmts': list([
+        dict({
+          'else_block': dict({
+            'stmts': list([
+              dict({
+                'return_value': dict({
+                  <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                }),
+                <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+              }),
+            ]),
+            <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+          }),
+          'if_stmt': dict({
+            'cond': dict({
+              'left': dict({
+                <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+              }),
+              'right': dict({
+                <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+              }),
+              <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
+            }),
+            'true_block': dict({
+              'stmts': list([
+                dict({
+                  'return_value': dict({
+                    <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                  }),
+                  <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                }),
+              ]),
+              <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+            }),
+            <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+          }),
+          <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+      ]),
+      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+    }),
+    'return_type': dict({
+      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+    }),
+    <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
+  })
+# ---
+# name: test_function_def_one_arg
+  dict({
+    <class 'compiler.ast.FunctionDefinition'>: dict({
+      'args': dict({
+        <class 'compiler.ast.FunctionParams'>: dict({
+          'args': list([
+            dict({
+              <class 'compiler.ast.FunctionParam'>: dict({
+                'arg_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                    'ty': Token('IDENTIFIER', 'int'),
+                  }),
+                }),
+                'name': Token('IDENTIFIER', 'a'),
+              }),
+            }),
+          ]),
+        }),
+      }),
+      'body': dict({
+        <class 'compiler.ast.StatementBlock'>: dict({
+          'stmts': list([
+            dict({
+              <class 'compiler.ast.ReturnStmt'>: dict({
+                'return_value': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'a'),
+                  }),
+                }),
+              }),
+            }),
+          ]),
+        }),
+      }),
+      'name': Token('IDENTIFIER', 'identity'),
+      'return_type': dict({
+        <class 'compiler.ast.TypeAnnotation'>: dict({
+          'ty': Token('IDENTIFIER', 'int'),
+        }),
+      }),
+    }),
+  })
+# ---
+# name: test_function_def_one_arg.1
+  dict({
+    'args': dict({
+      'args': list([
+        dict({
+          'arg_type': dict({
+            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
+        }),
+      ]),
+      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+    }),
+    'body': dict({
+      'stmts': list([
+        dict({
+          'return_value': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+      ]),
+      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+    }),
+    'return_type': dict({
+      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+    }),
+    <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
+  })
+# ---
+# name: test_function_def_zero_args
+  dict({
+    <class 'compiler.ast.FunctionDefinition'>: dict({
+      'body': dict({
+        <class 'compiler.ast.StatementBlock'>: dict({
+          'stmts': list([
+            dict({
+              <class 'compiler.ast.ReturnStmt'>: dict({
+                'return_value': dict({
+                  <class 'compiler.ast.IntLiteral'>: dict({
+                    'value': 1,
+                  }),
+                }),
+              }),
+            }),
+          ]),
+        }),
+      }),
+      'name': Token('IDENTIFIER', 'one'),
+      'return_type': dict({
+        <class 'compiler.ast.TypeAnnotation'>: dict({
+          'ty': Token('IDENTIFIER', 'int'),
+        }),
+      }),
+    }),
+  })
+# ---
+# name: test_function_def_zero_args.1
+  dict({
+    'body': dict({
+      'stmts': list([
+        dict({
+          'return_value': dict({
+            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+      ]),
+      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+    }),
+    'return_type': dict({
+      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+    }),
+    <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
+  })
+# ---

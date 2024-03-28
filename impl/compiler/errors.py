@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from typing import ClassVar, Container
 import dataclasses
 from dataclasses import dataclass
@@ -7,6 +8,9 @@ from lark.tree import Meta
 from lark.lexer import Token
 
 from compiler import langtypes
+from compiler import report
+
+from compiler.report import Labels, Text, Label
 
 LineCol = tuple[int, int]
 
@@ -19,6 +23,9 @@ class Span:
     end_column: int
     start_pos: int
     end_pos: int
+
+    def pos(self) -> tuple[int, int]:
+        return (self.start_pos, self.end_pos)
 
     @classmethod
     def from_meta(cls, meta: Meta) -> "Span":
@@ -77,6 +84,19 @@ class CompilerError(Exception):
     def __str__(self) -> str:
         return f"{type(self).__name__}: {self.message}"
 
+    def _report(self, source: str, description: report.Text, labels: report.Labels):
+        report.report_error(
+            source=source,
+            start_pos=self.span.start_pos,
+            description=description,
+            code=self.code,
+            labels=labels,
+        )
+
+    @abstractmethod
+    def report(self, source: str):
+        print(self)
+
 
 @dataclass
 class OperatorSpan:
@@ -97,6 +117,38 @@ class InvalidOperationError(CompilerError):
     operator: OperatorSpan
     operands: list[OperandSpan]
 
+    @override
+    def report(self, source: str):
+        operator = self.operator
+        description: Text
+        match self.operands:
+            case [OperandSpan(type_=t)]:
+                description = Text(
+                    f"Invalid operation '{operator.name}' for type ",
+                    Text.colored(t.name),
+                )
+            case [OperandSpan(type_=t1), OperandSpan(type_=t2)]:
+                description = Text(
+                    f"Invalid operation '{operator.name}' for types ",
+                    Text.colored(t1.name),
+                    " and ",
+                    Text.colored(t2.name),
+                )
+            case _:
+                raise InternalCompilerError("Unhandled case")
+
+        labels: Labels = []
+        for op in self.operands:
+            labels.append(
+                Label.colored_text(
+                    Text("This is of type ", Text.colored(op.type_.name)),
+                    color_id=op.type_.name,
+                    span=op.span,
+                )
+            )
+
+        self._report(source, description, labels)
+
 
 @dataclass
 class UnknownVariable(CompilerError):
@@ -112,6 +164,21 @@ class UnknownVariable(CompilerError):
     code = 2
 
     variable: str
+
+    @override
+    def report(self, source: str):
+        description = Text(
+            "Variable ",
+            Text.colored(self.variable),
+            " not defined in this scope",
+        )
+        labels = [
+            Label.colored_text(
+                Text("Not defined"), color_id=self.variable, span=self.span
+            )
+        ]
+
+        self._report(source, description, labels)
 
 
 @dataclass
@@ -135,6 +202,22 @@ class UndeclaredVariable(CompilerError):
 
     variable: str
 
+    @override
+    def report(self, source: str):
+        description = Text(
+            "Variable ",
+            Text.colored(self.variable),
+            " not defined in this scope",
+        )
+        labels = [
+            Label.colored_text(
+                Text("Not defined"),
+                color_id=self.variable,
+                span=self.span,
+            ),
+        ]
+        self._report(source, description, labels)
+
 
 @dataclass
 class UnexpectedType(CompilerError):
@@ -156,6 +239,25 @@ class UnexpectedType(CompilerError):
 
     expected_type: langtypes.Type
     actual_type: langtypes.Type
+
+    @override
+    def report(self, source: str):
+        description = Text(
+            "Expected a type of ",
+            Text.colored(self.expected_type.name),
+            " but found ",
+            Text.colored(self.actual_type.name),
+        )
+
+        labels = [
+            Label.colored_text(
+                Text("This is of type ", Text.colored(self.actual_type.name)),
+                color_id=self.actual_type.name,
+                span=self.span,
+            )
+        ]
+
+        self._report(source, description, labels)
 
 
 @dataclass
@@ -187,6 +289,40 @@ class TypeMismatch(CompilerError):
     expected_type: langtypes.Type
     expected_type_span: Span
 
+    @override
+    def report(self, source: str):
+        description = Text(
+            "Expected a type of ",
+            Text.colored(self.expected_type.name),
+            " but found ",
+            Text.colored(self.actual_type.name),
+        )
+
+        expected_type_label = Label.colored_text(
+            Text(
+                "Since this is of type ",
+                Text.colored(self.expected_type.name),
+                "...",
+            ),
+            color_id=self.expected_type.name,
+            span=self.expected_type_span,
+        )
+
+        actual_type_label = Label.colored_text(
+            Text(
+                "...expected this to be ",
+                Text.colored(self.expected_type.name),
+                " too, but found ",
+                Text.colored(self.actual_type.name),
+            ),
+            color_id=self.actual_type.name,
+            span=self.span,
+        )
+
+        labels = [expected_type_label, actual_type_label]
+
+        self._report(source, description, labels)
+
 
 @dataclass
 class DuplicatedCase(CompilerError):
@@ -213,6 +349,26 @@ class DuplicatedCase(CompilerError):
     code = 6
 
     previous_case_span: Span
+
+    @override
+    def report(self, source: str):
+        description = Text("Duplicated case found in match expression")
+
+        first_occurance_label = Label.colored_text(
+            Text("This case is handled first here..."),
+            color_id="color1",
+            span=self.previous_case_span,
+        )
+
+        second_occurance_label = Label.colored_text(
+            Text("...and duplicated here"),
+            color_id="color1",
+            span=self.span,
+        )
+
+        labels = [first_occurance_label, second_occurance_label]
+
+        self._report(source, description, labels)
 
 
 @dataclass
@@ -241,3 +397,34 @@ class InexhaustiveMatch(CompilerError):
     expected_type: langtypes.Type
     expected_type_span: Span
     remaining_values: Container[bool | str]
+
+    @override
+    def report(self, source: str):
+        description = Text(
+            "Match does not cover all cases for type ",
+            Text.colored(self.expected_type.name),
+        )
+
+        expected_type_label = Label.colored_text(
+            Text(
+                "This is of type ",
+                Text.colored(self.expected_type.name),
+            ),
+            color_id=self.expected_type.name,
+            span=self.expected_type_span,
+        )
+
+        remaining = ", ".join((f"`{v}`" for v in self.remaining_values))
+        add_block_msg = Text(
+            f"Add case block for value {remaining}"
+            if len(self.remaining_values) == 1
+            else f"Add case blocks for value {remaining}"
+        )
+        add_block_label = Label.text(
+            add_block_msg,
+            span=self.span,
+        )
+
+        labels = [expected_type_label, add_block_label]
+
+        self._report(source, description, labels)

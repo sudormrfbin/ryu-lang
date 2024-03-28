@@ -26,10 +26,14 @@ statement_block: statement_list
 		  | struct_stmt
 		  | enum_stmt
 		  | print_stmt
+		  | index_assignment
+		  | function_definition
+		  | return_stmt
 
 variable_declaration: "let" IDENTIFIER "=" expression
 
 assignment: IDENTIFIER "=" expression
+index_assignment : variable "[" POS_DIGIT "]" "=" expression
 
 print_stmt: "print" expression 
 
@@ -42,7 +46,9 @@ else_if_stmt: "elif" expression "{" statement_block "}"
 match_stmt: "match" expression "{" case_ladder "}"
 case_ladder: (case_stmt | _NL)+
 case_stmt: "case" match_pattern "{" statement_block "}"
-?match_pattern: bool_literal | enum_literal
+?match_pattern: bool_literal | enum_literal | wildcard_pattern | array_pattern
+
+wildcard_pattern: "_"
 
 while_stmt: "while" expression "{" statement_block "}"
 
@@ -55,6 +61,14 @@ struct_member: IDENTIFIER ":" IDENTIFIER
 enum_stmt: "enum" IDENTIFIER "{" enum_members "}"
 enum_members: (enum_member | _NL)+
 enum_member: IDENTIFIER
+
+function_definition: "fn" IDENTIFIER "(" [function_params] ")" "->" type_annotation "{" statement_block "}"
+function_params: function_param ("," function_param)*
+function_param: IDENTIFIER ":" type_annotation
+
+type_annotation: IDENTIFIER ["<" type_annotation ">"]
+
+return_stmt: "return" expression
 
 ?expression: equality
 
@@ -76,10 +90,14 @@ enum_member: IDENTIFIER
 ?!unary_op: ("+" | "-" | "!") unary_op
 		  | indexing
 
-?indexing: atom "[" POS_DIGIT "]"
-		|atom
+?indexing: function_call "[" POS_DIGIT "]"
+		| function_call
 
 POS_DIGIT: /[0-9]+/
+
+?function_call: atom "(" [function_args] ")"
+	   | atom
+function_args: expression ("," expression)*
 
 ?atom: bool_literal
 	 | int_literal
@@ -88,6 +106,8 @@ POS_DIGIT: /[0-9]+/
 	 | enum_literal
 	 | "(" expression ")"
 	 | variable
+	
+
 
 bool_literal: TRUE | FALSE
 TRUE: "true"
@@ -102,6 +122,9 @@ enum_literal: IDENTIFIER "::" IDENTIFIER
 
 variable: IDENTIFIER
 
-array_literal: "[" array_elements "]"
-array_elements: (array_element ("," array_element)*)?
+array_literal: ["<" type_annotation ">"] "[" [array_elements] "]"
+array_elements: array_element ("," array_element)*
 array_element: expression
+
+array_pattern: "[" (array_pattern_element ("," array_pattern_element)*)? "]"
+array_pattern_element: int_literal | wildcard_pattern

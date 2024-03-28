@@ -595,7 +595,7 @@ def test_and_true_and_true():
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
-    assert ast.eval(EMPTY_ENV) == True
+    assert ast.eval(EMPTY_ENV) is True
 
 
 def test_and_false_and_false():
@@ -613,7 +613,7 @@ def test_and_false_and_false():
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
-    assert ast.eval(EMPTY_ENV) == False
+    assert ast.eval(EMPTY_ENV) is False
 
 
 def test_and_true_and_false():
@@ -631,7 +631,7 @@ def test_and_true_and_false():
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
-    assert ast.eval(EMPTY_ENV) == False
+    assert ast.eval(EMPTY_ENV) is False
 
 
 def test_and_false_and_true():
@@ -649,7 +649,7 @@ def test_and_false_and_true():
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
-    assert ast.eval(EMPTY_ENV) == False
+    assert ast.eval(EMPTY_ENV) is False
 
 
 # for logical OR
@@ -670,7 +670,7 @@ def test_and_true_or_true():
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
-    assert ast.eval(EMPTY_ENV) == True
+    assert ast.eval(EMPTY_ENV) is True
 
 
 def test_and_false_or_false():
@@ -688,7 +688,7 @@ def test_and_false_or_false():
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
-    assert ast.eval(EMPTY_ENV) == False
+    assert ast.eval(EMPTY_ENV) is False
 
 
 def test_and_true_or_false():
@@ -706,7 +706,7 @@ def test_and_true_or_false():
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
-    assert ast.eval(EMPTY_ENV) == True
+    assert ast.eval(EMPTY_ENV) is True
 
 
 def test_and_false_or_true():
@@ -724,7 +724,7 @@ def test_and_false_or_true():
         "left": {BoolLiteral: Bool},
         "right": {BoolLiteral: Bool},
     }
-    assert ast.eval(EMPTY_ENV) == True
+    assert ast.eval(EMPTY_ENV) is True
 
 
 # For Not Operator
@@ -743,7 +743,7 @@ def test_not_true():
         UnaryOp: Bool,
         "operand": {BoolLiteral: Bool},
     }
-    assert ast.eval(EMPTY_ENV) == False
+    assert ast.eval(EMPTY_ENV) is False
 
 
 def test_not_false():
@@ -759,7 +759,7 @@ def test_not_false():
         UnaryOp: Bool,
         "operand": {BoolLiteral: Bool},
     }
-    assert ast.eval(EMPTY_ENV) == True
+    assert ast.eval(EMPTY_ENV) is True
 
 
 # For Greater Than Operator
@@ -780,7 +780,7 @@ def test_greaterthan_largernum_gt_smallernum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == True
+    assert ast.eval(EMPTY_ENV) is True
 
 
 def test_greaterthan_smallernum_gt_largernum():
@@ -798,7 +798,7 @@ def test_greaterthan_smallernum_gt_largernum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == False
+    assert ast.eval(EMPTY_ENV) is False
 
 
 # For Lesser Than Operator
@@ -819,7 +819,7 @@ def test_lesserthan_largernum_lt_smallernum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == False
+    assert ast.eval(EMPTY_ENV) is False
 
 
 def test_lesserthan_smallernum_lt_largernum():
@@ -837,7 +837,7 @@ def test_lesserthan_smallernum_lt_largernum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == True
+    assert ast.eval(EMPTY_ENV) is True
 
 
 def test_ltq_smallernum_ltq_largernum():
@@ -855,7 +855,7 @@ def test_ltq_smallernum_ltq_largernum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == True
+    assert ast.eval(EMPTY_ENV) is True
 
 
 def test_ltq_samenum_ltq_samenum():
@@ -873,7 +873,7 @@ def test_ltq_samenum_ltq_samenum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == True
+    assert ast.eval(EMPTY_ENV) is True
 
 
 def test_ltq_largernum_ltq_smallernum():
@@ -891,7 +891,7 @@ def test_ltq_largernum_ltq_smallernum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == False
+    assert ast.eval(EMPTY_ENV) is False
 
 
 def test_gtq_smallernum_gtq_largernum():
@@ -909,7 +909,7 @@ def test_gtq_smallernum_gtq_largernum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == False
+    assert ast.eval(EMPTY_ENV) is False
 
 
 def test_gtq_samenum_gtq_samenum():
@@ -927,7 +927,7 @@ def test_gtq_samenum_gtq_samenum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == True
+    assert ast.eval(EMPTY_ENV) is True
 
 
 def test_gtq_largernum_gtq_smallernum():
@@ -945,7 +945,7 @@ def test_gtq_largernum_gtq_smallernum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == True
+    assert ast.eval(EMPTY_ENV) is True
 
 
 def test_eqeq_samenum():
@@ -963,7 +963,7 @@ def test_eqeq_samenum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == True
+    assert ast.eval(EMPTY_ENV) is True
 
 
 def test_eqeq_diffnum():
@@ -981,7 +981,7 @@ def test_eqeq_diffnum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == False
+    assert ast.eval(EMPTY_ENV) is False
 
 
 def test_noteq_samenum():
@@ -999,7 +999,7 @@ def test_noteq_samenum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == False
+    assert ast.eval(EMPTY_ENV) is False
 
 
 def test_noteq_diffnum():
@@ -1017,4 +1017,4 @@ def test_noteq_diffnum():
         "left": {IntLiteral: Int},
         "right": {IntLiteral: Int},
     }
-    assert ast.eval(EMPTY_ENV) == True
+    assert ast.eval(EMPTY_ENV) is True
