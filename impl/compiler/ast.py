@@ -795,8 +795,7 @@ class Indexing(_Ast):
             )
         result = element_value[
             self.index
-        ]  
-        # TODO : handling out of index run time error
+        ] 
         return result
 
 
