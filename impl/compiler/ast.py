@@ -776,7 +776,11 @@ class Indexing(_Ast):
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type_ = self.element.typecheck(env)
         if not isinstance(self.type_, langtypes.Array):
-            raise  # TODO
+            raise  errors.IndexingNonArray(
+                message="indexing non array",
+                span=self.element.span,
+                actual_type=self.type_
+            )
         return self.type_
 
     @override
