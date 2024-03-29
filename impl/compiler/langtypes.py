@@ -76,7 +76,15 @@ class ReturnBlock(Block):
 @dataclass
 class Struct(UserDefinedType):
     struct_name: str
-    members: dict[str, Type]
+    members: Members
+
+
+@dataclass
+class Members(PrimitiveType):
+    types: dict[str, Type]
+
+    def __len__(self) -> int:
+        return len(self.types)
 
 
 @dataclass
