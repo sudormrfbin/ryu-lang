@@ -786,9 +786,17 @@ class Indexing(_Ast):
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         element_value = self.element.eval(env)
+        if (len(element_value)<=self.index):
+            raise errors.IndexingOutOfRange(
+                message="Indexing out of range",
+                length_array = len(element_value),
+                index_value = self.index,
+                span=self.span
+            )
         result = element_value[
             self.index
-        ]  # TODO : handling out of index run time error
+        ]  
+        # TODO : handling out of index run time error
         return result
 
 

@@ -518,3 +518,32 @@ class IndexingNonArray(CompilerError):
         ]
 
         self._report(source, description, labels)
+
+@dataclass
+class IndexingOutOfRange(CompilerError):
+    """
+    Raised when a index out of bound
+    let x=[1,2,3]
+    print x[3]
+    
+    """
+    code = 13
+
+    length_array: int
+    index_value: int
+
+    @override
+    def report(self, source: str):
+        description = Text(
+            "Indexing is out of range, ",
+            " maximum range is ", Text.colored(str(self.length_array-1))," but used value is :",Text.colored(str(self.index_value))
+        )
+
+        labels = [
+            Label.colored_text(
+                Text("is out of range "),
+                color_id=" ",
+                span=self.span,
+            )
+        ]
+        self._report(source, description, labels)
