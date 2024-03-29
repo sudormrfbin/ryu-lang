@@ -742,7 +742,10 @@ class ArrayLiteral(_Ast):
 
         match (declared_type, inferred_type):
             case (None, None):
-                raise  # TODO empty array without type annotation
+                raise errors.EmptyArrayWithoutTypeAnnotation(
+                message="Empty array without type annonation cannot be declared",
+                span=self.span,
+            )
             case (None, infer) if infer is not None:
                 self.type_ = langtypes.Array(infer)
             case (decl, None) if decl is not None:
