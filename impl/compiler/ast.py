@@ -640,24 +640,15 @@ class StructMembers(_Ast, ast_utils.AsList):
     members: list[StructMember]
 
     @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        for member in self.members:
-            member.typecheck(env)
-
-        self.type_ = langtypes.BLOCK
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Members:
+        types = {str(mem.name): mem.typecheck(env) for mem in self.members}
+        self.type_ = langtypes.Members(types)
         return self.type_
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         # eval is handled by struct statement
         pass
-
-    def members_as_dict(self) -> dict[str, langtypes.Type]:
-        result: dict[str, langtypes.Type] = {}
-        for mem in self.members:
-            assert mem.type_ is not None
-            result[mem.name] = mem.type_
-        return result
 
 
 @dataclass
@@ -671,10 +662,9 @@ class StructStmt(_Ast):
             raise  # TODO
             # raise errors.TypeRedefinition()
 
-        self.members.typecheck(env)
         self.type_ = langtypes.Struct(
             struct_name=self.name,
-            members=self.members.members_as_dict(),
+            members=self.members.typecheck(env),
         )
         env.define(self.name, self.type_)
         return self.type_

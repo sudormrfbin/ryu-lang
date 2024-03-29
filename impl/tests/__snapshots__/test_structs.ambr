@@ -49,7 +49,7 @@
           <class 'compiler.ast.StructMember'>: <class 'compiler.langtypes.Int'>,
         }),
       ]),
-      <class 'compiler.ast.StructMembers'>: <class 'compiler.langtypes.Block'>,
+      <class 'compiler.ast.StructMembers'>: <class 'compiler.langtypes.Members'>,
     }),
     <class 'compiler.ast.StructStmt'>: <class 'compiler.langtypes.Struct'>,
   })
