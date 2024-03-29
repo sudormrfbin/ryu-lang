@@ -428,3 +428,52 @@ class InexhaustiveMatch(CompilerError):
         labels = [expected_type_label, add_block_label]
 
         self._report(source, description, labels)
+
+
+@dataclass
+class DuplicatedAttribute(CompilerError):
+    """
+    Raised when a match statement has duplicated case arms.
+
+    ## Example
+    ```
+    enum Langs {
+        Malayalam
+        English
+        English
+    }
+    ```
+
+    ## Fix
+    ```
+    enum Langs {
+        Malayalam
+        English
+        Japanese
+    }
+    ```
+    """
+
+    code = 10
+
+    previous_case_span: Span
+
+    @override
+    def report(self, source: str):
+        description = Text("Duplicated attribute found in enum")
+
+        first_occurance_label = Label.colored_text(
+            Text("This atrribute is declared first here..."),
+            color_id="color1",
+            span=self.previous_case_span,
+        )
+
+        second_occurance_label = Label.colored_text(
+            Text("...and duplicated here"),
+            color_id="color1",
+            span=self.span,
+        )
+
+        labels = [first_occurance_label, second_occurance_label]
+
+        self._report(source, description, labels)

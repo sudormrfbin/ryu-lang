@@ -602,7 +602,7 @@ class ForStmt(_Statement):
         array_type = self.arr_name.typecheck(env)
         if not isinstance(array_type, langtypes.Array):
             raise errors.UnexpectedType(
-                message="Unexpected type for if condition",
+                message="Unexpected type",
                 span=self.arr_name.span,
                 expected_type=langtypes.Array(array_type),
                 actual_type=array_type,
@@ -825,12 +825,15 @@ class EnumMembers(_Ast, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        seen: set[Token] = set()
+        seen: dict[Token, EnumMember] = {}
         for member in self.members:
             if member.name in seen:
-                raise  # TODO
-                # raise errors.DuplicatedAttribute()
-            seen.add(member.name)
+                raise errors.DuplicatedAttribute(
+                    message="Enum attribute duplicated",
+                    span=member.span,
+                    previous_case_span=seen[member.name].span,
+                )
+            seen[member.name]=member
             member.typecheck(env)
 
         self.type_ = langtypes.BLOCK
