@@ -461,3 +461,32 @@ class ArrayTypeMismatch(CompilerError):
         ]
 
         self._report(source, description, labels)
+
+
+@dataclass
+class EmptyArrayWithoutTypeAnnotation(CompilerError):
+    """
+    Raised when a array declared without type annonation
+    let x=[]
+    
+    FIX
+    let x = <int>[]
+    """
+
+    code = 9
+
+    @override
+    def report(self, source: str):
+        description = Text(
+            "Empty array cannot be declared without specifying data type",
+        )
+
+        labels = [
+            Label.colored_text(
+                Text("<", Text.colored("data type"),">[]"),
+                color_id="data type",
+                span=self.span,
+            )
+        ]
+
+        self._report(source, description, labels)
