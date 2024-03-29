@@ -622,14 +622,11 @@ class ForStmt(_Statement):
 @dataclass
 class StructMember(_Ast):
     name: Token
-    ident_type: Token
+    ident_type: "TypeAnnotation"
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = langtypes.Type.from_str(self.ident_type, env)
-        if self.type_ is None:
-            raise  # TODO
-            # raise errors.UnassignableType()
+        self.type_ = self.ident_type.typecheck(env)
         return self.type_
 
     @override

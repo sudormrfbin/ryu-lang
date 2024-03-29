@@ -56,7 +56,7 @@ for_stmt: "for" IDENTIFIER "in" expression "{" statement_block "}"
 
 struct_stmt: "struct" IDENTIFIER "{" struct_members "}"
 struct_members: (struct_member | _NL)+
-struct_member: IDENTIFIER ":" IDENTIFIER
+struct_member: IDENTIFIER ":" type_annotation
 
 enum_stmt: "enum" IDENTIFIER "{" enum_members "}"
 enum_members: (enum_member | _NL)+

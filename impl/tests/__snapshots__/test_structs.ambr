@@ -1,0 +1,56 @@
+# serializer version: 1
+# name: test_struct_def
+  dict({
+    <class 'compiler.ast.StructStmt'>: dict({
+      'members': dict({
+        <class 'compiler.ast.StructMembers'>: dict({
+          'members': list([
+            dict({
+              <class 'compiler.ast.StructMember'>: dict({
+                'ident_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                    'ty': Token('IDENTIFIER', 'string'),
+                  }),
+                }),
+                'name': Token('IDENTIFIER', 'name'),
+              }),
+            }),
+            dict({
+              <class 'compiler.ast.StructMember'>: dict({
+                'ident_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                    'ty': Token('IDENTIFIER', 'int'),
+                  }),
+                }),
+                'name': Token('IDENTIFIER', 'age'),
+              }),
+            }),
+          ]),
+        }),
+      }),
+      'name': Token('IDENTIFIER', 'Person'),
+    }),
+  })
+# ---
+# name: test_struct_def.1
+  dict({
+    'members': dict({
+      'members': list([
+        dict({
+          'ident_type': dict({
+            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.String'>,
+          }),
+          <class 'compiler.ast.StructMember'>: <class 'compiler.langtypes.String'>,
+        }),
+        dict({
+          'ident_type': dict({
+            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.StructMember'>: <class 'compiler.langtypes.Int'>,
+        }),
+      ]),
+      <class 'compiler.ast.StructMembers'>: <class 'compiler.langtypes.Block'>,
+    }),
+    <class 'compiler.ast.StructStmt'>: <class 'compiler.langtypes.Struct'>,
+  })
+# ---
