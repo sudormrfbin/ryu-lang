@@ -701,7 +701,7 @@ class ArrayElement(_Ast):
 
 
 @dataclass
-class ArrayElements(_Ast, ast_utils.AsList):
+class  ArrayElements(_Ast, ast_utils.AsList):
     members: list[ArrayElement]
 
     @override
@@ -710,7 +710,13 @@ class ArrayElements(_Ast, ast_utils.AsList):
         check_type = self.members[0].typecheck(env)
         for mem in self.members:
             if mem.typecheck(env) != check_type:
-                raise  # TODO
+                raise  errors.ArrayTypeMismatch(
+                message="Unexpected type for array element",
+                span=mem.span,
+                expected_type=check_type,
+                actual_type=mem.typecheck(env),
+                expected_type_span=self.members[0].span
+            )
         self.type_ = check_type
         return self.type_
 
