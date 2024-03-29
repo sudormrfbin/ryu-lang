@@ -675,7 +675,71 @@ class StructStmt(_Ast):
         pass
 
 
-# array
+@dataclass
+class StructInitMember(_Ast):
+    name: Token
+    value: _Expression
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = self.value.typecheck(env)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        return self.value.eval(env)
+
+
+@dataclass
+class StructInitMembers(_Ast, ast_utils.AsList):
+    members: list[StructInitMember]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Members:
+        types = {str(mem.name): mem.typecheck(env) for mem in self.members}
+        self.type_ = langtypes.Members(types)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> dict[str, Any]:
+        return {str(mem.name): mem.eval(env) for mem in self.members}
+
+
+@dataclass
+class StructInit(_Ast, ast_utils.AsList):
+    name: Token
+    members: Optional[StructInitMembers]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Struct:
+        struct_type = langtypes.Type.from_str(self.name, env)
+        if not isinstance(struct_type, langtypes.Struct):
+            raise  # TODO errors.UnexpectedType()
+
+        if self.members:
+            members_type = self.members.typecheck(env)
+        else:
+            members_type = langtypes.Members({})
+
+        mem_len, param_len = len(members_type), len(struct_type.members)
+        if mem_len < param_len:
+            raise  # TODO insufficient members
+        if mem_len > param_len:
+            raise  # TODO too many members
+        if members_type != struct_type.members:
+            raise  # TODO type mismatch
+
+        self.type_ = struct_type
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> langvalues.StructValue:
+        return langvalues.StructValue(
+            name=self.name,
+            attrs=self.members.eval(env) if self.members else {},
+        )
+
+
 @dataclass
 class ArrayElement(_Ast):
     element: _Expression
@@ -1024,40 +1088,95 @@ class FunctionArgs(_Ast, ast_utils.AsList):
 
 
 @dataclass
-class FunctionCall(_Expression):
+class FunctionCall(_Expression):  # TODO: rename to FunctionCallOrStructInit
     callee: _Expression
-    args: Optional[FunctionArgs]
+    args: Optional[FunctionArgs | StructInitMembers]
+
+    is_fn: bool | None = None
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         callee_type = self.callee.typecheck(env)
-        if not isinstance(callee_type, langtypes.Function):
-            raise  # TODO
+        args = self.args
+        match (callee_type, args):
+            case (langtypes.Function(), FunctionArgs() | None):
+                self.is_fn = True
+                return self.typecheck_function_call(callee_type, args, env)
+            case (langtypes.Struct(), StructInitMembers() | None):
+                self.is_fn = False
+                return self.typecheck_struct_init(callee_type, args, env)
+            case _:
+                raise  # TODO
 
-        if self.args:
-            args_type = self.args.typecheck(env)
+    def typecheck_function_call(
+        self,
+        ty: langtypes.Function,
+        args: Optional[FunctionArgs],
+        env: TypeEnvironment,
+    ):
+        if args:
+            args_type = args.typecheck(env)
         else:
             args_type = langtypes.Params([])
 
-        arg_len, param_len = len(args_type), len(callee_type.arguments)
+        arg_len, param_len = len(args_type), len(ty.arguments)
         if arg_len < param_len:
             raise  # TODO insufficient args
         if arg_len > param_len:
             raise  # TODO too many args
-        if args_type != callee_type.arguments:
+        if args_type != ty.arguments:
             raise  # TODO type mismatch
 
-        self.type_ = callee_type.return_type
+        self.type_ = ty.return_type
+        return self.type_
+
+    def typecheck_struct_init(
+        self,
+        ty: langtypes.Struct,
+        members: Optional[StructInitMembers],
+        env: TypeEnvironment,
+    ):
+        if members:
+            members_type = members.typecheck(env)
+        else:
+            members_type = langtypes.Members({})
+
+        mem_len, param_len = len(members_type), len(ty.members)
+        if mem_len < param_len:
+            raise  # TODO insufficient members
+        if mem_len > param_len:
+            raise  # TODO too many members
+        if members_type != ty.members:
+            raise  # TODO type mismatch
+
+        self.type_ = ty
         return self.type_
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        fn = self.callee.eval(env)
-        assert isinstance(fn, langvalues.Function)
+        if self.is_fn is True:
+            return self.eval_function_call(self.callee.eval(env), env)
+        elif self.is_fn is False:
+            return self.eval_struct_init(env)
+        else:
+            assert False
 
+    def eval_function_call(
+        self, fn: langvalues.Function, env: RuntimeEnvironment
+    ) -> Any:
         args = self.args.eval(env) if self.args else []
+        assert isinstance(args, list)
 
         return fn.call(args, env)
+
+    def eval_struct_init(self, env: RuntimeEnvironment) -> langvalues.StructValue:
+        assert isinstance(self.args, StructInitMembers)
+        assert isinstance(self.type_, langtypes.Struct)
+
+        return langvalues.StructValue(
+            name=self.type_.struct_name,
+            attrs=self.args.eval(env) if self.args else {},
+        )
 
 
 @dataclass

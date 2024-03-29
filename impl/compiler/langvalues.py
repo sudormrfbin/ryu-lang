@@ -24,6 +24,21 @@ class EnumValue:
         return hash(repr(self))
 
 
+@dataclass
+class StructValue:
+    name: str
+    attrs: dict[str, Any]
+
+    @override
+    def __str__(self) -> str:
+        attrs = ", ".join(f"{attr}={value}" for attr, value in self.attrs)
+        return f"{self.name}({attrs})"
+
+    @override
+    def __hash__(self) -> int:
+        return hash(repr(self))
+
+
 class Function:
     @abstractmethod
     def call(self, args: list[Any], env: "RuntimeEnvironment") -> Any:
