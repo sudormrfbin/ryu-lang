@@ -1,8 +1,8 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, ClassVar
 from typing_extensions import override
-from compiler import runtime
+from compiler import langtypes, runtime
 
 from compiler.env import RuntimeEnvironment
 
@@ -28,6 +28,10 @@ class Function:
     @abstractmethod
     def call(self, args: list[Any], env: "RuntimeEnvironment") -> Any:
         pass
+
+
+class BuiltinFunction(Function):
+    TYPE: ClassVar[langtypes.Function]
 
 
 @dataclass

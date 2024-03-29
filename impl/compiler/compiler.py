@@ -2,8 +2,23 @@ from typing import Any
 
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 
-from compiler import errors
+from compiler import builtins, errors, langvalues
 from compiler.parser import parse, parse_tree_to_ast
+
+BUILTIN_FUNCTIONS: list[type[langvalues.BuiltinFunction]] = [
+    builtins.SumFunction,
+]
+
+
+def get_default_environs() -> tuple[TypeEnvironment, RuntimeEnvironment]:
+    type_env = TypeEnvironment()
+    runtime_env = RuntimeEnvironment()
+
+    for fn in BUILTIN_FUNCTIONS:
+        type_env.define(fn.TYPE.function_name, fn.TYPE)
+        runtime_env.define(fn.TYPE.function_name, fn())
+
+    return (type_env, runtime_env)
 
 
 def run(source: str, type_env: TypeEnvironment, runtime_env: RuntimeEnvironment) -> Any:

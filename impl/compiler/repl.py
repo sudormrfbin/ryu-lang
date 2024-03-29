@@ -1,10 +1,8 @@
-from compiler.env import RuntimeEnvironment, TypeEnvironment
-from compiler.compiler import run
+from compiler.compiler import get_default_environs, run
 
 
 def repl() -> None:
-    type_env = TypeEnvironment()
-    runtime_env = RuntimeEnvironment()
+    type_env, runtime_env = get_default_environs()
 
     while True:
         try:
