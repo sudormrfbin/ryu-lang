@@ -94,6 +94,10 @@ class Enum(UserDefinedType):
 class Array(PrimitiveType):
     ty: Type
 
+    @property
+    def name(self) -> str:
+        return f'Array<{self.ty.name}>'
+
 
 @dataclass
 class UntypedArray(PrimitiveType):
