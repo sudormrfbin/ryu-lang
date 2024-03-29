@@ -753,8 +753,13 @@ class ArrayLiteral(_Ast):
             case (decl, infer) if decl == infer and decl is not None:
                 self.type_ = langtypes.Array(decl)
             case _:
-                raise  # TODO mismatch
-
+                raise  errors.ArrayTypeMismatch(
+                message="Unexpected type for array element",
+                span=self.members.span,
+                expected_type=declared_type,
+                actual_type=inferred_type,
+                expected_type_span=self.declared_type.span
+            )
         return self.type_
 
     @override

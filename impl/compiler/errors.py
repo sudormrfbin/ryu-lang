@@ -490,3 +490,4 @@ class EmptyArrayWithoutTypeAnnotation(CompilerError):
         ]
 
         self._report(source, description, labels)
+
