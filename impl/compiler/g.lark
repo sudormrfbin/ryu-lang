@@ -95,7 +95,7 @@ return_stmt: "return" expression
 
 POS_DIGIT: /[0-9]+/
 
-?function_call: atom "(" [function_args] ")"
+?function_call: atom "(" [function_args | struct_init_members] ")"
 	   | atom
 function_args: expression ("," expression)*
 
@@ -107,7 +107,8 @@ function_args: expression ("," expression)*
 	 | "(" expression ")"
 	 | variable
 	
-
+struct_init_members: struct_init_member ("," struct_init_member)*
+struct_init_member: IDENTIFIER "=" expression
 
 bool_literal: TRUE | FALSE
 TRUE: "true"

@@ -54,3 +54,135 @@
     <class 'compiler.ast.StructStmt'>: <class 'compiler.langtypes.Struct'>,
   })
 # ---
+# name: test_struct_init
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.StructStmt'>: dict({
+            'members': dict({
+              <class 'compiler.ast.StructMembers'>: dict({
+                'members': list([
+                  dict({
+                    <class 'compiler.ast.StructMember'>: dict({
+                      'ident_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'ty': Token('IDENTIFIER', 'string'),
+                        }),
+                      }),
+                      'name': Token('IDENTIFIER', 'name'),
+                    }),
+                  }),
+                  dict({
+                    <class 'compiler.ast.StructMember'>: dict({
+                      'ident_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'ty': Token('IDENTIFIER', 'int'),
+                        }),
+                      }),
+                      'name': Token('IDENTIFIER', 'age'),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'name': Token('IDENTIFIER', 'Person'),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'p'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.StructInitMembers'>: dict({
+                    'members': list([
+                      dict({
+                        <class 'compiler.ast.StructInitMember'>: dict({
+                          'name': Token('IDENTIFIER', 'name'),
+                          'value': dict({
+                            <class 'compiler.ast.StringLiteral'>: dict({
+                              'value': 'bob',
+                            }),
+                          }),
+                        }),
+                      }),
+                      dict({
+                        <class 'compiler.ast.StructInitMember'>: dict({
+                          'name': Token('IDENTIFIER', 'age'),
+                          'value': dict({
+                            <class 'compiler.ast.IntLiteral'>: dict({
+                              'value': 23,
+                            }),
+                          }),
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'Person'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_struct_init.1
+  dict({
+    'stmts': list([
+      dict({
+        'members': dict({
+          'members': list([
+            dict({
+              'ident_type': dict({
+                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.String'>,
+              }),
+              <class 'compiler.ast.StructMember'>: <class 'compiler.langtypes.String'>,
+            }),
+            dict({
+              'ident_type': dict({
+                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+              }),
+              <class 'compiler.ast.StructMember'>: <class 'compiler.langtypes.Int'>,
+            }),
+          ]),
+          <class 'compiler.ast.StructMembers'>: <class 'compiler.langtypes.Members'>,
+        }),
+        <class 'compiler.ast.StructStmt'>: <class 'compiler.langtypes.Struct'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'members': list([
+              dict({
+                'value': dict({
+                  <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+                }),
+                <class 'compiler.ast.StructInitMember'>: <class 'compiler.langtypes.String'>,
+              }),
+              dict({
+                'value': dict({
+                  <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                }),
+                <class 'compiler.ast.StructInitMember'>: <class 'compiler.langtypes.Int'>,
+              }),
+            ]),
+            <class 'compiler.ast.StructInitMembers'>: <class 'compiler.langtypes.Members'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Struct'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Struct'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Struct'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---
