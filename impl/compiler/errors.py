@@ -547,3 +547,49 @@ class IndexingOutOfRange(CompilerError):
             )
         ]
         self._report(source, description, labels)
+
+        
+@dataclass
+class ArrayIndexAssignmentTypeMismatch(CompilerError):
+    code = 14
+
+    actual_type: langtypes.Type
+    expected_type: langtypes.Type
+    expected_array_type: langtypes.Type
+    expected_type_span: Span
+
+    @override
+    def report(self, source: str):
+        description = Text(
+            "Expected a type of ",
+            Text.colored(self.expected_array_type.name),
+            " but found ",
+            Text.colored(self.actual_type.name),
+        )
+
+        expected_type_label = Label.colored_text(
+            Text(
+                "Since this is of type ",
+                Text.colored(self.expected_type.name),
+                "...",
+            ),
+            color_id=self.expected_type.name,
+            span=self.expected_type_span,
+        )
+
+        actual_type_label = Label.colored_text(
+            Text(
+                "...expected this to be ",
+                Text.colored(self.expected_array_type.name),
+                ", but found ",
+                Text.colored(self.actual_type.name),
+            ),
+            color_id=self.actual_type.name,
+            span=self.span,
+        )
+
+        labels = [expected_type_label, actual_type_label]
+
+        self._report(source, description, labels)
+
+

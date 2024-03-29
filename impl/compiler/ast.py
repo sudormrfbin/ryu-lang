@@ -813,10 +813,22 @@ class IndexAssignment(_Ast):
         self.type_ = self.arrayname.typecheck(env)
         value_type = self.value.typecheck(env)
         if not isinstance(self.type_, langtypes.Array):
-            raise  # TODO
-
+            raise  errors.IndexingNonArray(
+                message="indexing non array",
+                span=self.element.span,
+                actual_type=self.type_
+            )
         if self.type_.ty != value_type:
-            raise  # TODO
+            raise  errors.ArrayIndexAssignmentTypeMismatch(
+                message = f"Expected type {self.type_ } but got {value_type}",
+                span = self.value.span,
+                actual_type = value_type ,
+                expected_type = self.type_,
+                expected_array_type=self.type_.ty,
+                expected_type_span = self.arrayname.span 
+            )
+
+
         return self.type_
 
     @override
