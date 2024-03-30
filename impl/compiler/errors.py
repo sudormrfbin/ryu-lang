@@ -514,7 +514,6 @@ class IndexingNonArray(CompilerError):
     Raised when a index used on non-array data type
     let x=2
     x[1]
-
     """
 
     code = 11
@@ -525,12 +524,12 @@ class IndexingNonArray(CompilerError):
         description = Text(
             " Expression needs to be of ",
             Text.colored("Array"),
-            " data type to use indexing operations ",
+            " type to use indexing operations ",
         )
 
         labels = [
             Label.colored_text(
-                Text("is of ", Text.colored(self.actual_type.name)),
+                Text("Type is ", Text.colored(self.actual_type.name)),
                 color_id=self.actual_type.name,
                 span=self.span,
             )
