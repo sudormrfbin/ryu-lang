@@ -441,23 +441,31 @@ class ArrayTypeMismatch(CompilerError):
     @override
     def report(self, source: str):
         description = Text(
-            "Expected a type of ",
+            "Expected array element to be type of ",
             Text.colored(self.expected_type.name),
             " but found ",
             Text.colored(self.actual_type.name),
-            ", Array elements need to be of same datatype",
+            ", array elements need to be of same datatype",
         )
 
         labels = [
             Label.colored_text(
-                Text("This is of type ", Text.colored(self.actual_type.name)),
-                color_id=self.actual_type.name,
-                span=self.span,
-            ),
-            Label.colored_text(
-                Text("This is of type ", Text.colored(self.expected_type.name)),
+                Text(
+                    "Since this is of type ",
+                    Text.colored(self.expected_type.name),
+                    "...",
+                ),
                 color_id=self.expected_type.name,
                 span=self.expected_type_span,
+            ),
+            Label.colored_text(
+                Text(
+                    f"...expected this to be {self.expected_type.name}",
+                    ", but found ",
+                    Text.colored(self.actual_type.name),
+                ),
+                color_id=self.actual_type.name,
+                span=self.span,
             ),
         ]
 
@@ -468,9 +476,10 @@ class ArrayTypeMismatch(CompilerError):
 class EmptyArrayWithoutTypeAnnotation(CompilerError):
     """
     Raised when a array declared without type annonation
+
     let x=[]
 
-    FIX
+    ## Fix
     let x = <int>[]
     """
 
