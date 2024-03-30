@@ -815,7 +815,7 @@ class IndexAssignment(_Ast):
         if not isinstance(self.type_, langtypes.Array):
             raise errors.IndexingNonArray(
                 message="indexing non array",
-                span=self.element.span,
+                span=self.arrayname.span,
                 actual_type=self.type_,
             )
         if self.type_.ty != value_type:
