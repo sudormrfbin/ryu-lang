@@ -13,18 +13,26 @@ EMPTY_TYPE_ENV = TypeEnvironment()
 
 def test_if_stmt_not_bool_cond():
     with pytest.raises(ArrayIndexAssignmentTypeMismatch) as excinfo:
-        ast = parse_tree_to_ast(parse('''let a=[1,3,5]
-                                         a[2]=true'''))
+        ast = parse_tree_to_ast(
+            parse(
+                """let a=[1,3,5]
+                                         a[2]=true"""
+            )
+        )
         ast.typecheck(EMPTY_TYPE_ENV)
         ast.eval(EMPTY_ENV)
 
     err = excinfo.value
 
-    assert err.span.coord() == ((2,47),(2,51))
+    assert err.span.coord() == ((2, 47), (2, 51))
 
 
 def test_only_variable_output(capfd: CaptureFixture[str], snapshot: str):
-    run('''let a=[1,3,5]
-           a[2]=true''', EMPTY_TYPE_ENV, EMPTY_ENV)
+    run(
+        """let a=[1,3,5]
+           a[2]=true""",
+        EMPTY_TYPE_ENV,
+        EMPTY_ENV,
+    )
     _, err = capfd.readouterr()
     assert snapshot == err

@@ -18,8 +18,8 @@ def test_if_stmt_not_bool_cond():
 
     err = excinfo.value
 
-    assert err.span.coord() == ((1,13),(1,17))
-    assert err.expected_type_span.coord() == ((1,8),(1,11))
+    assert err.span.coord() == ((1, 13), (1, 17))
+    assert err.expected_type_span.coord() == ((1, 8), (1, 11))
     assert err.expected_type == INT
     assert err.actual_type == BOOL
 

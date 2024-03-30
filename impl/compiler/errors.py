@@ -429,13 +429,14 @@ class InexhaustiveMatch(CompilerError):
 
         self._report(source, description, labels)
 
+
 @dataclass
 class ArrayTypeMismatch(CompilerError):
     code = 8
 
     expected_type: langtypes.Type
     actual_type: langtypes.Type
-    expected_type_span :Span
+    expected_type_span: Span
 
     @override
     def report(self, source: str):
@@ -444,7 +445,7 @@ class ArrayTypeMismatch(CompilerError):
             Text.colored(self.expected_type.name),
             " but found ",
             Text.colored(self.actual_type.name),
-            ", Array elements need to be of same datatype"
+            ", Array elements need to be of same datatype",
         )
 
         labels = [
@@ -457,7 +458,7 @@ class ArrayTypeMismatch(CompilerError):
                 Text("This is of type ", Text.colored(self.expected_type.name)),
                 color_id=self.expected_type.name,
                 span=self.expected_type_span,
-            )
+            ),
         ]
 
         self._report(source, description, labels)
@@ -468,7 +469,7 @@ class EmptyArrayWithoutTypeAnnotation(CompilerError):
     """
     Raised when a array declared without type annonation
     let x=[]
-    
+
     FIX
     let x = <int>[]
     """
@@ -483,7 +484,7 @@ class EmptyArrayWithoutTypeAnnotation(CompilerError):
 
         labels = [
             Label.colored_text(
-                Text("<", Text.colored("data type"),">[]"),
+                Text("<", Text.colored("data type"), ">[]"),
                 color_id="data type",
                 span=self.span,
             )
@@ -491,14 +492,16 @@ class EmptyArrayWithoutTypeAnnotation(CompilerError):
 
         self._report(source, description, labels)
 
+
 @dataclass
 class IndexingNonArray(CompilerError):
     """
     Raised when a index used on non-array data type
     let x=2
     x[1]
-    
+
     """
+
     code = 11
     actual_type: langtypes.Type
 
@@ -506,7 +509,8 @@ class IndexingNonArray(CompilerError):
     def report(self, source: str):
         description = Text(
             " Expression needs to be of ",
-            Text.colored("Array")," data type to use indexing operations "
+            Text.colored("Array"),
+            " data type to use indexing operations ",
         )
 
         labels = [
@@ -519,14 +523,16 @@ class IndexingNonArray(CompilerError):
 
         self._report(source, description, labels)
 
+
 @dataclass
 class IndexingOutOfRange(CompilerError):
     """
     Raised when a index out of bound
     let x=[1,2,3]
     print x[3]
-    
+
     """
+
     code = 13
 
     length_array: int
@@ -536,7 +542,10 @@ class IndexingOutOfRange(CompilerError):
     def report(self, source: str):
         description = Text(
             "Indexing is out of range, ",
-            " maximum range is ", Text.colored(str(self.length_array-1))," but used value is :",Text.colored(str(self.index_value))
+            " maximum range is ",
+            Text.colored(str(self.length_array - 1)),
+            " but used value is :",
+            Text.colored(str(self.index_value)),
         )
 
         labels = [
@@ -548,7 +557,7 @@ class IndexingOutOfRange(CompilerError):
         ]
         self._report(source, description, labels)
 
-        
+
 @dataclass
 class ArrayIndexAssignmentTypeMismatch(CompilerError):
     code = 14
@@ -591,5 +600,3 @@ class ArrayIndexAssignmentTypeMismatch(CompilerError):
         labels = [expected_type_label, actual_type_label]
 
         self._report(source, description, labels)
-
-
