@@ -823,8 +823,7 @@ class IndexAssignment(_Ast):
                 message=f"Expected type {self.type_ } but got {value_type}",
                 span=self.value.span,
                 actual_type=value_type,
-                expected_type=self.type_,
-                expected_array_type=self.type_.ty,
+                expected_type=self.type_.ty,
                 expected_type_span=self.arrayname.span,
             )
 

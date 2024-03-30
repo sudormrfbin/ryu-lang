@@ -577,14 +577,13 @@ class ArrayIndexAssignmentTypeMismatch(CompilerError):
 
     actual_type: langtypes.Type
     expected_type: langtypes.Type
-    expected_array_type: langtypes.Type
     expected_type_span: Span
 
     @override
     def report(self, source: str):
         description = Text(
             "Expected a type of ",
-            Text.colored(self.expected_array_type.name),
+            Text.colored(self.expected_type.name),
             " but found ",
             Text.colored(self.actual_type.name),
         )
@@ -592,17 +591,19 @@ class ArrayIndexAssignmentTypeMismatch(CompilerError):
         expected_type_label = Label.colored_text(
             Text(
                 "Since this is of type ",
+                Text.colored("Array<", color_id="array"),
                 Text.colored(self.expected_type.name),
+                Text.colored(">", color_id="array"),
                 "...",
             ),
-            color_id=self.expected_type.name,
+            color_id="array",
             span=self.expected_type_span,
         )
 
         actual_type_label = Label.colored_text(
             Text(
                 "...expected this to be ",
-                Text.colored(self.expected_array_type.name),
+                Text.colored(self.expected_type.name),
                 ", but found ",
                 Text.colored(self.actual_type.name),
             ),
