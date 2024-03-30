@@ -701,7 +701,7 @@ class ArrayElement(_Ast):
 
 
 @dataclass
-class  ArrayElements(_Ast, ast_utils.AsList):
+class ArrayElements(_Ast, ast_utils.AsList):
     members: list[ArrayElement]
 
     @override
@@ -710,13 +710,13 @@ class  ArrayElements(_Ast, ast_utils.AsList):
         check_type = self.members[0].typecheck(env)
         for mem in self.members:
             if mem.typecheck(env) != check_type:
-                raise  errors.ArrayTypeMismatch(
-                message="Unexpected type for array element",
-                span=mem.span,
-                expected_type=check_type,
-                actual_type=mem.typecheck(env),
-                expected_type_span=self.members[0].span
-            )
+                raise errors.ArrayTypeMismatch(
+                    message="Unexpected type for array element",
+                    span=mem.span,
+                    expected_type=check_type,
+                    actual_type=mem.typecheck(env),
+                    expected_type_span=self.members[0].span,
+                )
         self.type_ = check_type
         return self.type_
 
@@ -743,9 +743,9 @@ class ArrayLiteral(_Ast):
         match (declared_type, inferred_type):
             case (None, None):
                 raise errors.EmptyArrayWithoutTypeAnnotation(
-                message="Empty array without type annonation cannot be declared",
-                span=self.span,
-            )
+                    message="Empty array without type annonation cannot be declared",
+                    span=self.span,
+                )
             case (None, infer) if infer is not None:
                 self.type_ = langtypes.Array(infer)
             case (decl, None) if decl is not None:
@@ -753,13 +753,13 @@ class ArrayLiteral(_Ast):
             case (decl, infer) if decl == infer and decl is not None:
                 self.type_ = langtypes.Array(decl)
             case _:
-                raise  errors.ArrayTypeMismatch(
-                message="Unexpected type for array element",
-                span=self.members.span,
-                expected_type=declared_type,
-                actual_type=inferred_type,
-                expected_type_span=self.declared_type.span
-            )
+                raise errors.ArrayTypeMismatch(
+                    message="Unexpected type for array element",
+                    span=self.members.span,
+                    expected_type=declared_type,
+                    actual_type=inferred_type,
+                    expected_type_span=self.declared_type.span,
+                )
         return self.type_
 
     @override
@@ -776,26 +776,24 @@ class Indexing(_Ast):
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type_ = self.element.typecheck(env)
         if not isinstance(self.type_, langtypes.Array):
-            raise  errors.IndexingNonArray(
+            raise errors.IndexingNonArray(
                 message="indexing non array",
                 span=self.element.span,
-                actual_type=self.type_
+                actual_type=self.type_,
             )
         return self.type_
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         element_value = self.element.eval(env)
-        if (len(element_value)<=self.index):
+        if len(element_value) <= self.index:
             raise errors.IndexingOutOfRange(
                 message="Indexing out of range",
-                length_array = len(element_value),
-                index_value = self.index,
-                span=self.span
+                length_array=len(element_value),
+                index_value=self.index,
+                span=self.span,
             )
-        result = element_value[
-            self.index
-        ] 
+        result = element_value[self.index]
         return result
 
 
@@ -810,21 +808,20 @@ class IndexAssignment(_Ast):
         self.type_ = self.arrayname.typecheck(env)
         value_type = self.value.typecheck(env)
         if not isinstance(self.type_, langtypes.Array):
-            raise  errors.IndexingNonArray(
+            raise errors.IndexingNonArray(
                 message="indexing non array",
                 span=self.element.span,
-                actual_type=self.type_
+                actual_type=self.type_,
             )
         if self.type_.ty != value_type:
-            raise  errors.ArrayIndexAssignmentTypeMismatch(
-                message = f"Expected type {self.type_ } but got {value_type}",
-                span = self.value.span,
-                actual_type = value_type ,
-                expected_type = self.type_,
+            raise errors.ArrayIndexAssignmentTypeMismatch(
+                message=f"Expected type {self.type_ } but got {value_type}",
+                span=self.value.span,
+                actual_type=value_type,
+                expected_type=self.type_,
                 expected_array_type=self.type_.ty,
-                expected_type_span = self.arrayname.span 
+                expected_type_span=self.arrayname.span,
             )
-
 
         return self.type_
 

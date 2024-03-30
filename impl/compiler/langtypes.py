@@ -96,7 +96,7 @@ class Array(PrimitiveType):
 
     @property
     def name(self) -> str:
-        return f'Array<{self.ty.name}>'
+        return f"Array<{self.ty.name}>"
 
 
 @dataclass
