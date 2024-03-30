@@ -1,0 +1,15 @@
+# serializer version: 1
+# name: test_empty_array_without_type_annotation_output
+  '''
+  
+  [31m[E09] Error:[0m Empty array cannot be declared without specifying data type
+     [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0mstdin:1:9[38;5;246m][0m
+     [38;5;246m│[0m
+   [38;5;246m1 │[0m [38;5;249ml[0m[38;5;249me[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249mx[0m[38;5;249m [0m[38;5;249m=[0m[38;5;249m [0m[38;5;201m[[0m[38;5;201m][0m
+   [38;5;240m  │[0m         [38;5;201m─[0m[38;5;201m┬[0m  
+   [38;5;240m  │[0m          [38;5;201m╰[0m[38;5;201m─[0m[38;5;201m─[0m Declare the type with [38;5;201m<type>[0m[], for example [38;5;201m<int>[0m[]
+  [38;5;246m───╯[0m
+  
+  
+  '''
+# ---

@@ -493,8 +493,14 @@ class EmptyArrayWithoutTypeAnnotation(CompilerError):
 
         labels = [
             Label.colored_text(
-                Text("<", Text.colored("data type"), ">[]"),
-                color_id="data type",
+                Text(
+                    "Declare the type with ",
+                    Text.colored("<type>"),
+                    "[], for example ",
+                    Text.colored("<int>", color_id="<type>"),
+                    "[]",  # TODO: add this as separate help text
+                ),
+                color_id="<type>",
                 span=self.span,
             )
         ]
