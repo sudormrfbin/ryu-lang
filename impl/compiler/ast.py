@@ -615,13 +615,14 @@ class ForStmt(_Statement):
         return self.type_
 
     @override
-    def eval(self, env: RuntimeEnvironment) -> RuntimeEnvironment:
+    def eval(self, env: RuntimeEnvironment):
         array = self.arr_name.eval(env)
         for element in array:
             loop_env = RuntimeEnvironment(env)
             loop_env.define(self.var, element)
             self.stmts.eval(loop_env)
-        return env
+        
+        
 
 
 @dataclass
