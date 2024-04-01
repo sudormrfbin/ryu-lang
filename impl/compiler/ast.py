@@ -856,14 +856,18 @@ class EnumStmt(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        if env.get(self.name):
-            raise  # TODO
-            # raise errors.TypeRedefinition()
-
+        if isinstance(existing_type := env.get(self.name), langtypes.Enum):
+            raise errors.TypeRedefinition(
+                message="Enum is redefined",
+                type_name=self.name,
+                span=errors.Span.from_token(self.name), # Use the current span
+                previous_type_span=existing_type.span # Use the stored span
+            )
         self.members.typecheck(env)
         self.type_ = langtypes.Enum(
             enum_name=self.name,
             members=self.members.members_as_list(),
+            span=errors.Span.from_token(self.name)
         )
         env.define(self.name, self.type_)
         return self.type_

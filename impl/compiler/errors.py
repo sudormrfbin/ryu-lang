@@ -477,3 +477,55 @@ class DuplicatedAttribute(CompilerError):
         labels = [first_occurance_label, second_occurance_label]
 
         self._report(source, description, labels)
+
+
+@dataclass
+class TypeRedefinition(CompilerError):
+    """
+    Raised when a match statement has duplicated case arms.
+
+    ## Example
+    ```
+    enum Langs {
+        Malayalam
+        English
+        Japanese
+    }
+
+    enum Langs {
+        Hindi
+        Tamil
+        Urdu
+    }
+    ```
+
+    ## Fix
+    ```
+    
+    ```
+    """
+
+    code = 12
+
+    type_name: str
+    previous_type_span: Span
+
+    @override
+    def report(self, source: str):
+        description = Text("Type ", Text.colored(self.type_name), " is redefined")
+
+        first_occurance_label = Label.colored_text(
+            Text("Type is defined first here..."),
+            color_id=self.type_name,
+            span=self.previous_type_span,
+        )
+
+        second_occurance_label = Label.colored_text(
+            Text("...and redefined here"),
+            color_id=self.type_name,
+            span=self.span,
+        )
+
+        labels = [first_occurance_label, second_occurance_label]
+
+        self._report(source, description, labels)

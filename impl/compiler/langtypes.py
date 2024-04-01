@@ -83,6 +83,7 @@ class Struct(UserDefinedType):
 class Enum(UserDefinedType):
     enum_name: str
     members: list[str]
+    span: Span
 
     @property
     @override
