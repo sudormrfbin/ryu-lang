@@ -621,8 +621,37 @@ class ForStmt(_Statement):
             loop_env = RuntimeEnvironment(env)
             loop_env.define(self.var, element)
             self.stmts.eval(loop_env)
-        
-        
+
+
+@dataclass
+class ForStmtInt(_Statement):
+    var: Token
+    start: int
+    end: int
+    stmts: StatementBlock
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        start_type = self.start.typecheck(env)
+        end_type = self.end.typecheck(env)
+        if not isinstance(start_type, langtypes.Int) and not isinstance(end_type, langtypes.Int):
+            raise # TODO
+
+        child_env = TypeEnvironment(enclosing=env)
+        child_env.define(self.var, start_type)
+
+        self.type_ = self.stmts.typecheck(child_env)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        start_index = self.start.eval(env)
+        end_index= self.end.eval(env)
+        for i in range(start_index, end_index):
+            loop_env = RuntimeEnvironment(env)
+            loop_env.define(self.var, i)
+            self.stmts.eval(loop_env)
+
 
 
 @dataclass
