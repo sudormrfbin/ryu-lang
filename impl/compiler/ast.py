@@ -905,6 +905,7 @@ class IndexAssignment(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        index_type = self.index.typecheck(env)
         self.type_ = self.arrayname.typecheck(env)
         value_type = self.value.typecheck(env)
         if not isinstance(self.type_, langtypes.Array):
@@ -913,6 +914,10 @@ class IndexAssignment(_Ast):
                 span=self.arrayname.span,
                 actual_type=self.type_,
             )
+
+        if not isinstance(index_type, langtypes.Int):
+            raise # TODO
+
         if self.type_.ty != value_type:
             raise errors.ArrayIndexAssignmentTypeMismatch(
                 message=f"Expected type {self.type_ } but got {value_type}",
