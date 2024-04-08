@@ -1,0 +1,103 @@
+# serializer version: 1
+# name: test_indexing
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'x'),
+            'rvalue': dict({
+              <class 'compiler.ast.ArrayLiteral'>: dict({
+                'members': dict({
+                  <class 'compiler.ast.ArrayElements'>: dict({
+                    'members': list([
+                      dict({
+                        <class 'compiler.ast.ArrayElement'>: dict({
+                          'element': dict({
+                            <class 'compiler.ast.IntLiteral'>: dict({
+                              'value': 2,
+                            }),
+                          }),
+                        }),
+                      }),
+                      dict({
+                        <class 'compiler.ast.ArrayElement'>: dict({
+                          'element': dict({
+                            <class 'compiler.ast.IntLiteral'>: dict({
+                              'value': 3,
+                            }),
+                          }),
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'b'),
+            'rvalue': dict({
+              <class 'compiler.ast.Indexing'>: dict({
+                'element': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'x'),
+                  }),
+                }),
+                'index': dict({
+                  <class 'compiler.ast.IntLiteral'>: dict({
+                    'value': 1,
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_indexing.1
+  dict({
+    'stmts': list([
+      dict({
+        'rvalue': dict({
+          'members': dict({
+            'members': list([
+              dict({
+                'element': dict({
+                  <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                }),
+                <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+              }),
+              dict({
+                'element': dict({
+                  <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                }),
+                <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+              }),
+            ]),
+            <class 'compiler.ast.ArrayElements'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.ArrayLiteral'>: <class 'compiler.langtypes.Array'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Array'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'element': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Array'>,
+          }),
+          'index': dict({
+            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.Indexing'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---
