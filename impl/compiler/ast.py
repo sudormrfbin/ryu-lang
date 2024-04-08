@@ -601,7 +601,12 @@ class ForStmt(_Statement):
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         array_type = self.arr_name.typecheck(env)
         if not isinstance(array_type, langtypes.Array):
-            raise  # TODO
+            raise errors.UnexpectedType(
+                message="Unexpected type",
+                span=self.arr_name.span,
+                expected_type=langtypes.Array(array_type),
+                actual_type=array_type,
+            )
 
         child_env = TypeEnvironment(enclosing=env)
         child_env.define(self.var, array_type.ty)
@@ -610,13 +615,43 @@ class ForStmt(_Statement):
         return self.type_
 
     @override
-    def eval(self, env: RuntimeEnvironment) -> RuntimeEnvironment:
+    def eval(self, env: RuntimeEnvironment):
         array = self.arr_name.eval(env)
         for element in array:
             loop_env = RuntimeEnvironment(env)
             loop_env.define(self.var, element)
             self.stmts.eval(loop_env)
-        return env
+
+
+@dataclass
+class ForStmtInt(_Statement):
+    var: Token
+    start: int
+    end: int
+    stmts: StatementBlock
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        start_type = self.start.typecheck(env)
+        end_type = self.end.typecheck(env)
+        if not isinstance(start_type, langtypes.Int) and not isinstance(end_type, langtypes.Int):
+            raise # TODO
+
+        child_env = TypeEnvironment(enclosing=env)
+        child_env.define(self.var, start_type)
+
+        self.type_ = self.stmts.typecheck(child_env)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        start_index = self.start.eval(env)
+        end_index= self.end.eval(env)
+        for i in range(start_index, end_index):
+            loop_env = RuntimeEnvironment(env)
+            loop_env.define(self.var, i)
+            self.stmts.eval(loop_env)
+
 
 
 @dataclass
@@ -912,12 +947,15 @@ class EnumMembers(_Ast, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        seen: set[Token] = set()
+        seen: dict[Token, EnumMember] = {}
         for member in self.members:
             if member.name in seen:
-                raise  # TODO
-                # raise errors.DuplicatedAttribute()
-            seen.add(member.name)
+                raise errors.DuplicatedAttribute(
+                    message="Enum attribute duplicated",
+                    span=member.span,
+                    previous_case_span=seen[member.name].span,
+                )
+            seen[member.name]=member
             member.typecheck(env)
 
         self.type_ = langtypes.BLOCK
@@ -939,14 +977,18 @@ class EnumStmt(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        if env.get(self.name):
-            raise  # TODO
-            # raise errors.TypeRedefinition()
-
+        if isinstance(existing_type := env.get(self.name), langtypes.Enum):
+            raise errors.TypeRedefinition(
+                message="Enum is redefined",
+                type_name=self.name,
+                span=errors.Span.from_token(self.name), # Use the current span
+                previous_type_span=existing_type.span # Use the stored span
+            )
         self.members.typecheck(env)
         self.type_ = langtypes.Enum(
             enum_name=self.name,
             members=self.members.members_as_list(),
+            span=errors.Span.from_token(self.name)
         )
         env.define(self.name, self.type_)
         return self.type_

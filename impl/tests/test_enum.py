@@ -1,5 +1,6 @@
 from compiler import langtypes
 from compiler.env import RuntimeEnvironment, TypeEnvironment
+from compiler.errors import Span
 from compiler.langvalues import EnumValue
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import (
@@ -63,6 +64,7 @@ def test_enum_def(source: str):
     assert type_env.get("Langs") == Enum(
         enum_name="Langs",
         members=["Malayalam", "English", "Japanese"],
+        span=Span(start_line=1, end_line=1, start_column=6, end_column=11, start_pos=5, end_pos=10)
     )
 
 
@@ -136,6 +138,7 @@ def test_enum_assignment(source: str):
     lang_type = Enum(
         enum_name="Langs",
         members=["Malayalam", "English", "Japanese"],
+        span=Span(start_line=1, end_line=1, start_column=6, end_column=11, start_pos=5, end_pos=10)
     )
     assert type_env.get("Langs") == lang_type
     assert type_env.get("lang") == lang_type
@@ -359,6 +362,7 @@ def test_enum_pattern_match(source: str):
     lang_type = Enum(
         enum_name="Langs",
         members=["Malayalam", "English", "Japanese"],
+        span=Span(start_line=1, end_line=1, start_column=6, end_column=11, start_pos=5, end_pos=10)
     )
     assert type_env.get("Langs") == lang_type
     assert type_env.get("lang") == lang_type

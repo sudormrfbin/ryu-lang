@@ -29,6 +29,7 @@ statement_block: statement_list
 		  | index_assignment
 		  | function_definition
 		  | return_stmt
+		  | for_stmt_int
 
 variable_declaration: "let" IDENTIFIER "=" expression
 
@@ -53,6 +54,8 @@ wildcard_pattern: "_"
 while_stmt: "while" expression "{" statement_block "}"
 
 for_stmt: "for" IDENTIFIER "in" expression "{" statement_block "}"
+
+for_stmt_int: "for" IDENTIFIER "in" int_literal ".." int_literal "{" statement_block "}"
 
 struct_stmt: "struct" IDENTIFIER "{" struct_members "}"
 struct_members: (struct_member | _NL)+
