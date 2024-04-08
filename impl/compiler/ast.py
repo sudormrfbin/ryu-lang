@@ -626,8 +626,8 @@ class ForStmt(_Statement):
 @dataclass
 class ForStmtInt(_Statement):
     var: Token
-    start: int
-    end: int
+    start: _Expression
+    end: _Expression
     stmts: StatementBlock
 
     @override
