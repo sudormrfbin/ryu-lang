@@ -431,6 +431,192 @@ class InexhaustiveMatch(CompilerError):
 
 
 @dataclass
+class ArrayTypeMismatch(CompilerError):
+    code = 8
+
+    expected_type: langtypes.Type
+    actual_type: langtypes.Type
+    expected_type_span: Span
+
+    @override
+    def report(self, source: str):
+        description = Text(
+            "Expected array element to be type of ",
+            Text.colored(self.expected_type.name),
+            " but found ",
+            Text.colored(self.actual_type.name),
+            ", array elements need to be of same datatype",
+        )
+
+        labels = [
+            Label.colored_text(
+                Text(
+                    "Since this is of type ",
+                    Text.colored(self.expected_type.name),
+                    "...",
+                ),
+                color_id=self.expected_type.name,
+                span=self.expected_type_span,
+            ),
+            Label.colored_text(
+                Text(
+                    f"...expected this to be {self.expected_type.name}",
+                    ", but found ",
+                    Text.colored(self.actual_type.name),
+                ),
+                color_id=self.actual_type.name,
+                span=self.span,
+            ),
+        ]
+
+        self._report(source, description, labels)
+
+
+@dataclass
+class EmptyArrayWithoutTypeAnnotation(CompilerError):
+    """
+    Raised when a array declared without type annonation
+
+    let x=[]
+
+    ## Fix
+    let x = <int>[]
+    """
+
+    code = 9
+
+    @override
+    def report(self, source: str):
+        description = Text(
+            "Empty array cannot be declared without specifying data type",
+        )
+
+        labels = [
+            Label.colored_text(
+                Text(
+                    "Declare the type with ",
+                    Text.colored("<type>"),
+                    "[], for example ",
+                    Text.colored("<int>", color_id="<type>"),
+                    "[]",  # TODO: add this as separate help text
+                ),
+                color_id="<type>",
+                span=self.span,
+            )
+        ]
+
+        self._report(source, description, labels)
+
+
+@dataclass
+class IndexingNonArray(CompilerError):
+    """
+    Raised when a index used on non-array data type
+    let x=2
+    x[1]
+    """
+
+    code = 11
+    actual_type: langtypes.Type
+
+    @override
+    def report(self, source: str):
+        description = Text(
+            " Expression needs to be of ",
+            Text.colored("Array"),
+            " type to use indexing operations ",
+        )
+
+        labels = [
+            Label.colored_text(
+                Text("Type is ", Text.colored(self.actual_type.name)),
+                color_id=self.actual_type.name,
+                span=self.span,
+            )
+        ]
+
+        self._report(source, description, labels)
+
+
+@dataclass
+class IndexingOutOfRange(CompilerError):
+    """
+    Raised when a index out of bound.
+
+    let x=[1,2,3]
+    print x[3]
+    """
+
+    code = 13
+
+    length_array: int
+    index_value: int
+
+    @override
+    def report(self, source: str):
+        description = Text(
+            "Indexing is out of range, maximum range is ",
+            Text.colored(str(self.length_array - 1)),
+            " but used value ",
+            Text.colored(str(self.index_value)),
+        )
+
+        labels = [
+            Label.colored_text(
+                Text("is out of range "),
+                color_id=" ",
+                span=self.span,
+            )
+        ]
+        self._report(source, description, labels)
+
+
+@dataclass
+class ArrayIndexAssignmentTypeMismatch(CompilerError):
+    code = 14
+
+    actual_type: langtypes.Type
+    expected_type: langtypes.Type
+    expected_type_span: Span
+
+    @override
+    def report(self, source: str):
+        description = Text(
+            "Expected a type of ",
+            Text.colored(self.expected_type.name),
+            " but found ",
+            Text.colored(self.actual_type.name),
+        )
+
+        expected_type_label = Label.colored_text(
+            Text(
+                "Since this is of type ",
+                Text.colored("Array<", color_id="array"),
+                Text.colored(self.expected_type.name),
+                Text.colored(">", color_id="array"),
+                "...",
+            ),
+            color_id="array",
+            span=self.expected_type_span,
+        )
+
+        actual_type_label = Label.colored_text(
+            Text(
+                "...expected this to be ",
+                Text.colored(self.expected_type.name),
+                ", but found ",
+                Text.colored(self.actual_type.name),
+            ),
+            color_id=self.actual_type.name,
+            span=self.span,
+        )
+
+        labels = [expected_type_label, actual_type_label]
+
+        self._report(source, description, labels)
+
+
+@dataclass
 class DuplicatedAttribute(CompilerError):
     """
     Raised when a match statement has duplicated case arms.
