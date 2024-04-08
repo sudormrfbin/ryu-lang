@@ -34,7 +34,7 @@ statement_block: statement_list
 variable_declaration: "let" IDENTIFIER "=" expression
 
 assignment: IDENTIFIER "=" expression
-index_assignment : variable "[" POS_DIGIT "]" "=" expression
+index_assignment : variable "[" expression "]" "=" expression
 
 print_stmt: "print" expression 
 
@@ -93,10 +93,8 @@ return_stmt: "return" expression
 ?!unary_op: ("+" | "-" | "!") unary_op
 		  | indexing
 
-?indexing: function_call "[" POS_DIGIT "]"
+?indexing: function_call "[" expression "]"
 		| function_call
-
-POS_DIGIT: /[0-9]+/
 
 ?function_call: atom "(" [function_args | struct_init_members] ")"
 	   | atom

@@ -865,37 +865,43 @@ class ArrayLiteral(_Ast):
 @dataclass
 class Indexing(_Ast):
     element: _Expression
-    index: int
+    index: _Expression
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = self.element.typecheck(env)
-        if not isinstance(self.type_, langtypes.Array):
+        array_type = self.element.typecheck(env)
+        index_type = self.index.typecheck(env)
+        if not isinstance(array_type, langtypes.Array):
             raise errors.IndexingNonArray(
                 message="indexing non array",
                 span=self.element.span,
-                actual_type=self.type_,
+                actual_type=array_type,
             )
+        if not isinstance(index_type, langtypes.Int):
+            raise # TODO
+
+        self.type_ = array_type.ty
         return self.type_
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         element_value = self.element.eval(env)
-        if len(element_value) <= self.index:
+        array_ind = self.index.eval(env)
+        if len(element_value) <= array_ind:
             raise errors.IndexingOutOfRange(
                 message="Indexing out of range",
                 length_array=len(element_value),
-                index_value=self.index,
+                index_value=array_ind,
                 span=self.span,
             )
-        result = element_value[self.index]
+        result = element_value[array_ind]
         return result
 
 
 @dataclass
 class IndexAssignment(_Ast):
     arrayname: "Variable"
-    index: int
+    index: _Expression
     value: _Expression
 
     @override
@@ -923,7 +929,8 @@ class IndexAssignment(_Ast):
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         array_name = self.arrayname.eval(env)
         array_value = self.value.eval(env)
-        array_name[self.index] = array_value
+        array_index = self.index.eval(env)
+        array_name[array_index] = array_value
         pass
 
 
