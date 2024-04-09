@@ -777,6 +777,60 @@ class StructInit(_Ast, ast_utils.AsList):
 
 
 @dataclass
+class StructAccess(_Statement):
+    name: Token
+    member: Token
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        struct_type = env.get(self.name)
+        if not isinstance(struct_type, langtypes.Struct):
+            raise # TODO
+
+        member_type = struct_type.members.types.get(self.member)
+        if member_type is None:
+            raise # TODO
+
+        self.type_ = member_type
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+
+        struct_value = env.get(self.name)
+        return struct_value.get_attr(self.member)
+
+
+@dataclass
+class StructAssignment(_Statement):
+    struct_access: StructAccess
+    value: _Expression
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        member_type = self.struct_access.typecheck(env)
+        value_type = self.value.typecheck(env)
+
+        if value_type != member_type:
+            raise errors.TypeMismatch(
+                message=f"Expected type '{member_type.name}' but got '{value_type.name}'",
+                span=self.value.span,
+                actual_type=value_type,
+                expected_type=member_type,
+                expected_type_span=self.struct_access.span,
+            )
+
+        self.type_ = member_type
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        struct_value = env.get(self.struct_access.name)
+        value = self.value.eval(env)
+        struct_value.set_attr(str(self.struct_access.member), value)
+
+
+@dataclass
 class ArrayElement(_Ast):
     element: _Expression
 
