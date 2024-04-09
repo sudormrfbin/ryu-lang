@@ -600,7 +600,7 @@ class ForStmt(_Statement):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         array_type = self.arr_name.typecheck(env)
-        if not isinstance(array_type, langtypes.Array):
+        if not isinstance(array_type, langtypes.Array) and not isinstance(array_type, langtypes.String):
             raise errors.UnexpectedType(
                 message="Unexpected type",
                 span=self.arr_name.span,
@@ -609,7 +609,7 @@ class ForStmt(_Statement):
             )
 
         child_env = TypeEnvironment(enclosing=env)
-        child_env.define(self.var, array_type.ty)
+        child_env.define(self.var, array_type)
 
         self.type_ = self.stmts.typecheck(child_env)
         return self.type_
