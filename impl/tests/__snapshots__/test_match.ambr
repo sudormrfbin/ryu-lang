@@ -9,17 +9,17 @@
               <class 'compiler.ast.EnumMembers'>: dict({
                 'members': list([
                   dict({
-                    <class 'compiler.ast.EnumMember'>: dict({
+                    <class 'compiler.ast.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'Malayalam'),
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.EnumMember'>: dict({
+                    <class 'compiler.ast.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'English'),
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.EnumMember'>: dict({
+                    <class 'compiler.ast.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'Japanese'),
                     }),
                   }),
@@ -213,13 +213,13 @@
         'members': dict({
           'members': list([
             dict({
-              <class 'compiler.ast.EnumMember'>: <class 'compiler.langtypes.Type'>,
+              <class 'compiler.ast.EnumMemberBare'>: <class 'compiler.langtypes.Type'>,
             }),
             dict({
-              <class 'compiler.ast.EnumMember'>: <class 'compiler.langtypes.Type'>,
+              <class 'compiler.ast.EnumMemberBare'>: <class 'compiler.langtypes.Type'>,
             }),
             dict({
-              <class 'compiler.ast.EnumMember'>: <class 'compiler.langtypes.Type'>,
+              <class 'compiler.ast.EnumMemberBare'>: <class 'compiler.langtypes.Type'>,
             }),
           ]),
           <class 'compiler.ast.EnumMembers'>: <class 'compiler.langtypes.Block'>,

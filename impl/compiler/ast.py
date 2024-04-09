@@ -626,8 +626,8 @@ class ForStmt(_Statement):
 @dataclass
 class ForStmtInt(_Statement):
     var: Token
-    start: int
-    end: int
+    start: "IntLiteral"
+    end: "IntLiteral"
     stmts: StatementBlock
 
     @override
@@ -928,7 +928,7 @@ class IndexAssignment(_Ast):
 
 
 @dataclass
-class EnumMember(_Ast):
+class EnumMemberBare(_Ast):
     name: Token
 
     @override
@@ -944,11 +944,11 @@ class EnumMember(_Ast):
 
 @dataclass
 class EnumMembers(_Ast, ast_utils.AsList):
-    members: list[EnumMember]
+    members: list[EnumMemberBare]
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        seen: dict[Token, EnumMember] = {}
+        seen: dict[Token, EnumMemberBare] = {}
         for member in self.members:
             if member.name in seen:
                 raise errors.DuplicatedAttribute(
