@@ -90,13 +90,24 @@ class Members(PrimitiveType):
 @dataclass
 class Enum(UserDefinedType):
     enum_name: str
-    members: list[str]
+    members: list[EnumVariantSimple | EnumVariantTuple]
     span: Span
 
     @property
     @override
     def name(self) -> str:
         return self.enum_name
+
+
+@dataclass
+class EnumVariantSimple:
+    name: str
+
+
+@dataclass
+class EnumVariantTuple:
+    name: str
+    inner: Type
 
 
 @dataclass

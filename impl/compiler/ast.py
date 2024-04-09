@@ -462,7 +462,7 @@ class CaseLadder(_Ast, ast_utils.AsList):
     def ensure_exhaustive_matching_enum(
         self,
         match_stmt: "MatchStmt",
-        variants: list[str],
+        variants: list[langtypes.EnumVariantSimple],
         expected_type: langtypes.Type,
     ):
         seen: dict[langvalues.EnumValue, EnumPattern] = {}
@@ -482,7 +482,7 @@ class CaseLadder(_Ast, ast_utils.AsList):
                 )
             seen[pattern] = case_.pattern
 
-        remaining = set(variants) - set((s.variant for s in seen))
+        remaining = set(v.name for v in variants) - set((s.variant for s in seen))
         if remaining:
             raise errors.InexhaustiveMatch(
                 message="Match not exhaustive",
@@ -1007,8 +1007,25 @@ class EnumMembers(_Ast, ast_utils.AsList):
         # eval is handled by enum statement
         pass
 
-    def members_as_list(self) -> list[str]:
-        return [mem.name for mem in self.members]
+    def members_as_list(
+        self,
+    ) -> list[langtypes.EnumVariantSimple | langtypes.EnumVariantTuple]:
+        members: list[langtypes.EnumVariantSimple | langtypes.EnumVariantTuple] = []
+
+        for mem in self.members:
+            match mem:
+                case EnumMemberBare():
+                    members.append(langtypes.EnumVariantSimple(mem.name))
+                case EnumMemberTuple():
+                    assert mem.tuple_members.type_
+                    members.append(
+                        langtypes.EnumVariantTuple(
+                            mem.name,
+                            mem.tuple_members.type_,
+                        )
+                    )
+
+        return members
 
 
 @dataclass
