@@ -98,6 +98,14 @@ class Enum(UserDefinedType):
     def name(self) -> str:
         return self.enum_name
 
+    def variant_from_str(
+        self, name: str
+    ) -> EnumVariantSimple | EnumVariantTuple | None:
+        for mem in self.members:
+            if mem.name == name:
+                return mem
+        return None
+
 
 @dataclass
 class EnumVariantSimple:

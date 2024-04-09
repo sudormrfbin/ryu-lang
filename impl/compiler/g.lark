@@ -111,6 +111,7 @@ function_args: expression ("," expression)*
 	 | string_literal
 	 | array_literal
 	 | enum_literal_simple
+	 | enum_literal_tuple
 	 | "(" expression ")"
 	 | variable
 	
@@ -127,6 +128,7 @@ string_literal: STRING
 STRING: "\"" /.*?/ "\""
 
 enum_literal_simple: IDENTIFIER "::" IDENTIFIER
+enum_literal_tuple: IDENTIFIER "::" IDENTIFIER "(" expression ")"
 
 variable: IDENTIFIER
 

@@ -1618,6 +1618,40 @@ class EnumLiteralSimple(_Expression):
 
 
 @dataclass
+class EnumLiteralTuple(_Expression):
+    enum_type: Token
+    variant: Token
+    inner: _Expression
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = env.get(self.enum_type)
+        if self.type_ is None:
+            raise  # TODO
+            # raise errors.UndeclaredType()
+        if not isinstance(self.type_, langtypes.Enum):
+            raise  # TODO
+
+        inner_type = self.inner.typecheck(env)
+        variant_type = self.type_.variant_from_str(self.variant)
+        if not isinstance(variant_type, langtypes.EnumVariantTuple):
+            raise  # TODO
+
+        if variant_type.inner != inner_type:
+            raise  # TODO
+
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        return langvalues.EnumTupleValue(
+            ty=self.enum_type,
+            variant=self.variant,
+            tuple_value=self.inner.eval(env),
+        )
+
+
+@dataclass
 class Variable(_Expression):
     value: str
 

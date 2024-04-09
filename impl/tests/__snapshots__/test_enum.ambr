@@ -367,6 +367,89 @@
     <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
   })
 # ---
+# name: test_tuple_enum_assignment
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.EnumStmt'>: dict({
+            'members': dict({
+              <class 'compiler.ast.EnumMembers'>: dict({
+                'members': list([
+                  dict({
+                    <class 'compiler.ast.EnumMemberTuple'>: dict({
+                      'name': Token('IDENTIFIER', 'Some'),
+                      'tuple_members': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'ty': Token('IDENTIFIER', 'int'),
+                        }),
+                      }),
+                    }),
+                  }),
+                  dict({
+                    <class 'compiler.ast.EnumMemberBare'>: dict({
+                      'name': Token('IDENTIFIER', 'None'),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'name': Token('IDENTIFIER', 'MaybeInt'),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'x'),
+            'rvalue': dict({
+              <class 'compiler.ast.EnumLiteralTuple'>: dict({
+                'enum_type': Token('IDENTIFIER', 'MaybeInt'),
+                'inner': dict({
+                  <class 'compiler.ast.IntLiteral'>: dict({
+                    'value': 8,
+                  }),
+                }),
+                'variant': Token('IDENTIFIER', 'Some'),
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_tuple_enum_assignment.1
+  dict({
+    'stmts': list([
+      dict({
+        'members': dict({
+          'members': list([
+            dict({
+              'tuple_members': dict({
+                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+              }),
+              <class 'compiler.ast.EnumMemberTuple'>: <class 'compiler.langtypes.Type'>,
+            }),
+            dict({
+              <class 'compiler.ast.EnumMemberBare'>: <class 'compiler.langtypes.Type'>,
+            }),
+          ]),
+          <class 'compiler.ast.EnumMembers'>: <class 'compiler.langtypes.Block'>,
+        }),
+        <class 'compiler.ast.EnumStmt'>: <class 'compiler.langtypes.Enum'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'inner': dict({
+            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.EnumLiteralTuple'>: <class 'compiler.langtypes.Enum'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Enum'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---
 # name: test_tuple_enum_def
   dict({
     <class 'compiler.ast.EnumStmt'>: dict({

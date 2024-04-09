@@ -161,3 +161,74 @@ def test_tuple_enum_def(source: str, snapshot: Any):
             end_pos=13,
         ),
     )
+
+
+@docstring_source_with_snapshot
+def test_tuple_enum_assignment(source: str, snapshot: Any):
+    """
+    enum MaybeInt {
+        Some(int)
+        None
+    }
+
+    let x = MaybeInt::Some(8)
+    """
+    ast = parse_tree_to_ast(parse(source))
+    assert ast.to_dict() == snapshot
+
+    type_env = TypeEnvironment()
+    ast.typecheck(type_env)
+    assert ast.to_type_dict() == snapshot
+
+    enum_type = Enum(
+        enum_name="MaybeInt",
+        members=[EnumVariantTuple("Some", INT), EnumVariantSimple("None")],
+        span=Span(
+            start_line=1,
+            end_line=1,
+            start_column=6,
+            end_column=14,
+            start_pos=5,
+            end_pos=13,
+        ),
+    )
+
+    assert type_env.get("MaybeInt") == enum_type
+    assert type_env.get("x") == enum_type
+
+    env = RuntimeEnvironment()
+    ast.eval(env)
+
+
+# @docstring_source_with_snapshot
+# def test_enum_with_generics(source: str, snapshot: Any):
+#     """
+#     enum Option<T> {
+#         Some(T)
+#         None
+#     }
+
+#     enum Result<T, E> {
+#         Ok(T),
+#         Err(E)
+#     }
+#     """
+#     ast = parse_tree_to_ast(parse(source))
+#     assert ast.to_dict() == snapshot
+
+#     type_env = TypeEnvironment()
+#     ast.typecheck(type_env)
+#     assert ast.to_type_dict() == snapshot
+
+#     assert type_env.get("Option") == Enum(
+#         enum_name="Option",
+#         members=["Some", "None"],
+#         span=Span(
+#             start_line=1,
+#             end_line=1,
+#             start_column=6,
+#             end_column=11,
+#             start_pos=5,
+#             end_pos=10,
+#         ),
+#     )
