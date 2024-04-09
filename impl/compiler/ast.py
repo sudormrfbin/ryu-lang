@@ -943,12 +943,30 @@ class EnumMemberBare(_Ast):
 
 
 @dataclass
-class EnumMembers(_Ast, ast_utils.AsList):
-    members: list[EnumMemberBare]
+class EnumMemberTuple(_Ast):
+    name: Token
+    tuple_members: "TypeAnnotation"
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        seen: dict[Token, EnumMemberBare] = {}
+        self.type_ = langtypes.Type()  # TODO: assign separate type
+
+        self.tuple_members.typecheck(env)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        # eval is handled by enum statement
+        pass
+
+
+@dataclass
+class EnumMembers(_Ast, ast_utils.AsList):
+    members: list[EnumMemberBare | EnumMemberTuple]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        seen: dict[Token, EnumMemberBare | EnumMemberTuple] = {}
         for member in self.members:
             if member.name in seen:
                 raise errors.DuplicatedAttribute(

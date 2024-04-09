@@ -120,3 +120,33 @@ def test_enum_pattern_match(source: str, snapshot: Any):
     ast.eval(env)
     assert env.get("lang") == EnumValue(ty="Langs", variant="English")
     assert env.get("langcode") == "eng"
+
+
+@docstring_source_with_snapshot
+def test_tuple_enum_def(source: str, snapshot: Any):
+    """
+    enum MaybeInt {
+        Some(int)
+        None
+    }
+    """
+    ast = parse_tree_to_ast(parse(source))
+    assert ast.to_dict() == snapshot
+
+    type_env = TypeEnvironment()
+    ast.typecheck(type_env)
+    assert ast.to_type_dict() == snapshot
+
+    assert type_env.get("MaybeInt") == Enum(
+        enum_name="MaybeInt",
+        members=["Some", "None"],
+        span=Span(
+            start_line=1,
+            end_line=1,
+            start_column=6,
+            end_column=14,
+            start_pos=5,
+            end_pos=13,
+        ),
+    )
+

@@ -62,8 +62,10 @@ struct_members: (struct_member | _NL)+
 struct_member: IDENTIFIER ":" type_annotation
 
 enum_stmt: "enum" IDENTIFIER "{" enum_members "}"
-enum_members: (enum_member_bare | _NL)+
+enum_members: (enum_member_bare | enum_member_tuple | _NL)+
 enum_member_bare: IDENTIFIER
+enum_member_tuple: IDENTIFIER "(" type_annotation ")"
+// generics_definition: "<" IDENTIFIER ("," IDENTIFIER)* ">"
 
 function_definition: "fn" IDENTIFIER "(" [function_params] ")" "->" type_annotation "{" statement_block "}"
 function_params: function_param ("," function_param)*
