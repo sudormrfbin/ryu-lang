@@ -26,9 +26,9 @@ class SumFunction(BuiltinFunction):
 
         return a + b
 
-class LengthFunction(BuiltinFunction):
+class ArrayLengthFunction(BuiltinFunction):
     TYPE = langtypes.Function(
-        function_name="len",
+        function_name="arrlen",
         arguments=langtypes.Params([langtypes.Array(ty=langtypes.INT)]),
         return_type=langtypes.INT
     )
@@ -38,4 +38,30 @@ class LengthFunction(BuiltinFunction):
         a: list[int] = args[0] 
         
         return len(a)
+
+class StringLengthFunction(BuiltinFunction):
+    TYPE = langtypes.Function(
+        function_name="strlen",
+        arguments=langtypes.Params([langtypes.STRING]),
+        return_type=langtypes.INT
+    )
+
+    @override
+    def call(self, args: list[Any], env: "RuntimeEnvironment") -> Any:
+        a: str = args[0] 
         
+        return len(a)
+        
+class ArrayAppend(BuiltinFunction):
+    TYPE = langtypes.Function(
+        function_name="append",
+        arguments=langtypes.Params([langtypes.Array(langtypes.INT), langtypes.INT]),
+        return_type=langtypes.Array(langtypes.INT)
+    )
+
+    @override
+    def call(self, args: list[Any], env: "RuntimeEnvironment") -> Any:
+        a: list[int] = args[0] 
+        b: int = args[1]
+
+        return a.append(b)
