@@ -217,6 +217,7 @@ def test_function_def_array_arg(source: str, snapshot: Any):
         function_name="one", arguments=Params([Array(INT)]), return_type=INT
     )
 
+
 @docstring_source_with_snapshot
 def test_function_recursive(source: str, snapshot: Any):
     """
@@ -252,4 +253,3 @@ def test_function_recursive(source: str, snapshot: Any):
     assert env.get("x4") == 24
     assert env.get("x5") == 120
     assert env.get("x6") == 720
-    

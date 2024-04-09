@@ -634,8 +634,10 @@ class ForStmtInt(_Statement):
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         start_type = self.start.typecheck(env)
         end_type = self.end.typecheck(env)
-        if not isinstance(start_type, langtypes.Int) and not isinstance(end_type, langtypes.Int):
-            raise # TODO
+        if not isinstance(start_type, langtypes.Int) and not isinstance(
+            end_type, langtypes.Int
+        ):
+            raise  # TODO
 
         child_env = TypeEnvironment(enclosing=env)
         child_env.define(self.var, start_type)
@@ -646,12 +648,11 @@ class ForStmtInt(_Statement):
     @override
     def eval(self, env: RuntimeEnvironment):
         start_index = self.start.eval(env)
-        end_index= self.end.eval(env)
+        end_index = self.end.eval(env)
         for i in range(start_index, end_index):
             loop_env = RuntimeEnvironment(env)
             loop_env.define(self.var, i)
             self.stmts.eval(loop_env)
-
 
 
 @dataclass
@@ -955,7 +956,7 @@ class EnumMembers(_Ast, ast_utils.AsList):
                     span=member.span,
                     previous_case_span=seen[member.name].span,
                 )
-            seen[member.name]=member
+            seen[member.name] = member
             member.typecheck(env)
 
         self.type_ = langtypes.BLOCK
@@ -981,14 +982,14 @@ class EnumStmt(_Ast):
             raise errors.TypeRedefinition(
                 message="Enum is redefined",
                 type_name=self.name,
-                span=errors.Span.from_token(self.name), # Use the current span
-                previous_type_span=existing_type.span # Use the stored span
+                span=errors.Span.from_token(self.name),  # Use the current span
+                previous_type_span=existing_type.span,  # Use the stored span
             )
         self.members.typecheck(env)
         self.type_ = langtypes.Enum(
             enum_name=self.name,
             members=self.members.members_as_list(),
-            span=errors.Span.from_token(self.name)
+            span=errors.Span.from_token(self.name),
         )
         env.define(self.name, self.type_)
         return self.type_

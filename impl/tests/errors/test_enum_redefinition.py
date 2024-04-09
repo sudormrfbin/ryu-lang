@@ -19,6 +19,7 @@ enum Lang {
 }
 """
 
+
 def test_enum_redefinition():
     with pytest.raises(TypeRedefinition) as excinfo:
         ast = parse_tree_to_ast(parse(SOURCE))
@@ -29,6 +30,7 @@ def test_enum_redefinition():
     assert err.span.coord() == ((5, 6), (5, 10))
     assert err.type_name == "Lang"
     assert err.previous_type_span.coord() == ((1, 6), (1, 10))
+
 
 def test_enum_redefinition_output(capfd: CaptureFixture[str], snapshot: str):
     run(SOURCE, EMPTY_TYPE_ENV, EMPTY_ENV)

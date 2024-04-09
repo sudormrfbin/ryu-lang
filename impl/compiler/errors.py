@@ -687,7 +687,7 @@ class TypeRedefinition(CompilerError):
 
     ## Fix
     ```
-    
+
     ```
     """
 
