@@ -364,8 +364,30 @@ class ArrayPattern(_Ast, ast_utils.AsList):
 
 
 @dataclass
+class EnumPattern(_Expression):
+    enum_type: Token
+    variant: Token
+
+    @property
+    def value(self) -> langvalues.EnumValue:
+        return langvalues.EnumValue(ty=self.enum_type, variant=self.variant)
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = env.get(self.enum_type)
+        if self.type_ is None:
+            raise  # TODO
+            # raise errors.UndeclaredType()
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        raise
+
+
+@dataclass
 class CaseStmt(_Ast):
-    pattern: "BoolLiteral | EnumLiteralSimple | WildcardPattern | ArrayPattern"
+    pattern: "BoolLiteral | EnumPattern | WildcardPattern | ArrayPattern"
     block: StatementBlock
 
     @override
@@ -380,7 +402,7 @@ class CaseStmt(_Ast):
 
     def matches(self, expr: Any) -> bool:
         match self.pattern:
-            case BoolLiteral() | EnumLiteralSimple():
+            case BoolLiteral() | EnumPattern():
                 return self.pattern.value == expr
             case WildcardPattern():
                 return True
@@ -443,13 +465,13 @@ class CaseLadder(_Ast, ast_utils.AsList):
         variants: list[str],
         expected_type: langtypes.Type,
     ):
-        seen: dict[langvalues.EnumValue, EnumLiteralSimple] = {}
+        seen: dict[langvalues.EnumValue, EnumPattern] = {}
 
         for case_ in self.cases:
             if isinstance(case_.pattern, WildcardPattern):
                 # TODO: show warning if there are more cases after wildcard
                 return
-            assert isinstance(case_.pattern, EnumLiteralSimple)
+            assert isinstance(case_.pattern, EnumPattern)
             pattern = case_.pattern.value
 
             if pattern in seen:
@@ -1565,10 +1587,6 @@ class EnumLiteralSimple(_Expression):
     enum_type: Token
     variant: Token
 
-    @property
-    def value(self) -> langvalues.EnumValue:
-        return langvalues.EnumValue(ty=self.enum_type, variant=self.variant)
-
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type_ = env.get(self.enum_type)
@@ -1578,8 +1596,8 @@ class EnumLiteralSimple(_Expression):
         return self.type_
 
     @override
-    def eval(self, env: RuntimeEnvironment):
-        return self.value
+    def eval(self, env: RuntimeEnvironment) -> langvalues.EnumValue:
+        return langvalues.EnumValue(ty=self.enum_type, variant=self.variant)
 
 
 @dataclass
