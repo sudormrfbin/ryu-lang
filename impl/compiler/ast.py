@@ -365,7 +365,7 @@ class ArrayPattern(_Ast, ast_utils.AsList):
 
 @dataclass
 class CaseStmt(_Ast):
-    pattern: "BoolLiteral | EnumLiteral | WildcardPattern | ArrayPattern"
+    pattern: "BoolLiteral | EnumLiteralSimple | WildcardPattern | ArrayPattern"
     block: StatementBlock
 
     @override
@@ -380,7 +380,7 @@ class CaseStmt(_Ast):
 
     def matches(self, expr: Any) -> bool:
         match self.pattern:
-            case BoolLiteral() | EnumLiteral():
+            case BoolLiteral() | EnumLiteralSimple():
                 return self.pattern.value == expr
             case WildcardPattern():
                 return True
@@ -443,13 +443,13 @@ class CaseLadder(_Ast, ast_utils.AsList):
         variants: list[str],
         expected_type: langtypes.Type,
     ):
-        seen: dict[langvalues.EnumValue, EnumLiteral] = {}
+        seen: dict[langvalues.EnumValue, EnumLiteralSimple] = {}
 
         for case_ in self.cases:
             if isinstance(case_.pattern, WildcardPattern):
                 # TODO: show warning if there are more cases after wildcard
                 return
-            assert isinstance(case_.pattern, EnumLiteral)
+            assert isinstance(case_.pattern, EnumLiteralSimple)
             pattern = case_.pattern.value
 
             if pattern in seen:
@@ -1561,7 +1561,7 @@ class StringLiteral(_Expression):
 
 
 @dataclass
-class EnumLiteral(_Expression):
+class EnumLiteralSimple(_Expression):
     enum_type: Token
     variant: Token
 

@@ -33,7 +33,7 @@
           <class 'compiler.ast.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'lang'),
             'rvalue': dict({
-              <class 'compiler.ast.EnumLiteral'>: dict({
+              <class 'compiler.ast.EnumLiteralSimple'>: dict({
                 'enum_type': Token('IDENTIFIER', 'Langs'),
                 'variant': Token('IDENTIFIER', 'English'),
               }),
@@ -66,7 +66,7 @@
       }),
       dict({
         'rvalue': dict({
-          <class 'compiler.ast.EnumLiteral'>: <class 'compiler.langtypes.Enum'>,
+          <class 'compiler.ast.EnumLiteralSimple'>: <class 'compiler.langtypes.Enum'>,
         }),
         <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Enum'>,
       }),
@@ -155,7 +155,7 @@
           <class 'compiler.ast.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'lang'),
             'rvalue': dict({
-              <class 'compiler.ast.EnumLiteral'>: dict({
+              <class 'compiler.ast.EnumLiteralSimple'>: dict({
                 'enum_type': Token('IDENTIFIER', 'Langs'),
                 'variant': Token('IDENTIFIER', 'English'),
               }),
@@ -196,7 +196,7 @@
                         }),
                       }),
                       'pattern': dict({
-                        <class 'compiler.ast.EnumLiteral'>: dict({
+                        <class 'compiler.ast.EnumLiteralSimple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'English'),
                         }),
@@ -222,7 +222,7 @@
                         }),
                       }),
                       'pattern': dict({
-                        <class 'compiler.ast.EnumLiteral'>: dict({
+                        <class 'compiler.ast.EnumLiteralSimple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'Malayalam'),
                         }),
@@ -248,7 +248,7 @@
                         }),
                       }),
                       'pattern': dict({
-                        <class 'compiler.ast.EnumLiteral'>: dict({
+                        <class 'compiler.ast.EnumLiteralSimple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'Japanese'),
                         }),
@@ -291,7 +291,7 @@
       }),
       dict({
         'rvalue': dict({
-          <class 'compiler.ast.EnumLiteral'>: <class 'compiler.langtypes.Enum'>,
+          <class 'compiler.ast.EnumLiteralSimple'>: <class 'compiler.langtypes.Enum'>,
         }),
         <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Enum'>,
       }),
@@ -317,7 +317,7 @@
                 <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
               }),
               'pattern': dict({
-                <class 'compiler.ast.EnumLiteral'>: <class 'compiler.langtypes.Enum'>,
+                <class 'compiler.ast.EnumLiteralSimple'>: <class 'compiler.langtypes.Enum'>,
               }),
               <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Enum'>,
             }),
@@ -334,7 +334,7 @@
                 <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
               }),
               'pattern': dict({
-                <class 'compiler.ast.EnumLiteral'>: <class 'compiler.langtypes.Enum'>,
+                <class 'compiler.ast.EnumLiteralSimple'>: <class 'compiler.langtypes.Enum'>,
               }),
               <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Enum'>,
             }),
@@ -351,7 +351,7 @@
                 <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
               }),
               'pattern': dict({
-                <class 'compiler.ast.EnumLiteral'>: <class 'compiler.langtypes.Enum'>,
+                <class 'compiler.ast.EnumLiteralSimple'>: <class 'compiler.langtypes.Enum'>,
               }),
               <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Enum'>,
             }),

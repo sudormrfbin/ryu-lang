@@ -47,7 +47,7 @@ else_if_stmt: "elif" expression "{" statement_block "}"
 match_stmt: "match" expression "{" case_ladder "}"
 case_ladder: (case_stmt | _NL)+
 case_stmt: "case" match_pattern "{" statement_block "}"
-?match_pattern: bool_literal | enum_literal | wildcard_pattern | array_pattern
+?match_pattern: bool_literal | enum_literal_simple | wildcard_pattern | array_pattern
 
 wildcard_pattern: "_"
 
@@ -108,7 +108,7 @@ function_args: expression ("," expression)*
 	 | int_literal
 	 | string_literal
 	 | array_literal
-	 | enum_literal
+	 | enum_literal_simple
 	 | "(" expression ")"
 	 | variable
 	
@@ -124,7 +124,7 @@ int_literal: INT
 string_literal: STRING
 STRING: "\"" /.*?/ "\""
 
-enum_literal: IDENTIFIER "::" IDENTIFIER
+enum_literal_simple: IDENTIFIER "::" IDENTIFIER
 
 variable: IDENTIFIER
 
