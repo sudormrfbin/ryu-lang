@@ -30,13 +30,15 @@ statement_block: statement_list
 		  | function_definition
 		  | return_stmt
 		  | for_stmt_int
+		  | struct_access
+		  | struct_assignment
 
 variable_declaration: "let" IDENTIFIER "=" expression
 
 assignment: IDENTIFIER "=" expression
 index_assignment : variable "[" expression "]" "=" expression
 
-print_stmt: "print" expression 
+print_stmt: "print" expression | "print" struct_access
 
 if_chain: if_stmt [else_if_ladder] [else_block]
 if_stmt: "if" expression "{" statement_block "}"
@@ -60,6 +62,8 @@ for_stmt_int: "for" IDENTIFIER "in" expression ".." expression "{" statement_blo
 struct_stmt: "struct" IDENTIFIER "{" struct_members "}"
 struct_members: (struct_member | _NL)+
 struct_member: IDENTIFIER ":" type_annotation
+struct_access: IDENTIFIER "." IDENTIFIER
+struct_assignment: struct_access "=" expression
 
 enum_stmt: "enum" IDENTIFIER "{" enum_members "}"
 enum_members: (enum_member | _NL)+
