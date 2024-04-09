@@ -1065,3 +1065,472 @@
     <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
   })
 # ---
+# name: test_function_recursive
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.FunctionDefinition'>: dict({
+            'args': dict({
+              <class 'compiler.ast.FunctionParams'>: dict({
+                'args': list([
+                  dict({
+                    <class 'compiler.ast.FunctionParam'>: dict({
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'ty': Token('IDENTIFIER', 'int'),
+                        }),
+                      }),
+                      'name': Token('IDENTIFIER', 'n'),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'body': dict({
+              <class 'compiler.ast.StatementBlock'>: dict({
+                'stmts': list([
+                  dict({
+                    <class 'compiler.ast.IfChain'>: dict({
+                      'else_block': dict({
+                        <class 'compiler.ast.StatementBlock'>: dict({
+                          'stmts': list([
+                            dict({
+                              <class 'compiler.ast.ReturnStmt'>: dict({
+                                'return_value': dict({
+                                  <class 'compiler.ast.Factor'>: dict({
+                                    'left': dict({
+                                      <class 'compiler.ast.FunctionCall'>: dict({
+                                        'args': dict({
+                                          <class 'compiler.ast.FunctionArgs'>: dict({
+                                            'args': list([
+                                              dict({
+                                                <class 'compiler.ast.Term'>: dict({
+                                                  'left': dict({
+                                                    <class 'compiler.ast.Variable'>: dict({
+                                                      'value': Token('IDENTIFIER', 'n'),
+                                                    }),
+                                                  }),
+                                                  'op': Token('MINUS', '-'),
+                                                  'right': dict({
+                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                      'value': 1,
+                                                    }),
+                                                  }),
+                                                }),
+                                              }),
+                                            ]),
+                                          }),
+                                        }),
+                                        'callee': dict({
+                                          <class 'compiler.ast.Variable'>: dict({
+                                            'value': Token('IDENTIFIER', 'fact'),
+                                          }),
+                                        }),
+                                      }),
+                                    }),
+                                    'op': Token('STAR', '*'),
+                                    'right': dict({
+                                      <class 'compiler.ast.Variable'>: dict({
+                                        'value': Token('IDENTIFIER', 'n'),
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                              }),
+                            }),
+                          ]),
+                        }),
+                      }),
+                      'if_stmt': dict({
+                        <class 'compiler.ast.IfStmt'>: dict({
+                          'cond': dict({
+                            <class 'compiler.ast.Comparison'>: dict({
+                              'left': dict({
+                                <class 'compiler.ast.Variable'>: dict({
+                                  'value': Token('IDENTIFIER', 'n'),
+                                }),
+                              }),
+                              'op': Token('__ANON_6', '<='),
+                              'right': dict({
+                                <class 'compiler.ast.IntLiteral'>: dict({
+                                  'value': 0,
+                                }),
+                              }),
+                            }),
+                          }),
+                          'true_block': dict({
+                            <class 'compiler.ast.StatementBlock'>: dict({
+                              'stmts': list([
+                                dict({
+                                  <class 'compiler.ast.ReturnStmt'>: dict({
+                                    'return_value': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'value': 1,
+                                      }),
+                                    }),
+                                  }),
+                                }),
+                              ]),
+                            }),
+                          }),
+                        }),
+                      }),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'name': Token('IDENTIFIER', 'fact'),
+            'return_type': dict({
+              <class 'compiler.ast.TypeAnnotation'>: dict({
+                'ty': Token('IDENTIFIER', 'int'),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'x1'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'value': 1,
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'fact'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'x2'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'value': 2,
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'fact'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'x3'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'value': 3,
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'fact'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'x4'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'value': 4,
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'fact'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'x5'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'value': 5,
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'fact'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'x6'),
+            'rvalue': dict({
+              <class 'compiler.ast.FunctionCall'>: dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionArgs'>: dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'value': 6,
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+                'callee': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'fact'),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_function_recursive.1
+  dict({
+    'stmts': list([
+      dict({
+        'args': dict({
+          'args': list([
+            dict({
+              'arg_type': dict({
+                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+              }),
+              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
+            }),
+          ]),
+          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+        }),
+        'body': dict({
+          'stmts': list([
+            dict({
+              'else_block': dict({
+                'stmts': list([
+                  dict({
+                    'return_value': dict({
+                      'left': dict({
+                        'args': dict({
+                          'args': list([
+                            dict({
+                              'left': dict({
+                                <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                              }),
+                              'right': dict({
+                                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                              }),
+                              <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
+                            }),
+                          ]),
+                          <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+                        }),
+                        'callee': dict({
+                          <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+                        }),
+                        <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      'right': dict({
+                        <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                    <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                  }),
+                ]),
+                <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+              }),
+              'if_stmt': dict({
+                'cond': dict({
+                  'left': dict({
+                    <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                  }),
+                  'right': dict({
+                    <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                  }),
+                  <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
+                }),
+                'true_block': dict({
+                  'stmts': list([
+                    dict({
+                      'return_value': dict({
+                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                      }),
+                      <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                    }),
+                  ]),
+                  <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                }),
+                <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+              }),
+              <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.ReturnBlock'>,
+            }),
+          ]),
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+        }),
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+      dict({
+        'rvalue': dict({
+          'args': dict({
+            'args': list([
+              dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+            ]),
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+          }),
+          'callee': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          }),
+          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---

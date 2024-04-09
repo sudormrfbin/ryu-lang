@@ -216,3 +216,40 @@ def test_function_def_array_arg(source: str, snapshot: Any):
     assert type_env.get("one") == Function(
         function_name="one", arguments=Params([Array(INT)]), return_type=INT
     )
+
+@docstring_source_with_snapshot
+def test_function_recursive(source: str, snapshot: Any):
+    """
+    fn fact(n: int) -> int {
+        if n <= 0 {
+            return 1
+        } else {
+            return fact(n - 1) * n
+        }
+    }
+
+    let x1 = fact(1)
+    let x2 = fact(2)
+    let x3 = fact(3)
+    let x4 = fact(4)
+    let x5 = fact(5)
+    let x6 = fact(6)
+    """
+    ast = parse_tree_to_ast(parse(source))
+    assert ast.to_dict() == snapshot
+
+    type_env = TypeEnvironment()
+    ast.typecheck(type_env)
+    print(ast.to_type_dict())
+    assert ast.to_type_dict() == snapshot
+
+    env = RuntimeEnvironment()
+    ast.eval(env)
+
+    assert env.get("x1") == 1
+    assert env.get("x2") == 2
+    assert env.get("x3") == 6
+    assert env.get("x4") == 24
+    assert env.get("x5") == 120
+    assert env.get("x6") == 720
+    

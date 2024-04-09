@@ -1065,17 +1065,23 @@ class FunctionDefinition(_Ast):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         ret_type = self.return_type.typecheck(env)
+        params = self.args.typecheck(env) if self.args else langtypes.Params([])
+
+        self.type_ = langtypes.Function(
+            function_name=self.name,
+            arguments=params,
+            return_type=ret_type,
+        )
+
+        body_env = TypeEnvironment(enclosing=env)
+        body_env.define(self.name, self.type_)
 
         if self.args:
-            params = self.args.typecheck(env)
-            child_env = TypeEnvironment(enclosing=env)
             for arg in self.args.args:
                 assert arg.type_ is not None
-                child_env.define(arg.name, arg.type_)
-            body_block_type = self.body.typecheck(child_env)
-        else:
-            params = langtypes.Params([])
-            body_block_type = self.body.typecheck(env)
+                body_env.define(arg.name, arg.type_)
+
+        body_block_type = self.body.typecheck(body_env)
 
         if not isinstance(body_block_type, langtypes.ReturnBlock):
             raise  # TODO
@@ -1083,11 +1089,6 @@ class FunctionDefinition(_Ast):
         if body_block_type.return_type != ret_type:
             raise  # TODO
 
-        self.type_ = langtypes.Function(
-            function_name=self.name,
-            arguments=params,
-            return_type=ret_type,
-        )
         env.define(self.name, self.type_)
         return self.type_
 
