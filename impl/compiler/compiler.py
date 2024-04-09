@@ -7,6 +7,7 @@ from compiler.parser import parse, parse_tree_to_ast
 
 BUILTIN_FUNCTIONS: list[type[langvalues.BuiltinFunction]] = [
     builtins.SumFunction,
+    builtins.LengthFunction,
 ]
 
 
