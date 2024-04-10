@@ -371,7 +371,7 @@ def matches_pattern(pattern: MatchPattern, expr: Any) -> bool:
         case BoolLiteral():
             return pattern.value == expr
         case EnumPattern():
-            assert isinstance(expr, langvalues.EnumValue | langvalues.EnumTupleValue)
+            assert isinstance(expr, langvalues.EnumValue)
             return pattern.matches(expr)
         case WildcardPattern():
             return True
@@ -400,6 +400,9 @@ class EnumPattern(_Expression):
     @override
     def eval(self, env: RuntimeEnvironment):
         raise
+
+    def matches(self, expr: langvalues.EnumValue) -> bool:
+        return self.value == expr
 
 
 @dataclass
