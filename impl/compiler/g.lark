@@ -47,9 +47,14 @@ else_if_stmt: "elif" expression "{" statement_block "}"
 match_stmt: "match" expression "{" case_ladder "}"
 case_ladder: (case_stmt | _NL)+
 case_stmt: "case" match_pattern "{" statement_block "}"
-?match_pattern: bool_literal | enum_pattern | wildcard_pattern | array_pattern
+?match_pattern: bool_literal
+				| enum_pattern
+				| enum_pattern_tuple
+				| wildcard_pattern
+				| array_pattern
 
 enum_pattern: IDENTIFIER "::" IDENTIFIER
+enum_pattern_tuple: IDENTIFIER "::" IDENTIFIER "(" match_pattern ")"
 
 wildcard_pattern: "_"
 

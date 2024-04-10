@@ -371,13 +371,20 @@ class ArrayPattern(_Ast, ast_utils.AsList):
         return all(pat.matches(e) for pat, e in zip(self.elements, expr))
 
 
-MatchPattern: TypeAlias = "BoolLiteral | EnumPattern | WildcardPattern | ArrayPattern"
+MatchPattern: TypeAlias = (
+    "BoolLiteral | EnumPattern | EnumPatternTuple | WildcardPattern | ArrayPattern"
+)
 
 
 def matches_pattern(pattern: MatchPattern, expr: Any) -> bool:
     match pattern:
         case BoolLiteral():
             return pattern.value == expr
+        case EnumPatternTuple():
+            if isinstance(expr, langvalues.EnumTupleValue):
+                return pattern.matches(expr)
+            else:
+                return False
         case EnumPattern():
             assert isinstance(expr, langvalues.EnumValue)
             return pattern.matches(expr)
@@ -411,6 +418,22 @@ class EnumPattern(_Expression):
 
     def matches(self, expr: langvalues.EnumValue) -> bool:
         return self.value == expr
+
+
+@dataclass
+class EnumPatternTuple(EnumPattern):
+    tuple_pattern: MatchPattern
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.tuple_pattern.typecheck(env)
+        return super().typecheck(env)
+
+    @override
+    def matches(self, expr: langvalues.EnumTupleValue) -> bool:  # type: ignore
+        if self.enum_type != expr.ty or self.variant != expr.variant:
+            return False
+        return matches_pattern(self.tuple_pattern, expr.tuple_value)
 
 
 @dataclass

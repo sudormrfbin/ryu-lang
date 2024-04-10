@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Optional, Sequence
+from typing import TYPE_CHECKING, Optional, Sequence, TypeAlias
 from typing_extensions import override
 
 
@@ -90,8 +90,7 @@ class Members(PrimitiveType):
 @dataclass
 class Enum(UserDefinedType):
     enum_name: str
-    # members: list[EnumVariantSimple | EnumVariantTuple]
-    members: list[EnumVariantSimple]
+    members: list[EnumVariantSimple | EnumVariantTuple]
     span: Span
 
     @property
@@ -117,6 +116,9 @@ class EnumVariantSimple:
 class EnumVariantTuple:
     name: str
     inner: Type
+
+
+EnumVariants: TypeAlias = EnumVariantSimple | EnumVariantTuple
 
 
 @dataclass
