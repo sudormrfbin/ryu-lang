@@ -90,7 +90,8 @@ class Members(PrimitiveType):
 @dataclass
 class Enum(UserDefinedType):
     enum_name: str
-    members: list[EnumVariantSimple | EnumVariantTuple]
+    # members: list[EnumVariantSimple | EnumVariantTuple]
+    members: list[EnumVariantSimple]
     span: Span
 
     @property

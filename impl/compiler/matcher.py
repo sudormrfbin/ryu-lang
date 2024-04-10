@@ -1,8 +1,12 @@
 from types import UnionType
 from typing import TYPE_CHECKING, Any, Container, Sequence, Type, TypeGuard, TypeVar
 
+from compiler import langtypes, langvalues
+from compiler.langvalues import EnumValue
+
 
 if TYPE_CHECKING:
+    from compiler.ast import EnumPattern
     from compiler.ast import ArrayPattern
     from compiler.ast import BoolLiteral, WildcardPattern
     from compiler.errors import Span
@@ -73,6 +77,38 @@ class ArrayPatternMatcher:
             return None
 
         return {"_"}
+
+
+class EnumPatternMatcher:
+    def __init__(self, enum: langtypes.Enum) -> None:
+        self.cases: dict[EnumValue | Wildcard, Span] = {}
+        self.enum = enum
+
+    def add_case(self, arm: "EnumPattern | WildcardPattern"):
+        from compiler.ast import EnumPattern, WildcardPattern
+
+        match arm:
+            case EnumPattern():
+                val = arm.value
+            case WildcardPattern():
+                val = WILDCARD
+
+        if val in self.cases:
+            raise MatcherCaseDuplicated(self.cases[val])
+
+        self.cases[val] = arm.span
+
+    def unhandled_cases(self) -> Container[str] | None:
+        if WILDCARD in self.cases:
+            return None
+
+        cases = list(self.cases)
+        assert is_seq_of(cases, EnumValue)
+
+        leftover = set(v.name for v in self.enum.members) - set(
+            (s.variant for s in cases)
+        )
+        return leftover
 
 
 T = TypeVar("T")

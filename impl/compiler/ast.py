@@ -16,6 +16,7 @@ from compiler.matcher import (
     WILDCARD,
     ArrayPatternMatcher,
     BoolPatternMatcher,
+    EnumPatternMatcher,
     MatcherCaseDuplicated,
     Wildcard,
 )
@@ -477,32 +478,26 @@ class CaseLadder(_Ast, ast_utils.AsList):
     def ensure_exhaustive_matching_enum(
         self,
         match_stmt: "MatchStmt",
-        variants: list[langtypes.EnumVariantSimple],
-        expected_type: langtypes.Type,
+        enum_type: langtypes.Enum,
     ):
-        seen: dict[langvalues.EnumValue, EnumPattern] = {}
+        matcher = EnumPatternMatcher(enum_type)
 
-        for case_ in self.cases:
-            if isinstance(case_.pattern, WildcardPattern):
-                # TODO: show warning if there are more cases after wildcard
-                return
-            assert isinstance(case_.pattern, EnumPattern)
-            pattern = case_.pattern.value
-
-            if pattern in seen:
+        for case in self.cases:
+            assert isinstance(pat := case.pattern, WildcardPattern | EnumPattern)
+            try:
+                matcher.add_case(pat)
+            except MatcherCaseDuplicated as e:
                 raise errors.DuplicatedCase(
                     message="Case condition duplicated",
-                    span=case_.pattern.span,
-                    previous_case_span=seen[pattern].span,
+                    span=pat.span,
+                    previous_case_span=e.previous_case_span,
                 )
-            seen[pattern] = case_.pattern
 
-        remaining = set(v.name for v in variants) - set((s.variant for s in seen))
-        if remaining:
+        if remaining := matcher.unhandled_cases():
             raise errors.InexhaustiveMatch(
                 message="Match not exhaustive",
                 span=match_stmt.span,
-                expected_type=expected_type,
+                expected_type=enum_type,
                 expected_type_span=match_stmt.expr.span,
                 remaining_values=remaining,
             )
@@ -571,11 +566,7 @@ class MatchStmt(_Statement):
             case langtypes.BOOL:
                 self.cases.ensure_exhaustive_matching_bool(self)
             case langtypes.Enum():
-                self.cases.ensure_exhaustive_matching_enum(
-                    self,
-                    variants=expr_type.members,
-                    expected_type=expr_type,
-                )
+                self.cases.ensure_exhaustive_matching_enum(self, enum_type=expr_type)
             case langtypes.Array(ty=langtypes.INT):
                 self.cases.ensure_exhaustive_matching_array(self, expr_type.ty)
             case _:
