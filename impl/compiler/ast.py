@@ -12,6 +12,7 @@ from compiler.env import RuntimeEnvironment, TypeEnvironment
 
 from compiler import langtypes, langvalues, runtime
 from compiler import errors
+from compiler.matcher import BoolPatternMatcher, MatcherCaseDuplicated
 
 _LispAst = list[Union[str, "_LispAst"]]
 
@@ -445,25 +446,20 @@ class CaseLadder(_Ast, ast_utils.AsList):
         pass
 
     def ensure_exhaustive_matching_bool(self, match_stmt: "MatchStmt"):
-        seen: dict[bool, BoolLiteral] = {}
+        matcher = BoolPatternMatcher()
 
-        for case_ in self.cases:
-            if isinstance(case_.pattern, WildcardPattern):
-                # TODO: show warning if there are more cases after wildcard
-                return
-            assert isinstance(case_.pattern, BoolLiteral)
-            pattern = case_.pattern.value
-
-            if pattern in seen:
+        for case in self.cases:
+            assert isinstance(pat := case.pattern, WildcardPattern | BoolLiteral)
+            try:
+                matcher.add_case(pat)
+            except MatcherCaseDuplicated as e:
                 raise errors.DuplicatedCase(
                     message="Case condition duplicated",
-                    span=case_.pattern.span,
-                    previous_case_span=seen[pattern].span,
+                    span=pat.span,
+                    previous_case_span=e.previous_case_span,
                 )
-            seen[pattern] = case_.pattern
 
-        remaining = {True, False} - set(seen)
-        if remaining:
+        if remaining := matcher.unhandled_cases():
             raise errors.InexhaustiveMatch(
                 message="Match not exhaustive",
                 span=match_stmt.span,
