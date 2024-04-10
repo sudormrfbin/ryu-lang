@@ -12,7 +12,13 @@ from compiler.env import RuntimeEnvironment, TypeEnvironment
 
 from compiler import langtypes, langvalues, runtime
 from compiler import errors
-from compiler.matcher import BoolPatternMatcher, MatcherCaseDuplicated
+from compiler.matcher import (
+    WILDCARD,
+    ArrayPatternMatcher,
+    BoolPatternMatcher,
+    MatcherCaseDuplicated,
+    Wildcard,
+)
 
 _LispAst = list[Union[str, "_LispAst"]]
 
@@ -347,14 +353,14 @@ class ArrayPattern(_Ast, ast_utils.AsList):
     def eval(self, env: RuntimeEnvironment) -> list[Any]:
         return [el.eval(env) for el in self.elements]
 
-    def pattern_as_list(self) -> list[int | None]:
-        results: list[int | None] = []
+    def pattern_as_list(self) -> list[int | Wildcard]:
+        results: list[int | Wildcard] = []
         for el in self.elements:
             match el.literal:
                 case IntLiteral(value=value):
                     results.append(value)
                 case WildcardPattern():
-                    results.append(None)
+                    results.append(WILDCARD)
         return results
 
     def matches(self, expr: list[Any]) -> bool:
@@ -504,31 +510,27 @@ class CaseLadder(_Ast, ast_utils.AsList):
     def ensure_exhaustive_matching_array(
         self, match_stmt: "MatchStmt", ty: langtypes.Type
     ):
-        seen: dict[tuple[int | None, ...], ArrayPattern] = {}
+        matcher = ArrayPatternMatcher()
 
-        for case_ in self.cases:
-            if isinstance(case_.pattern, WildcardPattern):
-                # TODO: show warning if there are more cases after wildcard
-                return
-            assert isinstance(case_.pattern, ArrayPattern)
-            pattern = case_.pattern.pattern_as_list()
-
-            if tuple(pattern) in seen:
+        for case in self.cases:
+            assert isinstance(pat := case.pattern, WildcardPattern | ArrayPattern)
+            try:
+                matcher.add_case(pat)
+            except MatcherCaseDuplicated as e:
                 raise errors.DuplicatedCase(
                     message="Case condition duplicated",
-                    span=case_.pattern.span,
-                    previous_case_span=seen[tuple(pattern)].span,
+                    span=pat.span,
+                    previous_case_span=e.previous_case_span,
                 )
-            seen[tuple(pattern)] = case_.pattern
 
-        # TODO: separate error for not handling wildcard pattern
-        raise errors.InexhaustiveMatch(
-            message="Match not exhaustive",
-            span=match_stmt.span,
-            expected_type=langtypes.Array(ty),
-            expected_type_span=match_stmt.expr.span,
-            remaining_values={"_"},
-        )
+        if remaining := matcher.unhandled_cases():
+            raise errors.InexhaustiveMatch(
+                message="Match not exhaustive",
+                span=match_stmt.span,
+                expected_type=langtypes.Array(ty),
+                expected_type_span=match_stmt.expr.span,
+                remaining_values=remaining,
+            )
 
 
 @dataclass

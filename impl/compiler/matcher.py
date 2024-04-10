@@ -1,7 +1,9 @@
 from types import UnionType
 from typing import TYPE_CHECKING, Any, Container, Sequence, Type, TypeGuard, TypeVar
 
+
 if TYPE_CHECKING:
+    from compiler.ast import ArrayPattern
     from compiler.ast import BoolLiteral, WildcardPattern
     from compiler.errors import Span
 
@@ -12,16 +14,16 @@ class MatcherCaseDuplicated(Exception):
         super().__init__()
 
 
-class _Wildcard:
+class Wildcard:
     pass
 
 
-WILDCARD = _Wildcard()
+WILDCARD = Wildcard()
 
 
 class BoolPatternMatcher:
     def __init__(self) -> None:
-        self.cases: dict[bool | _Wildcard, Span] = {}
+        self.cases: dict[bool | Wildcard, Span] = {}
 
     def add_case(self, arm: "BoolLiteral | WildcardPattern"):
         from compiler.ast import BoolLiteral, WildcardPattern
@@ -46,6 +48,31 @@ class BoolPatternMatcher:
 
         leftover = {True, False} - set(cases)
         return leftover
+
+
+class ArrayPatternMatcher:
+    def __init__(self) -> None:
+        self.cases: dict[tuple[int | Wildcard, ...] | Wildcard, Span] = {}
+
+    def add_case(self, arm: "ArrayPattern | WildcardPattern"):
+        from compiler.ast import ArrayPattern, WildcardPattern
+
+        match arm:
+            case ArrayPattern():
+                val = tuple(arm.pattern_as_list())
+            case WildcardPattern():
+                val = WILDCARD
+
+        if val in self.cases:
+            raise MatcherCaseDuplicated(self.cases[val])
+
+        self.cases[val] = arm.span
+
+    def unhandled_cases(self) -> Container[str] | None:
+        if WILDCARD in self.cases:
+            return None
+
+        return {"_"}
 
 
 T = TypeVar("T")
