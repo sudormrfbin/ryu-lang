@@ -1,5 +1,5 @@
 import abc
-from typing import Any, Optional, Union
+from typing import Any, Optional, TypeAlias, Union
 import typing
 import dataclasses
 from dataclasses import dataclass
@@ -363,6 +363,23 @@ class ArrayPattern(_Ast, ast_utils.AsList):
         return all(pat.matches(e) for pat, e in zip(self.elements, expr))
 
 
+MatchPattern: TypeAlias = "BoolLiteral | EnumPattern | WildcardPattern | ArrayPattern"
+
+
+def matches_pattern(pattern: MatchPattern, expr: Any) -> bool:
+    match pattern:
+        case BoolLiteral():
+            return pattern.value == expr
+        case EnumPattern():
+            assert isinstance(expr, langvalues.EnumValue | langvalues.EnumTupleValue)
+            return pattern.matches(expr)
+        case WildcardPattern():
+            return True
+        case ArrayPattern():
+            assert isinstance(expr, list)
+            return pattern.matches(expr)  # pyright: ignore [reportUnknownArgumentType]
+
+
 @dataclass
 class EnumPattern(_Expression):
     enum_type: Token
@@ -387,7 +404,7 @@ class EnumPattern(_Expression):
 
 @dataclass
 class CaseStmt(_Ast):
-    pattern: "BoolLiteral | EnumPattern | WildcardPattern | ArrayPattern"
+    pattern: MatchPattern
     block: StatementBlock
 
     @override
@@ -401,14 +418,7 @@ class CaseStmt(_Ast):
         self.block.eval(env)
 
     def matches(self, expr: Any) -> bool:
-        match self.pattern:
-            case BoolLiteral() | EnumPattern():
-                return self.pattern.value == expr
-            case WildcardPattern():
-                return True
-            case ArrayPattern():
-                assert isinstance(expr, list)
-                return self.pattern.matches(expr)  # pyright: ignore [reportUnknownArgumentType]
+        return matches_pattern(self.pattern, expr)
 
 
 @dataclass
