@@ -25,6 +25,19 @@ class EnumValue:
 
 
 @dataclass
+class EnumTupleValue(EnumValue):
+    tuple_value: Any
+
+    @override
+    def __str__(self) -> str:
+        return f"{self.ty}::{self.variant}({self.tuple_value})"
+
+    @override
+    def __hash__(self) -> int:
+        return hash(repr(self))
+
+
+@dataclass
 class StructValue:
     name: str
     attrs: dict[str, Any]

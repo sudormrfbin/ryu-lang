@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Optional, Sequence
+from typing import TYPE_CHECKING, Optional, Sequence, TypeAlias
 from typing_extensions import override
 
 
@@ -90,13 +90,35 @@ class Members(PrimitiveType):
 @dataclass
 class Enum(UserDefinedType):
     enum_name: str
-    members: list[str]
+    members: list[EnumVariantSimple | EnumVariantTuple]
     span: Span
 
     @property
     @override
     def name(self) -> str:
         return self.enum_name
+
+    def variant_from_str(
+        self, name: str
+    ) -> EnumVariantSimple | EnumVariantTuple | None:
+        for mem in self.members:
+            if mem.name == name:
+                return mem
+        return None
+
+
+@dataclass
+class EnumVariantSimple:
+    name: str
+
+
+@dataclass
+class EnumVariantTuple:
+    name: str
+    inner: Type
+
+
+EnumVariants: TypeAlias = EnumVariantSimple | EnumVariantTuple
 
 
 @dataclass

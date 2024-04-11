@@ -1151,7 +1151,7 @@
                                   'value': Token('IDENTIFIER', 'n'),
                                 }),
                               }),
-                              'op': Token('__ANON_6', '<='),
+                              'op': Token('__ANON_7', '<='),
                               'right': dict({
                                 <class 'compiler.ast.IntLiteral'>: dict({
                                   'value': 0,

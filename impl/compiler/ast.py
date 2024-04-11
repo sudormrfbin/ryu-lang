@@ -1,5 +1,5 @@
 import abc
-from typing import Any, Optional, Union
+from typing import Any, Optional, TypeAlias, Union
 import typing
 import dataclasses
 from dataclasses import dataclass
@@ -12,6 +12,14 @@ from compiler.env import RuntimeEnvironment, TypeEnvironment
 
 from compiler import langtypes, langvalues, runtime
 from compiler import errors
+from compiler.matcher import (
+    WILDCARD,
+    ArrayPatternMatcher,
+    BoolPatternMatcher,
+    EnumPatternMatcher,
+    MatcherCaseDuplicated,
+    Wildcard,
+)
 
 _LispAst = list[Union[str, "_LispAst"]]
 
@@ -346,14 +354,14 @@ class ArrayPattern(_Ast, ast_utils.AsList):
     def eval(self, env: RuntimeEnvironment) -> list[Any]:
         return [el.eval(env) for el in self.elements]
 
-    def pattern_as_list(self) -> list[int | None]:
-        results: list[int | None] = []
+    def pattern_as_list(self) -> list[int | Wildcard]:
+        results: list[int | Wildcard] = []
         for el in self.elements:
             match el.literal:
                 case IntLiteral(value=value):
                     results.append(value)
                 case WildcardPattern():
-                    results.append(None)
+                    results.append(WILDCARD)
         return results
 
     def matches(self, expr: list[Any]) -> bool:
@@ -363,9 +371,74 @@ class ArrayPattern(_Ast, ast_utils.AsList):
         return all(pat.matches(e) for pat, e in zip(self.elements, expr))
 
 
+MatchPattern: TypeAlias = (
+    "BoolLiteral | EnumPattern | EnumPatternTuple | WildcardPattern | ArrayPattern"
+)
+
+
+def matches_pattern(pattern: MatchPattern, expr: Any) -> bool:
+    match pattern:
+        case BoolLiteral():
+            return pattern.value == expr
+        case EnumPatternTuple():
+            if isinstance(expr, langvalues.EnumTupleValue):
+                return pattern.matches(expr)
+            else:
+                return False
+        case EnumPattern():
+            assert isinstance(expr, langvalues.EnumValue)
+            return pattern.matches(expr)
+        case WildcardPattern():
+            return True
+        case ArrayPattern():
+            assert isinstance(expr, list)
+            return pattern.matches(expr)  # pyright: ignore [reportUnknownArgumentType]
+
+
+@dataclass
+class EnumPattern(_Expression):
+    enum_type: Token
+    variant: Token
+
+    @property
+    def value(self) -> langvalues.EnumValue:
+        return langvalues.EnumValue(ty=self.enum_type, variant=self.variant)
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = env.get(self.enum_type)
+        if self.type_ is None:
+            raise  # TODO
+            # raise errors.UndeclaredType()
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        raise
+
+    def matches(self, expr: langvalues.EnumValue) -> bool:
+        return self.value == expr
+
+
+@dataclass
+class EnumPatternTuple(EnumPattern):
+    tuple_pattern: MatchPattern
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.tuple_pattern.typecheck(env)
+        return super().typecheck(env)
+
+    @override
+    def matches(self, expr: langvalues.EnumTupleValue) -> bool:  # type: ignore
+        if self.enum_type != expr.ty or self.variant != expr.variant:
+            return False
+        return matches_pattern(self.tuple_pattern, expr.tuple_value)
+
+
 @dataclass
 class CaseStmt(_Ast):
-    pattern: "BoolLiteral | EnumLiteral | WildcardPattern | ArrayPattern"
+    pattern: MatchPattern
     block: StatementBlock
 
     @override
@@ -379,14 +452,7 @@ class CaseStmt(_Ast):
         self.block.eval(env)
 
     def matches(self, expr: Any) -> bool:
-        match self.pattern:
-            case BoolLiteral() | EnumLiteral():
-                return self.pattern.value == expr
-            case WildcardPattern():
-                return True
-            case ArrayPattern():
-                assert isinstance(expr, list)
-                return self.pattern.matches(expr)  # pyright: ignore [reportUnknownArgumentType]
+        return matches_pattern(self.pattern, expr)
 
 
 @dataclass
@@ -410,25 +476,20 @@ class CaseLadder(_Ast, ast_utils.AsList):
         pass
 
     def ensure_exhaustive_matching_bool(self, match_stmt: "MatchStmt"):
-        seen: dict[bool, BoolLiteral] = {}
+        matcher = BoolPatternMatcher()
 
-        for case_ in self.cases:
-            if isinstance(case_.pattern, WildcardPattern):
-                # TODO: show warning if there are more cases after wildcard
-                return
-            assert isinstance(case_.pattern, BoolLiteral)
-            pattern = case_.pattern.value
-
-            if pattern in seen:
+        for case in self.cases:
+            assert isinstance(pat := case.pattern, WildcardPattern | BoolLiteral)
+            try:
+                matcher.add_case(pat)
+            except MatcherCaseDuplicated as e:
                 raise errors.DuplicatedCase(
                     message="Case condition duplicated",
-                    span=case_.pattern.span,
-                    previous_case_span=seen[pattern].span,
+                    span=pat.span,
+                    previous_case_span=e.previous_case_span,
                 )
-            seen[pattern] = case_.pattern
 
-        remaining = {True, False} - set(seen)
-        if remaining:
+        if remaining := matcher.unhandled_cases():
             raise errors.InexhaustiveMatch(
                 message="Match not exhaustive",
                 span=match_stmt.span,
@@ -440,32 +501,26 @@ class CaseLadder(_Ast, ast_utils.AsList):
     def ensure_exhaustive_matching_enum(
         self,
         match_stmt: "MatchStmt",
-        variants: list[str],
-        expected_type: langtypes.Type,
+        enum_type: langtypes.Enum,
     ):
-        seen: dict[langvalues.EnumValue, EnumLiteral] = {}
+        matcher = EnumPatternMatcher(enum_type)
 
-        for case_ in self.cases:
-            if isinstance(case_.pattern, WildcardPattern):
-                # TODO: show warning if there are more cases after wildcard
-                return
-            assert isinstance(case_.pattern, EnumLiteral)
-            pattern = case_.pattern.value
-
-            if pattern in seen:
+        for case in self.cases:
+            assert isinstance(pat := case.pattern, WildcardPattern | EnumPattern)
+            try:
+                matcher.add_case(pat)
+            except MatcherCaseDuplicated as e:
                 raise errors.DuplicatedCase(
                     message="Case condition duplicated",
-                    span=case_.pattern.span,
-                    previous_case_span=seen[pattern].span,
+                    span=pat.span,
+                    previous_case_span=e.previous_case_span,
                 )
-            seen[pattern] = case_.pattern
 
-        remaining = set(variants) - set((s.variant for s in seen))
-        if remaining:
+        if remaining := matcher.unhandled_cases():
             raise errors.InexhaustiveMatch(
                 message="Match not exhaustive",
                 span=match_stmt.span,
-                expected_type=expected_type,
+                expected_type=enum_type,
                 expected_type_span=match_stmt.expr.span,
                 remaining_values=remaining,
             )
@@ -473,31 +528,27 @@ class CaseLadder(_Ast, ast_utils.AsList):
     def ensure_exhaustive_matching_array(
         self, match_stmt: "MatchStmt", ty: langtypes.Type
     ):
-        seen: dict[tuple[int | None, ...], ArrayPattern] = {}
+        matcher = ArrayPatternMatcher()
 
-        for case_ in self.cases:
-            if isinstance(case_.pattern, WildcardPattern):
-                # TODO: show warning if there are more cases after wildcard
-                return
-            assert isinstance(case_.pattern, ArrayPattern)
-            pattern = case_.pattern.pattern_as_list()
-
-            if tuple(pattern) in seen:
+        for case in self.cases:
+            assert isinstance(pat := case.pattern, WildcardPattern | ArrayPattern)
+            try:
+                matcher.add_case(pat)
+            except MatcherCaseDuplicated as e:
                 raise errors.DuplicatedCase(
                     message="Case condition duplicated",
-                    span=case_.pattern.span,
-                    previous_case_span=seen[tuple(pattern)].span,
+                    span=pat.span,
+                    previous_case_span=e.previous_case_span,
                 )
-            seen[tuple(pattern)] = case_.pattern
 
-        # TODO: separate error for not handling wildcard pattern
-        raise errors.InexhaustiveMatch(
-            message="Match not exhaustive",
-            span=match_stmt.span,
-            expected_type=langtypes.Array(ty),
-            expected_type_span=match_stmt.expr.span,
-            remaining_values={"_"},
-        )
+        if remaining := matcher.unhandled_cases():
+            raise errors.InexhaustiveMatch(
+                message="Match not exhaustive",
+                span=match_stmt.span,
+                expected_type=langtypes.Array(ty),
+                expected_type_span=match_stmt.expr.span,
+                remaining_values=remaining,
+            )
 
 
 @dataclass
@@ -538,11 +589,7 @@ class MatchStmt(_Statement):
             case langtypes.BOOL:
                 self.cases.ensure_exhaustive_matching_bool(self)
             case langtypes.Enum():
-                self.cases.ensure_exhaustive_matching_enum(
-                    self,
-                    variants=expr_type.members,
-                    expected_type=expr_type,
-                )
+                self.cases.ensure_exhaustive_matching_enum(self, enum_type=expr_type)
             case langtypes.Array(ty=langtypes.INT):
                 self.cases.ensure_exhaustive_matching_array(self, expr_type.ty)
             case _:
@@ -600,7 +647,9 @@ class ForStmt(_Statement):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         array_type = self.arr_name.typecheck(env)
-        if not isinstance(array_type, langtypes.Array) and not isinstance(array_type, langtypes.String):
+        if not isinstance(array_type, langtypes.Array) and not isinstance(
+            array_type, langtypes.String
+        ):
             raise errors.UnexpectedType(
                 message="Unexpected type",
                 span=self.arr_name.span,
@@ -785,18 +834,17 @@ class StructAccess(_Statement):
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         struct_type = env.get(self.name)
         if not isinstance(struct_type, langtypes.Struct):
-            raise # TODO
+            raise  # TODO
 
         member_type = struct_type.members.types.get(self.member)
         if member_type is None:
-            raise # TODO
+            raise  # TODO
 
         self.type_ = member_type
         return self.type_
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
-
         struct_value = env.get(self.name)
         return struct_value.get_attr(self.member)
 
@@ -932,7 +980,7 @@ class Indexing(_Ast):
                 actual_type=array_type,
             )
         if not isinstance(index_type, langtypes.Int):
-            raise # TODO
+            raise  # TODO
 
         self.type_ = array_type.ty
         return self.type_
@@ -971,7 +1019,7 @@ class IndexAssignment(_Ast):
             )
 
         if not isinstance(index_type, langtypes.Int):
-            raise # TODO
+            raise  # TODO
 
         if self.type_.ty != value_type:
             raise errors.ArrayIndexAssignmentTypeMismatch(
@@ -994,7 +1042,7 @@ class IndexAssignment(_Ast):
 
 
 @dataclass
-class EnumMember(_Ast):
+class EnumMemberBare(_Ast):
     name: Token
 
     @override
@@ -1009,12 +1057,30 @@ class EnumMember(_Ast):
 
 
 @dataclass
-class EnumMembers(_Ast, ast_utils.AsList):
-    members: list[EnumMember]
+class EnumMemberTuple(_Ast):
+    name: Token
+    tuple_members: "TypeAnnotation"
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        seen: dict[Token, EnumMember] = {}
+        self.type_ = langtypes.Type()  # TODO: assign separate type
+
+        self.tuple_members.typecheck(env)
+        return self.type_
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+        # eval is handled by enum statement
+        pass
+
+
+@dataclass
+class EnumMembers(_Ast, ast_utils.AsList):
+    members: list[EnumMemberBare | EnumMemberTuple]
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        seen: dict[Token, EnumMemberBare | EnumMemberTuple] = {}
         for member in self.members:
             if member.name in seen:
                 raise errors.DuplicatedAttribute(
@@ -1033,8 +1099,25 @@ class EnumMembers(_Ast, ast_utils.AsList):
         # eval is handled by enum statement
         pass
 
-    def members_as_list(self) -> list[str]:
-        return [mem.name for mem in self.members]
+    def members_as_list(
+        self,
+    ) -> list[langtypes.EnumVariantSimple | langtypes.EnumVariantTuple]:
+        members: list[langtypes.EnumVariantSimple | langtypes.EnumVariantTuple] = []
+
+        for mem in self.members:
+            match mem:
+                case EnumMemberBare():
+                    members.append(langtypes.EnumVariantSimple(mem.name))
+                case EnumMemberTuple():
+                    assert mem.tuple_members.type_
+                    members.append(
+                        langtypes.EnumVariantTuple(
+                            mem.name,
+                            mem.tuple_members.type_,
+                        )
+                    )
+
+        return members
 
 
 @dataclass
@@ -1609,13 +1692,9 @@ class StringLiteral(_Expression):
 
 
 @dataclass
-class EnumLiteral(_Expression):
+class EnumLiteralSimple(_Expression):
     enum_type: Token
     variant: Token
-
-    @property
-    def value(self) -> langvalues.EnumValue:
-        return langvalues.EnumValue(ty=self.enum_type, variant=self.variant)
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -1626,8 +1705,42 @@ class EnumLiteral(_Expression):
         return self.type_
 
     @override
+    def eval(self, env: RuntimeEnvironment) -> langvalues.EnumValue:
+        return langvalues.EnumValue(ty=self.enum_type, variant=self.variant)
+
+
+@dataclass
+class EnumLiteralTuple(_Expression):
+    enum_type: Token
+    variant: Token
+    inner: _Expression
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type_ = env.get(self.enum_type)
+        if self.type_ is None:
+            raise  # TODO
+            # raise errors.UndeclaredType()
+        if not isinstance(self.type_, langtypes.Enum):
+            raise  # TODO
+
+        inner_type = self.inner.typecheck(env)
+        variant_type = self.type_.variant_from_str(self.variant)
+        if not isinstance(variant_type, langtypes.EnumVariantTuple):
+            raise  # TODO
+
+        if variant_type.inner != inner_type:
+            raise  # TODO
+
+        return self.type_
+
+    @override
     def eval(self, env: RuntimeEnvironment):
-        return self.value
+        return langvalues.EnumTupleValue(
+            ty=self.enum_type,
+            variant=self.variant,
+            tuple_value=self.inner.eval(env),
+        )
 
 
 @dataclass

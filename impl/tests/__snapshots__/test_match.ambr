@@ -9,17 +9,17 @@
               <class 'compiler.ast.EnumMembers'>: dict({
                 'members': list([
                   dict({
-                    <class 'compiler.ast.EnumMember'>: dict({
+                    <class 'compiler.ast.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'Malayalam'),
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.EnumMember'>: dict({
+                    <class 'compiler.ast.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'English'),
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.EnumMember'>: dict({
+                    <class 'compiler.ast.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'Japanese'),
                     }),
                   }),
@@ -73,7 +73,7 @@
                                   }),
                                 }),
                                 'pattern': dict({
-                                  <class 'compiler.ast.EnumLiteral'>: dict({
+                                  <class 'compiler.ast.EnumPattern'>: dict({
                                     'enum_type': Token('IDENTIFIER', 'Langs'),
                                     'variant': Token('IDENTIFIER', 'English'),
                                   }),
@@ -133,7 +133,7 @@
                   <class 'compiler.ast.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.EnumLiteral'>: dict({
+                        <class 'compiler.ast.EnumLiteralSimple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'English'),
                         }),
@@ -159,7 +159,7 @@
                   <class 'compiler.ast.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.EnumLiteral'>: dict({
+                        <class 'compiler.ast.EnumLiteralSimple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'Malayalam'),
                         }),
@@ -185,7 +185,7 @@
                   <class 'compiler.ast.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.EnumLiteral'>: dict({
+                        <class 'compiler.ast.EnumLiteralSimple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'Japanese'),
                         }),
@@ -213,13 +213,13 @@
         'members': dict({
           'members': list([
             dict({
-              <class 'compiler.ast.EnumMember'>: <class 'compiler.langtypes.Type'>,
+              <class 'compiler.ast.EnumMemberBare'>: <class 'compiler.langtypes.Type'>,
             }),
             dict({
-              <class 'compiler.ast.EnumMember'>: <class 'compiler.langtypes.Type'>,
+              <class 'compiler.ast.EnumMemberBare'>: <class 'compiler.langtypes.Type'>,
             }),
             dict({
-              <class 'compiler.ast.EnumMember'>: <class 'compiler.langtypes.Type'>,
+              <class 'compiler.ast.EnumMemberBare'>: <class 'compiler.langtypes.Type'>,
             }),
           ]),
           <class 'compiler.ast.EnumMembers'>: <class 'compiler.langtypes.Block'>,
@@ -256,7 +256,7 @@
                       <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
                     }),
                     'pattern': dict({
-                      <class 'compiler.ast.EnumLiteral'>: <class 'compiler.langtypes.Enum'>,
+                      <class 'compiler.ast.EnumPattern'>: <class 'compiler.langtypes.Enum'>,
                     }),
                     <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Enum'>,
                   }),
@@ -298,7 +298,7 @@
           'args': dict({
             'args': list([
               dict({
-                <class 'compiler.ast.EnumLiteral'>: <class 'compiler.langtypes.Enum'>,
+                <class 'compiler.ast.EnumLiteralSimple'>: <class 'compiler.langtypes.Enum'>,
               }),
             ]),
             <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
@@ -315,7 +315,7 @@
           'args': dict({
             'args': list([
               dict({
-                <class 'compiler.ast.EnumLiteral'>: <class 'compiler.langtypes.Enum'>,
+                <class 'compiler.ast.EnumLiteralSimple'>: <class 'compiler.langtypes.Enum'>,
               }),
             ]),
             <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
@@ -332,7 +332,7 @@
           'args': dict({
             'args': list([
               dict({
-                <class 'compiler.ast.EnumLiteral'>: <class 'compiler.langtypes.Enum'>,
+                <class 'compiler.ast.EnumLiteralSimple'>: <class 'compiler.langtypes.Enum'>,
               }),
             ]),
             <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
