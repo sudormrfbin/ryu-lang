@@ -6,12 +6,12 @@ from compiler import langtypes
 
 
 class TypeEnvironment:
-    enclosing: Optional[Self]
+    parent: Optional[Self]
     values: dict[str, langtypes.Type]
 
     def __init__(self, enclosing: Optional[Self] = None):
         self.values = {}
-        self.enclosing = enclosing
+        self.parent = enclosing
 
     def define(self, name: str, value: langtypes.Type):
         self.values[name] = value
@@ -22,21 +22,21 @@ class TypeEnvironment:
         while current is not None:
             if (type_ := current.values.get(name)) is not None:
                 return type_
-            current = current.enclosing
+            current = current.parent
 
         return None
 
     def is_global(self) -> bool:
-        return self.enclosing is None
+        return self.parent is None
 
 
 class RuntimeEnvironment:
-    enclosing: Optional[Self]
+    parent: Optional[Self]
     values: dict[str, Any]
 
     def __init__(self, enclosing: Optional[Self] = None):
         self.values = {}
-        self.enclosing = enclosing
+        self.parent = enclosing
 
     def define(self, name: str, value: Any):
         """
@@ -56,7 +56,7 @@ class RuntimeEnvironment:
             if current.values.get(name) is not None:
                 current.values[name] = value
                 return
-            current = current.enclosing
+            current = current.parent
 
         raise InternalCompilerError(f"Variable {name} could not be found in any scope")
 
@@ -66,9 +66,9 @@ class RuntimeEnvironment:
         while current is not None:
             if (value := current.values.get(name)) is not None:
                 return value
-            current = current.enclosing
+            current = current.parent
 
         raise InternalCompilerError(f"Variable {name} not defined at runtime")
 
     def is_global(self) -> bool:
-        return self.enclosing is None
+        return self.parent is None
