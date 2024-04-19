@@ -19,15 +19,27 @@
 # ---
 # name: test_block_with_multiple_statements.1
   dict({
-    'stmts': list([
-      dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.StatementList'>: dict({
+      'fields': dict({
+        'stmts': list([
+          dict({
+            <class 'compiler.ast.IntLiteral'>: dict({
+              'fields': dict({
+              }),
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
+          }),
+          dict({
+            <class 'compiler.ast.IntLiteral'>: dict({
+              'fields': dict({
+              }),
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
+          }),
+        ]),
       }),
-      dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-      }),
-    ]),
-    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+      'type': <class 'compiler.langtypes.Block'>,
+    }),
   })
 # ---
 # name: test_block_with_multiple_statements_and_trailing_newline
@@ -50,15 +62,27 @@
 # ---
 # name: test_block_with_multiple_statements_and_trailing_newline.1
   dict({
-    'stmts': list([
-      dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.StatementList'>: dict({
+      'fields': dict({
+        'stmts': list([
+          dict({
+            <class 'compiler.ast.IntLiteral'>: dict({
+              'fields': dict({
+              }),
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
+          }),
+          dict({
+            <class 'compiler.ast.IntLiteral'>: dict({
+              'fields': dict({
+              }),
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
+          }),
+        ]),
       }),
-      dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-      }),
-    ]),
-    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+      'type': <class 'compiler.langtypes.Block'>,
+    }),
   })
 # ---
 # name: test_statement_with_multiple_newlines_fallsthrough_to_expression
@@ -70,7 +94,27 @@
 # ---
 # name: test_statement_with_multiple_newlines_fallsthrough_to_expression.1
   dict({
-    <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.IntLiteral'>: dict({
+      'fields': dict({
+      }),
+      'type': <class 'compiler.langtypes.Int'>,
+    }),
+  })
+# ---
+# name: test_statement_with_single_newline_fallsthrough_to_expression
+  dict({
+    <class 'compiler.ast.IntLiteral'>: dict({
+      'value': 1,
+    }),
+  })
+# ---
+# name: test_statement_with_single_newline_fallsthrough_to_expression.1
+  dict({
+    <class 'compiler.ast.IntLiteral'>: dict({
+      'fields': dict({
+      }),
+      'type': <class 'compiler.langtypes.Int'>,
+    }),
   })
 # ---
 # name: test_statement_without_newline_fallsthrough_to_expression
@@ -82,6 +126,10 @@
 # ---
 # name: test_statement_without_newline_fallsthrough_to_expression.1
   dict({
-    <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.IntLiteral'>: dict({
+      'fields': dict({
+      }),
+      'type': <class 'compiler.langtypes.Int'>,
+    }),
   })
 # ---

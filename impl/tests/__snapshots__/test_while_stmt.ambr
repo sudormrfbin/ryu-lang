@@ -64,43 +64,91 @@
 # ---
 # name: test_while_stmt.1
   dict({
-    'stmts': list([
-      dict({
-        'rvalue': dict({
-          <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
-      }),
-      dict({
-        'cond': dict({
-          'left': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
-          }),
-          'right': dict({
-            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-          }),
-          <class 'compiler.ast.Equality'>: <class 'compiler.langtypes.Bool'>,
-        }),
-        'true_block': dict({
-          'stmts': list([
-            dict({
-              'rvalue': dict({
-                'left': dict({
-                  <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.StatementList'>: dict({
+      'fields': dict({
+        'stmts': list([
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.IntLiteral'>: dict({
+                    'fields': dict({
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
                 }),
-                'right': dict({
-                  <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-                }),
-                <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
               }),
-              <class 'compiler.ast.Assignment'>: <class 'compiler.langtypes.Int'>,
+              'type': <class 'compiler.langtypes.Int'>,
             }),
-          ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
-        }),
-        <class 'compiler.ast.WhileStmt'>: <class 'compiler.langtypes.Block'>,
+          }),
+          dict({
+            <class 'compiler.ast.WhileStmt'>: dict({
+              'fields': dict({
+                'cond': dict({
+                  <class 'compiler.ast.Equality'>: dict({
+                    'fields': dict({
+                      'left': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                      'right': dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Bool'>,
+                  }),
+                }),
+                'true_block': dict({
+                  <class 'compiler.ast.StatementBlock'>: dict({
+                    'fields': dict({
+                      'stmts': list([
+                        dict({
+                          <class 'compiler.ast.Assignment'>: dict({
+                            'fields': dict({
+                              'rvalue': dict({
+                                <class 'compiler.ast.Term'>: dict({
+                                  'fields': dict({
+                                    'left': dict({
+                                      <class 'compiler.ast.Variable'>: dict({
+                                        'fields': dict({
+                                        }),
+                                        'type': <class 'compiler.langtypes.Int'>,
+                                      }),
+                                    }),
+                                    'right': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'fields': dict({
+                                        }),
+                                        'type': <class 'compiler.langtypes.Int'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            }),
+                            'type': <class 'compiler.langtypes.Int'>,
+                          }),
+                        }),
+                      ]),
+                    }),
+                    'type': <class 'compiler.langtypes.Block'>,
+                  }),
+                }),
+              }),
+              'type': <class 'compiler.langtypes.Block'>,
+            }),
+          }),
+        ]),
       }),
-    ]),
-    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+      'type': <class 'compiler.langtypes.Block'>,
+    }),
   })
 # ---

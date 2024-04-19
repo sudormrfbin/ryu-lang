@@ -48,35 +48,71 @@
 # ---
 # name: test_lexical_scope_variable_shadowing.1
   dict({
-    'stmts': list([
-      dict({
-        'rvalue': dict({
-          <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.String'>,
-      }),
-      dict({
-        'if_stmt': dict({
-          'cond': dict({
-            <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
-          }),
-          'true_block': dict({
-            'stmts': list([
-              dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'fields': dict({
+        'stmts': list([
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+                  <class 'compiler.ast.StringLiteral'>: dict({
+                    'fields': dict({
+                    }),
+                    'type': <class 'compiler.langtypes.String'>,
+                  }),
                 }),
-                <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.String'>,
               }),
-            ]),
-            <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
+              'type': <class 'compiler.langtypes.String'>,
+            }),
           }),
-          <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.Block'>,
-        }),
-        <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.Block'>,
+          dict({
+            <class 'compiler.ast.IfChain'>: dict({
+              'fields': dict({
+                'if_stmt': dict({
+                  <class 'compiler.ast.IfStmt'>: dict({
+                    'fields': dict({
+                      'cond': dict({
+                        <class 'compiler.ast.BoolLiteral'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Bool'>,
+                        }),
+                      }),
+                      'true_block': dict({
+                        <class 'compiler.ast.StatementBlock'>: dict({
+                          'fields': dict({
+                            'stmts': list([
+                              dict({
+                                <class 'compiler.ast.VariableDeclaration'>: dict({
+                                  'fields': dict({
+                                    'rvalue': dict({
+                                      <class 'compiler.ast.StringLiteral'>: dict({
+                                        'fields': dict({
+                                        }),
+                                        'type': <class 'compiler.langtypes.String'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.String'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Block'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Block'>,
+                  }),
+                }),
+              }),
+              'type': <class 'compiler.langtypes.Block'>,
+            }),
+          }),
+        ]),
       }),
-    ]),
-    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+      'type': <class 'compiler.langtypes.Block'>,
+    }),
   })
 # ---
 # name: test_lexical_scope_variable_type
@@ -128,34 +164,70 @@
 # ---
 # name: test_lexical_scope_variable_type.1
   dict({
-    'stmts': list([
-      dict({
-        'rvalue': dict({
-          <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.String'>,
-      }),
-      dict({
-        'if_stmt': dict({
-          'cond': dict({
-            <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
-          }),
-          'true_block': dict({
-            'stmts': list([
-              dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'fields': dict({
+        'stmts': list([
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                  <class 'compiler.ast.StringLiteral'>: dict({
+                    'fields': dict({
+                    }),
+                    'type': <class 'compiler.langtypes.String'>,
+                  }),
                 }),
-                <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
               }),
-            ]),
-            <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
+              'type': <class 'compiler.langtypes.String'>,
+            }),
           }),
-          <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.Block'>,
-        }),
-        <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.Block'>,
+          dict({
+            <class 'compiler.ast.IfChain'>: dict({
+              'fields': dict({
+                'if_stmt': dict({
+                  <class 'compiler.ast.IfStmt'>: dict({
+                    'fields': dict({
+                      'cond': dict({
+                        <class 'compiler.ast.BoolLiteral'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Bool'>,
+                        }),
+                      }),
+                      'true_block': dict({
+                        <class 'compiler.ast.StatementBlock'>: dict({
+                          'fields': dict({
+                            'stmts': list([
+                              dict({
+                                <class 'compiler.ast.VariableDeclaration'>: dict({
+                                  'fields': dict({
+                                    'rvalue': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'fields': dict({
+                                        }),
+                                        'type': <class 'compiler.langtypes.Int'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Block'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Block'>,
+                  }),
+                }),
+              }),
+              'type': <class 'compiler.langtypes.Block'>,
+            }),
+          }),
+        ]),
       }),
-    ]),
-    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+      'type': <class 'compiler.langtypes.Block'>,
+    }),
   })
 # ---

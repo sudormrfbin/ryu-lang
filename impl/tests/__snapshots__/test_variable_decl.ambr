@@ -13,10 +13,18 @@
 # ---
 # name: test_variable_delcaration.1
   dict({
-    'rvalue': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.VariableDeclaration'>: dict({
+      'fields': dict({
+        'rvalue': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_variable_delcaration_with_expressions
@@ -53,21 +61,45 @@
 # ---
 # name: test_variable_delcaration_with_expressions.1
   dict({
-    'rvalue': dict({
-      'left': dict({
-        'left': dict({
-          <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.VariableDeclaration'>: dict({
+      'fields': dict({
+        'rvalue': dict({
+          <class 'compiler.ast.Equality'>: dict({
+            'fields': dict({
+              'left': dict({
+                <class 'compiler.ast.Factor'>: dict({
+                  'fields': dict({
+                    'left': dict({
+                      <class 'compiler.ast.IntLiteral'>: dict({
+                        'fields': dict({
+                        }),
+                        'type': <class 'compiler.langtypes.Int'>,
+                      }),
+                    }),
+                    'right': dict({
+                      <class 'compiler.ast.IntLiteral'>: dict({
+                        'fields': dict({
+                        }),
+                        'type': <class 'compiler.langtypes.Int'>,
+                      }),
+                    }),
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+              'right': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
         }),
-        'right': dict({
-          <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
       }),
-      'right': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-      }),
-      <class 'compiler.ast.Equality'>: <class 'compiler.langtypes.Bool'>,
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---

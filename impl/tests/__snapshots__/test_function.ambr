@@ -100,69 +100,145 @@
 # ---
 # name: test_function_call_multiple_args.1
   dict({
-    'stmts': list([
-      dict({
-        'args': dict({
-          'args': list([
-            dict({
-              'arg_type': dict({
-                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-              }),
-              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
-            }),
-            dict({
-              'arg_type': dict({
-                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-              }),
-              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
-            }),
-          ]),
-          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
-        }),
-        'body': dict({
-          'stmts': list([
-            dict({
-              'return_value': dict({
-                'left': dict({
-                  <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.StatementList'>: dict({
+      'fields': dict({
+        'stmts': list([
+          dict({
+            <class 'compiler.ast.FunctionDefinition'>: dict({
+              'fields': dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionParams'>: dict({
+                    'fields': dict({
+                      'args': list([
+                        dict({
+                          <class 'compiler.ast.FunctionParam'>: dict({
+                            'fields': dict({
+                              'arg_type': dict({
+                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            }),
+                            'type': <class 'compiler.langtypes.Int'>,
+                          }),
+                        }),
+                        dict({
+                          <class 'compiler.ast.FunctionParam'>: dict({
+                            'fields': dict({
+                              'arg_type': dict({
+                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            }),
+                            'type': <class 'compiler.langtypes.Int'>,
+                          }),
+                        }),
+                      ]),
+                    }),
+                    'type': <class 'compiler.langtypes.Function.Params'>,
+                  }),
                 }),
-                'right': dict({
-                  <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                'body': dict({
+                  <class 'compiler.ast.StatementBlock'>: dict({
+                    'fields': dict({
+                      'stmts': list([
+                        dict({
+                          <class 'compiler.ast.ReturnStmt'>: dict({
+                            'fields': dict({
+                              'return_value': dict({
+                                <class 'compiler.ast.Term'>: dict({
+                                  'fields': dict({
+                                    'left': dict({
+                                      <class 'compiler.ast.Variable'>: dict({
+                                        'fields': dict({
+                                        }),
+                                        'type': <class 'compiler.langtypes.Int'>,
+                                      }),
+                                    }),
+                                    'right': dict({
+                                      <class 'compiler.ast.Variable'>: dict({
+                                        'fields': dict({
+                                        }),
+                                        'type': <class 'compiler.langtypes.Int'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            }),
+                            'type': <class 'compiler.langtypes.Block'>,
+                          }),
+                        }),
+                      ]),
+                    }),
+                    'type': <class 'compiler.langtypes.Block'>,
+                  }),
                 }),
-                <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
+                'return_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                    'fields': dict({
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
               }),
-              <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
+              'type': <class 'compiler.langtypes.Function'>,
             }),
-          ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
-        }),
-        'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
-      }),
-      dict({
-        'rvalue': dict({
-          'args': dict({
-            'args': list([
-              dict({
-                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-              }),
-              dict({
-                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-              }),
-            ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
-          'callee': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'args': dict({
+                        <class 'compiler.ast.FunctionArgs'>: dict({
+                          'fields': dict({
+                            'args': list([
+                              dict({
+                                <class 'compiler.ast.IntLiteral'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                              dict({
+                                <class 'compiler.ast.IntLiteral'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Function.Params'>,
+                        }),
+                      }),
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Function'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
+              }),
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
           }),
-          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+        ]),
       }),
-    ]),
-    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+      'type': <class 'compiler.langtypes.Block'>,
+    }),
   })
 # ---
 # name: test_function_call_multiple_returns
@@ -300,94 +376,198 @@
 # ---
 # name: test_function_call_multiple_returns.1
   dict({
-    'stmts': list([
-      dict({
-        'args': dict({
-          'args': list([
-            dict({
-              'arg_type': dict({
-                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-              }),
-              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
-            }),
-            dict({
-              'arg_type': dict({
-                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-              }),
-              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
-            }),
-          ]),
-          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
-        }),
-        'body': dict({
-          'stmts': list([
-            dict({
-              'else_block': dict({
-                'stmts': list([
-                  dict({
-                    'return_value': dict({
-                      <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.StatementList'>: dict({
+      'fields': dict({
+        'stmts': list([
+          dict({
+            <class 'compiler.ast.FunctionDefinition'>: dict({
+              'fields': dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionParams'>: dict({
+                    'fields': dict({
+                      'args': list([
+                        dict({
+                          <class 'compiler.ast.FunctionParam'>: dict({
+                            'fields': dict({
+                              'arg_type': dict({
+                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            }),
+                            'type': <class 'compiler.langtypes.Int'>,
+                          }),
+                        }),
+                        dict({
+                          <class 'compiler.ast.FunctionParam'>: dict({
+                            'fields': dict({
+                              'arg_type': dict({
+                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            }),
+                            'type': <class 'compiler.langtypes.Int'>,
+                          }),
+                        }),
+                      ]),
                     }),
-                    <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
+                    'type': <class 'compiler.langtypes.Function.Params'>,
                   }),
-                ]),
-                <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
-              }),
-              'if_stmt': dict({
-                'cond': dict({
-                  'left': dict({
-                    <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
-                  }),
-                  'right': dict({
-                    <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
-                  }),
-                  <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
                 }),
-                'true_block': dict({
-                  'stmts': list([
-                    dict({
-                      'return_value': dict({
-                        <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                'body': dict({
+                  <class 'compiler.ast.StatementBlock'>: dict({
+                    'fields': dict({
+                      'stmts': list([
+                        dict({
+                          <class 'compiler.ast.IfChain'>: dict({
+                            'fields': dict({
+                              'else_block': dict({
+                                <class 'compiler.ast.StatementBlock'>: dict({
+                                  'fields': dict({
+                                    'stmts': list([
+                                      dict({
+                                        <class 'compiler.ast.ReturnStmt'>: dict({
+                                          'fields': dict({
+                                            'return_value': dict({
+                                              <class 'compiler.ast.Variable'>: dict({
+                                                'fields': dict({
+                                                }),
+                                                'type': <class 'compiler.langtypes.Int'>,
+                                              }),
+                                            }),
+                                          }),
+                                          'type': <class 'compiler.langtypes.Block'>,
+                                        }),
+                                      }),
+                                    ]),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Block'>,
+                                }),
+                              }),
+                              'if_stmt': dict({
+                                <class 'compiler.ast.IfStmt'>: dict({
+                                  'fields': dict({
+                                    'cond': dict({
+                                      <class 'compiler.ast.Comparison'>: dict({
+                                        'fields': dict({
+                                          'left': dict({
+                                            <class 'compiler.ast.Variable'>: dict({
+                                              'fields': dict({
+                                              }),
+                                              'type': <class 'compiler.langtypes.Int'>,
+                                            }),
+                                          }),
+                                          'right': dict({
+                                            <class 'compiler.ast.Variable'>: dict({
+                                              'fields': dict({
+                                              }),
+                                              'type': <class 'compiler.langtypes.Int'>,
+                                            }),
+                                          }),
+                                        }),
+                                        'type': <class 'compiler.langtypes.Bool'>,
+                                      }),
+                                    }),
+                                    'true_block': dict({
+                                      <class 'compiler.ast.StatementBlock'>: dict({
+                                        'fields': dict({
+                                          'stmts': list([
+                                            dict({
+                                              <class 'compiler.ast.ReturnStmt'>: dict({
+                                                'fields': dict({
+                                                  'return_value': dict({
+                                                    <class 'compiler.ast.Variable'>: dict({
+                                                      'fields': dict({
+                                                      }),
+                                                      'type': <class 'compiler.langtypes.Int'>,
+                                                    }),
+                                                  }),
+                                                }),
+                                                'type': <class 'compiler.langtypes.Block'>,
+                                              }),
+                                            }),
+                                          ]),
+                                        }),
+                                        'type': <class 'compiler.langtypes.Block'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Block'>,
+                                }),
+                              }),
+                            }),
+                            'type': <class 'compiler.langtypes.Block'>,
+                          }),
+                        }),
+                      ]),
+                    }),
+                    'type': <class 'compiler.langtypes.Block'>,
+                  }),
+                }),
+                'return_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                    'fields': dict({
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
+              }),
+              'type': <class 'compiler.langtypes.Function'>,
+            }),
+          }),
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'args': dict({
+                        <class 'compiler.ast.FunctionArgs'>: dict({
+                          'fields': dict({
+                            'args': list([
+                              dict({
+                                <class 'compiler.ast.IntLiteral'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                              dict({
+                                <class 'compiler.ast.IntLiteral'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Function.Params'>,
+                        }),
                       }),
-                      <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Function'>,
+                        }),
+                      }),
                     }),
-                  ]),
-                  <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
                 }),
-                <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.Block'>,
               }),
-              <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.Block'>,
+              'type': <class 'compiler.langtypes.Int'>,
             }),
-          ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
-        }),
-        'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
-      }),
-      dict({
-        'rvalue': dict({
-          'args': dict({
-            'args': list([
-              dict({
-                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-              }),
-              dict({
-                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-              }),
-            ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
-          'callee': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
-          }),
-          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+        ]),
       }),
-    ]),
-    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+      'type': <class 'compiler.langtypes.Block'>,
+    }),
   })
 # ---
 # name: test_function_call_one_arg
@@ -466,54 +646,110 @@
 # ---
 # name: test_function_call_one_arg.1
   dict({
-    'stmts': list([
-      dict({
-        'args': dict({
-          'args': list([
-            dict({
-              'arg_type': dict({
-                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.StatementList'>: dict({
+      'fields': dict({
+        'stmts': list([
+          dict({
+            <class 'compiler.ast.FunctionDefinition'>: dict({
+              'fields': dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionParams'>: dict({
+                    'fields': dict({
+                      'args': list([
+                        dict({
+                          <class 'compiler.ast.FunctionParam'>: dict({
+                            'fields': dict({
+                              'arg_type': dict({
+                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            }),
+                            'type': <class 'compiler.langtypes.Int'>,
+                          }),
+                        }),
+                      ]),
+                    }),
+                    'type': <class 'compiler.langtypes.Function.Params'>,
+                  }),
+                }),
+                'body': dict({
+                  <class 'compiler.ast.StatementBlock'>: dict({
+                    'fields': dict({
+                      'stmts': list([
+                        dict({
+                          <class 'compiler.ast.ReturnStmt'>: dict({
+                            'fields': dict({
+                              'return_value': dict({
+                                <class 'compiler.ast.Variable'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            }),
+                            'type': <class 'compiler.langtypes.Block'>,
+                          }),
+                        }),
+                      ]),
+                    }),
+                    'type': <class 'compiler.langtypes.Block'>,
+                  }),
+                }),
+                'return_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                    'fields': dict({
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
               }),
-              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
+              'type': <class 'compiler.langtypes.Function'>,
             }),
-          ]),
-          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
-        }),
-        'body': dict({
-          'stmts': list([
-            dict({
-              'return_value': dict({
-                <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+          }),
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'args': dict({
+                        <class 'compiler.ast.FunctionArgs'>: dict({
+                          'fields': dict({
+                            'args': list([
+                              dict({
+                                <class 'compiler.ast.IntLiteral'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Function.Params'>,
+                        }),
+                      }),
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Function'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
               }),
-              <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
+              'type': <class 'compiler.langtypes.Int'>,
             }),
-          ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
-        }),
-        'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
-      }),
-      dict({
-        'rvalue': dict({
-          'args': dict({
-            'args': list([
-              dict({
-                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-              }),
-            ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
-          'callee': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
-          }),
-          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+        ]),
       }),
-    ]),
-    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+      'type': <class 'compiler.langtypes.Block'>,
+    }),
   })
 # ---
 # name: test_function_call_zero_args
@@ -565,35 +801,71 @@
 # ---
 # name: test_function_call_zero_args.1
   dict({
-    'stmts': list([
-      dict({
-        'body': dict({
-          'stmts': list([
-            dict({
-              'return_value': dict({
-                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.StatementList'>: dict({
+      'fields': dict({
+        'stmts': list([
+          dict({
+            <class 'compiler.ast.FunctionDefinition'>: dict({
+              'fields': dict({
+                'body': dict({
+                  <class 'compiler.ast.StatementBlock'>: dict({
+                    'fields': dict({
+                      'stmts': list([
+                        dict({
+                          <class 'compiler.ast.ReturnStmt'>: dict({
+                            'fields': dict({
+                              'return_value': dict({
+                                <class 'compiler.ast.IntLiteral'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            }),
+                            'type': <class 'compiler.langtypes.Block'>,
+                          }),
+                        }),
+                      ]),
+                    }),
+                    'type': <class 'compiler.langtypes.Block'>,
+                  }),
+                }),
+                'return_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                    'fields': dict({
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
               }),
-              <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
+              'type': <class 'compiler.langtypes.Function'>,
             }),
-          ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
-        }),
-        'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
-      }),
-      dict({
-        'rvalue': dict({
-          'callee': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
           }),
-          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Function'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
+              }),
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
+          }),
+        ]),
       }),
-    ]),
-    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+      'type': <class 'compiler.langtypes.Block'>,
+    }),
   })
 # ---
 # name: test_function_def_array_arg
@@ -646,35 +918,71 @@
 # ---
 # name: test_function_def_array_arg.1
   dict({
-    'args': dict({
-      'args': list([
-        dict({
-          'arg_type': dict({
-            'generics': dict({
-              <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.FunctionDefinition'>: dict({
+      'fields': dict({
+        'args': dict({
+          <class 'compiler.ast.FunctionParams'>: dict({
+            'fields': dict({
+              'args': list([
+                dict({
+                  <class 'compiler.ast.FunctionParam'>: dict({
+                    'fields': dict({
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'fields': dict({
+                            'generics': dict({
+                              <class 'compiler.ast.TypeAnnotation'>: dict({
+                                'fields': dict({
+                                }),
+                                'type': <class 'compiler.langtypes.Int'>,
+                              }),
+                            }),
+                          }),
+                          'type': <class 'compiler.langtypes.Array'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Array'>,
+                  }),
+                }),
+              ]),
             }),
-            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Array'>,
+            'type': <class 'compiler.langtypes.Function.Params'>,
           }),
-          <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Array'>,
         }),
-      ]),
-      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
-    }),
-    'body': dict({
-      'stmts': list([
-        dict({
-          'return_value': dict({
-            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+        'body': dict({
+          <class 'compiler.ast.StatementBlock'>: dict({
+            'fields': dict({
+              'stmts': list([
+                dict({
+                  <class 'compiler.ast.ReturnStmt'>: dict({
+                    'fields': dict({
+                      'return_value': dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Block'>,
+                  }),
+                }),
+              ]),
+            }),
+            'type': <class 'compiler.langtypes.Block'>,
           }),
-          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
         }),
-      ]),
-      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Function'>,
     }),
-    'return_type': dict({
-      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
   })
 # ---
 # name: test_function_def_multiple_args
@@ -742,44 +1050,92 @@
 # ---
 # name: test_function_def_multiple_args.1
   dict({
-    'args': dict({
-      'args': list([
-        dict({
-          'arg_type': dict({
-            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-          }),
-          <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
-        }),
-        dict({
-          'arg_type': dict({
-            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-          }),
-          <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
-        }),
-      ]),
-      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
-    }),
-    'body': dict({
-      'stmts': list([
-        dict({
-          'return_value': dict({
-            'left': dict({
-              <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.FunctionDefinition'>: dict({
+      'fields': dict({
+        'args': dict({
+          <class 'compiler.ast.FunctionParams'>: dict({
+            'fields': dict({
+              'args': list([
+                dict({
+                  <class 'compiler.ast.FunctionParam'>: dict({
+                    'fields': dict({
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
+                dict({
+                  <class 'compiler.ast.FunctionParam'>: dict({
+                    'fields': dict({
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
+              ]),
             }),
-            'right': dict({
-              <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
-            }),
-            <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
+            'type': <class 'compiler.langtypes.Function.Params'>,
           }),
-          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
         }),
-      ]),
-      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
+        'body': dict({
+          <class 'compiler.ast.StatementBlock'>: dict({
+            'fields': dict({
+              'stmts': list([
+                dict({
+                  <class 'compiler.ast.ReturnStmt'>: dict({
+                    'fields': dict({
+                      'return_value': dict({
+                        <class 'compiler.ast.Term'>: dict({
+                          'fields': dict({
+                            'left': dict({
+                              <class 'compiler.ast.Variable'>: dict({
+                                'fields': dict({
+                                }),
+                                'type': <class 'compiler.langtypes.Int'>,
+                              }),
+                            }),
+                            'right': dict({
+                              <class 'compiler.ast.Variable'>: dict({
+                                'fields': dict({
+                                }),
+                                'type': <class 'compiler.langtypes.Int'>,
+                              }),
+                            }),
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Block'>,
+                  }),
+                }),
+              ]),
+            }),
+            'type': <class 'compiler.langtypes.Block'>,
+          }),
+        }),
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Function'>,
     }),
-    'return_type': dict({
-      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
   })
 # ---
 # name: test_function_def_multiple_returns
@@ -881,69 +1237,145 @@
 # ---
 # name: test_function_def_multiple_returns.1
   dict({
-    'args': dict({
-      'args': list([
-        dict({
-          'arg_type': dict({
-            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-          }),
-          <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
-        }),
-        dict({
-          'arg_type': dict({
-            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-          }),
-          <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
-        }),
-      ]),
-      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
-    }),
-    'body': dict({
-      'stmts': list([
-        dict({
-          'else_block': dict({
-            'stmts': list([
-              dict({
-                'return_value': dict({
-                  <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
-                }),
-                <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
-              }),
-            ]),
-            <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
-          }),
-          'if_stmt': dict({
-            'cond': dict({
-              'left': dict({
-                <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
-              }),
-              'right': dict({
-                <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
-              }),
-              <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
-            }),
-            'true_block': dict({
-              'stmts': list([
+    <class 'compiler.ast.FunctionDefinition'>: dict({
+      'fields': dict({
+        'args': dict({
+          <class 'compiler.ast.FunctionParams'>: dict({
+            'fields': dict({
+              'args': list([
                 dict({
-                  'return_value': dict({
-                    <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+                  <class 'compiler.ast.FunctionParam'>: dict({
+                    'fields': dict({
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
                   }),
-                  <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
+                }),
+                dict({
+                  <class 'compiler.ast.FunctionParam'>: dict({
+                    'fields': dict({
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
                 }),
               ]),
-              <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
             }),
-            <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.Block'>,
+            'type': <class 'compiler.langtypes.Function.Params'>,
           }),
-          <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.Block'>,
         }),
-      ]),
-      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
+        'body': dict({
+          <class 'compiler.ast.StatementBlock'>: dict({
+            'fields': dict({
+              'stmts': list([
+                dict({
+                  <class 'compiler.ast.IfChain'>: dict({
+                    'fields': dict({
+                      'else_block': dict({
+                        <class 'compiler.ast.StatementBlock'>: dict({
+                          'fields': dict({
+                            'stmts': list([
+                              dict({
+                                <class 'compiler.ast.ReturnStmt'>: dict({
+                                  'fields': dict({
+                                    'return_value': dict({
+                                      <class 'compiler.ast.Variable'>: dict({
+                                        'fields': dict({
+                                        }),
+                                        'type': <class 'compiler.langtypes.Int'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Block'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Block'>,
+                        }),
+                      }),
+                      'if_stmt': dict({
+                        <class 'compiler.ast.IfStmt'>: dict({
+                          'fields': dict({
+                            'cond': dict({
+                              <class 'compiler.ast.Comparison'>: dict({
+                                'fields': dict({
+                                  'left': dict({
+                                    <class 'compiler.ast.Variable'>: dict({
+                                      'fields': dict({
+                                      }),
+                                      'type': <class 'compiler.langtypes.Int'>,
+                                    }),
+                                  }),
+                                  'right': dict({
+                                    <class 'compiler.ast.Variable'>: dict({
+                                      'fields': dict({
+                                      }),
+                                      'type': <class 'compiler.langtypes.Int'>,
+                                    }),
+                                  }),
+                                }),
+                                'type': <class 'compiler.langtypes.Bool'>,
+                              }),
+                            }),
+                            'true_block': dict({
+                              <class 'compiler.ast.StatementBlock'>: dict({
+                                'fields': dict({
+                                  'stmts': list([
+                                    dict({
+                                      <class 'compiler.ast.ReturnStmt'>: dict({
+                                        'fields': dict({
+                                          'return_value': dict({
+                                            <class 'compiler.ast.Variable'>: dict({
+                                              'fields': dict({
+                                              }),
+                                              'type': <class 'compiler.langtypes.Int'>,
+                                            }),
+                                          }),
+                                        }),
+                                        'type': <class 'compiler.langtypes.Block'>,
+                                      }),
+                                    }),
+                                  ]),
+                                }),
+                                'type': <class 'compiler.langtypes.Block'>,
+                              }),
+                            }),
+                          }),
+                          'type': <class 'compiler.langtypes.Block'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Block'>,
+                  }),
+                }),
+              ]),
+            }),
+            'type': <class 'compiler.langtypes.Block'>,
+          }),
+        }),
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Function'>,
     }),
-    'return_type': dict({
-      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
   })
 # ---
 # name: test_function_def_one_arg
@@ -991,32 +1423,64 @@
 # ---
 # name: test_function_def_one_arg.1
   dict({
-    'args': dict({
-      'args': list([
-        dict({
-          'arg_type': dict({
-            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.FunctionDefinition'>: dict({
+      'fields': dict({
+        'args': dict({
+          <class 'compiler.ast.FunctionParams'>: dict({
+            'fields': dict({
+              'args': list([
+                dict({
+                  <class 'compiler.ast.FunctionParam'>: dict({
+                    'fields': dict({
+                      'arg_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
+              ]),
+            }),
+            'type': <class 'compiler.langtypes.Function.Params'>,
           }),
-          <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
         }),
-      ]),
-      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
-    }),
-    'body': dict({
-      'stmts': list([
-        dict({
-          'return_value': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+        'body': dict({
+          <class 'compiler.ast.StatementBlock'>: dict({
+            'fields': dict({
+              'stmts': list([
+                dict({
+                  <class 'compiler.ast.ReturnStmt'>: dict({
+                    'fields': dict({
+                      'return_value': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Block'>,
+                  }),
+                }),
+              ]),
+            }),
+            'type': <class 'compiler.langtypes.Block'>,
           }),
-          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
         }),
-      ]),
-      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Function'>,
     }),
-    'return_type': dict({
-      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
   })
 # ---
 # name: test_function_def_zero_args
@@ -1048,21 +1512,41 @@
 # ---
 # name: test_function_def_zero_args.1
   dict({
-    'body': dict({
-      'stmts': list([
-        dict({
-          'return_value': dict({
-            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.FunctionDefinition'>: dict({
+      'fields': dict({
+        'body': dict({
+          <class 'compiler.ast.StatementBlock'>: dict({
+            'fields': dict({
+              'stmts': list([
+                dict({
+                  <class 'compiler.ast.ReturnStmt'>: dict({
+                    'fields': dict({
+                      'return_value': dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Block'>,
+                  }),
+                }),
+              ]),
+            }),
+            'type': <class 'compiler.langtypes.Block'>,
           }),
-          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
         }),
-      ]),
-      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
+        'return_type': dict({
+          <class 'compiler.ast.TypeAnnotation'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Function'>,
     }),
-    'return_type': dict({
-      <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
   })
 # ---
 # name: test_function_recursive
@@ -1345,192 +1829,412 @@
 # ---
 # name: test_function_recursive.1
   dict({
-    'stmts': list([
-      dict({
-        'args': dict({
-          'args': list([
-            dict({
-              'arg_type': dict({
-                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-              }),
-              <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
-            }),
-          ]),
-          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
-        }),
-        'body': dict({
-          'stmts': list([
-            dict({
-              'else_block': dict({
-                'stmts': list([
-                  dict({
-                    'return_value': dict({
-                      'left': dict({
-                        'args': dict({
-                          'args': list([
-                            dict({
-                              'left': dict({
-                                <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.StatementList'>: dict({
+      'fields': dict({
+        'stmts': list([
+          dict({
+            <class 'compiler.ast.FunctionDefinition'>: dict({
+              'fields': dict({
+                'args': dict({
+                  <class 'compiler.ast.FunctionParams'>: dict({
+                    'fields': dict({
+                      'args': list([
+                        dict({
+                          <class 'compiler.ast.FunctionParam'>: dict({
+                            'fields': dict({
+                              'arg_type': dict({
+                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
                               }),
-                              'right': dict({
-                                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-                              }),
-                              <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
                             }),
-                          ]),
-                          <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
+                            'type': <class 'compiler.langtypes.Int'>,
+                          }),
                         }),
-                        'callee': dict({
-                          <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
+                      ]),
+                    }),
+                    'type': <class 'compiler.langtypes.Function.Params'>,
+                  }),
+                }),
+                'body': dict({
+                  <class 'compiler.ast.StatementBlock'>: dict({
+                    'fields': dict({
+                      'stmts': list([
+                        dict({
+                          <class 'compiler.ast.IfChain'>: dict({
+                            'fields': dict({
+                              'else_block': dict({
+                                <class 'compiler.ast.StatementBlock'>: dict({
+                                  'fields': dict({
+                                    'stmts': list([
+                                      dict({
+                                        <class 'compiler.ast.ReturnStmt'>: dict({
+                                          'fields': dict({
+                                            'return_value': dict({
+                                              <class 'compiler.ast.Factor'>: dict({
+                                                'fields': dict({
+                                                  'left': dict({
+                                                    <class 'compiler.ast.FunctionCall'>: dict({
+                                                      'fields': dict({
+                                                        'args': dict({
+                                                          <class 'compiler.ast.FunctionArgs'>: dict({
+                                                            'fields': dict({
+                                                              'args': list([
+                                                                dict({
+                                                                  <class 'compiler.ast.Term'>: dict({
+                                                                    'fields': dict({
+                                                                      'left': dict({
+                                                                        <class 'compiler.ast.Variable'>: dict({
+                                                                          'fields': dict({
+                                                                          }),
+                                                                          'type': <class 'compiler.langtypes.Int'>,
+                                                                        }),
+                                                                      }),
+                                                                      'right': dict({
+                                                                        <class 'compiler.ast.IntLiteral'>: dict({
+                                                                          'fields': dict({
+                                                                          }),
+                                                                          'type': <class 'compiler.langtypes.Int'>,
+                                                                        }),
+                                                                      }),
+                                                                    }),
+                                                                    'type': <class 'compiler.langtypes.Int'>,
+                                                                  }),
+                                                                }),
+                                                              ]),
+                                                            }),
+                                                            'type': <class 'compiler.langtypes.Function.Params'>,
+                                                          }),
+                                                        }),
+                                                        'callee': dict({
+                                                          <class 'compiler.ast.Variable'>: dict({
+                                                            'fields': dict({
+                                                            }),
+                                                            'type': <class 'compiler.langtypes.Function'>,
+                                                          }),
+                                                        }),
+                                                      }),
+                                                      'type': <class 'compiler.langtypes.Int'>,
+                                                    }),
+                                                  }),
+                                                  'right': dict({
+                                                    <class 'compiler.ast.Variable'>: dict({
+                                                      'fields': dict({
+                                                      }),
+                                                      'type': <class 'compiler.langtypes.Int'>,
+                                                    }),
+                                                  }),
+                                                }),
+                                                'type': <class 'compiler.langtypes.Int'>,
+                                              }),
+                                            }),
+                                          }),
+                                          'type': <class 'compiler.langtypes.Block'>,
+                                        }),
+                                      }),
+                                    ]),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Block'>,
+                                }),
+                              }),
+                              'if_stmt': dict({
+                                <class 'compiler.ast.IfStmt'>: dict({
+                                  'fields': dict({
+                                    'cond': dict({
+                                      <class 'compiler.ast.Comparison'>: dict({
+                                        'fields': dict({
+                                          'left': dict({
+                                            <class 'compiler.ast.Variable'>: dict({
+                                              'fields': dict({
+                                              }),
+                                              'type': <class 'compiler.langtypes.Int'>,
+                                            }),
+                                          }),
+                                          'right': dict({
+                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                              'fields': dict({
+                                              }),
+                                              'type': <class 'compiler.langtypes.Int'>,
+                                            }),
+                                          }),
+                                        }),
+                                        'type': <class 'compiler.langtypes.Bool'>,
+                                      }),
+                                    }),
+                                    'true_block': dict({
+                                      <class 'compiler.ast.StatementBlock'>: dict({
+                                        'fields': dict({
+                                          'stmts': list([
+                                            dict({
+                                              <class 'compiler.ast.ReturnStmt'>: dict({
+                                                'fields': dict({
+                                                  'return_value': dict({
+                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                      'fields': dict({
+                                                      }),
+                                                      'type': <class 'compiler.langtypes.Int'>,
+                                                    }),
+                                                  }),
+                                                }),
+                                                'type': <class 'compiler.langtypes.Block'>,
+                                              }),
+                                            }),
+                                          ]),
+                                        }),
+                                        'type': <class 'compiler.langtypes.Block'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Block'>,
+                                }),
+                              }),
+                            }),
+                            'type': <class 'compiler.langtypes.Block'>,
+                          }),
                         }),
-                        <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
-                      }),
-                      'right': dict({
-                        <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
-                      }),
-                      <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
+                      ]),
                     }),
-                    <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
+                    'type': <class 'compiler.langtypes.Block'>,
                   }),
-                ]),
-                <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
-              }),
-              'if_stmt': dict({
-                'cond': dict({
-                  'left': dict({
-                    <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
-                  }),
-                  'right': dict({
-                    <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-                  }),
-                  <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
                 }),
-                'true_block': dict({
-                  'stmts': list([
-                    dict({
-                      'return_value': dict({
-                        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-                      }),
-                      <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
+                'return_type': dict({
+                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                    'fields': dict({
                     }),
-                  ]),
-                  <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
                 }),
-                <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.Block'>,
               }),
-              <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.Block'>,
+              'type': <class 'compiler.langtypes.Function'>,
             }),
-          ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
-        }),
-        'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.FunctionDefinition'>: <class 'compiler.langtypes.Function'>,
-      }),
-      dict({
-        'rvalue': dict({
-          'args': dict({
-            'args': list([
-              dict({
-                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+          }),
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'args': dict({
+                        <class 'compiler.ast.FunctionArgs'>: dict({
+                          'fields': dict({
+                            'args': list([
+                              dict({
+                                <class 'compiler.ast.IntLiteral'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Function.Params'>,
+                        }),
+                      }),
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Function'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
               }),
-            ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
           }),
-          'callee': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
-          }),
-          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
-      }),
-      dict({
-        'rvalue': dict({
-          'args': dict({
-            'args': list([
-              dict({
-                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'args': dict({
+                        <class 'compiler.ast.FunctionArgs'>: dict({
+                          'fields': dict({
+                            'args': list([
+                              dict({
+                                <class 'compiler.ast.IntLiteral'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Function.Params'>,
+                        }),
+                      }),
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Function'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
               }),
-            ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
           }),
-          'callee': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
-          }),
-          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
-      }),
-      dict({
-        'rvalue': dict({
-          'args': dict({
-            'args': list([
-              dict({
-                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'args': dict({
+                        <class 'compiler.ast.FunctionArgs'>: dict({
+                          'fields': dict({
+                            'args': list([
+                              dict({
+                                <class 'compiler.ast.IntLiteral'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Function.Params'>,
+                        }),
+                      }),
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Function'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
               }),
-            ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
           }),
-          'callee': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
-          }),
-          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
-      }),
-      dict({
-        'rvalue': dict({
-          'args': dict({
-            'args': list([
-              dict({
-                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'args': dict({
+                        <class 'compiler.ast.FunctionArgs'>: dict({
+                          'fields': dict({
+                            'args': list([
+                              dict({
+                                <class 'compiler.ast.IntLiteral'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Function.Params'>,
+                        }),
+                      }),
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Function'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
               }),
-            ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
           }),
-          'callee': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
-          }),
-          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
-      }),
-      dict({
-        'rvalue': dict({
-          'args': dict({
-            'args': list([
-              dict({
-                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'args': dict({
+                        <class 'compiler.ast.FunctionArgs'>: dict({
+                          'fields': dict({
+                            'args': list([
+                              dict({
+                                <class 'compiler.ast.IntLiteral'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Function.Params'>,
+                        }),
+                      }),
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Function'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
               }),
-            ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
           }),
-          'callee': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
-          }),
-          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
-      }),
-      dict({
-        'rvalue': dict({
-          'args': dict({
-            'args': list([
-              dict({
-                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'args': dict({
+                        <class 'compiler.ast.FunctionArgs'>: dict({
+                          'fields': dict({
+                            'args': list([
+                              dict({
+                                <class 'compiler.ast.IntLiteral'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Function.Params'>,
+                        }),
+                      }),
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Function'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
               }),
-            ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
           }),
-          'callee': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
-          }),
-          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+        ]),
       }),
-    ]),
-    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+      'type': <class 'compiler.langtypes.Block'>,
+    }),
   })
 # ---

@@ -33,23 +33,47 @@
 # ---
 # name: test_match_array_empty_case[typed-ast]
   dict({
-    'rvalue': dict({
-      'args': dict({
-        'args': list([
-          dict({
-            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.VariableDeclaration'>: dict({
+      'fields': dict({
+        'rvalue': dict({
+          <class 'compiler.ast.FunctionCall'>: dict({
+            'fields': dict({
+              'args': dict({
+                <class 'compiler.ast.FunctionArgs'>: dict({
+                  'fields': dict({
+                    'args': list([
+                      dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                      dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    ]),
+                  }),
+                  'type': <class 'compiler.langtypes.Function.Params'>,
+                }),
+              }),
+              'callee': dict({
+                <class 'compiler.ast.Variable'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Function'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
           }),
-          dict({
-            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-          }),
-        ]),
-        <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
+        }),
       }),
-      'callee': dict({
-        <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
-      }),
-      <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
   })
 # ---

@@ -8,7 +8,11 @@
 # ---
 # name: test_empty_string_literal.1
   dict({
-    <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+    <class 'compiler.ast.StringLiteral'>: dict({
+      'fields': dict({
+      }),
+      'type': <class 'compiler.langtypes.String'>,
+    }),
   })
 # ---
 # name: test_false_literal
@@ -20,7 +24,11 @@
 # ---
 # name: test_false_literal.1
   dict({
-    <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+    <class 'compiler.ast.BoolLiteral'>: dict({
+      'fields': dict({
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
+    }),
   })
 # ---
 # name: test_int_literal
@@ -32,7 +40,11 @@
 # ---
 # name: test_int_literal.1
   dict({
-    <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.IntLiteral'>: dict({
+      'fields': dict({
+      }),
+      'type': <class 'compiler.langtypes.Int'>,
+    }),
   })
 # ---
 # name: test_negative_signed_int_literal
@@ -49,10 +61,18 @@
 # ---
 # name: test_negative_signed_int_literal.1
   dict({
-    'operand': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.UnaryOp'>: dict({
+      'fields': dict({
+        'operand': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_positive_signed_int_literal
@@ -69,10 +89,18 @@
 # ---
 # name: test_positive_signed_int_literal.1
   dict({
-    'operand': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.UnaryOp'>: dict({
+      'fields': dict({
+        'operand': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_string_literal
@@ -84,7 +112,11 @@
 # ---
 # name: test_string_literal.1
   dict({
-    <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+    <class 'compiler.ast.StringLiteral'>: dict({
+      'fields': dict({
+      }),
+      'type': <class 'compiler.langtypes.String'>,
+    }),
   })
 # ---
 # name: test_string_with_spaces_literal
@@ -96,7 +128,11 @@
 # ---
 # name: test_string_with_spaces_literal.1
   dict({
-    <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+    <class 'compiler.ast.StringLiteral'>: dict({
+      'fields': dict({
+      }),
+      'type': <class 'compiler.langtypes.String'>,
+    }),
   })
 # ---
 # name: test_true_literal
@@ -108,6 +144,10 @@
 # ---
 # name: test_true_literal.1
   dict({
-    <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+    <class 'compiler.ast.BoolLiteral'>: dict({
+      'fields': dict({
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
+    }),
   })
 # ---

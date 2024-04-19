@@ -1,5 +1,5 @@
 import abc
-from typing import Any, Optional, TypeAlias, Union
+from typing import Any, Optional, TypeAlias
 import typing
 import dataclasses
 from dataclasses import dataclass
@@ -21,7 +21,6 @@ from compiler.matcher import (
     Wildcard,
 )
 
-_LispAst = list[Union[str, "_LispAst"]]
 
 SKIP_SERIALIZE = "skip_serialize"
 
@@ -29,16 +28,6 @@ SKIP_SERIALIZE = "skip_serialize"
 EvalResult = Any
 
 AstDict = dict[typing.Type["_Ast"], dict[str, Any]]
-
-# In AstTypeDict, the key type will always correspond to exactly one value type:
-# _Ast -> Type
-# str -> AstTypeDict
-# Since this cannot be expressed in the type system, we settle for a union type
-# which introduces two extra invalid states (_Ast -> AstTypeDict & str -> Type)
-AstTypeDict = dict[
-    typing.Type["_Ast"] | str,
-    typing.Type[langtypes.Type] | "AstTypeDict",
-]
 
 
 # TODO: explain requirement of underscore by lark
@@ -93,13 +82,13 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
 
         return {type(self): attrs}
 
-    def to_type_dict(
-        self,
-    ) -> AstTypeDict:
-        assert self.type is not None
+    def to_type_dict(self) -> dict[Any, Any]:
+        attrs = {}
 
-        result: AstTypeDict = {}
-        result[type(self)] = type(self.type)
+        if ty := getattr(self, "type"):
+            attrs["type"] = type(ty)
+
+        fields = attrs["fields"] = {}
 
         for field in dataclasses.fields(self):
             if SKIP_SERIALIZE in field.metadata:
@@ -107,17 +96,17 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
 
             value = getattr(self, field.name)
             if isinstance(value, _Ast):
-                result[field.name] = value.to_type_dict()
+                fields[field.name] = value.to_type_dict()
             elif isinstance(value, list):
                 match value:
                     case []:
-                        result[field.name] = []  # type: ignore
+                        fields[field.name] = []
                     case [_Ast(), *_]:  # type: ignore
-                        result[field.name] = [v.to_type_dict() for v in value]  # type: ignore
+                        fields[field.name] = [v.to_type_dict() for v in value]  # type: ignore
                     case _:  # type: ignore
                         pass
 
-        return result
+        return {type(self): attrs}
 
 
 class _Statement(_Ast):

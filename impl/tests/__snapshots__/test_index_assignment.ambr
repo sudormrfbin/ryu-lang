@@ -61,43 +61,91 @@
 # ---
 # name: test_index_assignment.1
   dict({
-    'stmts': list([
-      dict({
-        'rvalue': dict({
-          'members': dict({
-            'members': list([
-              dict({
-                'element': dict({
-                  <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.StatementList'>: dict({
+      'fields': dict({
+        'stmts': list([
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.ArrayLiteral'>: dict({
+                    'fields': dict({
+                      'members': dict({
+                        <class 'compiler.ast.ArrayElements'>: dict({
+                          'fields': dict({
+                            'members': list([
+                              dict({
+                                <class 'compiler.ast.ArrayElement'>: dict({
+                                  'fields': dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'fields': dict({
+                                        }),
+                                        'type': <class 'compiler.langtypes.Int'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                              dict({
+                                <class 'compiler.ast.ArrayElement'>: dict({
+                                  'fields': dict({
+                                    'element': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'fields': dict({
+                                        }),
+                                        'type': <class 'compiler.langtypes.Int'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Array'>,
+                  }),
                 }),
-                <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
               }),
-              dict({
-                'element': dict({
-                  <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-                }),
-                <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
-              }),
-            ]),
-            <class 'compiler.ast.ArrayElements'>: <class 'compiler.langtypes.Int'>,
+              'type': <class 'compiler.langtypes.Array'>,
+            }),
           }),
-          <class 'compiler.ast.ArrayLiteral'>: <class 'compiler.langtypes.Array'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Array'>,
+          dict({
+            <class 'compiler.ast.IndexAssignment'>: dict({
+              'fields': dict({
+                'arrayname': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'fields': dict({
+                    }),
+                    'type': <class 'compiler.langtypes.Array'>,
+                  }),
+                }),
+                'index': dict({
+                  <class 'compiler.ast.IntLiteral'>: dict({
+                    'fields': dict({
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
+                'value': dict({
+                  <class 'compiler.ast.IntLiteral'>: dict({
+                    'fields': dict({
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
+              }),
+              'type': <class 'compiler.langtypes.Array'>,
+            }),
+          }),
+        ]),
       }),
-      dict({
-        'arrayname': dict({
-          <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Array'>,
-        }),
-        'index': dict({
-          <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-        }),
-        'value': dict({
-          <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.IndexAssignment'>: <class 'compiler.langtypes.Array'>,
-      }),
-    ]),
-    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+      'type': <class 'compiler.langtypes.Block'>,
+    }),
   })
 # ---

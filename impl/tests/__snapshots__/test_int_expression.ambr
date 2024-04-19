@@ -28,19 +28,39 @@
 # ---
 # name: test_addition_3_ints.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    'right': dict({
-      'left': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Term'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.Term'>: dict({
+            'fields': dict({
+              'left': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+              'right': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      'right': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-      }),
-      <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_addition_with_negative_int_both
@@ -72,19 +92,39 @@
 # ---
 # name: test_addition_with_negative_int_both.1
   dict({
-    'left': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Term'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-      }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_addition_with_negative_int_left
@@ -111,16 +151,32 @@
 # ---
 # name: test_addition_with_negative_int_left.1
   dict({
-    'left': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Term'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_addition_with_negative_int_right
@@ -147,16 +203,32 @@
 # ---
 # name: test_addition_with_negative_int_right.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    'right': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Term'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_addition_with_positive_int
@@ -178,13 +250,25 @@
 # ---
 # name: test_addition_with_positive_int.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Term'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_and_false_and_false
@@ -206,13 +290,25 @@
 # ---
 # name: test_and_false_and_false.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+    <class 'compiler.ast.Logical'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
-    }),
-    <class 'compiler.ast.Logical'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_and_false_and_true
@@ -234,13 +330,25 @@
 # ---
 # name: test_and_false_and_true.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+    <class 'compiler.ast.Logical'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
-    }),
-    <class 'compiler.ast.Logical'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_and_false_or_false
@@ -262,13 +370,25 @@
 # ---
 # name: test_and_false_or_false.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+    <class 'compiler.ast.Logical'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
-    }),
-    <class 'compiler.ast.Logical'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_and_false_or_true
@@ -290,13 +410,25 @@
 # ---
 # name: test_and_false_or_true.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+    <class 'compiler.ast.Logical'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
-    }),
-    <class 'compiler.ast.Logical'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_and_true_and_false
@@ -318,13 +450,25 @@
 # ---
 # name: test_and_true_and_false.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+    <class 'compiler.ast.Logical'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
-    }),
-    <class 'compiler.ast.Logical'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_and_true_and_true
@@ -346,13 +490,25 @@
 # ---
 # name: test_and_true_and_true.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+    <class 'compiler.ast.Logical'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
-    }),
-    <class 'compiler.ast.Logical'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_and_true_or_false
@@ -374,13 +530,25 @@
 # ---
 # name: test_and_true_or_false.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+    <class 'compiler.ast.Logical'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
-    }),
-    <class 'compiler.ast.Logical'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_and_true_or_true
@@ -402,13 +570,25 @@
 # ---
 # name: test_and_true_or_true.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+    <class 'compiler.ast.Logical'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
-    }),
-    <class 'compiler.ast.Logical'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_division_with_negative_int_both
@@ -440,19 +620,39 @@
 # ---
 # name: test_division_with_negative_int_both.1
   dict({
-    'left': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Factor'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-      }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_division_with_negative_int_left
@@ -479,16 +679,32 @@
 # ---
 # name: test_division_with_negative_int_left.1
   dict({
-    'left': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Factor'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_division_with_negative_int_right
@@ -515,16 +731,32 @@
 # ---
 # name: test_division_with_negative_int_right.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    'right': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Factor'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_division_with_positive_int
@@ -546,13 +778,25 @@
 # ---
 # name: test_division_with_positive_int.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Factor'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_eqeq_diffnum
@@ -574,13 +818,25 @@
 # ---
 # name: test_eqeq_diffnum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Equality'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Equality'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_eqeq_samenum
@@ -602,13 +858,25 @@
 # ---
 # name: test_eqeq_samenum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Equality'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Equality'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_greaterthan_largernum_gt_smallernum
@@ -630,13 +898,25 @@
 # ---
 # name: test_greaterthan_largernum_gt_smallernum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Comparison'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_greaterthan_smallernum_gt_largernum
@@ -658,13 +938,25 @@
 # ---
 # name: test_greaterthan_smallernum_gt_largernum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Comparison'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_gtq_largernum_gtq_smallernum
@@ -686,13 +978,25 @@
 # ---
 # name: test_gtq_largernum_gtq_smallernum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Comparison'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_gtq_samenum_gtq_samenum
@@ -714,13 +1018,25 @@
 # ---
 # name: test_gtq_samenum_gtq_samenum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Comparison'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_gtq_smallernum_gtq_largernum
@@ -742,13 +1058,25 @@
 # ---
 # name: test_gtq_smallernum_gtq_largernum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Comparison'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_lesserthan_largernum_lt_smallernum
@@ -770,13 +1098,25 @@
 # ---
 # name: test_lesserthan_largernum_lt_smallernum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Comparison'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_lesserthan_smallernum_lt_largernum
@@ -798,13 +1138,25 @@
 # ---
 # name: test_lesserthan_smallernum_lt_largernum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Comparison'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_ltq_largernum_ltq_smallernum
@@ -826,13 +1178,25 @@
 # ---
 # name: test_ltq_largernum_ltq_smallernum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Comparison'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_ltq_samenum_ltq_samenum
@@ -854,13 +1218,25 @@
 # ---
 # name: test_ltq_samenum_ltq_samenum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Comparison'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_ltq_smallernum_ltq_largernum
@@ -882,13 +1258,25 @@
 # ---
 # name: test_ltq_smallernum_ltq_largernum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Comparison'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Comparison'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_modulus_with_negative_int_both
@@ -920,19 +1308,39 @@
 # ---
 # name: test_modulus_with_negative_int_both.1
   dict({
-    'left': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Factor'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-      }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_modulus_with_negative_int_left
@@ -959,16 +1367,32 @@
 # ---
 # name: test_modulus_with_negative_int_left.1
   dict({
-    'left': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Factor'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_modulus_with_negative_int_right
@@ -995,16 +1419,32 @@
 # ---
 # name: test_modulus_with_negative_int_right.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    'right': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Factor'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_modulus_with_positive_int
@@ -1026,13 +1466,25 @@
 # ---
 # name: test_modulus_with_positive_int.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Factor'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_multiplication_with_negative_int_both
@@ -1064,19 +1516,39 @@
 # ---
 # name: test_multiplication_with_negative_int_both.1
   dict({
-    'left': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Factor'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-      }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_multiplication_with_negative_int_left
@@ -1103,16 +1575,32 @@
 # ---
 # name: test_multiplication_with_negative_int_left.1
   dict({
-    'left': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Factor'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_multiplication_with_negative_int_right
@@ -1139,16 +1627,32 @@
 # ---
 # name: test_multiplication_with_negative_int_right.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    'right': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Factor'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_multiplication_with_positive_int
@@ -1170,13 +1674,25 @@
 # ---
 # name: test_multiplication_with_positive_int.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Factor'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_not_false
@@ -1193,10 +1709,18 @@
 # ---
 # name: test_not_false.1
   dict({
-    'operand': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+    <class 'compiler.ast.UnaryOp'>: dict({
+      'fields': dict({
+        'operand': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_not_true
@@ -1213,10 +1737,18 @@
 # ---
 # name: test_not_true.1
   dict({
-    'operand': dict({
-      <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+    <class 'compiler.ast.UnaryOp'>: dict({
+      'fields': dict({
+        'operand': dict({
+          <class 'compiler.ast.BoolLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Bool'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_noteq_diffnum
@@ -1238,13 +1770,25 @@
 # ---
 # name: test_noteq_diffnum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Equality'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Equality'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_noteq_samenum
@@ -1266,13 +1810,25 @@
 # ---
 # name: test_noteq_samenum.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Equality'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Bool'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Equality'>: <class 'compiler.langtypes.Bool'>,
   })
 # ---
 # name: test_subtraction_with_negative_int_both
@@ -1304,19 +1860,39 @@
 # ---
 # name: test_subtraction_with_negative_int_both.1
   dict({
-    'left': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Term'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-      }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_subtraction_with_negative_int_left
@@ -1343,16 +1919,32 @@
 # ---
 # name: test_subtraction_with_negative_int_left.1
   dict({
-    'left': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Term'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_subtraction_with_negative_int_right
@@ -1379,16 +1971,32 @@
 # ---
 # name: test_subtraction_with_negative_int_right.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    'right': dict({
-      'operand': dict({
-        <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Term'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.UnaryOp'>: dict({
+            'fields': dict({
+              'operand': dict({
+                <class 'compiler.ast.IntLiteral'>: dict({
+                  'fields': dict({
+                  }),
+                  'type': <class 'compiler.langtypes.Int'>,
+                }),
+              }),
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
       }),
-      <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
   })
 # ---
 # name: test_subtraction_with_positive_int
@@ -1410,12 +2018,24 @@
 # ---
 # name: test_subtraction_with_positive_int.1
   dict({
-    'left': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.Term'>: dict({
+      'fields': dict({
+        'left': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+        'right': dict({
+          <class 'compiler.ast.IntLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.Int'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.Int'>,
     }),
-    'right': dict({
-      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-    }),
-    <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
   })
 # ---

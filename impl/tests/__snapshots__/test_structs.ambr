@@ -34,24 +34,48 @@
 # ---
 # name: test_struct_def.1
   dict({
-    'members': dict({
-      'members': list([
-        dict({
-          'ident_type': dict({
-            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.String'>,
+    <class 'compiler.ast.StructStmt'>: dict({
+      'fields': dict({
+        'members': dict({
+          <class 'compiler.ast.StructMembers'>: dict({
+            'fields': dict({
+              'members': list([
+                dict({
+                  <class 'compiler.ast.StructMember'>: dict({
+                    'fields': dict({
+                      'ident_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.String'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.String'>,
+                  }),
+                }),
+                dict({
+                  <class 'compiler.ast.StructMember'>: dict({
+                    'fields': dict({
+                      'ident_type': dict({
+                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
+              ]),
+            }),
+            'type': <class 'compiler.langtypes.Struct.Members'>,
           }),
-          <class 'compiler.ast.StructMember'>: <class 'compiler.langtypes.String'>,
         }),
-        dict({
-          'ident_type': dict({
-            <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-          }),
-          <class 'compiler.ast.StructMember'>: <class 'compiler.langtypes.Int'>,
-        }),
-      ]),
-      <class 'compiler.ast.StructMembers'>: <class 'compiler.langtypes.Struct.Members'>,
+      }),
+      'type': <class 'compiler.langtypes.Struct'>,
     }),
-    <class 'compiler.ast.StructStmt'>: <class 'compiler.langtypes.Struct'>,
   })
 # ---
 # name: test_struct_init
@@ -135,54 +159,114 @@
 # ---
 # name: test_struct_init.1
   dict({
-    'stmts': list([
-      dict({
-        'members': dict({
-          'members': list([
-            dict({
-              'ident_type': dict({
-                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.String'>,
-              }),
-              <class 'compiler.ast.StructMember'>: <class 'compiler.langtypes.String'>,
-            }),
-            dict({
-              'ident_type': dict({
-                <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
-              }),
-              <class 'compiler.ast.StructMember'>: <class 'compiler.langtypes.Int'>,
-            }),
-          ]),
-          <class 'compiler.ast.StructMembers'>: <class 'compiler.langtypes.Struct.Members'>,
-        }),
-        <class 'compiler.ast.StructStmt'>: <class 'compiler.langtypes.Struct'>,
-      }),
-      dict({
-        'rvalue': dict({
-          'args': dict({
-            'members': list([
-              dict({
-                'value': dict({
-                  <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+    <class 'compiler.ast.StatementList'>: dict({
+      'fields': dict({
+        'stmts': list([
+          dict({
+            <class 'compiler.ast.StructStmt'>: dict({
+              'fields': dict({
+                'members': dict({
+                  <class 'compiler.ast.StructMembers'>: dict({
+                    'fields': dict({
+                      'members': list([
+                        dict({
+                          <class 'compiler.ast.StructMember'>: dict({
+                            'fields': dict({
+                              'ident_type': dict({
+                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.String'>,
+                                }),
+                              }),
+                            }),
+                            'type': <class 'compiler.langtypes.String'>,
+                          }),
+                        }),
+                        dict({
+                          <class 'compiler.ast.StructMember'>: dict({
+                            'fields': dict({
+                              'ident_type': dict({
+                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                  'fields': dict({
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            }),
+                            'type': <class 'compiler.langtypes.Int'>,
+                          }),
+                        }),
+                      ]),
+                    }),
+                    'type': <class 'compiler.langtypes.Struct.Members'>,
+                  }),
                 }),
-                <class 'compiler.ast.StructInitMember'>: <class 'compiler.langtypes.String'>,
               }),
-              dict({
-                'value': dict({
-                  <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              'type': <class 'compiler.langtypes.Struct'>,
+            }),
+          }),
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'args': dict({
+                        <class 'compiler.ast.StructInitMembers'>: dict({
+                          'fields': dict({
+                            'members': list([
+                              dict({
+                                <class 'compiler.ast.StructInitMember'>: dict({
+                                  'fields': dict({
+                                    'value': dict({
+                                      <class 'compiler.ast.StringLiteral'>: dict({
+                                        'fields': dict({
+                                        }),
+                                        'type': <class 'compiler.langtypes.String'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.String'>,
+                                }),
+                              }),
+                              dict({
+                                <class 'compiler.ast.StructInitMember'>: dict({
+                                  'fields': dict({
+                                    'value': dict({
+                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                        'fields': dict({
+                                        }),
+                                        'type': <class 'compiler.langtypes.Int'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Int'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Struct.Members'>,
+                        }),
+                      }),
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Struct'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Struct'>,
+                  }),
                 }),
-                <class 'compiler.ast.StructInitMember'>: <class 'compiler.langtypes.Int'>,
               }),
-            ]),
-            <class 'compiler.ast.StructInitMembers'>: <class 'compiler.langtypes.Struct.Members'>,
+              'type': <class 'compiler.langtypes.Struct'>,
+            }),
           }),
-          'callee': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Struct'>,
-          }),
-          <class 'compiler.ast.FunctionCall'>: <class 'compiler.langtypes.Struct'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Struct'>,
+        ]),
       }),
-    ]),
-    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+      'type': <class 'compiler.langtypes.Block'>,
+    }),
   })
 # ---

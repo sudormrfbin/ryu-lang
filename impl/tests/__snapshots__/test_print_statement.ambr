@@ -12,10 +12,18 @@
 # ---
 # name: test_print.1
   dict({
-    'expr': dict({
-      <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+    <class 'compiler.ast.PrintStmt'>: dict({
+      'fields': dict({
+        'expr': dict({
+          <class 'compiler.ast.StringLiteral'>: dict({
+            'fields': dict({
+            }),
+            'type': <class 'compiler.langtypes.String'>,
+          }),
+        }),
+      }),
+      'type': <class 'compiler.langtypes.String'>,
     }),
-    <class 'compiler.ast.PrintStmt'>: <class 'compiler.langtypes.String'>,
   })
 # ---
 # name: test_print_variable
@@ -57,26 +65,54 @@
 # ---
 # name: test_print_variable.1
   dict({
-    'stmts': list([
-      dict({
-        'rvalue': dict({
-          <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
-      }),
-      dict({
-        'expr': dict({
-          'left': dict({
-            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+    <class 'compiler.ast.StatementList'>: dict({
+      'fields': dict({
+        'stmts': list([
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.IntLiteral'>: dict({
+                    'fields': dict({
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
+              }),
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
           }),
-          'right': dict({
-            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+          dict({
+            <class 'compiler.ast.PrintStmt'>: dict({
+              'fields': dict({
+                'expr': dict({
+                  <class 'compiler.ast.Term'>: dict({
+                    'fields': dict({
+                      'left': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                      'right': dict({
+                        <class 'compiler.ast.IntLiteral'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Int'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
+              }),
+              'type': <class 'compiler.langtypes.Int'>,
+            }),
           }),
-          <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
-        }),
-        <class 'compiler.ast.PrintStmt'>: <class 'compiler.langtypes.Int'>,
+        ]),
       }),
-    ]),
-    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+      'type': <class 'compiler.langtypes.Block'>,
+    }),
   })
 # ---
