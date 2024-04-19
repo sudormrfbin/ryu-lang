@@ -8,7 +8,7 @@ from typing_extensions import override
 from lark import Token, ast_utils
 from lark.tree import Meta as LarkMeta
 
-from compiler.env import RuntimeEnvironment, TypeEnvironment
+from compiler.env import FunctionDefScope, RuntimeEnvironment, TypeEnvironment
 
 from compiler import langtypes, langvalues, runtime
 from compiler import errors
@@ -130,9 +130,10 @@ class StatementList(_Ast, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Block:
-        types = [stmt.typecheck(env) for stmt in self.stmts]
+        for stmt in self.stmts:
+            stmt.typecheck(env)
 
-        self.type_ = langtypes.resolve_blocks_type(types)
+        self.type_ = langtypes.BLOCK
         return self.type_
 
     @override
@@ -262,7 +263,7 @@ class IfChain(_Statement):
         if self.else_if_ladder:
             types.append(self.else_if_ladder.typecheck(env))
 
-        self.type_ = langtypes.resolve_blocks_type(types)
+        self.type_ = langtypes.BLOCK
         return self.type_
 
     @override
@@ -291,8 +292,10 @@ class ElseIfLadder(_Statement, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        types = [block.typecheck(env) for block in self.blocks]
-        self.type_ = langtypes.resolve_blocks_type(types)
+        for block in self.blocks:
+            block.typecheck(env)
+
+        self.type_ = langtypes.BLOCK
         return self.type_
 
     @override
@@ -467,7 +470,7 @@ class CaseLadder(_Ast, ast_utils.AsList):
             assert case_.block.type_ is not None
             types.append(case_.block.type_)
 
-        self.type_ = langtypes.resolve_blocks_type(types)
+        self.type_ = langtypes.BLOCK
         return self.type_
 
     @override
@@ -1225,7 +1228,7 @@ class FunctionDefinition(_Ast):
             return_type=ret_type,
         )
 
-        body_env = TypeEnvironment(enclosing=env)
+        body_env = TypeEnvironment(enclosing=env, fn_scope=FunctionDefScope(ret_type))
         body_env.define_var_type(self.name, self.type_)
 
         if self.args:
@@ -1233,13 +1236,7 @@ class FunctionDefinition(_Ast):
                 assert arg.type_ is not None
                 body_env.define_var_type(arg.name, arg.type_)
 
-        body_block_type = self.body.typecheck(body_env)
-
-        if not isinstance(body_block_type, langtypes.ReturnBlock):
-            raise  # TODO
-
-        if body_block_type.return_type != ret_type:
-            raise  # TODO
+        self.body.typecheck(body_env)
 
         env.define_var_type(self.name, self.type_)
         return self.type_
@@ -1257,8 +1254,10 @@ class ReturnStmt(_Statement):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         return_type = self.return_value.typecheck(env)
+        if return_type != env.fn_return_type():
+            raise  # TODO
 
-        self.type_ = langtypes.ReturnBlock(return_type, self.span)
+        self.type_ = langtypes.BLOCK
         return self.type_
 
     @override

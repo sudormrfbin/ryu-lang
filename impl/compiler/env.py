@@ -1,8 +1,14 @@
+from dataclasses import dataclass
 from typing import Any, Optional
 from typing_extensions import Self
 
 from compiler.errors import InternalCompilerError
 from compiler import langtypes
+
+
+@dataclass
+class FunctionDefScope:
+    return_type: langtypes.Type
 
 
 class TypeEnvironment:
@@ -17,10 +23,17 @@ class TypeEnvironment:
     Map from type name to type.
     """
 
-    def __init__(self, enclosing: Optional[Self] = None):
+    fn_scope: Optional[FunctionDefScope]
+
+    def __init__(
+        self,
+        enclosing: Optional[Self] = None,
+        fn_scope: Optional[FunctionDefScope] = None,
+    ):
         self.values = {}
         self.types = {}
         self.parent = enclosing
+        self.fn_scope = fn_scope
 
     def define_var_type(self, name: str, value: langtypes.Type):
         self.values[name] = value
@@ -44,6 +57,16 @@ class TypeEnvironment:
         while current is not None:
             if (type_ := current.types.get(type)) is not None:
                 return type_
+            current = current.parent
+
+        return None
+
+    def fn_return_type(self) -> Optional[langtypes.Type]:
+        current = self
+
+        while current is not None:
+            if (ret := current.fn_scope) is not None:
+                return ret.return_type
             current = current.parent
 
         return None

@@ -36,12 +36,6 @@ class Block(Type):
 
 
 @dataclass
-class ReturnBlock(Block):
-    return_type: Type
-    return_stmt_span: Span
-
-
-@dataclass
 class Struct(Type):
     struct_name: str
     members: Members
@@ -124,21 +118,6 @@ PRIMITIVE_TYPES: dict[str, Type] = {
     "int": INT,
     "string": STRING,
 }
-
-
-def resolve_blocks_type(types: Sequence[Type]) -> Block:
-    resolved = BLOCK
-    for ty in types:
-        match (resolved, ty):
-            case (Block(), ReturnBlock()):
-                resolved = ty
-            case (ReturnBlock(), ReturnBlock()):
-                if resolved.return_type != ty.return_type:
-                    raise  # TODO different return types
-            case _:
-                pass
-
-    return resolved
 
 
 Primitive = Int | Bool | String

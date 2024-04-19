@@ -250,10 +250,10 @@
                           'return_value': dict({
                             <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
                           }),
-                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                         }),
                       ]),
-                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                     }),
                     'pattern': dict({
                       <class 'compiler.ast.EnumPattern'>: <class 'compiler.langtypes.Enum'>,
@@ -267,10 +267,10 @@
                           'return_value': dict({
                             <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
                           }),
-                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                         }),
                       ]),
-                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                     }),
                     'pattern': dict({
                       <class 'compiler.ast.WildcardPattern'>: <class 'compiler.langtypes.Placeholder'>,
@@ -278,15 +278,15 @@
                     <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Placeholder'>,
                   }),
                 ]),
-                <class 'compiler.ast.CaseLadder'>: <class 'compiler.langtypes.ReturnBlock'>,
+                <class 'compiler.ast.CaseLadder'>: <class 'compiler.langtypes.Block'>,
               }),
               'expr': dict({
                 <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Enum'>,
               }),
-              <class 'compiler.ast.MatchStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+              <class 'compiler.ast.MatchStmt'>: <class 'compiler.langtypes.Block'>,
             }),
           ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
         }),
         'return_type': dict({
           <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Bool'>,
@@ -805,10 +805,10 @@
                           'return_value': dict({
                             <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
                           }),
-                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                         }),
                       ]),
-                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                     }),
                     'pattern': dict({
                       'elements': list([
@@ -830,10 +830,10 @@
                           'return_value': dict({
                             <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
                           }),
-                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                         }),
                       ]),
-                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                     }),
                     'pattern': dict({
                       'elements': list([
@@ -861,10 +861,10 @@
                           'return_value': dict({
                             <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
                           }),
-                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                         }),
                       ]),
-                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                     }),
                     'pattern': dict({
                       'elements': list([
@@ -901,10 +901,10 @@
                             }),
                             <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
                           }),
-                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                         }),
                       ]),
-                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                     }),
                     'pattern': dict({
                       <class 'compiler.ast.WildcardPattern'>: <class 'compiler.langtypes.Placeholder'>,
@@ -912,15 +912,15 @@
                     <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Placeholder'>,
                   }),
                 ]),
-                <class 'compiler.ast.CaseLadder'>: <class 'compiler.langtypes.ReturnBlock'>,
+                <class 'compiler.ast.CaseLadder'>: <class 'compiler.langtypes.Block'>,
               }),
               'expr': dict({
                 <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Array'>,
               }),
-              <class 'compiler.ast.MatchStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+              <class 'compiler.ast.MatchStmt'>: <class 'compiler.langtypes.Block'>,
             }),
           ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
         }),
         'return_type': dict({
           <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
@@ -1461,10 +1461,10 @@
                           'return_value': dict({
                             <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
                           }),
-                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                         }),
                       ]),
-                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                     }),
                     'pattern': dict({
                       'elements': list([
@@ -1483,10 +1483,10 @@
                             }),
                             <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
                           }),
-                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                         }),
                       ]),
-                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                     }),
                     'pattern': dict({
                       <class 'compiler.ast.WildcardPattern'>: <class 'compiler.langtypes.Placeholder'>,
@@ -1494,15 +1494,15 @@
                     <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Placeholder'>,
                   }),
                 ]),
-                <class 'compiler.ast.CaseLadder'>: <class 'compiler.langtypes.ReturnBlock'>,
+                <class 'compiler.ast.CaseLadder'>: <class 'compiler.langtypes.Block'>,
               }),
               'expr': dict({
                 <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Array'>,
               }),
-              <class 'compiler.ast.MatchStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+              <class 'compiler.ast.MatchStmt'>: <class 'compiler.langtypes.Block'>,
             }),
           ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
         }),
         'return_type': dict({
           <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
@@ -2201,10 +2201,10 @@
                           'return_value': dict({
                             <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
                           }),
-                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                         }),
                       ]),
-                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                     }),
                     'pattern': dict({
                       'elements': list([
@@ -2238,10 +2238,10 @@
                           'return_value': dict({
                             <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
                           }),
-                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                         }),
                       ]),
-                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                     }),
                     'pattern': dict({
                       'elements': list([
@@ -2275,10 +2275,10 @@
                           'return_value': dict({
                             <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
                           }),
-                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                         }),
                       ]),
-                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                     }),
                     'pattern': dict({
                       'elements': list([
@@ -2312,10 +2312,10 @@
                           'return_value': dict({
                             <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
                           }),
-                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                         }),
                       ]),
-                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                     }),
                     'pattern': dict({
                       <class 'compiler.ast.WildcardPattern'>: <class 'compiler.langtypes.Placeholder'>,
@@ -2323,15 +2323,15 @@
                     <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Placeholder'>,
                   }),
                 ]),
-                <class 'compiler.ast.CaseLadder'>: <class 'compiler.langtypes.ReturnBlock'>,
+                <class 'compiler.ast.CaseLadder'>: <class 'compiler.langtypes.Block'>,
               }),
               'expr': dict({
                 <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Array'>,
               }),
-              <class 'compiler.ast.MatchStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+              <class 'compiler.ast.MatchStmt'>: <class 'compiler.langtypes.Block'>,
             }),
           ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
         }),
         'return_type': dict({
           <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Bool'>,

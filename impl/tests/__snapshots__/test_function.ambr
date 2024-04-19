@@ -131,10 +131,10 @@
                 }),
                 <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
               }),
-              <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+              <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
             }),
           ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
         }),
         'return_type': dict({
           <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
@@ -328,10 +328,10 @@
                     'return_value': dict({
                       <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
                     }),
-                    <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                    <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                   }),
                 ]),
-                <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
               }),
               'if_stmt': dict({
                 'cond': dict({
@@ -349,17 +349,17 @@
                       'return_value': dict({
                         <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
                       }),
-                      <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                     }),
                   ]),
-                  <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                  <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                 }),
-                <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.Block'>,
               }),
-              <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.ReturnBlock'>,
+              <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.Block'>,
             }),
           ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
         }),
         'return_type': dict({
           <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
@@ -485,10 +485,10 @@
               'return_value': dict({
                 <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
               }),
-              <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+              <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
             }),
           ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
         }),
         'return_type': dict({
           <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
@@ -573,10 +573,10 @@
               'return_value': dict({
                 <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
               }),
-              <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+              <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
             }),
           ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
         }),
         'return_type': dict({
           <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
@@ -666,10 +666,10 @@
           'return_value': dict({
             <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
           }),
-          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
         }),
       ]),
-      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
     }),
     'return_type': dict({
       <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
@@ -771,10 +771,10 @@
             }),
             <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
           }),
-          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
         }),
       ]),
-      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
     }),
     'return_type': dict({
       <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
@@ -907,10 +907,10 @@
                 'return_value': dict({
                   <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
                 }),
-                <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
               }),
             ]),
-            <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+            <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
           }),
           'if_stmt': dict({
             'cond': dict({
@@ -928,17 +928,17 @@
                   'return_value': dict({
                     <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
                   }),
-                  <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                  <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                 }),
               ]),
-              <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+              <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
             }),
-            <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+            <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.Block'>,
           }),
-          <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.Block'>,
         }),
       ]),
-      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
     }),
     'return_type': dict({
       <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
@@ -1008,10 +1008,10 @@
           'return_value': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
           }),
-          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
         }),
       ]),
-      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
     }),
     'return_type': dict({
       <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
@@ -1054,10 +1054,10 @@
           'return_value': dict({
             <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
           }),
-          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
         }),
       ]),
-      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+      <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
     }),
     'return_type': dict({
       <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
@@ -1390,10 +1390,10 @@
                       }),
                       <class 'compiler.ast.Factor'>: <class 'compiler.langtypes.Int'>,
                     }),
-                    <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                    <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                   }),
                 ]),
-                <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
               }),
               'if_stmt': dict({
                 'cond': dict({
@@ -1411,17 +1411,17 @@
                       'return_value': dict({
                         <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
                       }),
-                      <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                      <class 'compiler.ast.ReturnStmt'>: <class 'compiler.langtypes.Block'>,
                     }),
                   ]),
-                  <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+                  <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
                 }),
-                <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.ReturnBlock'>,
+                <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.Block'>,
               }),
-              <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.ReturnBlock'>,
+              <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.Block'>,
             }),
           ]),
-          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.ReturnBlock'>,
+          <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
         }),
         'return_type': dict({
           <class 'compiler.ast.TypeAnnotation'>: <class 'compiler.langtypes.Int'>,
