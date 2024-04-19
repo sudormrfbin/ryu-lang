@@ -1,0 +1,113 @@
+# serializer version: 1
+# name: test_empty_string_literal
+  dict({
+    <class 'compiler.ast.StringLiteral'>: dict({
+      'value': '',
+    }),
+  })
+# ---
+# name: test_empty_string_literal.1
+  dict({
+    <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+  })
+# ---
+# name: test_false_literal
+  dict({
+    <class 'compiler.ast.BoolLiteral'>: dict({
+      'value': False,
+    }),
+  })
+# ---
+# name: test_false_literal.1
+  dict({
+    <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+  })
+# ---
+# name: test_int_literal
+  dict({
+    <class 'compiler.ast.IntLiteral'>: dict({
+      'value': 123,
+    }),
+  })
+# ---
+# name: test_int_literal.1
+  dict({
+    <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+  })
+# ---
+# name: test_negative_signed_int_literal
+  dict({
+    <class 'compiler.ast.UnaryOp'>: dict({
+      'op': Token('MINUS', '-'),
+      'operand': dict({
+        <class 'compiler.ast.IntLiteral'>: dict({
+          'value': 1,
+        }),
+      }),
+    }),
+  })
+# ---
+# name: test_negative_signed_int_literal.1
+  dict({
+    'operand': dict({
+      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    }),
+    <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+  })
+# ---
+# name: test_positive_signed_int_literal
+  dict({
+    <class 'compiler.ast.UnaryOp'>: dict({
+      'op': Token('PLUS', '+'),
+      'operand': dict({
+        <class 'compiler.ast.IntLiteral'>: dict({
+          'value': 1,
+        }),
+      }),
+    }),
+  })
+# ---
+# name: test_positive_signed_int_literal.1
+  dict({
+    'operand': dict({
+      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+    }),
+    <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+  })
+# ---
+# name: test_string_literal
+  dict({
+    <class 'compiler.ast.StringLiteral'>: dict({
+      'value': 'string',
+    }),
+  })
+# ---
+# name: test_string_literal.1
+  dict({
+    <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+  })
+# ---
+# name: test_string_with_spaces_literal
+  dict({
+    <class 'compiler.ast.StringLiteral'>: dict({
+      'value': 'string with spaces',
+    }),
+  })
+# ---
+# name: test_string_with_spaces_literal.1
+  dict({
+    <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+  })
+# ---
+# name: test_true_literal
+  dict({
+    <class 'compiler.ast.BoolLiteral'>: dict({
+      'value': True,
+    }),
+  })
+# ---
+# name: test_true_literal.1
+  dict({
+    <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+  })
+# ---

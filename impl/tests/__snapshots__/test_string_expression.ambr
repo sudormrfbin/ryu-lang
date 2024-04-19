@@ -1,0 +1,73 @@
+# serializer version: 1
+# name: test_string_concat_2
+  dict({
+    <class 'compiler.ast.Term'>: dict({
+      'left': dict({
+        <class 'compiler.ast.StringLiteral'>: dict({
+          'value': 'hello',
+        }),
+      }),
+      'op': Token('PLUS', '+'),
+      'right': dict({
+        <class 'compiler.ast.StringLiteral'>: dict({
+          'value': 'world',
+        }),
+      }),
+    }),
+  })
+# ---
+# name: test_string_concat_2.1
+  dict({
+    'left': dict({
+      <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+    }),
+    'right': dict({
+      <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+    }),
+    <class 'compiler.ast.Term'>: <class 'compiler.langtypes.String'>,
+  })
+# ---
+# name: test_string_concat_3
+  dict({
+    <class 'compiler.ast.Term'>: dict({
+      'left': dict({
+        <class 'compiler.ast.StringLiteral'>: dict({
+          'value': 'hello',
+        }),
+      }),
+      'op': Token('PLUS', '+'),
+      'right': dict({
+        <class 'compiler.ast.Term'>: dict({
+          'left': dict({
+            <class 'compiler.ast.StringLiteral'>: dict({
+              'value': ' ',
+            }),
+          }),
+          'op': Token('PLUS', '+'),
+          'right': dict({
+            <class 'compiler.ast.StringLiteral'>: dict({
+              'value': 'world',
+            }),
+          }),
+        }),
+      }),
+    }),
+  })
+# ---
+# name: test_string_concat_3.1
+  dict({
+    'left': dict({
+      <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+    }),
+    'right': dict({
+      'left': dict({
+        <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+      }),
+      'right': dict({
+        <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+      }),
+      <class 'compiler.ast.Term'>: <class 'compiler.langtypes.String'>,
+    }),
+    <class 'compiler.ast.Term'>: <class 'compiler.langtypes.String'>,
+  })
+# ---

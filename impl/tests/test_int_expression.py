@@ -1,1020 +1,388 @@
+from typing import Any
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import (
-    Term,
-    IntLiteral,
-    UnaryOp,
-    BoolLiteral,
-    Factor,
-    Comparison,
-    Logical,
-    Equality,
-)
-from compiler.langtypes import Int, Bool
 
 EMPTY_ENV = RuntimeEnvironment()
 EMPTY_TYPE_ENV = TypeEnvironment()
 
 
-def test_addition_with_positive_int():
+def test_addition_with_positive_int(snapshot: Any):
     ast = parse_tree_to_ast(parse("1+2"))
-    assert ast.to_dict() == {
-        Term: {
-            "left": {IntLiteral: {"value": 1}},
-            "op": "+",
-            "right": {IntLiteral: {"value": 2}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Term: Int,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == 3
 
 
-def test_addition_with_negative_int_right():
+def test_addition_with_negative_int_right(snapshot: Any):
     ast = parse_tree_to_ast(parse("1+-2"))
-    assert ast.to_dict() == {
-        Term: {
-            "left": {IntLiteral: {"value": 1}},
-            "op": "+",
-            "right": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 2}},
-                }
-            },
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Term: Int,
-        "left": {IntLiteral: Int},
-        "right": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == -1
 
 
-def test_addition_with_negative_int_left():
+def test_addition_with_negative_int_left(snapshot: Any):
     ast = parse_tree_to_ast(parse("-1+2"))
-    assert ast.to_dict() == {
-        Term: {
-            "left": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 1}},
-                }
-            },
-            "op": "+",
-            "right": {IntLiteral: {"value": 2}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Term: Int,
-        "left": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == 1
 
 
-def test_addition_with_negative_int_both():
+def test_addition_with_negative_int_both(snapshot: Any):
     ast = parse_tree_to_ast(parse("-1+-2"))
-    assert ast.to_dict() == {
-        Term: {
-            "left": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 1}},
-                }
-            },
-            "op": "+",
-            "right": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 2}},
-                }
-            },
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Term: Int,
-        "left": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-        "right": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == -3
 
 
-def test_subtraction_with_positive_int():
+def test_subtraction_with_positive_int(snapshot: Any):
     ast = parse_tree_to_ast(parse("1-2"))
-    assert ast.to_dict() == {
-        Term: {
-            "left": {IntLiteral: {"value": 1}},
-            "op": "-",
-            "right": {IntLiteral: {"value": 2}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Term: Int,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == -1
 
 
-def test_subtraction_with_negative_int_right():
+def test_subtraction_with_negative_int_right(snapshot: Any):
     ast = parse_tree_to_ast(parse("1--2"))
-    assert ast.to_dict() == {
-        Term: {
-            "left": {IntLiteral: {"value": 1}},
-            "op": "-",
-            "right": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 2}},
-                }
-            },
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Term: Int,
-        "left": {IntLiteral: Int},
-        "right": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == 3
 
 
-def test_subtraction_with_negative_int_left():
+def test_subtraction_with_negative_int_left(snapshot: Any):
     ast = parse_tree_to_ast(parse("-1-2"))
-    assert ast.to_dict() == {
-        Term: {
-            "left": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 1}},
-                }
-            },
-            "op": "-",
-            "right": {IntLiteral: {"value": 2}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Term: Int,
-        "left": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == -3
 
 
-def test_subtraction_with_negative_int_both():
+def test_subtraction_with_negative_int_both(snapshot: Any):
     ast = parse_tree_to_ast(parse("-1--2"))
-    assert ast.to_dict() == {
-        Term: {
-            "left": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 1}},
-                }
-            },
-            "op": "-",
-            "right": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 2}},
-                }
-            },
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Term: Int,
-        "left": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-        "right": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == 1
 
 
-def test_addition_3_ints():
+def test_addition_3_ints(snapshot: Any):
     ast = parse_tree_to_ast(parse("1+2+6"))
-    assert ast.to_dict() == {
-        Term: {
-            "left": {
-                IntLiteral: {"value": 1},
-            },
-            "op": "+",
-            "right": {
-                Term: {
-                    "left": {
-                        IntLiteral: {"value": 2},
-                    },
-                    "op": "+",
-                    "right": {
-                        IntLiteral: {"value": 6},
-                    },
-                },
-            },
-        },
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Term: Int,
-        "left": {IntLiteral: Int},
-        "right": {
-            Term: Int,
-            "left": {IntLiteral: Int},
-            "right": {IntLiteral: Int},
-        },
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == 9
 
 
 # For Multiplication
 
 
-def test_multiplication_with_positive_int():
+def test_multiplication_with_positive_int(snapshot: Any):
     ast = parse_tree_to_ast(parse("3*2"))
-    assert ast.to_dict() == {
-        Factor: {
-            "left": {IntLiteral: {"value": 3}},
-            "op": "*",
-            "right": {IntLiteral: {"value": 2}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Factor: Int,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == 6
 
 
-def test_multiplication_with_negative_int_right():
+def test_multiplication_with_negative_int_right(snapshot: Any):
     ast = parse_tree_to_ast(parse("3*-2"))
-    assert ast.to_dict() == {
-        Factor: {
-            "left": {IntLiteral: {"value": 3}},
-            "op": "*",
-            "right": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 2}},
-                }
-            },
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Factor: Int,
-        "left": {IntLiteral: Int},
-        "right": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == -6
 
 
-def test_multiplication_with_negative_int_left():
+def test_multiplication_with_negative_int_left(snapshot: Any):
     ast = parse_tree_to_ast(parse("-3*2"))
-    assert ast.to_dict() == {
-        Factor: {
-            "left": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 3}},
-                }
-            },
-            "op": "*",
-            "right": {IntLiteral: {"value": 2}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Factor: Int,
-        "left": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == -6
 
 
-def test_multiplication_with_negative_int_both():
+def test_multiplication_with_negative_int_both(snapshot: Any):
     ast = parse_tree_to_ast(parse("-3*-2"))
-    assert ast.to_dict() == {
-        Factor: {
-            "left": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 3}},
-                }
-            },
-            "op": "*",
-            "right": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 2}},
-                }
-            },
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Factor: Int,
-        "left": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-        "right": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == 6
 
 
 # For Division
 
 
-def test_division_with_positive_int():
+def test_division_with_positive_int(snapshot: Any):
     ast = parse_tree_to_ast(parse("4/2"))
-    assert ast.to_dict() == {
-        Factor: {
-            "left": {IntLiteral: {"value": 4}},
-            "op": "/",
-            "right": {IntLiteral: {"value": 2}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Factor: Int,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == 2
 
 
-def test_division_with_negative_int_right():
+def test_division_with_negative_int_right(snapshot: Any):
     ast = parse_tree_to_ast(parse("4/-2"))
-    assert ast.to_dict() == {
-        Factor: {
-            "left": {IntLiteral: {"value": 4}},
-            "op": "/",
-            "right": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 2}},
-                }
-            },
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Factor: Int,
-        "left": {IntLiteral: Int},
-        "right": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == -2
 
 
-def test_division_with_negative_int_left():
+def test_division_with_negative_int_left(snapshot: Any):
     ast = parse_tree_to_ast(parse("-4/2"))
-    assert ast.to_dict() == {
-        Factor: {
-            "left": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 4}},
-                }
-            },
-            "op": "/",
-            "right": {IntLiteral: {"value": 2}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Factor: Int,
-        "left": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == -2
 
 
-def test_division_with_negative_int_both():
+def test_division_with_negative_int_both(snapshot: Any):
     ast = parse_tree_to_ast(parse("-4/-2"))
-    assert ast.to_dict() == {
-        Factor: {
-            "left": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 4}},
-                }
-            },
-            "op": "/",
-            "right": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 2}},
-                }
-            },
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Factor: Int,
-        "left": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-        "right": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == 2
 
     # test cases for modulus
 
 
-def test_modulus_with_positive_int():
+def test_modulus_with_positive_int(snapshot: Any):
     ast = parse_tree_to_ast(parse("4%2"))
-    assert ast.to_dict() == {
-        Factor: {
-            "left": {IntLiteral: {"value": 4}},
-            "op": "%",
-            "right": {IntLiteral: {"value": 2}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Factor: Int,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == 0
 
 
-def test_modulus_with_negative_int_right():
+def test_modulus_with_negative_int_right(snapshot: Any):
     ast = parse_tree_to_ast(parse("7%-2"))
-    assert ast.to_dict() == {
-        Factor: {
-            "left": {IntLiteral: {"value": 7}},
-            "op": "%",
-            "right": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 2}},
-                }
-            },
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Factor: Int,
-        "left": {IntLiteral: Int},
-        "right": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == -1
 
 
-def test_modulus_with_negative_int_left():
+def test_modulus_with_negative_int_left(snapshot: Any):
     ast = parse_tree_to_ast(parse("-7%2"))
-    assert ast.to_dict() == {
-        Factor: {
-            "left": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 7}},
-                }
-            },
-            "op": "%",
-            "right": {IntLiteral: {"value": 2}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Factor: Int,
-        "left": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == 1
 
 
-def test_modulus_with_negative_int_both():
+def test_modulus_with_negative_int_both(snapshot: Any):
     ast = parse_tree_to_ast(parse("-8%-2"))
-    assert ast.to_dict() == {
-        Factor: {
-            "left": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 8}},
-                }
-            },
-            "op": "%",
-            "right": {
-                UnaryOp: {
-                    "op": "-",
-                    "operand": {IntLiteral: {"value": 2}},
-                }
-            },
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Factor: Int,
-        "left": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-        "right": {
-            UnaryOp: Int,
-            "operand": {IntLiteral: Int},
-        },
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) == 0
 
     # and and
 
 
-def test_and_true_and_true():
+def test_and_true_and_true(snapshot: Any):
     ast = parse_tree_to_ast(parse("true&&true"))
-    assert ast.to_dict() == {
-        Logical: {
-            "left": {BoolLiteral: {"value": True}},
-            "op": "&&",
-            "right": {BoolLiteral: {"value": True}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Logical: Bool,
-        "left": {BoolLiteral: Bool},
-        "right": {BoolLiteral: Bool},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is True
 
 
-def test_and_false_and_false():
+def test_and_false_and_false(snapshot: Any):
     ast = parse_tree_to_ast(parse("false&&false"))
-    assert ast.to_dict() == {
-        Logical: {
-            "left": {BoolLiteral: {"value": False}},
-            "op": "&&",
-            "right": {BoolLiteral: {"value": False}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Logical: Bool,
-        "left": {BoolLiteral: Bool},
-        "right": {BoolLiteral: Bool},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is False
 
 
-def test_and_true_and_false():
+def test_and_true_and_false(snapshot: Any):
     ast = parse_tree_to_ast(parse("true&&false"))
-    assert ast.to_dict() == {
-        Logical: {
-            "left": {BoolLiteral: {"value": True}},
-            "op": "&&",
-            "right": {BoolLiteral: {"value": False}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Logical: Bool,
-        "left": {BoolLiteral: Bool},
-        "right": {BoolLiteral: Bool},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is False
 
 
-def test_and_false_and_true():
+def test_and_false_and_true(snapshot: Any):
     ast = parse_tree_to_ast(parse("false&&true"))
-    assert ast.to_dict() == {
-        Logical: {
-            "left": {BoolLiteral: {"value": False}},
-            "op": "&&",
-            "right": {BoolLiteral: {"value": True}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Logical: Bool,
-        "left": {BoolLiteral: Bool},
-        "right": {BoolLiteral: Bool},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is False
 
 
 # for logical OR
 
 
-def test_and_true_or_true():
+def test_and_true_or_true(snapshot: Any):
     ast = parse_tree_to_ast(parse("true||true"))
-    assert ast.to_dict() == {
-        Logical: {
-            "left": {BoolLiteral: {"value": True}},
-            "op": "||",
-            "right": {BoolLiteral: {"value": True}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Logical: Bool,
-        "left": {BoolLiteral: Bool},
-        "right": {BoolLiteral: Bool},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is True
 
 
-def test_and_false_or_false():
+def test_and_false_or_false(snapshot: Any):
     ast = parse_tree_to_ast(parse("false||false"))
-    assert ast.to_dict() == {
-        Logical: {
-            "left": {BoolLiteral: {"value": False}},
-            "op": "||",
-            "right": {BoolLiteral: {"value": False}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Logical: Bool,
-        "left": {BoolLiteral: Bool},
-        "right": {BoolLiteral: Bool},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is False
 
 
-def test_and_true_or_false():
+def test_and_true_or_false(snapshot: Any):
     ast = parse_tree_to_ast(parse("true||false"))
-    assert ast.to_dict() == {
-        Logical: {
-            "left": {BoolLiteral: {"value": True}},
-            "op": "||",
-            "right": {BoolLiteral: {"value": False}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Logical: Bool,
-        "left": {BoolLiteral: Bool},
-        "right": {BoolLiteral: Bool},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is True
 
 
-def test_and_false_or_true():
+def test_and_false_or_true(snapshot: Any):
     ast = parse_tree_to_ast(parse("false||true"))
-    assert ast.to_dict() == {
-        Logical: {
-            "left": {BoolLiteral: {"value": False}},
-            "op": "||",
-            "right": {BoolLiteral: {"value": True}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Logical: Bool,
-        "left": {BoolLiteral: Bool},
-        "right": {BoolLiteral: Bool},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is True
 
 
 # For Not Operator
 
 
-def test_not_true():
+def test_not_true(snapshot: Any):
     ast = parse_tree_to_ast(parse("!true"))
-    assert ast.to_dict() == {
-        UnaryOp: {
-            "op": "!",
-            "operand": {BoolLiteral: {"value": True}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        UnaryOp: Bool,
-        "operand": {BoolLiteral: Bool},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is False
 
 
-def test_not_false():
+def test_not_false(snapshot: Any):
     ast = parse_tree_to_ast(parse("!false"))
-    assert ast.to_dict() == {
-        UnaryOp: {
-            "op": "!",
-            "operand": {BoolLiteral: {"value": False}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        UnaryOp: Bool,
-        "operand": {BoolLiteral: Bool},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is True
 
 
 # For Greater Than Operator
 
 
-def test_greaterthan_largernum_gt_smallernum():
+def test_greaterthan_largernum_gt_smallernum(snapshot: Any):
     ast = parse_tree_to_ast(parse("5>3"))
-    assert ast.to_dict() == {
-        Comparison: {
-            "left": {IntLiteral: {"value": 5}},
-            "op": ">",
-            "right": {IntLiteral: {"value": 3}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Comparison: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is True
 
 
-def test_greaterthan_smallernum_gt_largernum():
+def test_greaterthan_smallernum_gt_largernum(snapshot: Any):
     ast = parse_tree_to_ast(parse("3>5"))
-    assert ast.to_dict() == {
-        Comparison: {
-            "left": {IntLiteral: {"value": 3}},
-            "op": ">",
-            "right": {IntLiteral: {"value": 5}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Comparison: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is False
 
 
 # For Lesser Than Operator
 
 
-def test_lesserthan_largernum_lt_smallernum():
+def test_lesserthan_largernum_lt_smallernum(snapshot: Any):
     ast = parse_tree_to_ast(parse("5<3"))
-    assert ast.to_dict() == {
-        Comparison: {
-            "left": {IntLiteral: {"value": 5}},
-            "op": "<",
-            "right": {IntLiteral: {"value": 3}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Comparison: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is False
 
 
-def test_lesserthan_smallernum_lt_largernum():
+def test_lesserthan_smallernum_lt_largernum(snapshot: Any):
     ast = parse_tree_to_ast(parse("3<5"))
-    assert ast.to_dict() == {
-        Comparison: {
-            "left": {IntLiteral: {"value": 3}},
-            "op": "<",
-            "right": {IntLiteral: {"value": 5}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Comparison: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is True
 
 
-def test_ltq_smallernum_ltq_largernum():
+def test_ltq_smallernum_ltq_largernum(snapshot: Any):
     ast = parse_tree_to_ast(parse("3<=5"))
-    assert ast.to_dict() == {
-        Comparison: {
-            "left": {IntLiteral: {"value": 3}},
-            "op": "<=",
-            "right": {IntLiteral: {"value": 5}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Comparison: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is True
 
 
-def test_ltq_samenum_ltq_samenum():
+def test_ltq_samenum_ltq_samenum(snapshot: Any):
     ast = parse_tree_to_ast(parse("3<=3"))
-    assert ast.to_dict() == {
-        Comparison: {
-            "left": {IntLiteral: {"value": 3}},
-            "op": "<=",
-            "right": {IntLiteral: {"value": 3}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Comparison: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is True
 
 
-def test_ltq_largernum_ltq_smallernum():
+def test_ltq_largernum_ltq_smallernum(snapshot: Any):
     ast = parse_tree_to_ast(parse("5<=3"))
-    assert ast.to_dict() == {
-        Comparison: {
-            "left": {IntLiteral: {"value": 5}},
-            "op": "<=",
-            "right": {IntLiteral: {"value": 3}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Comparison: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is False
 
 
-def test_gtq_smallernum_gtq_largernum():
+def test_gtq_smallernum_gtq_largernum(snapshot: Any):
     ast = parse_tree_to_ast(parse("3>=5"))
-    assert ast.to_dict() == {
-        Comparison: {
-            "left": {IntLiteral: {"value": 3}},
-            "op": ">=",
-            "right": {IntLiteral: {"value": 5}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Comparison: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is False
 
 
-def test_gtq_samenum_gtq_samenum():
+def test_gtq_samenum_gtq_samenum(snapshot: Any):
     ast = parse_tree_to_ast(parse("3>=3"))
-    assert ast.to_dict() == {
-        Comparison: {
-            "left": {IntLiteral: {"value": 3}},
-            "op": ">=",
-            "right": {IntLiteral: {"value": 3}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Comparison: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is True
 
 
-def test_gtq_largernum_gtq_smallernum():
+def test_gtq_largernum_gtq_smallernum(snapshot: Any):
     ast = parse_tree_to_ast(parse("5>=3"))
-    assert ast.to_dict() == {
-        Comparison: {
-            "left": {IntLiteral: {"value": 5}},
-            "op": ">=",
-            "right": {IntLiteral: {"value": 3}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Comparison: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is True
 
 
-def test_eqeq_samenum():
+def test_eqeq_samenum(snapshot: Any):
     ast = parse_tree_to_ast(parse("3==3"))
-    assert ast.to_dict() == {
-        Equality: {
-            "left": {IntLiteral: {"value": 3}},
-            "op": "==",
-            "right": {IntLiteral: {"value": 3}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Equality: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is True
 
 
-def test_eqeq_diffnum():
+def test_eqeq_diffnum(snapshot: Any):
     ast = parse_tree_to_ast(parse("3==4"))
-    assert ast.to_dict() == {
-        Equality: {
-            "left": {IntLiteral: {"value": 3}},
-            "op": "==",
-            "right": {IntLiteral: {"value": 4}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Equality: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is False
 
 
-def test_noteq_samenum():
+def test_noteq_samenum(snapshot: Any):
     ast = parse_tree_to_ast(parse("3!=3"))
-    assert ast.to_dict() == {
-        Equality: {
-            "left": {IntLiteral: {"value": 3}},
-            "op": "!=",
-            "right": {IntLiteral: {"value": 3}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Equality: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is False
 
 
-def test_noteq_diffnum():
+def test_noteq_diffnum(snapshot: Any):
     ast = parse_tree_to_ast(parse("3!=4"))
-    assert ast.to_dict() == {
-        Equality: {
-            "left": {IntLiteral: {"value": 3}},
-            "op": "!=",
-            "right": {IntLiteral: {"value": 4}},
-        }
-    }
+    assert ast.to_dict() == snapshot
     ast.typecheck(EMPTY_TYPE_ENV)
-    assert ast.to_type_dict() == {
-        Equality: Bool,
-        "left": {IntLiteral: Int},
-        "right": {IntLiteral: Int},
-    }
+    assert ast.to_type_dict() == snapshot
     assert ast.eval(EMPTY_ENV) is True
