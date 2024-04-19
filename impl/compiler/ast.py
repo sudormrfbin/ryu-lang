@@ -406,7 +406,7 @@ class EnumPattern(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = env.get_var_type(self.enum_type)
+        self.type_ = env.get_type(self.enum_type)
         if self.type_ is None:
             raise  # TODO
             # raise errors.UndeclaredType()
@@ -743,7 +743,7 @@ class StructStmt(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        if env.get_var_type(self.name):
+        if env.get_type(self.name):
             raise  # TODO
             # raise errors.TypeRedefinition()
 
@@ -751,7 +751,7 @@ class StructStmt(_Ast):
             struct_name=self.name,
             members=self.members.typecheck(env),
         )
-        env.define_var_type(self.name, self.type_)
+        env.define_type(self.name, self.type_)
         return self.type_
 
     @override
@@ -797,7 +797,7 @@ class StructInit(_Ast, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Struct:
-        struct_type = env.get_var_type(self.name)
+        struct_type = env.get_type(self.name)
         if not isinstance(struct_type, langtypes.Struct):
             raise  # TODO errors.UnexpectedType()
 
@@ -1127,7 +1127,7 @@ class EnumStmt(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        if isinstance(existing_type := env.get_var_type(self.name), langtypes.Enum):
+        if isinstance(existing_type := env.get_type(self.name), langtypes.Enum):
             raise errors.TypeRedefinition(
                 message="Enum is redefined",
                 type_name=self.name,
@@ -1140,7 +1140,7 @@ class EnumStmt(_Ast):
             members=self.members.members_as_list(),
             span=errors.Span.from_token(self.name),
         )
-        env.define_var_type(self.name, self.type_)
+        env.define_type(self.name, self.type_)
         return self.type_
 
     @override
@@ -1284,22 +1284,24 @@ class FunctionArgs(_Ast, ast_utils.AsList):
 
 @dataclass
 class FunctionCall(_Expression):  # TODO: rename to FunctionCallOrStructInit
-    callee: _Expression
+    callee: "Variable"
     args: Optional[FunctionArgs | StructInitMembers]
 
     is_fn: bool | None = None
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        callee_type = self.callee.typecheck(env)
+        self.callee.type_ = ctype = env.get_var_type(self.callee.value) or env.get_type(
+            self.callee.value
+        )
         args = self.args
-        match (callee_type, args):
+        match (ctype, args):
             case (langtypes.Function(), FunctionArgs() | None):
                 self.is_fn = True
-                return self.typecheck_function_call(callee_type, args, env)
+                return self.typecheck_function_call(ctype, args, env)
             case (langtypes.Struct(), StructInitMembers() | None):
                 self.is_fn = False
-                return self.typecheck_struct_init(callee_type, args, env)
+                return self.typecheck_struct_init(ctype, args, env)
             case _:
                 raise  # TODO
 
@@ -1700,7 +1702,7 @@ class EnumLiteralSimple(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = env.get_var_type(self.enum_type)
+        self.type_ = env.get_type(self.enum_type)
         if self.type_ is None:
             raise  # TODO
             # raise errors.UndeclaredType()
@@ -1719,7 +1721,7 @@ class EnumLiteralTuple(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = env.get_var_type(self.enum_type)
+        self.type_ = env.get_type(self.enum_type)
         if self.type_ is None:
             raise  # TODO
             # raise errors.UndeclaredType()

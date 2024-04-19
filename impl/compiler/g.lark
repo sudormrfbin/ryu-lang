@@ -109,7 +109,7 @@ return_stmt: "return" expression
 ?indexing: function_call "[" expression "]"
 		| function_call
 
-?function_call: atom "(" [function_args | struct_init_members] ")"
+?function_call: variable "(" [function_args | struct_init_members] ")"
 	   | atom
 function_args: expression ("," expression)*
 

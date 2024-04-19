@@ -24,7 +24,7 @@ def test_struct_def(source: str, snapshot: Any):
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get_var_type("Person") == Struct(
+    assert type_env.get_type("Person") == Struct(
         struct_name="Person",
         members=Struct.Members({"name": STRING, "age": INT}),
     )

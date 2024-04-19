@@ -12,8 +12,14 @@ class TypeEnvironment:
     Map from variable name to it's type.
     """
 
+    types: dict[str, langtypes.Type]
+    """
+    Map from type name to type.
+    """
+
     def __init__(self, enclosing: Optional[Self] = None):
         self.values = {}
+        self.types = {}
         self.parent = enclosing
 
     def define_var_type(self, name: str, value: langtypes.Type):
@@ -29,8 +35,18 @@ class TypeEnvironment:
 
         return None
 
-    def is_global(self) -> bool:
-        return self.parent is None
+    def define_type(self, type_name: str, type: langtypes.Type):
+        self.types[type_name] = type
+
+    def get_type(self, type: str) -> Optional[langtypes.Type]:
+        current = self
+
+        while current is not None:
+            if (type_ := current.types.get(type)) is not None:
+                return type_
+            current = current.parent
+
+        return None
 
 
 class RuntimeEnvironment:
