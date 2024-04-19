@@ -125,6 +125,7 @@ class Array(PrimitiveType):
     ty: Type
 
     @property
+    @override
     def name(self) -> str:
         return f"Array<{self.ty.name}>"
 
