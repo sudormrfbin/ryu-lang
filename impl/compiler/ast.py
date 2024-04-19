@@ -55,7 +55,7 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
 
     # kw_only is required to make dataclasses play nice with inheritance and
     # fields with default values. https://stackoverflow.com/a/69822584/7115678
-    type_: langtypes.Type | None = dataclasses.field(
+    type: langtypes.Type | None = dataclasses.field(
         default=None, kw_only=True, metadata={SKIP_SERIALIZE: True}
     )
 
@@ -96,10 +96,10 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
     def to_type_dict(
         self,
     ) -> AstTypeDict:
-        assert self.type_ is not None
+        assert self.type is not None
 
         result: AstTypeDict = {}
-        result[type(self)] = type(self.type_)
+        result[type(self)] = type(self.type)
 
         for field in dataclasses.fields(self):
             if SKIP_SERIALIZE in field.metadata:
@@ -133,8 +133,8 @@ class StatementList(_Ast, ast_utils.AsList):
         for stmt in self.stmts:
             stmt.typecheck(env)
 
-        self.type_ = langtypes.BLOCK
-        return self.type_
+        self.type = langtypes.BLOCK
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -166,9 +166,9 @@ class VariableDeclaration(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = self.rvalue.typecheck(env)
-        env.define_var_type(self.ident, self.type_)
-        return self.type_
+        self.type = self.rvalue.typecheck(env)
+        env.define_var_type(self.ident, self.type)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -196,8 +196,8 @@ class Assignment(_Statement):
         if lvalue_type != rvalue_type:
             raise errors.InternalCompilerError("Type mismatch: TODO")  # TODO
 
-        self.type_ = rvalue_type
-        return self.type_
+        self.type = rvalue_type
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -211,8 +211,8 @@ class PrintStmt(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = self.expr.typecheck(env)
-        return self.type_
+        self.type = self.expr.typecheck(env)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -235,8 +235,8 @@ class IfStmt(_Statement):
                 actual_type=expr_type,
             )
 
-        self.type_ = self.true_block.typecheck(env)
-        return self.type_
+        self.type = self.true_block.typecheck(env)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> bool:
@@ -263,8 +263,8 @@ class IfChain(_Statement):
         if self.else_if_ladder:
             types.append(self.else_if_ladder.typecheck(env))
 
-        self.type_ = langtypes.BLOCK
-        return self.type_
+        self.type = langtypes.BLOCK
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -295,8 +295,8 @@ class ElseIfLadder(_Statement, ast_utils.AsList):
         for block in self.blocks:
             block.typecheck(env)
 
-        self.type_ = langtypes.BLOCK
-        return self.type_
+        self.type = langtypes.BLOCK
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> bool:
@@ -315,8 +315,8 @@ class ArrayPatternElement(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = self.literal.typecheck(env)
-        return self.type_
+        self.type = self.literal.typecheck(env)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -350,8 +350,8 @@ class ArrayPattern(_Ast, ast_utils.AsList):
                 case _:
                     raise  # TODO
 
-        self.type_ = ty
-        return self.type_
+        self.type = ty
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> list[Any]:
@@ -409,11 +409,11 @@ class EnumPattern(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = env.get_type(self.enum_type)
-        if self.type_ is None:
+        self.type = env.get_type(self.enum_type)
+        if self.type is None:
             raise  # TODO
             # raise errors.UndeclaredType()
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -447,8 +447,8 @@ class CaseStmt(_Ast):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.block.typecheck(env)
-        self.type_ = self.pattern.typecheck(env)
-        return self.type_
+        self.type = self.pattern.typecheck(env)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -467,11 +467,11 @@ class CaseLadder(_Ast, ast_utils.AsList):
         types: list[langtypes.Type] = []
         for case_ in self.cases:
             case_.typecheck(env)
-            assert case_.block.type_ is not None
-            types.append(case_.block.type_)
+            assert case_.block.type is not None
+            types.append(case_.block.type)
 
-        self.type_ = langtypes.BLOCK
-        return self.type_
+        self.type = langtypes.BLOCK
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -562,10 +562,10 @@ class MatchStmt(_Statement):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         expr_type = self.expr.typecheck(env)
-        self.type_ = self.cases.typecheck(env)
+        self.type = self.cases.typecheck(env)
 
         for case_ in self.cases.cases:
-            case_type = case_.pattern.type_
+            case_type = case_.pattern.type
             assert case_type is not None
 
             if isinstance(case_.pattern, WildcardPattern):
@@ -600,7 +600,7 @@ class MatchStmt(_Statement):
                     "TODO: unsupported type for match expression"
                 )
 
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -632,8 +632,8 @@ class WhileStmt(_Statement):
                 actual_type=expr_type,
             )
 
-        self.type_ = self.true_block.typecheck(env)
-        return self.type_
+        self.type = self.true_block.typecheck(env)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -663,8 +663,8 @@ class ForStmt(_Statement):
         child_env = TypeEnvironment(enclosing=env)
         child_env.define_var_type(self.var, array_type)
 
-        self.type_ = self.stmts.typecheck(child_env)
-        return self.type_
+        self.type = self.stmts.typecheck(child_env)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -694,8 +694,8 @@ class ForStmtInt(_Statement):
         child_env = TypeEnvironment(enclosing=env)
         child_env.define_var_type(self.var, start_type)
 
-        self.type_ = self.stmts.typecheck(child_env)
-        return self.type_
+        self.type = self.stmts.typecheck(child_env)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -714,8 +714,8 @@ class StructMember(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = self.ident_type.typecheck(env)
-        return self.type_
+        self.type = self.ident_type.typecheck(env)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -730,8 +730,8 @@ class StructMembers(_Ast, ast_utils.AsList):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Struct.Members:
         types = {str(mem.name): mem.typecheck(env) for mem in self.members}
-        self.type_ = langtypes.Struct.Members(types)
-        return self.type_
+        self.type = langtypes.Struct.Members(types)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -750,12 +750,12 @@ class StructStmt(_Ast):
             raise  # TODO
             # raise errors.TypeRedefinition()
 
-        self.type_ = langtypes.Struct(
+        self.type = langtypes.Struct(
             struct_name=self.name,
             members=self.members.typecheck(env),
         )
-        env.define_type(self.name, self.type_)
-        return self.type_
+        env.define_type(self.name, self.type)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -770,8 +770,8 @@ class StructInitMember(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = self.value.typecheck(env)
-        return self.type_
+        self.type = self.value.typecheck(env)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -785,8 +785,8 @@ class StructInitMembers(_Ast, ast_utils.AsList):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Struct.Members:
         types = {str(mem.name): mem.typecheck(env) for mem in self.members}
-        self.type_ = langtypes.Struct.Members(types)
-        return self.type_
+        self.type = langtypes.Struct.Members(types)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> dict[str, Any]:
@@ -817,8 +817,8 @@ class StructInit(_Ast, ast_utils.AsList):
         if members_type != struct_type.members:
             raise  # TODO type mismatch
 
-        self.type_ = struct_type
-        return self.type_
+        self.type = struct_type
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> langvalues.StructValue:
@@ -843,8 +843,8 @@ class StructAccess(_Statement):
         if member_type is None:
             raise  # TODO
 
-        self.type_ = member_type
-        return self.type_
+        self.type = member_type
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -871,8 +871,8 @@ class StructAssignment(_Statement):
                 expected_type_span=self.struct_access.span,
             )
 
-        self.type_ = member_type
-        return self.type_
+        self.type = member_type
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -887,8 +887,8 @@ class ArrayElement(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = self.element.typecheck(env)
-        return self.type_
+        self.type = self.element.typecheck(env)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -912,8 +912,8 @@ class ArrayElements(_Ast, ast_utils.AsList):
                     actual_type=mem.typecheck(env),
                     expected_type_span=self.members[0].span,
                 )
-        self.type_ = check_type
-        return self.type_
+        self.type = check_type
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -942,11 +942,11 @@ class ArrayLiteral(_Ast):
                     span=self.span,
                 )
             case (None, infer) if infer is not None:
-                self.type_ = langtypes.Array(infer)
+                self.type = langtypes.Array(infer)
             case (decl, None) if decl is not None:
-                self.type_ = langtypes.Array(decl)
+                self.type = langtypes.Array(decl)
             case (decl, infer) if decl == infer and decl is not None:
-                self.type_ = langtypes.Array(decl)
+                self.type = langtypes.Array(decl)
             case _:
                 assert self.members
                 assert declared_type
@@ -960,7 +960,7 @@ class ArrayLiteral(_Ast):
                     actual_type=inferred_type,
                     expected_type_span=self.declared_type.span,
                 )
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -985,8 +985,8 @@ class Indexing(_Ast):
         if not isinstance(index_type, langtypes.Int):
             raise  # TODO
 
-        self.type_ = array_type.ty
-        return self.type_
+        self.type = array_type.ty
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -1012,28 +1012,28 @@ class IndexAssignment(_Ast):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         index_type = self.index.typecheck(env)
-        self.type_ = self.arrayname.typecheck(env)
+        self.type = self.arrayname.typecheck(env)
         value_type = self.value.typecheck(env)
-        if not isinstance(self.type_, langtypes.Array):
+        if not isinstance(self.type, langtypes.Array):
             raise errors.IndexingNonArray(
                 message="indexing non array",
                 span=self.arrayname.span,
-                actual_type=self.type_,
+                actual_type=self.type,
             )
 
         if not isinstance(index_type, langtypes.Int):
             raise  # TODO
 
-        if self.type_.ty != value_type:
+        if self.type.ty != value_type:
             raise errors.ArrayIndexAssignmentTypeMismatch(
-                message=f"Expected type {self.type_ } but got {value_type}",
+                message=f"Expected type {self.type } but got {value_type}",
                 span=self.value.span,
                 actual_type=value_type,
-                expected_type=self.type_.ty,
+                expected_type=self.type.ty,
                 expected_type_span=self.arrayname.span,
             )
 
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -1050,8 +1050,8 @@ class EnumMemberBare(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = langtypes.Type()  # TODO: assign separate type
-        return self.type_
+        self.type = langtypes.Type()  # TODO: assign separate type
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -1066,10 +1066,10 @@ class EnumMemberTuple(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = langtypes.Type()  # TODO: assign separate type
+        self.type = langtypes.Type()  # TODO: assign separate type
 
         self.tuple_members.typecheck(env)
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -1094,8 +1094,8 @@ class EnumMembers(_Ast, ast_utils.AsList):
             seen[member.name] = member
             member.typecheck(env)
 
-        self.type_ = langtypes.BLOCK
-        return self.type_
+        self.type = langtypes.BLOCK
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -1112,11 +1112,11 @@ class EnumMembers(_Ast, ast_utils.AsList):
                 case EnumMemberBare():
                     members.append(langtypes.Enum.Simple(mem.name))
                 case EnumMemberTuple():
-                    assert mem.tuple_members.type_
+                    assert mem.tuple_members.type
                     members.append(
                         langtypes.Enum.Tuple(
                             mem.name,
-                            mem.tuple_members.type_,
+                            mem.tuple_members.type,
                         )
                     )
 
@@ -1138,13 +1138,13 @@ class EnumStmt(_Ast):
                 previous_type_span=existing_type.span,  # Use the stored span
             )
         self.members.typecheck(env)
-        self.type_ = langtypes.Enum(
+        self.type = langtypes.Enum(
             enum_name=self.name,
             members=self.members.members_as_list(),
             span=errors.Span.from_token(self.name),
         )
-        env.define_type(self.name, self.type_)
-        return self.type_
+        env.define_type(self.name, self.type)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -1161,14 +1161,14 @@ class TypeAnnotation(_Ast):
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         if self.generics and self.ty == "array":  # TODO: harcoded
             generics = self.generics.typecheck(env)
-            self.type_ = langtypes.Array(generics)
+            self.type = langtypes.Array(generics)
         else:
-            self.type_ = env.get_type(self.ty)
+            self.type = env.get_type(self.ty)
 
-        if self.type_ is None:
+        if self.type is None:
             raise  # TODO
             # raise errors.UnassignableType()
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -1182,8 +1182,8 @@ class FunctionParam(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = self.arg_type.typecheck(env)
-        return self.type_
+        self.type = self.arg_type.typecheck(env)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -1197,8 +1197,8 @@ class FunctionParams(_Ast, ast_utils.AsList):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Function.Params:
         types = [arg.typecheck(env) for arg in self.args]
-        self.type_ = langtypes.Function.Params(types)
-        return self.type_
+        self.type = langtypes.Function.Params(types)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -1222,24 +1222,24 @@ class FunctionDefinition(_Ast):
             self.args.typecheck(env) if self.args else langtypes.Function.Params([])
         )
 
-        self.type_ = langtypes.Function(
+        self.type = langtypes.Function(
             function_name=self.name,
             arguments=params,
             return_type=ret_type,
         )
 
         body_env = TypeEnvironment(enclosing=env, fn_scope=FunctionDefScope(ret_type))
-        body_env.define_var_type(self.name, self.type_)
+        body_env.define_var_type(self.name, self.type)
 
         if self.args:
             for arg in self.args.args:
-                assert arg.type_ is not None
-                body_env.define_var_type(arg.name, arg.type_)
+                assert arg.type is not None
+                body_env.define_var_type(arg.name, arg.type)
 
         self.body.typecheck(body_env)
 
-        env.define_var_type(self.name, self.type_)
-        return self.type_
+        env.define_var_type(self.name, self.type)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -1257,8 +1257,8 @@ class ReturnStmt(_Statement):
         if return_type != env.fn_return_type():
             raise  # TODO
 
-        self.type_ = langtypes.BLOCK
-        return self.type_
+        self.type = langtypes.BLOCK
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -1273,8 +1273,8 @@ class FunctionArgs(_Ast, ast_utils.AsList):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Function.Params:
         types = [arg.typecheck(env) for arg in self.args]
-        self.type_ = langtypes.Function.Params(types)
-        return self.type_
+        self.type = langtypes.Function.Params(types)
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> list[EvalResult]:
@@ -1290,7 +1290,7 @@ class FunctionCall(_Expression):  # TODO: rename to FunctionCallOrStructInit
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.callee.type_ = ctype = env.get_var_type(self.callee.value) or env.get_type(
+        self.callee.type = ctype = env.get_var_type(self.callee.value) or env.get_type(
             self.callee.value
         )
         args = self.args
@@ -1323,8 +1323,8 @@ class FunctionCall(_Expression):  # TODO: rename to FunctionCallOrStructInit
         if args_type != ty.arguments:
             raise  # TODO type mismatch
 
-        self.type_ = ty.return_type
-        return self.type_
+        self.type = ty.return_type
+        return self.type
 
     def typecheck_struct_init(
         self,
@@ -1345,8 +1345,8 @@ class FunctionCall(_Expression):  # TODO: rename to FunctionCallOrStructInit
         if members_type != ty.members:
             raise  # TODO type mismatch
 
-        self.type_ = ty
-        return self.type_
+        self.type = ty
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
@@ -1367,10 +1367,10 @@ class FunctionCall(_Expression):  # TODO: rename to FunctionCallOrStructInit
 
     def eval_struct_init(self, env: RuntimeEnvironment) -> langvalues.StructValue:
         assert isinstance(self.args, StructInitMembers)
-        assert isinstance(self.type_, langtypes.Struct)
+        assert isinstance(self.type, langtypes.Struct)
 
         return langvalues.StructValue(
-            name=self.type_.struct_name,
+            name=self.type.struct_name,
             attrs=self.args.eval(env) if self.args else {},
         )
 
@@ -1388,9 +1388,9 @@ class Term(_Expression):
 
         match left_type, self.op, right_type:
             case langtypes.INT, "+" | "-", langtypes.INT:
-                self.type_ = langtypes.INT
+                self.type = langtypes.INT
             case langtypes.STRING, "+", langtypes.STRING:
-                self.type_ = langtypes.STRING
+                self.type = langtypes.STRING
             case _:
                 op_span = errors.Span.from_token(self.op)
                 raise errors.InvalidOperationError(
@@ -1403,7 +1403,7 @@ class Term(_Expression):
                     ],
                 )
 
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -1433,7 +1433,7 @@ class Factor(_Expression):
 
         match left_type, self.op, right_type:
             case langtypes.INT, "*" | "/" | "%", langtypes.INT:
-                self.type_ = langtypes.INT
+                self.type = langtypes.INT
             case _:
                 op_span = errors.Span.from_token(self.op)
                 raise errors.InvalidOperationError(
@@ -1446,7 +1446,7 @@ class Factor(_Expression):
                     ],
                 )
 
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -1456,7 +1456,7 @@ class Factor(_Expression):
             case "*":
                 return left * right
             case "/":
-                match self.left.type_, self.right.type_:
+                match self.left.type, self.right.type:
                     case langtypes.INT, langtypes.INT:
                         return left // right
                     case _:
@@ -1464,7 +1464,7 @@ class Factor(_Expression):
                             f"{type(self).__name__} recieved invalid operator {self.op}"
                         )
             case "%":
-                match self.left.type_, self.right.type_:
+                match self.left.type, self.right.type:
                     case langtypes.INT, langtypes.INT:
                         return left % right
                     case _:
@@ -1490,7 +1490,7 @@ class Comparison(_Expression):
 
         match left_type, self.op, right_type:
             case langtypes.INT, ">" | "<" | "<=" | ">=", langtypes.INT:
-                self.type_ = langtypes.BOOL
+                self.type = langtypes.BOOL
             case _:
                 op_span = errors.Span.from_token(self.op)
                 raise errors.InvalidOperationError(
@@ -1503,7 +1503,7 @@ class Comparison(_Expression):
                     ],
                 )
 
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -1537,9 +1537,9 @@ class Logical(_Expression):
 
         match left_type, self.op, right_type:
             case langtypes.BOOL, "&&", langtypes.BOOL:
-                self.type_ = langtypes.BOOL
+                self.type = langtypes.BOOL
             case langtypes.BOOL, "||", langtypes.BOOL:
-                self.type_ = langtypes.BOOL
+                self.type = langtypes.BOOL
             case _:
                 op_span = errors.Span.from_token(self.op)
                 raise errors.InvalidOperationError(
@@ -1552,7 +1552,7 @@ class Logical(_Expression):
                     ],
                 )
 
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -1581,7 +1581,7 @@ class Equality(_Expression):
         right_type = self.right.typecheck(env)
 
         if left_type == right_type and self.op in ("==", "!="):  # pyright: ignore [reportUnnecessaryContains]
-            self.type_ = langtypes.BOOL
+            self.type = langtypes.BOOL
         else:
             op_span = errors.Span.from_token(self.op)
             raise errors.InvalidOperationError(
@@ -1594,7 +1594,7 @@ class Equality(_Expression):
                 ],
             )
 
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -1622,9 +1622,9 @@ class UnaryOp(_Expression):
 
         match self.op, operand_type:
             case "+" | "-", langtypes.INT:
-                self.type_ = operand_type
+                self.type = operand_type
             case "!", langtypes.BOOL:
-                self.type_ = operand_type
+                self.type = operand_type
             case _:
                 op_span = errors.Span.from_token(self.op)
                 raise errors.InvalidOperationError(
@@ -1634,7 +1634,7 @@ class UnaryOp(_Expression):
                     operands=[errors.OperandSpan(operand_type, self.operand.span)],
                 )
 
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -1658,8 +1658,8 @@ class BoolLiteral(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = langtypes.BOOL
-        return self.type_
+        self.type = langtypes.BOOL
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -1672,8 +1672,8 @@ class IntLiteral(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = langtypes.INT
-        return self.type_
+        self.type = langtypes.INT
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -1686,8 +1686,8 @@ class StringLiteral(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = langtypes.STRING
-        return self.type_
+        self.type = langtypes.STRING
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -1701,11 +1701,11 @@ class EnumLiteralSimple(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = env.get_type(self.enum_type)
-        if self.type_ is None:
+        self.type = env.get_type(self.enum_type)
+        if self.type is None:
             raise  # TODO
             # raise errors.UndeclaredType()
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> langvalues.EnumValue:
@@ -1720,22 +1720,22 @@ class EnumLiteralTuple(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = env.get_type(self.enum_type)
-        if self.type_ is None:
+        self.type = env.get_type(self.enum_type)
+        if self.type is None:
             raise  # TODO
             # raise errors.UndeclaredType()
-        if not isinstance(self.type_, langtypes.Enum):
+        if not isinstance(self.type, langtypes.Enum):
             raise  # TODO
 
         inner_type = self.inner.typecheck(env)
-        variant_type = self.type_.variant_from_str(self.variant)
+        variant_type = self.type.variant_from_str(self.variant)
         if not isinstance(variant_type, langtypes.Enum.Tuple):
             raise  # TODO
 
         if variant_type.inner != inner_type:
             raise  # TODO
 
-        return self.type_
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -1752,15 +1752,15 @@ class Variable(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = env.get_var_type(self.value)
-        if self.type_ is None:
+        self.type = env.get_var_type(self.value)
+        if self.type is None:
             raise errors.UnknownVariable(
                 message=f"Variable '{self.value}' not declared in this scope",
                 span=self.span,
                 variable=self.value,
             )
         else:
-            return self.type_
+            return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -1770,8 +1770,8 @@ class Variable(_Expression):
 class WildcardPattern(_Ast):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = langtypes.PLACEHOLDER
-        return self.type_
+        self.type = langtypes.PLACEHOLDER
+        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
