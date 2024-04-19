@@ -19,23 +19,15 @@ class Placeholder(Type):
     pass
 
 
-class PrimitiveType(Type):
+class Bool(Type):
     pass
 
 
-class UserDefinedType(Type):
+class Int(Type):
     pass
 
 
-class Bool(PrimitiveType):
-    pass
-
-
-class Int(PrimitiveType):
-    pass
-
-
-class String(PrimitiveType):
+class String(Type):
     pass
 
 
@@ -50,12 +42,12 @@ class ReturnBlock(Block):
 
 
 @dataclass
-class Struct(UserDefinedType):
+class Struct(Type):
     struct_name: str
     members: Members
 
     @dataclass
-    class Members(PrimitiveType):
+    class Members(Type):
         types: dict[str, Type]
 
         def __len__(self) -> int:
@@ -63,7 +55,7 @@ class Struct(UserDefinedType):
 
 
 @dataclass
-class Enum(UserDefinedType):
+class Enum(Type):
     enum_name: str  # TODO: rename to name
     members: list[Variants]
     span: Span
@@ -92,7 +84,7 @@ class Enum(UserDefinedType):
 
 
 @dataclass
-class Array(PrimitiveType):
+class Array(Type):
     ty: Type
 
     @property
@@ -102,18 +94,18 @@ class Array(PrimitiveType):
 
 
 @dataclass
-class UntypedArray(PrimitiveType):
+class UntypedArray(Type):
     pass
 
 
 @dataclass
-class Function(PrimitiveType):
+class Function(Type):
     function_name: str
     arguments: Params
     return_type: Type
 
     @dataclass
-    class Params(PrimitiveType):
+    class Params(Type):
         types: list[Type]
 
         def __len__(self) -> int:
