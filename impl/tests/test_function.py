@@ -24,7 +24,7 @@ def test_function_def_zero_args(source: str, snapshot: Any):
     print(ast.to_type_dict())
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get("one") == Function(
+    assert type_env.get_var_type("one") == Function(
         function_name="one", arguments=Function.Params([]), return_type=INT
     )
 
@@ -44,7 +44,7 @@ def test_function_def_one_arg(source: str, snapshot: Any):
     print(ast.to_type_dict())
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get("identity") == Function(
+    assert type_env.get_var_type("identity") == Function(
         function_name="identity", arguments=Function.Params([INT]), return_type=INT
     )
 
@@ -64,7 +64,7 @@ def test_function_def_multiple_args(source: str, snapshot: Any):
     print(ast.to_type_dict())
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get("sum") == Function(
+    assert type_env.get_var_type("sum") == Function(
         function_name="sum", arguments=Function.Params([INT, INT]), return_type=INT
     )
 
@@ -88,7 +88,7 @@ def test_function_def_multiple_returns(source: str, snapshot: Any):
     print(ast.to_type_dict())
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get("max") == Function(
+    assert type_env.get_var_type("max") == Function(
         function_name="max", arguments=Function.Params([INT, INT]), return_type=INT
     )
 
@@ -109,7 +109,7 @@ def test_function_call_zero_args(source: str, snapshot: Any):
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get("one") == Function(
+    assert type_env.get_var_type("one") == Function(
         function_name="one", arguments=Function.Params([]), return_type=INT
     )
 
@@ -134,7 +134,7 @@ def test_function_call_one_arg(source: str, snapshot: Any):
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get("identity") == Function(
+    assert type_env.get_var_type("identity") == Function(
         function_name="identity", arguments=Function.Params([INT]), return_type=INT
     )
 
@@ -159,7 +159,7 @@ def test_function_call_multiple_args(source: str, snapshot: Any):
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get("sum") == Function(
+    assert type_env.get_var_type("sum") == Function(
         function_name="sum", arguments=Function.Params([INT, INT]), return_type=INT
     )
 
@@ -188,7 +188,7 @@ def test_function_call_multiple_returns(source: str, snapshot: Any):
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get("max") == Function(
+    assert type_env.get_var_type("max") == Function(
         function_name="max", arguments=Function.Params([INT, INT]), return_type=INT
     )
 
@@ -212,7 +212,7 @@ def test_function_def_array_arg(source: str, snapshot: Any):
     print(ast.to_type_dict())
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get("one") == Function(
+    assert type_env.get_var_type("one") == Function(
         function_name="one", arguments=Function.Params([Array(INT)]), return_type=INT
     )
 

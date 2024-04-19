@@ -84,7 +84,7 @@ def test_if_stmt_true_literal(source: str):
         ],
     }
 
-    assert type_env.get("x") == INT
+    assert type_env.get_var_type("x") == INT
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -156,7 +156,7 @@ def test_if_stmt_false_literal(source: str):
         ],
     }
 
-    assert type_env.get("x") == INT
+    assert type_env.get_var_type("x") == INT
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -238,7 +238,7 @@ def test_if_stmt_true_expr(source: str):
         ],
     }
 
-    assert type_env.get("x") == INT
+    assert type_env.get_var_type("x") == INT
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -334,7 +334,7 @@ def test_if_else(source: str):
         ],
     }
 
-    assert type_env.get("x") == STRING
+    assert type_env.get_var_type("x") == STRING
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -457,7 +457,7 @@ def test_if_else_if(source: str):
         ],
     }
 
-    assert type_env.get("x") == STRING
+    assert type_env.get_var_type("x") == STRING
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -616,7 +616,7 @@ def test_if_else_if_2(source: str):
         ],
     }
 
-    assert type_env.get("x") == STRING
+    assert type_env.get_var_type("x") == STRING
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -775,7 +775,7 @@ def test_if_else_if_none_executes(source: str):
         ],
     }
 
-    assert type_env.get("x") == STRING
+    assert type_env.get_var_type("x") == STRING
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -954,7 +954,7 @@ def test_if_else_if_else(source: str):
         ],
     }
 
-    assert type_env.get("x") == STRING
+    assert type_env.get_var_type("x") == STRING
 
     env = RuntimeEnvironment()
     ast.eval(env)

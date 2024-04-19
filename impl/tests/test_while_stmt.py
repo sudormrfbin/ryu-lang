@@ -97,7 +97,7 @@ def test_while_stmt(source: str):
             },
         ],
     }
-    assert type_env.get("x") == INT
+    assert type_env.get_var_type("x") == INT
 
     env = RuntimeEnvironment()
     ast.eval(env)

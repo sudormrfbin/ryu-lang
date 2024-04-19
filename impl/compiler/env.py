@@ -8,15 +8,18 @@ from compiler import langtypes
 class TypeEnvironment:
     parent: Optional[Self]
     values: dict[str, langtypes.Type]
+    """
+    Map from variable name to it's type.
+    """
 
     def __init__(self, enclosing: Optional[Self] = None):
         self.values = {}
         self.parent = enclosing
 
-    def define(self, name: str, value: langtypes.Type):
+    def define_var_type(self, name: str, value: langtypes.Type):
         self.values[name] = value
 
-    def get(self, name: str) -> Optional[langtypes.Type]:
+    def get_var_type(self, name: str) -> Optional[langtypes.Type]:
         current = self
 
         while current is not None:

@@ -80,7 +80,7 @@ def test_if_stmt_true_literal(source: str):
         ],
     }
 
-    assert type_env.get("x") == INT
+    assert type_env.get_var_type("x") == INT
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -152,7 +152,7 @@ def test_if_stmt_false_literal(source: str):
         ],
     }
 
-    assert type_env.get("x") == INT
+    assert type_env.get_var_type("x") == INT
 
     env = RuntimeEnvironment()
     ast.eval(env)

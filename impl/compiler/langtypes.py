@@ -20,7 +20,7 @@ class Type:
         if ident in PRIMITIVE_TYPES:
             return PRIMITIVE_TYPES[ident]
 
-        ty = env.get(ident)
+        ty = env.get_var_type(ident)
         if isinstance(ty, UserDefinedType):
             return ty
 

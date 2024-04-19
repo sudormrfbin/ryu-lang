@@ -19,7 +19,7 @@ def test_variable_delcaration():
         VariableDeclaration: Int,
         "rvalue": {IntLiteral: Int},
     }
-    assert type_env.get("x") == INT
+    assert type_env.get_var_type("x") == INT
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -61,7 +61,7 @@ def test_variable_delcaration_with_expressions():
             "right": {IntLiteral: Int},
         },
     }
-    assert type_env.get("variable") == BOOL
+    assert type_env.get_var_type("variable") == BOOL
 
     env = RuntimeEnvironment()
     ast.eval(env)

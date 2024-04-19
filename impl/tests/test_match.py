@@ -137,7 +137,7 @@ def test_match_case_bool(source: str):
         ],
     }
 
-    assert type_env.get("result") == INT
+    assert type_env.get_var_type("result") == INT
 
     env = RuntimeEnvironment()
     ast.eval(env)

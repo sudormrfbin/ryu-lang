@@ -70,7 +70,7 @@ def test_array_statement_basic(source: str):
         },
     }
 
-    assert type_env.get("x") == Array(INT)
+    assert type_env.get_var_type("x") == Array(INT)
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -89,7 +89,7 @@ def test_array_with_annotation(source: str, snapshot: Any):
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get("x") == Array(INT)
+    assert type_env.get_var_type("x") == Array(INT)
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -108,7 +108,7 @@ def test_empty_array(source: str, snapshot: Any):
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get("x") == Array(INT)
+    assert type_env.get_var_type("x") == Array(INT)
 
     env = RuntimeEnvironment()
     ast.eval(env)

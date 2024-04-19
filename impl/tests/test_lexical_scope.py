@@ -87,7 +87,7 @@ def test_lexical_scope_variable_shadowing(source: str):
         ],
     }
 
-    assert type_env.get("x") == STRING
+    assert type_env.get_var_type("x") == STRING
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -162,7 +162,7 @@ def test_lexical_scope_variable_type(source: str):
         ],
     }
 
-    assert type_env.get("x") == STRING
+    assert type_env.get_var_type("x") == STRING
 
     env = RuntimeEnvironment()
     ast.eval(env)

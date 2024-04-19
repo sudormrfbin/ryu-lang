@@ -24,7 +24,7 @@ def test_enum_def(source: str, snapshot: Any):
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get("Langs") == Enum(
+    assert type_env.get_var_type("Langs") == Enum(
         enum_name="Langs",
         members=[
             Enum.Simple("Malayalam"),
@@ -76,8 +76,8 @@ def test_enum_assignment(source: str, snapshot: Any):
             end_pos=10,
         ),
     )
-    assert type_env.get("Langs") == lang_type
-    assert type_env.get("lang") == lang_type
+    assert type_env.get_var_type("Langs") == lang_type
+    assert type_env.get_var_type("lang") == lang_type
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -124,9 +124,9 @@ def test_enum_pattern_match(source: str, snapshot: Any):
             end_pos=10,
         ),
     )
-    assert type_env.get("Langs") == lang_type
-    assert type_env.get("lang") == lang_type
-    assert type_env.get("langcode") == langtypes.STRING
+    assert type_env.get_var_type("Langs") == lang_type
+    assert type_env.get_var_type("lang") == lang_type
+    assert type_env.get_var_type("langcode") == langtypes.STRING
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -149,7 +149,7 @@ def test_tuple_enum_def(source: str, snapshot: Any):
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
-    assert type_env.get("MaybeInt") == Enum(
+    assert type_env.get_var_type("MaybeInt") == Enum(
         enum_name="MaybeInt",
         members=[Enum.Tuple("Some", INT), Enum.Simple("None")],
         span=Span(
@@ -193,8 +193,8 @@ def test_tuple_enum_assignment(source: str, snapshot: Any):
         ),
     )
 
-    assert type_env.get("MaybeInt") == enum_type
-    assert type_env.get("x") == enum_type
+    assert type_env.get_var_type("MaybeInt") == enum_type
+    assert type_env.get_var_type("x") == enum_type
 
     env = RuntimeEnvironment()
     ast.eval(env)
@@ -240,7 +240,7 @@ def test_tuple_enum_match(source: str, snapshot: Any):
         ),
     )
 
-    assert type_env.get("MaybeBool") == enum_type
+    assert type_env.get_var_type("MaybeBool") == enum_type
 
     env = RuntimeEnvironment()
     ast.eval(env)

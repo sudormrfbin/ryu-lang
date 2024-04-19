@@ -18,7 +18,7 @@ def test_indexing(source: str, snapshot: Any):
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
-    assert type_env.get("x") == Array(INT)
+    assert type_env.get_var_type("x") == Array(INT)
 
     env = RuntimeEnvironment()
     ast.eval(env)

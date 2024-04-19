@@ -166,7 +166,7 @@ class VariableDeclaration(_Statement):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type_ = self.rvalue.typecheck(env)
-        env.define(self.ident, self.type_)
+        env.define_var_type(self.ident, self.type_)
         return self.type_
 
     @override
@@ -182,7 +182,7 @@ class Assignment(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        lvalue_type = env.get(self.lvalue)
+        lvalue_type = env.get_var_type(self.lvalue)
         if lvalue_type is None:
             raise errors.UndeclaredVariable(
                 message=f"Variable '{self.lvalue}' not declared in this scope",
@@ -406,7 +406,7 @@ class EnumPattern(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = env.get(self.enum_type)
+        self.type_ = env.get_var_type(self.enum_type)
         if self.type_ is None:
             raise  # TODO
             # raise errors.UndeclaredType()
@@ -658,7 +658,7 @@ class ForStmt(_Statement):
             )
 
         child_env = TypeEnvironment(enclosing=env)
-        child_env.define(self.var, array_type)
+        child_env.define_var_type(self.var, array_type)
 
         self.type_ = self.stmts.typecheck(child_env)
         return self.type_
@@ -689,7 +689,7 @@ class ForStmtInt(_Statement):
             raise  # TODO
 
         child_env = TypeEnvironment(enclosing=env)
-        child_env.define(self.var, start_type)
+        child_env.define_var_type(self.var, start_type)
 
         self.type_ = self.stmts.typecheck(child_env)
         return self.type_
@@ -743,7 +743,7 @@ class StructStmt(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        if env.get(self.name):
+        if env.get_var_type(self.name):
             raise  # TODO
             # raise errors.TypeRedefinition()
 
@@ -751,7 +751,7 @@ class StructStmt(_Ast):
             struct_name=self.name,
             members=self.members.typecheck(env),
         )
-        env.define(self.name, self.type_)
+        env.define_var_type(self.name, self.type_)
         return self.type_
 
     @override
@@ -797,7 +797,7 @@ class StructInit(_Ast, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Struct:
-        struct_type = langtypes.Type.from_str(self.name, env)
+        struct_type = env.get_var_type(self.name)
         if not isinstance(struct_type, langtypes.Struct):
             raise  # TODO errors.UnexpectedType()
 
@@ -832,7 +832,7 @@ class StructAccess(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        struct_type = env.get(self.name)
+        struct_type = env.get_var_type(self.name)
         if not isinstance(struct_type, langtypes.Struct):
             raise  # TODO
 
@@ -1127,7 +1127,7 @@ class EnumStmt(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        if isinstance(existing_type := env.get(self.name), langtypes.Enum):
+        if isinstance(existing_type := env.get_var_type(self.name), langtypes.Enum):
             raise errors.TypeRedefinition(
                 message="Enum is redefined",
                 type_name=self.name,
@@ -1140,7 +1140,7 @@ class EnumStmt(_Ast):
             members=self.members.members_as_list(),
             span=errors.Span.from_token(self.name),
         )
-        env.define(self.name, self.type_)
+        env.define_var_type(self.name, self.type_)
         return self.type_
 
     @override
@@ -1226,12 +1226,12 @@ class FunctionDefinition(_Ast):
         )
 
         body_env = TypeEnvironment(enclosing=env)
-        body_env.define(self.name, self.type_)
+        body_env.define_var_type(self.name, self.type_)
 
         if self.args:
             for arg in self.args.args:
                 assert arg.type_ is not None
-                body_env.define(arg.name, arg.type_)
+                body_env.define_var_type(arg.name, arg.type_)
 
         body_block_type = self.body.typecheck(body_env)
 
@@ -1241,7 +1241,7 @@ class FunctionDefinition(_Ast):
         if body_block_type.return_type != ret_type:
             raise  # TODO
 
-        env.define(self.name, self.type_)
+        env.define_var_type(self.name, self.type_)
         return self.type_
 
     @override
@@ -1700,7 +1700,7 @@ class EnumLiteralSimple(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = env.get(self.enum_type)
+        self.type_ = env.get_var_type(self.enum_type)
         if self.type_ is None:
             raise  # TODO
             # raise errors.UndeclaredType()
@@ -1719,7 +1719,7 @@ class EnumLiteralTuple(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = env.get(self.enum_type)
+        self.type_ = env.get_var_type(self.enum_type)
         if self.type_ is None:
             raise  # TODO
             # raise errors.UndeclaredType()
@@ -1751,7 +1751,7 @@ class Variable(_Expression):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type_ = env.get(self.value)
+        self.type_ = env.get_var_type(self.value)
         if self.type_ is None:
             raise errors.UnknownVariable(
                 message=f"Variable '{self.value}' not declared in this scope",

@@ -17,7 +17,7 @@ def test_match_array_empty_case(source: str, snapshot: Any):
 
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot(name="typed-ast")
-    assert isinstance(type_env.get("sum"), langtypes.Function)
+    assert isinstance(type_env.get_var_type("sum"), langtypes.Function)
 
     ast.eval(runtime_env)
     assert isinstance(runtime_env.get("sum"), langvalues.BuiltinFunction)

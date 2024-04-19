@@ -18,7 +18,7 @@ def get_default_environs() -> tuple[TypeEnvironment, RuntimeEnvironment]:
     runtime_env = RuntimeEnvironment()
 
     for fn in BUILTIN_FUNCTIONS:
-        type_env.define(fn.TYPE.function_name, fn.TYPE)
+        type_env.define_var_type(fn.TYPE.function_name, fn.TYPE)
         runtime_env.define(fn.TYPE.function_name, fn())
 
     return (type_env, runtime_env)
