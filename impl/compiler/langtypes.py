@@ -88,8 +88,8 @@ class Struct(UserDefinedType):
 
 @dataclass
 class Enum(UserDefinedType):
-    enum_name: str
-    members: list[EnumVariantSimple | EnumVariantTuple]
+    enum_name: str  # TODO: rename to name
+    members: list[Variants]
     span: Span
 
     @property
@@ -97,27 +97,22 @@ class Enum(UserDefinedType):
     def name(self) -> str:
         return self.enum_name
 
-    def variant_from_str(
-        self, name: str
-    ) -> EnumVariantSimple | EnumVariantTuple | None:
+    def variant_from_str(self, name: str) -> Variants | None:
         for mem in self.members:
             if mem.name == name:
                 return mem
         return None
 
+    @dataclass
+    class Simple:
+        name: str
 
-@dataclass
-class EnumVariantSimple:
-    name: str
+    @dataclass
+    class Tuple:
+        name: str
+        inner: Type
 
-
-@dataclass
-class EnumVariantTuple:
-    name: str
-    inner: Type
-
-
-EnumVariants: TypeAlias = EnumVariantSimple | EnumVariantTuple
+    Variants: TypeAlias = Simple | Tuple
 
 
 @dataclass

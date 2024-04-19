@@ -1101,17 +1101,17 @@ class EnumMembers(_Ast, ast_utils.AsList):
 
     def members_as_list(
         self,
-    ) -> list[langtypes.EnumVariantSimple | langtypes.EnumVariantTuple]:
-        members: list[langtypes.EnumVariantSimple | langtypes.EnumVariantTuple] = []
+    ) -> list[langtypes.Enum.Variants]:
+        members: list[langtypes.Enum.Variants] = []
 
         for mem in self.members:
             match mem:
                 case EnumMemberBare():
-                    members.append(langtypes.EnumVariantSimple(mem.name))
+                    members.append(langtypes.Enum.Simple(mem.name))
                 case EnumMemberTuple():
                     assert mem.tuple_members.type_
                     members.append(
-                        langtypes.EnumVariantTuple(
+                        langtypes.Enum.Tuple(
                             mem.name,
                             mem.tuple_members.type_,
                         )
@@ -1726,7 +1726,7 @@ class EnumLiteralTuple(_Expression):
 
         inner_type = self.inner.typecheck(env)
         variant_type = self.type_.variant_from_str(self.variant)
-        if not isinstance(variant_type, langtypes.EnumVariantTuple):
+        if not isinstance(variant_type, langtypes.Enum.Tuple):
             raise  # TODO
 
         if variant_type.inner != inner_type:

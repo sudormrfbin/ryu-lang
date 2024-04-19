@@ -2,7 +2,7 @@ from typing import Any
 from compiler import langtypes
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.errors import Span
-from compiler.langtypes import BOOL, INT, Enum, EnumVariantSimple, EnumVariantTuple
+from compiler.langtypes import BOOL, INT, Enum
 from compiler.langvalues import EnumValue
 from compiler.parser import parse, parse_tree_to_ast
 from tests.utils import docstring_source_with_snapshot
@@ -27,9 +27,9 @@ def test_enum_def(source: str, snapshot: Any):
     assert type_env.get("Langs") == Enum(
         enum_name="Langs",
         members=[
-            EnumVariantSimple("Malayalam"),
-            EnumVariantSimple("English"),
-            EnumVariantSimple("Japanese"),
+            Enum.Simple("Malayalam"),
+            Enum.Simple("English"),
+            Enum.Simple("Japanese"),
         ],
         span=Span(
             start_line=1,
@@ -63,9 +63,9 @@ def test_enum_assignment(source: str, snapshot: Any):
     lang_type = Enum(
         enum_name="Langs",
         members=[
-            EnumVariantSimple("Malayalam"),
-            EnumVariantSimple("English"),
-            EnumVariantSimple("Japanese"),
+            Enum.Simple("Malayalam"),
+            Enum.Simple("English"),
+            Enum.Simple("Japanese"),
         ],
         span=Span(
             start_line=1,
@@ -111,9 +111,9 @@ def test_enum_pattern_match(source: str, snapshot: Any):
     lang_type = Enum(
         enum_name="Langs",
         members=[
-            EnumVariantSimple("Malayalam"),
-            EnumVariantSimple("English"),
-            EnumVariantSimple("Japanese"),
+            Enum.Simple("Malayalam"),
+            Enum.Simple("English"),
+            Enum.Simple("Japanese"),
         ],
         span=Span(
             start_line=1,
@@ -151,7 +151,7 @@ def test_tuple_enum_def(source: str, snapshot: Any):
 
     assert type_env.get("MaybeInt") == Enum(
         enum_name="MaybeInt",
-        members=[EnumVariantTuple("Some", INT), EnumVariantSimple("None")],
+        members=[Enum.Tuple("Some", INT), Enum.Simple("None")],
         span=Span(
             start_line=1,
             end_line=1,
@@ -182,7 +182,7 @@ def test_tuple_enum_assignment(source: str, snapshot: Any):
 
     enum_type = Enum(
         enum_name="MaybeInt",
-        members=[EnumVariantTuple("Some", INT), EnumVariantSimple("None")],
+        members=[Enum.Tuple("Some", INT), Enum.Simple("None")],
         span=Span(
             start_line=1,
             end_line=1,
@@ -229,7 +229,7 @@ def test_tuple_enum_match(source: str, snapshot: Any):
 
     enum_type = Enum(
         enum_name="MaybeBool",
-        members=[EnumVariantTuple("Some", BOOL), EnumVariantSimple("None")],
+        members=[Enum.Tuple("Some", BOOL), Enum.Simple("None")],
         span=Span(
             start_line=1,
             end_line=1,
