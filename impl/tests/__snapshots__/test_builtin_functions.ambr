@@ -43,7 +43,7 @@
             <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
           }),
         ]),
-        <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+        <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
       }),
       'callee': dict({
         <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,

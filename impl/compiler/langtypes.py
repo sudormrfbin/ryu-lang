@@ -136,13 +136,12 @@ class Function(PrimitiveType):
     arguments: Params
     return_type: Type
 
+    @dataclass
+    class Params(PrimitiveType):
+        types: list[Type]
 
-@dataclass
-class Params(PrimitiveType):
-    types: list[Type]
-
-    def __len__(self) -> int:
-        return len(self.types)
+        def __len__(self) -> int:
+            return len(self.types)
 
 
 BOOL = Bool()

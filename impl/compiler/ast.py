@@ -1192,9 +1192,9 @@ class FunctionParams(_Ast, ast_utils.AsList):
     args: list[FunctionParam]
 
     @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Params:
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Function.Params:
         types = [arg.typecheck(env) for arg in self.args]
-        self.type_ = langtypes.Params(types)
+        self.type_ = langtypes.Function.Params(types)
         return self.type_
 
     @override
@@ -1215,7 +1215,9 @@ class FunctionDefinition(_Ast):
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         ret_type = self.return_type.typecheck(env)
-        params = self.args.typecheck(env) if self.args else langtypes.Params([])
+        params = (
+            self.args.typecheck(env) if self.args else langtypes.Function.Params([])
+        )
 
         self.type_ = langtypes.Function(
             function_name=self.name,
@@ -1270,9 +1272,9 @@ class FunctionArgs(_Ast, ast_utils.AsList):
     args: list[_Expression]
 
     @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Params:
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Function.Params:
         types = [arg.typecheck(env) for arg in self.args]
-        self.type_ = langtypes.Params(types)
+        self.type_ = langtypes.Function.Params(types)
         return self.type_
 
     @override
@@ -1310,7 +1312,7 @@ class FunctionCall(_Expression):  # TODO: rename to FunctionCallOrStructInit
         if args:
             args_type = args.typecheck(env)
         else:
-            args_type = langtypes.Params([])
+            args_type = langtypes.Function.Params([])
 
         arg_len, param_len = len(args_type), len(ty.arguments)
         if arg_len < param_len:

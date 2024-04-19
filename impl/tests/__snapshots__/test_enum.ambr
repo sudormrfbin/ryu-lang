@@ -781,7 +781,7 @@
               <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Enum'>,
             }),
           ]),
-          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
         }),
         'body': dict({
           'stmts': list([
@@ -872,7 +872,7 @@
                 <class 'compiler.ast.EnumLiteralTuple'>: <class 'compiler.langtypes.Enum'>,
               }),
             ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
           'callee': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
@@ -892,7 +892,7 @@
                 <class 'compiler.ast.EnumLiteralTuple'>: <class 'compiler.langtypes.Enum'>,
               }),
             ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
           'callee': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
@@ -909,7 +909,7 @@
                 <class 'compiler.ast.EnumLiteralSimple'>: <class 'compiler.langtypes.Enum'>,
               }),
             ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
           'callee': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,

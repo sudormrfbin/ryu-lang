@@ -117,7 +117,7 @@
               <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
             }),
           ]),
-          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
         }),
         'body': dict({
           'stmts': list([
@@ -152,7 +152,7 @@
                 <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
               }),
             ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
           'callee': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
@@ -317,7 +317,7 @@
               <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
             }),
           ]),
-          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
         }),
         'body': dict({
           'stmts': list([
@@ -377,7 +377,7 @@
                 <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
               }),
             ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
           'callee': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
@@ -477,7 +477,7 @@
               <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
             }),
           ]),
-          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
         }),
         'body': dict({
           'stmts': list([
@@ -503,7 +503,7 @@
                 <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
               }),
             ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
           'callee': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
@@ -658,7 +658,7 @@
           <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Array'>,
         }),
       ]),
-      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
     }),
     'body': dict({
       'stmts': list([
@@ -757,7 +757,7 @@
           <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
         }),
       ]),
-      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
     }),
     'body': dict({
       'stmts': list([
@@ -896,7 +896,7 @@
           <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
         }),
       ]),
-      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
     }),
     'body': dict({
       'stmts': list([
@@ -1000,7 +1000,7 @@
           <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
         }),
       ]),
-      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+      <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
     }),
     'body': dict({
       'stmts': list([
@@ -1356,7 +1356,7 @@
               <class 'compiler.ast.FunctionParam'>: <class 'compiler.langtypes.Int'>,
             }),
           ]),
-          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Params'>,
+          <class 'compiler.ast.FunctionParams'>: <class 'compiler.langtypes.Function.Params'>,
         }),
         'body': dict({
           'stmts': list([
@@ -1378,7 +1378,7 @@
                               <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
                             }),
                           ]),
-                          <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+                          <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
                         }),
                         'callee': dict({
                           <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
@@ -1436,7 +1436,7 @@
                 <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
               }),
             ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
           'callee': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
@@ -1453,7 +1453,7 @@
                 <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
               }),
             ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
           'callee': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
@@ -1470,7 +1470,7 @@
                 <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
               }),
             ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
           'callee': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
@@ -1487,7 +1487,7 @@
                 <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
               }),
             ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
           'callee': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
@@ -1504,7 +1504,7 @@
                 <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
               }),
             ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
           'callee': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
@@ -1521,7 +1521,7 @@
                 <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
               }),
             ]),
-            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Params'>,
+            <class 'compiler.ast.FunctionArgs'>: <class 'compiler.langtypes.Function.Params'>,
           }),
           'callee': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Function'>,
