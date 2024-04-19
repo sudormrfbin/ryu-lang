@@ -42,12 +42,6 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
     span: errors.Span = dataclasses.field(init=False, metadata={SKIP_SERIALIZE: True})
     """Line and column number information."""
 
-    # kw_only is required to make dataclasses play nice with inheritance and
-    # fields with default values. https://stackoverflow.com/a/69822584/7115678
-    type: langtypes.Type | None = dataclasses.field(
-        default=None, kw_only=True, metadata={SKIP_SERIALIZE: True}
-    )
-
     def __post_init__(self, meta: LarkMeta):
         self.span = errors.Span.from_meta(meta)
 
@@ -85,7 +79,7 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
     def to_type_dict(self) -> dict[Any, Any]:
         attrs = {}
 
-        if ty := getattr(self, "type"):
+        if ty := getattr(self, "type", None):
             attrs["type"] = type(ty)
 
         fields = attrs["fields"] = {}
@@ -144,8 +138,14 @@ class StatementBlock(StatementList):
         return super().eval(child_env)
 
 
-class _Expression(_Statement):
-    pass
+@dataclass
+class _Expression(_Ast):
+    # kw_only is required to make dataclasses play nice with inheritance and
+    # fields with default values. https://stackoverflow.com/a/69822584/7115678
+    type: langtypes.Type | None = dataclasses.field(
+        default=None,
+        kw_only=True,
+    )
 
 
 @dataclass
