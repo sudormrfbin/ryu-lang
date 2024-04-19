@@ -2,7 +2,7 @@ from typing import Any
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.langvalues import StructValue
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.langtypes import INT, STRING, Members, Struct
+from compiler.langtypes import INT, STRING, Struct
 from tests.utils import docstring_source_with_snapshot
 
 
@@ -26,7 +26,7 @@ def test_struct_def(source: str, snapshot: Any):
 
     assert type_env.get("Person") == Struct(
         struct_name="Person",
-        members=Members({"name": STRING, "age": INT}),
+        members=Struct.Members({"name": STRING, "age": INT}),
     )
 
 

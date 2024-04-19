@@ -49,7 +49,7 @@
           <class 'compiler.ast.StructMember'>: <class 'compiler.langtypes.Int'>,
         }),
       ]),
-      <class 'compiler.ast.StructMembers'>: <class 'compiler.langtypes.Members'>,
+      <class 'compiler.ast.StructMembers'>: <class 'compiler.langtypes.Struct.Members'>,
     }),
     <class 'compiler.ast.StructStmt'>: <class 'compiler.langtypes.Struct'>,
   })
@@ -152,7 +152,7 @@
               <class 'compiler.ast.StructMember'>: <class 'compiler.langtypes.Int'>,
             }),
           ]),
-          <class 'compiler.ast.StructMembers'>: <class 'compiler.langtypes.Members'>,
+          <class 'compiler.ast.StructMembers'>: <class 'compiler.langtypes.Struct.Members'>,
         }),
         <class 'compiler.ast.StructStmt'>: <class 'compiler.langtypes.Struct'>,
       }),
@@ -173,7 +173,7 @@
                 <class 'compiler.ast.StructInitMember'>: <class 'compiler.langtypes.Int'>,
               }),
             ]),
-            <class 'compiler.ast.StructInitMembers'>: <class 'compiler.langtypes.Members'>,
+            <class 'compiler.ast.StructInitMembers'>: <class 'compiler.langtypes.Struct.Members'>,
           }),
           'callee': dict({
             <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Struct'>,

@@ -78,13 +78,12 @@ class Struct(UserDefinedType):
     struct_name: str
     members: Members
 
+    @dataclass
+    class Members(PrimitiveType):
+        types: dict[str, Type]
 
-@dataclass
-class Members(PrimitiveType):
-    types: dict[str, Type]
-
-    def __len__(self) -> int:
-        return len(self.types)
+        def __len__(self) -> int:
+            return len(self.types)
 
 
 @dataclass

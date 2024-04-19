@@ -725,9 +725,9 @@ class StructMembers(_Ast, ast_utils.AsList):
     members: list[StructMember]
 
     @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Members:
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Struct.Members:
         types = {str(mem.name): mem.typecheck(env) for mem in self.members}
-        self.type_ = langtypes.Members(types)
+        self.type_ = langtypes.Struct.Members(types)
         return self.type_
 
     @override
@@ -780,9 +780,9 @@ class StructInitMembers(_Ast, ast_utils.AsList):
     members: list[StructInitMember]
 
     @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Members:
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Struct.Members:
         types = {str(mem.name): mem.typecheck(env) for mem in self.members}
-        self.type_ = langtypes.Members(types)
+        self.type_ = langtypes.Struct.Members(types)
         return self.type_
 
     @override
@@ -804,7 +804,7 @@ class StructInit(_Ast, ast_utils.AsList):
         if self.members:
             members_type = self.members.typecheck(env)
         else:
-            members_type = langtypes.Members({})
+            members_type = langtypes.Struct.Members({})
 
         mem_len, param_len = len(members_type), len(struct_type.members)
         if mem_len < param_len:
@@ -1332,7 +1332,7 @@ class FunctionCall(_Expression):  # TODO: rename to FunctionCallOrStructInit
         if members:
             members_type = members.typecheck(env)
         else:
-            members_type = langtypes.Members({})
+            members_type = langtypes.Struct.Members({})
 
         mem_len, param_len = len(members_type), len(ty.members)
         if mem_len < param_len:
