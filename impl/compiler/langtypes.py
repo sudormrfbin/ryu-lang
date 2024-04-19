@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Optional, Sequence, TypeAlias
+from typing import TYPE_CHECKING, Sequence, TypeAlias
 from typing_extensions import override
 
 
 if TYPE_CHECKING:
-    from compiler.env import TypeEnvironment
     from compiler.errors import Span
 
 
@@ -14,29 +13,6 @@ class Type:
     @property
     def name(self) -> str:
         return type(self).__name__
-
-    @classmethod
-    def from_str(cls, ident: str, env: TypeEnvironment) -> Optional["Type"]:
-        if ident in PRIMITIVE_TYPES:
-            return PRIMITIVE_TYPES[ident]
-
-        ty = env.get_type(ident)
-        if isinstance(ty, UserDefinedType):
-            return ty
-
-        return None
-
-    @classmethod
-    def from_str_with_generics(
-        cls,
-        ident: str,
-        generics: Type,
-        env: TypeEnvironment,
-    ) -> Optional["Type"]:
-        if ident == "array":
-            return Array(generics)
-
-        return None
 
 
 class Placeholder(Type):
@@ -171,3 +147,16 @@ def resolve_blocks_type(types: Sequence[Type]) -> Block:
                 pass
 
     return resolved
+
+
+Primitive = Int | Bool | String
+
+
+def name(ty: Primitive) -> str:
+    match ty:
+        case Int():
+            return "int"
+        case Bool():
+            return "bool"
+        case String():
+            return "string"

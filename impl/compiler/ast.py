@@ -1156,11 +1156,11 @@ class TypeAnnotation(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        if self.generics:
+        if self.generics and self.ty == "array":  # TODO: harcoded
             generics = self.generics.typecheck(env)
-            self.type_ = langtypes.Type.from_str_with_generics(self.ty, generics, env)
+            self.type_ = langtypes.Array(generics)
         else:
-            self.type_ = langtypes.Type.from_str(self.ty, env)
+            self.type_ = env.get_type(self.ty)
 
         if self.type_ is None:
             raise  # TODO

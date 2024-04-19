@@ -1,5 +1,5 @@
 from typing import Any
-from compiler.env import RuntimeEnvironment, TypeEnvironment
+from compiler.compiler import get_default_environs
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import (
     Assignment,
@@ -96,7 +96,7 @@ def test_match_case_bool(source: str):
         }
     }
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == {
         StatementList: Block,
@@ -139,7 +139,6 @@ def test_match_case_bool(source: str):
 
     assert type_env.get_var_type("result") == INT
 
-    env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("result") == 1
 
@@ -167,11 +166,10 @@ def test_enum_pattern_match_wildcard(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot(name="ast")
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot(name="typed-ast")
 
-    env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("with_eng") is True
     assert env.get("with_mal") is False
@@ -198,11 +196,10 @@ def test_match_array(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot(name="ast")
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot(name="typed-ast")
 
-    env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("one") == 1
     assert env.get("two") == 2
@@ -229,11 +226,10 @@ def test_match_array_empty_case(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot(name="ast")
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot(name="typed-ast")
 
-    env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("zero") == 0
     assert env.get("one") == -1
@@ -263,11 +259,10 @@ def test_match_array_wildcard_element(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot(name="ast")
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot(name="typed-ast")
 
-    env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("no") is False
     assert env.get("one") is True

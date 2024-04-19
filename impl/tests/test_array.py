@@ -1,4 +1,5 @@
 from typing import Any
+from compiler.compiler import get_default_environs
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.ast import (
@@ -85,13 +86,12 @@ def test_array_with_annotation(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == Array(INT)
 
-    env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("x") == [1]
 
@@ -104,12 +104,11 @@ def test_empty_array(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == Array(INT)
 
-    env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("x") == []

@@ -1,7 +1,7 @@
 import pytest
 from _pytest.capture import CaptureFixture
 
-from compiler.compiler import run
+from compiler.compiler import get_default_environs, run
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.errors import InexhaustiveMatch
 from compiler.parser import parse, parse_tree_to_ast
@@ -23,9 +23,11 @@ match MaybeBool::None {
 
 
 def test_match_tuple_inexhaustive_match():
+    type_env, _ = get_default_environs()
+
     with pytest.raises(InexhaustiveMatch) as excinfo:
         ast = parse_tree_to_ast(parse(SOURCE))
-        ast.typecheck(TypeEnvironment())
+        ast.typecheck(type_env)
 
     err = excinfo.value
 
@@ -36,6 +38,7 @@ def test_match_tuple_inexhaustive_match():
 def test_match_tuple_inexhaustive_match_output(
     capfd: CaptureFixture[str], snapshot: str
 ):
-    run(SOURCE, TypeEnvironment(), RuntimeEnvironment())
+    type_env, env = get_default_environs()
+    run(SOURCE, type_env, env)
     _, err = capfd.readouterr()
     assert snapshot == err

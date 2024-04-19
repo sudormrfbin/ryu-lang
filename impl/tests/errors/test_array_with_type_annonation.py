@@ -1,14 +1,12 @@
 import pytest
 from _pytest.capture import CaptureFixture
 
-from compiler.compiler import run
-from compiler.env import RuntimeEnvironment, TypeEnvironment
+from compiler.compiler import get_default_environs, run
 from compiler.errors import ArrayTypeMismatch
 from compiler.langtypes import BOOL, INT
 from compiler.parser import parse, parse_tree_to_ast
 
-EMPTY_ENV = RuntimeEnvironment()
-EMPTY_TYPE_ENV = TypeEnvironment()
+EMPTY_TYPE_ENV, EMPTY_ENV = get_default_environs()
 
 
 def test_array_with_type_annotation():

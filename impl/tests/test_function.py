@@ -1,5 +1,5 @@
 from typing import Any
-from compiler.env import RuntimeEnvironment, TypeEnvironment
+from compiler.compiler import get_default_environs
 from compiler.parser import parse, parse_tree_to_ast
 from compiler.langtypes import (
     INT,
@@ -19,7 +19,7 @@ def test_function_def_zero_args(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, _ = get_default_environs()
     ast.typecheck(type_env)
     print(ast.to_type_dict())
     assert ast.to_type_dict() == snapshot
@@ -39,7 +39,7 @@ def test_function_def_one_arg(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, _ = get_default_environs()
     ast.typecheck(type_env)
     print(ast.to_type_dict())
     assert ast.to_type_dict() == snapshot
@@ -59,7 +59,7 @@ def test_function_def_multiple_args(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, _ = get_default_environs()
     ast.typecheck(type_env)
     print(ast.to_type_dict())
     assert ast.to_type_dict() == snapshot
@@ -83,7 +83,7 @@ def test_function_def_multiple_returns(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, _ = get_default_environs()
     ast.typecheck(type_env)
     print(ast.to_type_dict())
     assert ast.to_type_dict() == snapshot
@@ -105,7 +105,7 @@ def test_function_call_zero_args(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
@@ -113,7 +113,6 @@ def test_function_call_zero_args(source: str, snapshot: Any):
         function_name="one", arguments=Function.Params([]), return_type=INT
     )
 
-    env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("o") == 1
 
@@ -130,7 +129,7 @@ def test_function_call_one_arg(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
@@ -138,7 +137,6 @@ def test_function_call_one_arg(source: str, snapshot: Any):
         function_name="identity", arguments=Function.Params([INT]), return_type=INT
     )
 
-    env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("i") == 8
 
@@ -155,7 +153,7 @@ def test_function_call_multiple_args(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
@@ -163,7 +161,6 @@ def test_function_call_multiple_args(source: str, snapshot: Any):
         function_name="sum", arguments=Function.Params([INT, INT]), return_type=INT
     )
 
-    env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("s") == 3
 
@@ -184,7 +181,7 @@ def test_function_call_multiple_returns(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
@@ -192,7 +189,6 @@ def test_function_call_multiple_returns(source: str, snapshot: Any):
         function_name="max", arguments=Function.Params([INT, INT]), return_type=INT
     )
 
-    env = RuntimeEnvironment()
     ast.eval(env)
     assert env.get("m") == 9
 
@@ -207,7 +203,7 @@ def test_function_def_array_arg(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, _ = get_default_environs()
     ast.typecheck(type_env)
     print(ast.to_type_dict())
     assert ast.to_type_dict() == snapshot
@@ -238,12 +234,11 @@ def test_function_recursive(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     print(ast.to_type_dict())
     assert ast.to_type_dict() == snapshot
 
-    env = RuntimeEnvironment()
     ast.eval(env)
 
     assert env.get("x1") == 1

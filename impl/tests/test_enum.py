@@ -1,5 +1,6 @@
 from typing import Any
 from compiler import langtypes
+from compiler.compiler import get_default_environs
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.errors import Span
 from compiler.langtypes import BOOL, INT, Enum
@@ -145,7 +146,7 @@ def test_tuple_enum_def(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, _ = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
@@ -176,7 +177,7 @@ def test_tuple_enum_assignment(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
@@ -196,7 +197,6 @@ def test_tuple_enum_assignment(source: str, snapshot: Any):
     assert type_env.get_type("MaybeInt") == enum_type
     assert type_env.get_var_type("x") == enum_type
 
-    env = RuntimeEnvironment()
     ast.eval(env)
 
 
@@ -223,7 +223,7 @@ def test_tuple_enum_match(source: str, snapshot: Any):
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
 
-    type_env = TypeEnvironment()
+    type_env, env = get_default_environs()
     ast.typecheck(type_env)
     assert ast.to_type_dict() == snapshot
 
@@ -242,7 +242,6 @@ def test_tuple_enum_match(source: str, snapshot: Any):
 
     assert type_env.get_type("MaybeBool") == enum_type
 
-    env = RuntimeEnvironment()
     ast.eval(env)
 
     assert env.get("zero") == 0

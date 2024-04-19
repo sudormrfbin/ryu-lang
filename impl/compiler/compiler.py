@@ -2,7 +2,7 @@ from typing import Any
 
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 
-from compiler import builtins, errors, langvalues
+from compiler import builtins, errors, langtypes, langvalues
 from compiler.parser import parse, parse_tree_to_ast
 
 BUILTIN_FUNCTIONS: list[type[langvalues.BuiltinFunction]] = [
@@ -10,6 +10,12 @@ BUILTIN_FUNCTIONS: list[type[langvalues.BuiltinFunction]] = [
     builtins.ArrayLengthFunction,
     builtins.StringLengthFunction,
     builtins.ArrayAppend,
+]
+
+BUILTIN_TYPES: list[langtypes.Primitive] = [
+    langtypes.INT,
+    langtypes.BOOL,
+    langtypes.STRING,
 ]
 
 
@@ -20,6 +26,9 @@ def get_default_environs() -> tuple[TypeEnvironment, RuntimeEnvironment]:
     for fn in BUILTIN_FUNCTIONS:
         type_env.define_var_type(fn.TYPE.function_name, fn.TYPE)
         runtime_env.define(fn.TYPE.function_name, fn())
+
+    for ty in BUILTIN_TYPES:
+        type_env.define_type(langtypes.name(ty), ty)
 
     return (type_env, runtime_env)
 
