@@ -1,24 +1,12 @@
 from typing import Any
 from compiler.compiler import get_default_environs
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import (
-    Assignment,
-    BoolLiteral,
-    CaseLadder,
-    CaseStmt,
-    IntLiteral,
-    MatchStmt,
-    StatementBlock,
-    StatementList,
-    UnaryOp,
-    VariableDeclaration,
-)
-from compiler.langtypes import INT, Block, Bool, Int
-from tests.utils import docstring_source, docstring_source_with_snapshot
+from compiler.langtypes import INT
+from tests.utils import docstring_source_with_snapshot
 
 
-@docstring_source
-def test_match_case_bool(source: str):
+@docstring_source_with_snapshot
+def test_match_case_bool(source: str, snapshot: Any):
     """
     let result = -1
 
@@ -28,114 +16,11 @@ def test_match_case_bool(source: str):
     }
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": "result",
-                        "rvalue": {
-                            UnaryOp: {"op": "-", "operand": {IntLiteral: {"value": 1}}}
-                        },
-                    }
-                },
-                {
-                    MatchStmt: {
-                        "expr": {BoolLiteral: {"value": True}},
-                        "cases": {
-                            CaseLadder: {
-                                "cases": [
-                                    {
-                                        CaseStmt: {
-                                            "pattern": {BoolLiteral: {"value": True}},
-                                            "block": {
-                                                StatementBlock: {
-                                                    "stmts": [
-                                                        {
-                                                            Assignment: {
-                                                                "lvalue": "result",
-                                                                "rvalue": {
-                                                                    IntLiteral: {
-                                                                        "value": 1
-                                                                    }
-                                                                },
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                        }
-                                    },
-                                    {
-                                        CaseStmt: {
-                                            "pattern": {BoolLiteral: {"value": False}},
-                                            "block": {
-                                                StatementBlock: {
-                                                    "stmts": [
-                                                        {
-                                                            Assignment: {
-                                                                "lvalue": "result",
-                                                                "rvalue": {
-                                                                    IntLiteral: {
-                                                                        "value": 0
-                                                                    }
-                                                                },
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                        }
-                                    },
-                                ]
-                            }
-                        },
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env, env = get_default_environs()
     ast.typecheck(type_env)
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {
-                VariableDeclaration: Int,
-                "rvalue": {UnaryOp: Int, "operand": {IntLiteral: Int}},
-            },
-            {
-                MatchStmt: Block,
-                "expr": {BoolLiteral: Bool},
-                "cases": {
-                    CaseLadder: Block,
-                    "cases": [
-                        {
-                            CaseStmt: Bool,
-                            "pattern": {BoolLiteral: Bool},
-                            "block": {
-                                StatementBlock: Block,
-                                "stmts": [
-                                    {Assignment: Int, "rvalue": {IntLiteral: Int}}
-                                ],
-                            },
-                        },
-                        {
-                            CaseStmt: Bool,
-                            "pattern": {BoolLiteral: Bool},
-                            "block": {
-                                StatementBlock: Block,
-                                "stmts": [
-                                    {Assignment: Int, "rvalue": {IntLiteral: Int}}
-                                ],
-                            },
-                        },
-                    ],
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("result") == INT
 

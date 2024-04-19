@@ -1,0 +1,48 @@
+# serializer version: 1
+# name: test_variable_assignment
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'x'),
+            'rvalue': dict({
+              <class 'compiler.ast.IntLiteral'>: dict({
+                'value': 1,
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.Assignment'>: dict({
+            'lvalue': Token('IDENTIFIER', 'x'),
+            'rvalue': dict({
+              <class 'compiler.ast.IntLiteral'>: dict({
+                'value': 4,
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_variable_assignment.1
+  dict({
+    'stmts': list([
+      dict({
+        'rvalue': dict({
+          <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+      dict({
+        'rvalue': dict({
+          <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.Assignment'>: <class 'compiler.langtypes.Int'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---

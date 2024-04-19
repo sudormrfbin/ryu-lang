@@ -1,86 +1,37 @@
-from lark import Token
+from typing import Any
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import (
-    IntLiteral,
-    PrintStmt,
-    StatementList,
-    Term,
-    Variable,
-    VariableDeclaration,
-    StringLiteral,
-)
-from compiler.langtypes import Block, Int, String
-from tests.utils import docstring_source
+from tests.utils import docstring_source_with_snapshot
 
 
-@docstring_source
-def test_print(source: str):
+@docstring_source_with_snapshot
+def test_print(source: str, snapshot: Any):
     """
     print "hello world"
     """
     ast = parse_tree_to_ast(parse(source))
-    print(ast.to_dict())
-    assert ast.to_dict() == {
-        PrintStmt: {"expr": {StringLiteral: {"value": "hello world"}}}
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    assert ast.to_type_dict() == {PrintStmt: String, "expr": {StringLiteral: String}}
+    assert ast.to_type_dict() == snapshot
 
     env = RuntimeEnvironment()
     ast.eval(env)
 
 
 # test2
-@docstring_source
-def test_print_variable(source: str):
+@docstring_source_with_snapshot
+def test_print_variable(source: str, snapshot: Any):
     """
     let x=2
     print x+1
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": Token("IDENTIFIER", "x"),
-                        "rvalue": {IntLiteral: {"value": 2}},
-                    }
-                },
-                {
-                    PrintStmt: {
-                        "expr": {
-                            Term: {
-                                "left": {Variable: {"value": Token("IDENTIFIER", "x")}},
-                                "op": Token("PLUS", "+"),
-                                "right": {IntLiteral: {"value": 1}},
-                            }
-                        }
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    print("\n", ast.to_type_dict())
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {VariableDeclaration: Int, "rvalue": {IntLiteral: Int}},
-            {
-                PrintStmt: Int,
-                "expr": {
-                    Term: Int,
-                    "left": {Variable: Int},
-                    "right": {IntLiteral: Int},
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
     env = RuntimeEnvironment()
     ast.eval(env)

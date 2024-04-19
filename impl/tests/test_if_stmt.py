@@ -1,26 +1,12 @@
+from typing import Any
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import (
-    Assignment,
-    BoolLiteral,
-    ElseIfLadder,
-    ElseIfStmt,
-    Equality,
-    IfChain,
-    IfStmt,
-    IntLiteral,
-    StatementBlock,
-    StatementList,
-    StringLiteral,
-    Variable,
-    VariableDeclaration,
-)
-from compiler.langtypes import INT, STRING, Block, Bool, Int, String
-from tests.utils import docstring_source
+from compiler.langtypes import INT, STRING
+from tests.utils import docstring_source_with_snapshot
 
 
-@docstring_source
-def test_if_stmt_true_literal(source: str):
+@docstring_source_with_snapshot
+def test_if_stmt_true_literal(source: str, snapshot: Any):
     """
     let x = 1
     if true {
@@ -28,61 +14,11 @@ def test_if_stmt_true_literal(source: str):
     }
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": "x",
-                        "rvalue": {IntLiteral: {"value": 1}},
-                    }
-                },
-                {
-                    IfChain: {
-                        "if_stmt": {
-                            IfStmt: {
-                                "cond": {BoolLiteral: {"value": True}},
-                                "true_block": {
-                                    StatementBlock: {
-                                        "stmts": [
-                                            {
-                                                Assignment: {
-                                                    "lvalue": "x",
-                                                    "rvalue": {
-                                                        IntLiteral: {"value": 3}
-                                                    },
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                            }
-                        }
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {VariableDeclaration: Int, "rvalue": {IntLiteral: Int}},
-            {
-                IfChain: Block,
-                "if_stmt": {
-                    IfStmt: Block,
-                    "cond": {BoolLiteral: Bool},
-                    "true_block": {
-                        StatementBlock: Block,
-                        "stmts": [{Assignment: Int, "rvalue": {IntLiteral: Int}}],
-                    },
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == INT
 
@@ -91,8 +27,8 @@ def test_if_stmt_true_literal(source: str):
     assert env.get("x") == 3
 
 
-@docstring_source
-def test_if_stmt_false_literal(source: str):
+@docstring_source_with_snapshot
+def test_if_stmt_false_literal(source: str, snapshot: Any):
     """
     let x = 1
     if false {
@@ -100,61 +36,11 @@ def test_if_stmt_false_literal(source: str):
     }
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": "x",
-                        "rvalue": {IntLiteral: {"value": 1}},
-                    }
-                },
-                {
-                    IfChain: {
-                        "if_stmt": {
-                            IfStmt: {
-                                "cond": {BoolLiteral: {"value": False}},
-                                "true_block": {
-                                    StatementBlock: {
-                                        "stmts": [
-                                            {
-                                                Assignment: {
-                                                    "lvalue": "x",
-                                                    "rvalue": {
-                                                        IntLiteral: {"value": 3}
-                                                    },
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                            }
-                        }
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {VariableDeclaration: Int, "rvalue": {IntLiteral: Int}},
-            {
-                IfChain: Block,
-                "if_stmt": {
-                    IfStmt: Block,
-                    "cond": {BoolLiteral: Bool},
-                    "true_block": {
-                        StatementBlock: Block,
-                        "stmts": [{Assignment: Int, "rvalue": {IntLiteral: Int}}],
-                    },
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == INT
 
@@ -163,8 +49,8 @@ def test_if_stmt_false_literal(source: str):
     assert env.get("x") == 1
 
 
-@docstring_source
-def test_if_stmt_true_expr(source: str):
+@docstring_source_with_snapshot
+def test_if_stmt_true_expr(source: str, snapshot: Any):
     """
     let x = 1
     if x == 1 {
@@ -172,71 +58,11 @@ def test_if_stmt_true_expr(source: str):
     }
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": "x",
-                        "rvalue": {IntLiteral: {"value": 1}},
-                    }
-                },
-                {
-                    IfChain: {
-                        "if_stmt": {
-                            IfStmt: {
-                                "cond": {
-                                    Equality: {
-                                        "left": {Variable: {"value": "x"}},
-                                        "op": "==",
-                                        "right": {IntLiteral: {"value": 1}},
-                                    }
-                                },
-                                "true_block": {
-                                    StatementBlock: {
-                                        "stmts": [
-                                            {
-                                                Assignment: {
-                                                    "lvalue": "x",
-                                                    "rvalue": {
-                                                        IntLiteral: {"value": 3}
-                                                    },
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                            }
-                        }
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {VariableDeclaration: Int, "rvalue": {IntLiteral: Int}},
-            {
-                IfChain: Block,
-                "if_stmt": {
-                    IfStmt: Block,
-                    "cond": {
-                        Equality: Bool,
-                        "left": {Variable: Int},
-                        "right": {IntLiteral: Int},
-                    },
-                    "true_block": {
-                        StatementBlock: Block,
-                        "stmts": [{Assignment: Int, "rvalue": {IntLiteral: Int}}],
-                    },
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == INT
 
@@ -245,8 +71,8 @@ def test_if_stmt_true_expr(source: str):
     assert env.get("x") == 3
 
 
-@docstring_source
-def test_if_else(source: str):
+@docstring_source_with_snapshot
+def test_if_else(source: str, snapshot: Any):
     """
     let x = ""
     if false {
@@ -256,83 +82,11 @@ def test_if_else(source: str):
     }
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": "x",
-                        "rvalue": {StringLiteral: {"value": ""}},
-                    }
-                },
-                {
-                    IfChain: {
-                        "if_stmt": {
-                            IfStmt: {
-                                "cond": {BoolLiteral: {"value": False}},
-                                "true_block": {
-                                    StatementBlock: {
-                                        "stmts": [
-                                            {
-                                                Assignment: {
-                                                    "lvalue": "x",
-                                                    "rvalue": {
-                                                        StringLiteral: {
-                                                            "value": "true block"
-                                                        }
-                                                    },
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                            }
-                        },
-                        "else_block": {
-                            StatementBlock: {
-                                "stmts": [
-                                    {
-                                        Assignment: {
-                                            "lvalue": "x",
-                                            "rvalue": {
-                                                StringLiteral: {"value": "false block"}
-                                            },
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {VariableDeclaration: String, "rvalue": {StringLiteral: String}},
-            {
-                IfChain: Block,
-                "if_stmt": {
-                    IfStmt: Block,
-                    "cond": {BoolLiteral: Bool},
-                    "true_block": {
-                        StatementBlock: Block,
-                        "stmts": [
-                            {Assignment: String, "rvalue": {StringLiteral: String}}
-                        ],
-                    },
-                },
-                "else_block": {
-                    StatementBlock: Block,
-                    "stmts": [{Assignment: String, "rvalue": {StringLiteral: String}}],
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == STRING
 
@@ -341,8 +95,8 @@ def test_if_else(source: str):
     assert env.get("x") == "false block"
 
 
-@docstring_source
-def test_if_else_if(source: str):
+@docstring_source_with_snapshot
+def test_if_else_if(source: str, snapshot: Any):
     """
     let x = ""
     if false {
@@ -352,110 +106,11 @@ def test_if_else_if(source: str):
     }
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": "x",
-                        "rvalue": {StringLiteral: {"value": ""}},
-                    }
-                },
-                {
-                    IfChain: {
-                        "if_stmt": {
-                            IfStmt: {
-                                "cond": {BoolLiteral: {"value": False}},
-                                "true_block": {
-                                    StatementBlock: {
-                                        "stmts": [
-                                            {
-                                                Assignment: {
-                                                    "lvalue": "x",
-                                                    "rvalue": {
-                                                        StringLiteral: {
-                                                            "value": "true block"
-                                                        }
-                                                    },
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                            }
-                        },
-                        "else_if_ladder": {
-                            ElseIfLadder: {
-                                "blocks": [
-                                    {
-                                        ElseIfStmt: {
-                                            "cond": {BoolLiteral: {"value": True}},
-                                            "true_block": {
-                                                StatementBlock: {
-                                                    "stmts": [
-                                                        {
-                                                            Assignment: {
-                                                                "lvalue": "x",
-                                                                "rvalue": {
-                                                                    StringLiteral: {
-                                                                        "value": "elif block 1"
-                                                                    }
-                                                                },
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {VariableDeclaration: String, "rvalue": {StringLiteral: String}},
-            {
-                IfChain: Block,
-                "if_stmt": {
-                    IfStmt: Block,
-                    "cond": {BoolLiteral: Bool},
-                    "true_block": {
-                        StatementBlock: Block,
-                        "stmts": [
-                            {Assignment: String, "rvalue": {StringLiteral: String}}
-                        ],
-                    },
-                },
-                "else_if_ladder": {
-                    ElseIfLadder: Block,
-                    "blocks": [
-                        {
-                            ElseIfStmt: Block,
-                            "cond": {BoolLiteral: Bool},
-                            "true_block": {
-                                StatementBlock: Block,
-                                "stmts": [
-                                    {
-                                        Assignment: String,
-                                        "rvalue": {StringLiteral: String},
-                                    }
-                                ],
-                            },
-                        }
-                    ],
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == STRING
 
@@ -464,8 +119,8 @@ def test_if_else_if(source: str):
     assert env.get("x") == "elif block 1"
 
 
-@docstring_source
-def test_if_else_if_2(source: str):
+@docstring_source_with_snapshot
+def test_if_else_if_2(source: str, snapshot: Any):
     """
     let x = ""
     if false {
@@ -477,144 +132,11 @@ def test_if_else_if_2(source: str):
     }
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": "x",
-                        "rvalue": {StringLiteral: {"value": ""}},
-                    }
-                },
-                {
-                    IfChain: {
-                        "if_stmt": {
-                            IfStmt: {
-                                "cond": {BoolLiteral: {"value": False}},
-                                "true_block": {
-                                    StatementBlock: {
-                                        "stmts": [
-                                            {
-                                                Assignment: {
-                                                    "lvalue": "x",
-                                                    "rvalue": {
-                                                        StringLiteral: {
-                                                            "value": "true block"
-                                                        }
-                                                    },
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                            }
-                        },
-                        "else_if_ladder": {
-                            ElseIfLadder: {
-                                "blocks": [
-                                    {
-                                        ElseIfStmt: {
-                                            "cond": {BoolLiteral: {"value": False}},
-                                            "true_block": {
-                                                StatementBlock: {
-                                                    "stmts": [
-                                                        {
-                                                            Assignment: {
-                                                                "lvalue": "x",
-                                                                "rvalue": {
-                                                                    StringLiteral: {
-                                                                        "value": "elif block 1"
-                                                                    }
-                                                                },
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                        }
-                                    },
-                                    {
-                                        ElseIfStmt: {
-                                            "cond": {BoolLiteral: {"value": True}},
-                                            "true_block": {
-                                                StatementBlock: {
-                                                    "stmts": [
-                                                        {
-                                                            Assignment: {
-                                                                "lvalue": "x",
-                                                                "rvalue": {
-                                                                    StringLiteral: {
-                                                                        "value": "elif block 2"
-                                                                    }
-                                                                },
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                        }
-                                    },
-                                ]
-                            }
-                        },
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {VariableDeclaration: String, "rvalue": {StringLiteral: String}},
-            {
-                IfChain: Block,
-                "if_stmt": {
-                    IfStmt: Block,
-                    "cond": {BoolLiteral: Bool},
-                    "true_block": {
-                        StatementBlock: Block,
-                        "stmts": [
-                            {Assignment: String, "rvalue": {StringLiteral: String}}
-                        ],
-                    },
-                },
-                "else_if_ladder": {
-                    ElseIfLadder: Block,
-                    "blocks": [
-                        {
-                            ElseIfStmt: Block,
-                            "cond": {BoolLiteral: Bool},
-                            "true_block": {
-                                StatementBlock: Block,
-                                "stmts": [
-                                    {
-                                        Assignment: String,
-                                        "rvalue": {StringLiteral: String},
-                                    }
-                                ],
-                            },
-                        },
-                        {
-                            ElseIfStmt: Block,
-                            "cond": {BoolLiteral: Bool},
-                            "true_block": {
-                                StatementBlock: Block,
-                                "stmts": [
-                                    {
-                                        Assignment: String,
-                                        "rvalue": {StringLiteral: String},
-                                    }
-                                ],
-                            },
-                        },
-                    ],
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == STRING
 
@@ -623,8 +145,8 @@ def test_if_else_if_2(source: str):
     assert env.get("x") == "elif block 2"
 
 
-@docstring_source
-def test_if_else_if_none_executes(source: str):
+@docstring_source_with_snapshot
+def test_if_else_if_none_executes(source: str, snapshot: Any):
     """
     let x = ""
     if false {
@@ -636,144 +158,11 @@ def test_if_else_if_none_executes(source: str):
     }
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": "x",
-                        "rvalue": {StringLiteral: {"value": ""}},
-                    }
-                },
-                {
-                    IfChain: {
-                        "if_stmt": {
-                            IfStmt: {
-                                "cond": {BoolLiteral: {"value": False}},
-                                "true_block": {
-                                    StatementBlock: {
-                                        "stmts": [
-                                            {
-                                                Assignment: {
-                                                    "lvalue": "x",
-                                                    "rvalue": {
-                                                        StringLiteral: {
-                                                            "value": "true block"
-                                                        }
-                                                    },
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                            }
-                        },
-                        "else_if_ladder": {
-                            ElseIfLadder: {
-                                "blocks": [
-                                    {
-                                        ElseIfStmt: {
-                                            "cond": {BoolLiteral: {"value": False}},
-                                            "true_block": {
-                                                StatementBlock: {
-                                                    "stmts": [
-                                                        {
-                                                            Assignment: {
-                                                                "lvalue": "x",
-                                                                "rvalue": {
-                                                                    StringLiteral: {
-                                                                        "value": "elif block 1"
-                                                                    }
-                                                                },
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                        }
-                                    },
-                                    {
-                                        ElseIfStmt: {
-                                            "cond": {BoolLiteral: {"value": False}},
-                                            "true_block": {
-                                                StatementBlock: {
-                                                    "stmts": [
-                                                        {
-                                                            Assignment: {
-                                                                "lvalue": "x",
-                                                                "rvalue": {
-                                                                    StringLiteral: {
-                                                                        "value": "elif block 2"
-                                                                    }
-                                                                },
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                        }
-                                    },
-                                ]
-                            }
-                        },
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {VariableDeclaration: String, "rvalue": {StringLiteral: String}},
-            {
-                IfChain: Block,
-                "if_stmt": {
-                    IfStmt: Block,
-                    "cond": {BoolLiteral: Bool},
-                    "true_block": {
-                        StatementBlock: Block,
-                        "stmts": [
-                            {Assignment: String, "rvalue": {StringLiteral: String}}
-                        ],
-                    },
-                },
-                "else_if_ladder": {
-                    ElseIfLadder: Block,
-                    "blocks": [
-                        {
-                            ElseIfStmt: Block,
-                            "cond": {BoolLiteral: Bool},
-                            "true_block": {
-                                StatementBlock: Block,
-                                "stmts": [
-                                    {
-                                        Assignment: String,
-                                        "rvalue": {StringLiteral: String},
-                                    }
-                                ],
-                            },
-                        },
-                        {
-                            ElseIfStmt: Block,
-                            "cond": {BoolLiteral: Bool},
-                            "true_block": {
-                                StatementBlock: Block,
-                                "stmts": [
-                                    {
-                                        Assignment: String,
-                                        "rvalue": {StringLiteral: String},
-                                    }
-                                ],
-                            },
-                        },
-                    ],
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == STRING
 
@@ -782,8 +171,8 @@ def test_if_else_if_none_executes(source: str):
     assert env.get("x") == ""
 
 
-@docstring_source
-def test_if_else_if_else(source: str):
+@docstring_source_with_snapshot
+def test_if_else_if_else(source: str, snapshot: Any):
     """
     let x = ""
     if false {
@@ -797,162 +186,11 @@ def test_if_else_if_else(source: str):
     }
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": "x",
-                        "rvalue": {StringLiteral: {"value": ""}},
-                    }
-                },
-                {
-                    IfChain: {
-                        "if_stmt": {
-                            IfStmt: {
-                                "cond": {BoolLiteral: {"value": False}},
-                                "true_block": {
-                                    StatementBlock: {
-                                        "stmts": [
-                                            {
-                                                Assignment: {
-                                                    "lvalue": "x",
-                                                    "rvalue": {
-                                                        StringLiteral: {
-                                                            "value": "true block"
-                                                        }
-                                                    },
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                            }
-                        },
-                        "else_if_ladder": {
-                            ElseIfLadder: {
-                                "blocks": [
-                                    {
-                                        ElseIfStmt: {
-                                            "cond": {BoolLiteral: {"value": False}},
-                                            "true_block": {
-                                                StatementBlock: {
-                                                    "stmts": [
-                                                        {
-                                                            Assignment: {
-                                                                "lvalue": "x",
-                                                                "rvalue": {
-                                                                    StringLiteral: {
-                                                                        "value": "elif block 1"
-                                                                    }
-                                                                },
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                        }
-                                    },
-                                    {
-                                        ElseIfStmt: {
-                                            "cond": {BoolLiteral: {"value": False}},
-                                            "true_block": {
-                                                StatementBlock: {
-                                                    "stmts": [
-                                                        {
-                                                            Assignment: {
-                                                                "lvalue": "x",
-                                                                "rvalue": {
-                                                                    StringLiteral: {
-                                                                        "value": "elif block 2"
-                                                                    }
-                                                                },
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                        }
-                                    },
-                                ]
-                            }
-                        },
-                        "else_block": {
-                            StatementBlock: {
-                                "stmts": [
-                                    {
-                                        Assignment: {
-                                            "lvalue": "x",
-                                            "rvalue": {
-                                                StringLiteral: {"value": "else block"}
-                                            },
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {VariableDeclaration: String, "rvalue": {StringLiteral: String}},
-            {
-                IfChain: Block,
-                "if_stmt": {
-                    IfStmt: Block,
-                    "cond": {BoolLiteral: Bool},
-                    "true_block": {
-                        StatementBlock: Block,
-                        "stmts": [
-                            {Assignment: String, "rvalue": {StringLiteral: String}}
-                        ],
-                    },
-                },
-                "else_if_ladder": {
-                    ElseIfLadder: Block,
-                    "blocks": [
-                        {
-                            ElseIfStmt: Block,
-                            "cond": {BoolLiteral: Bool},
-                            "true_block": {
-                                StatementBlock: Block,
-                                "stmts": [
-                                    {
-                                        Assignment: String,
-                                        "rvalue": {StringLiteral: String},
-                                    }
-                                ],
-                            },
-                        },
-                        {
-                            ElseIfStmt: Block,
-                            "cond": {BoolLiteral: Bool},
-                            "true_block": {
-                                StatementBlock: Block,
-                                "stmts": [
-                                    {
-                                        Assignment: String,
-                                        "rvalue": {StringLiteral: String},
-                                    }
-                                ],
-                            },
-                        },
-                    ],
-                },
-                "else_block": {
-                    StatementBlock: Block,
-                    "stmts": [{Assignment: String, "rvalue": {StringLiteral: String}}],
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == STRING
 

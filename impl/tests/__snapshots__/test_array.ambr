@@ -1,4 +1,80 @@
 # serializer version: 1
+# name: test_array_statement_basic
+  dict({
+    <class 'compiler.ast.VariableDeclaration'>: dict({
+      'ident': Token('IDENTIFIER', 'x'),
+      'rvalue': dict({
+        <class 'compiler.ast.ArrayLiteral'>: dict({
+          'members': dict({
+            <class 'compiler.ast.ArrayElements'>: dict({
+              'members': list([
+                dict({
+                  <class 'compiler.ast.ArrayElement'>: dict({
+                    'element': dict({
+                      <class 'compiler.ast.IntLiteral'>: dict({
+                        'value': 2,
+                      }),
+                    }),
+                  }),
+                }),
+                dict({
+                  <class 'compiler.ast.ArrayElement'>: dict({
+                    'element': dict({
+                      <class 'compiler.ast.Term'>: dict({
+                        'left': dict({
+                          <class 'compiler.ast.IntLiteral'>: dict({
+                            'value': 3,
+                          }),
+                        }),
+                        'op': Token('PLUS', '+'),
+                        'right': dict({
+                          <class 'compiler.ast.IntLiteral'>: dict({
+                            'value': 3,
+                          }),
+                        }),
+                      }),
+                    }),
+                  }),
+                }),
+              ]),
+            }),
+          }),
+        }),
+      }),
+    }),
+  })
+# ---
+# name: test_array_statement_basic.1
+  dict({
+    'rvalue': dict({
+      'members': dict({
+        'members': list([
+          dict({
+            'element': dict({
+              <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+            }),
+            <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+          }),
+          dict({
+            'element': dict({
+              'left': dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+              'right': dict({
+                <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+              }),
+              <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
+            }),
+            <class 'compiler.ast.ArrayElement'>: <class 'compiler.langtypes.Int'>,
+          }),
+        ]),
+        <class 'compiler.ast.ArrayElements'>: <class 'compiler.langtypes.Int'>,
+      }),
+      <class 'compiler.ast.ArrayLiteral'>: <class 'compiler.langtypes.Array'>,
+    }),
+    <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Array'>,
+  })
+# ---
 # name: test_array_with_annotation
   dict({
     <class 'compiler.ast.VariableDeclaration'>: dict({

@@ -1,21 +1,12 @@
+from typing import Any
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import (
-    BoolLiteral,
-    IfChain,
-    IfStmt,
-    IntLiteral,
-    StatementBlock,
-    StatementList,
-    StringLiteral,
-    VariableDeclaration,
-)
-from compiler.langtypes import STRING, Block, Bool, Int, String
-from tests.utils import docstring_source
+from compiler.langtypes import STRING
+from tests.utils import docstring_source_with_snapshot
 
 
-@docstring_source
-def test_lexical_scope_variable_shadowing(source: str):
+@docstring_source_with_snapshot
+def test_lexical_scope_variable_shadowing(source: str, snapshot: Any):
     """
     let x = "outside"
     if true {
@@ -23,80 +14,21 @@ def test_lexical_scope_variable_shadowing(source: str):
     }
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": "x",
-                        "rvalue": {StringLiteral: {"value": "outside"}},
-                    }
-                },
-                {
-                    IfChain: {
-                        "if_stmt": {
-                            IfStmt: {
-                                "cond": {BoolLiteral: {"value": True}},
-                                "true_block": {
-                                    StatementBlock: {
-                                        "stmts": [
-                                            {
-                                                VariableDeclaration: {
-                                                    "ident": "x",
-                                                    "rvalue": {
-                                                        StringLiteral: {
-                                                            "value": "inside"
-                                                        }
-                                                    },
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                            }
-                        }
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    print(ast.to_type_dict())
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {VariableDeclaration: String, "rvalue": {StringLiteral: String}},
-            {
-                IfChain: Block,
-                "if_stmt": {
-                    IfStmt: Block,
-                    "cond": {BoolLiteral: Bool},
-                    "true_block": {
-                        StatementBlock: Block,
-                        "stmts": [
-                            {
-                                VariableDeclaration: String,
-                                "rvalue": {StringLiteral: String},
-                            }
-                        ],
-                    },
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == STRING
 
     env = RuntimeEnvironment()
     ast.eval(env)
-    print(vars(env))
     assert env.get("x") == "outside"
 
 
-@docstring_source
-def test_lexical_scope_variable_type(source: str):
+@docstring_source_with_snapshot
+def test_lexical_scope_variable_type(source: str, snapshot: Any):
     """
     let x = "outside"
     if true {
@@ -104,67 +36,14 @@ def test_lexical_scope_variable_type(source: str):
     }
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": "x",
-                        "rvalue": {StringLiteral: {"value": "outside"}},
-                    }
-                },
-                {
-                    IfChain: {
-                        "if_stmt": {
-                            IfStmt: {
-                                "cond": {BoolLiteral: {"value": True}},
-                                "true_block": {
-                                    StatementBlock: {
-                                        "stmts": [
-                                            {
-                                                VariableDeclaration: {
-                                                    "ident": "x",
-                                                    "rvalue": {
-                                                        IntLiteral: {"value": 8}
-                                                    },
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                            }
-                        }
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {VariableDeclaration: String, "rvalue": {StringLiteral: String}},
-            {
-                IfChain: Block,
-                "if_stmt": {
-                    IfStmt: Block,
-                    "cond": {BoolLiteral: Bool},
-                    "true_block": {
-                        StatementBlock: Block,
-                        "stmts": [
-                            {VariableDeclaration: Int, "rvalue": {IntLiteral: Int}}
-                        ],
-                    },
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == STRING
 
     env = RuntimeEnvironment()
     ast.eval(env)
-    print(env)
     assert env.get("x") == "outside"

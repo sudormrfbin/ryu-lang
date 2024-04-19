@@ -1,21 +1,12 @@
+from typing import Any
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.parser import parse, parse_tree_to_ast
-from compiler.ast import (
-    Assignment,
-    BoolLiteral,
-    IfChain,
-    IfStmt,
-    IntLiteral,
-    StatementBlock,
-    StatementList,
-    VariableDeclaration,
-)
-from compiler.langtypes import INT, Block, Bool, Int
-from tests.utils import docstring_source
+from compiler.langtypes import INT
+from tests.utils import docstring_source_with_snapshot
 
 
-@docstring_source
-def test_if_stmt_true_literal(source: str):
+@docstring_source_with_snapshot
+def test_if_stmt_true_literal(source: str, snapshot: Any):
     """
     //ignore
     let x = 1
@@ -24,61 +15,11 @@ def test_if_stmt_true_literal(source: str):
     }
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": "x",
-                        "rvalue": {IntLiteral: {"value": 1}},
-                    }
-                },
-                {
-                    IfChain: {
-                        "if_stmt": {
-                            IfStmt: {
-                                "cond": {BoolLiteral: {"value": True}},
-                                "true_block": {
-                                    StatementBlock: {
-                                        "stmts": [
-                                            {
-                                                Assignment: {
-                                                    "lvalue": "x",
-                                                    "rvalue": {
-                                                        IntLiteral: {"value": 3}
-                                                    },
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                            }
-                        }
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {VariableDeclaration: Int, "rvalue": {IntLiteral: Int}},
-            {
-                IfChain: Block,
-                "if_stmt": {
-                    IfStmt: Block,
-                    "cond": {BoolLiteral: Bool},
-                    "true_block": {
-                        StatementBlock: Block,
-                        "stmts": [{Assignment: Int, "rvalue": {IntLiteral: Int}}],
-                    },
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == INT
 
@@ -87,8 +28,8 @@ def test_if_stmt_true_literal(source: str):
     assert env.get("x") == 3
 
 
-@docstring_source
-def test_if_stmt_false_literal(source: str):
+@docstring_source_with_snapshot
+def test_if_stmt_false_literal(source: str, snapshot: Any):
     """
     let x = 1 //ignore
     if false {
@@ -96,61 +37,11 @@ def test_if_stmt_false_literal(source: str):
     }
     """
     ast = parse_tree_to_ast(parse(source))
-    assert ast.to_dict() == {
-        StatementList: {
-            "stmts": [
-                {
-                    VariableDeclaration: {
-                        "ident": "x",
-                        "rvalue": {IntLiteral: {"value": 1}},
-                    }
-                },
-                {
-                    IfChain: {
-                        "if_stmt": {
-                            IfStmt: {
-                                "cond": {BoolLiteral: {"value": False}},
-                                "true_block": {
-                                    StatementBlock: {
-                                        "stmts": [
-                                            {
-                                                Assignment: {
-                                                    "lvalue": "x",
-                                                    "rvalue": {
-                                                        IntLiteral: {"value": 3}
-                                                    },
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                            }
-                        }
-                    }
-                },
-            ]
-        }
-    }
+    assert ast.to_dict() == snapshot
 
     type_env = TypeEnvironment()
     ast.typecheck(type_env)
-    assert ast.to_type_dict() == {
-        StatementList: Block,
-        "stmts": [
-            {VariableDeclaration: Int, "rvalue": {IntLiteral: Int}},
-            {
-                IfChain: Block,
-                "if_stmt": {
-                    IfStmt: Block,
-                    "cond": {BoolLiteral: Bool},
-                    "true_block": {
-                        StatementBlock: Block,
-                        "stmts": [{Assignment: Int, "rvalue": {IntLiteral: Int}}],
-                    },
-                },
-            },
-        ],
-    }
+    assert ast.to_type_dict() == snapshot
 
     assert type_env.get_var_type("x") == INT
 

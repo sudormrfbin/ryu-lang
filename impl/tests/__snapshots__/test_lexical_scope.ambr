@@ -1,0 +1,161 @@
+# serializer version: 1
+# name: test_lexical_scope_variable_shadowing
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'x'),
+            'rvalue': dict({
+              <class 'compiler.ast.StringLiteral'>: dict({
+                'value': 'outside',
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.IfChain'>: dict({
+            'if_stmt': dict({
+              <class 'compiler.ast.IfStmt'>: dict({
+                'cond': dict({
+                  <class 'compiler.ast.BoolLiteral'>: dict({
+                    'value': True,
+                  }),
+                }),
+                'true_block': dict({
+                  <class 'compiler.ast.StatementBlock'>: dict({
+                    'stmts': list([
+                      dict({
+                        <class 'compiler.ast.VariableDeclaration'>: dict({
+                          'ident': Token('IDENTIFIER', 'x'),
+                          'rvalue': dict({
+                            <class 'compiler.ast.StringLiteral'>: dict({
+                              'value': 'inside',
+                            }),
+                          }),
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_lexical_scope_variable_shadowing.1
+  dict({
+    'stmts': list([
+      dict({
+        'rvalue': dict({
+          <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.String'>,
+      }),
+      dict({
+        'if_stmt': dict({
+          'cond': dict({
+            <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+          }),
+          'true_block': dict({
+            'stmts': list([
+              dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+                }),
+                <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.String'>,
+              }),
+            ]),
+            <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
+          }),
+          <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.Block'>,
+        }),
+        <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.Block'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---
+# name: test_lexical_scope_variable_type
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'x'),
+            'rvalue': dict({
+              <class 'compiler.ast.StringLiteral'>: dict({
+                'value': 'outside',
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.IfChain'>: dict({
+            'if_stmt': dict({
+              <class 'compiler.ast.IfStmt'>: dict({
+                'cond': dict({
+                  <class 'compiler.ast.BoolLiteral'>: dict({
+                    'value': True,
+                  }),
+                }),
+                'true_block': dict({
+                  <class 'compiler.ast.StatementBlock'>: dict({
+                    'stmts': list([
+                      dict({
+                        <class 'compiler.ast.VariableDeclaration'>: dict({
+                          'ident': Token('IDENTIFIER', 'x'),
+                          'rvalue': dict({
+                            <class 'compiler.ast.IntLiteral'>: dict({
+                              'value': 8,
+                            }),
+                          }),
+                        }),
+                      }),
+                    ]),
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_lexical_scope_variable_type.1
+  dict({
+    'stmts': list([
+      dict({
+        'rvalue': dict({
+          <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.String'>,
+      }),
+      dict({
+        'if_stmt': dict({
+          'cond': dict({
+            <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+          }),
+          'true_block': dict({
+            'stmts': list([
+              dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                }),
+                <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+              }),
+            ]),
+            <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
+          }),
+          <class 'compiler.ast.IfStmt'>: <class 'compiler.langtypes.Block'>,
+        }),
+        <class 'compiler.ast.IfChain'>: <class 'compiler.langtypes.Block'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---

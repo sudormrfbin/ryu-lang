@@ -1,0 +1,82 @@
+# serializer version: 1
+# name: test_print
+  dict({
+    <class 'compiler.ast.PrintStmt'>: dict({
+      'expr': dict({
+        <class 'compiler.ast.StringLiteral'>: dict({
+          'value': 'hello world',
+        }),
+      }),
+    }),
+  })
+# ---
+# name: test_print.1
+  dict({
+    'expr': dict({
+      <class 'compiler.ast.StringLiteral'>: <class 'compiler.langtypes.String'>,
+    }),
+    <class 'compiler.ast.PrintStmt'>: <class 'compiler.langtypes.String'>,
+  })
+# ---
+# name: test_print_variable
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'x'),
+            'rvalue': dict({
+              <class 'compiler.ast.IntLiteral'>: dict({
+                'value': 2,
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.PrintStmt'>: dict({
+            'expr': dict({
+              <class 'compiler.ast.Term'>: dict({
+                'left': dict({
+                  <class 'compiler.ast.Variable'>: dict({
+                    'value': Token('IDENTIFIER', 'x'),
+                  }),
+                }),
+                'op': Token('PLUS', '+'),
+                'right': dict({
+                  <class 'compiler.ast.IntLiteral'>: dict({
+                    'value': 1,
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_print_variable.1
+  dict({
+    'stmts': list([
+      dict({
+        'rvalue': dict({
+          <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+      dict({
+        'expr': dict({
+          'left': dict({
+            <class 'compiler.ast.Variable'>: <class 'compiler.langtypes.Int'>,
+          }),
+          'right': dict({
+            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.Term'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.PrintStmt'>: <class 'compiler.langtypes.Int'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---

@@ -2522,3 +2522,152 @@
     <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
   })
 # ---
+# name: test_match_case_bool
+  dict({
+    <class 'compiler.ast.StatementList'>: dict({
+      'stmts': list([
+        dict({
+          <class 'compiler.ast.VariableDeclaration'>: dict({
+            'ident': Token('IDENTIFIER', 'result'),
+            'rvalue': dict({
+              <class 'compiler.ast.UnaryOp'>: dict({
+                'op': Token('MINUS', '-'),
+                'operand': dict({
+                  <class 'compiler.ast.IntLiteral'>: dict({
+                    'value': 1,
+                  }),
+                }),
+              }),
+            }),
+          }),
+        }),
+        dict({
+          <class 'compiler.ast.MatchStmt'>: dict({
+            'cases': dict({
+              <class 'compiler.ast.CaseLadder'>: dict({
+                'cases': list([
+                  dict({
+                    <class 'compiler.ast.CaseStmt'>: dict({
+                      'block': dict({
+                        <class 'compiler.ast.StatementBlock'>: dict({
+                          'stmts': list([
+                            dict({
+                              <class 'compiler.ast.Assignment'>: dict({
+                                'lvalue': Token('IDENTIFIER', 'result'),
+                                'rvalue': dict({
+                                  <class 'compiler.ast.IntLiteral'>: dict({
+                                    'value': 1,
+                                  }),
+                                }),
+                              }),
+                            }),
+                          ]),
+                        }),
+                      }),
+                      'pattern': dict({
+                        <class 'compiler.ast.BoolLiteral'>: dict({
+                          'value': True,
+                        }),
+                      }),
+                    }),
+                  }),
+                  dict({
+                    <class 'compiler.ast.CaseStmt'>: dict({
+                      'block': dict({
+                        <class 'compiler.ast.StatementBlock'>: dict({
+                          'stmts': list([
+                            dict({
+                              <class 'compiler.ast.Assignment'>: dict({
+                                'lvalue': Token('IDENTIFIER', 'result'),
+                                'rvalue': dict({
+                                  <class 'compiler.ast.IntLiteral'>: dict({
+                                    'value': 0,
+                                  }),
+                                }),
+                              }),
+                            }),
+                          ]),
+                        }),
+                      }),
+                      'pattern': dict({
+                        <class 'compiler.ast.BoolLiteral'>: dict({
+                          'value': False,
+                        }),
+                      }),
+                    }),
+                  }),
+                ]),
+              }),
+            }),
+            'expr': dict({
+              <class 'compiler.ast.BoolLiteral'>: dict({
+                'value': True,
+              }),
+            }),
+          }),
+        }),
+      ]),
+    }),
+  })
+# ---
+# name: test_match_case_bool.1
+  dict({
+    'stmts': list([
+      dict({
+        'rvalue': dict({
+          'operand': dict({
+            <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+          }),
+          <class 'compiler.ast.UnaryOp'>: <class 'compiler.langtypes.Int'>,
+        }),
+        <class 'compiler.ast.VariableDeclaration'>: <class 'compiler.langtypes.Int'>,
+      }),
+      dict({
+        'cases': dict({
+          'cases': list([
+            dict({
+              'block': dict({
+                'stmts': list([
+                  dict({
+                    'rvalue': dict({
+                      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                    <class 'compiler.ast.Assignment'>: <class 'compiler.langtypes.Int'>,
+                  }),
+                ]),
+                <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
+              }),
+              'pattern': dict({
+                <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+              }),
+              <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Bool'>,
+            }),
+            dict({
+              'block': dict({
+                'stmts': list([
+                  dict({
+                    'rvalue': dict({
+                      <class 'compiler.ast.IntLiteral'>: <class 'compiler.langtypes.Int'>,
+                    }),
+                    <class 'compiler.ast.Assignment'>: <class 'compiler.langtypes.Int'>,
+                  }),
+                ]),
+                <class 'compiler.ast.StatementBlock'>: <class 'compiler.langtypes.Block'>,
+              }),
+              'pattern': dict({
+                <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+              }),
+              <class 'compiler.ast.CaseStmt'>: <class 'compiler.langtypes.Bool'>,
+            }),
+          ]),
+          <class 'compiler.ast.CaseLadder'>: <class 'compiler.langtypes.Block'>,
+        }),
+        'expr': dict({
+          <class 'compiler.ast.BoolLiteral'>: <class 'compiler.langtypes.Bool'>,
+        }),
+        <class 'compiler.ast.MatchStmt'>: <class 'compiler.langtypes.Block'>,
+      }),
+    ]),
+    <class 'compiler.ast.StatementList'>: <class 'compiler.langtypes.Block'>,
+  })
+# ---
