@@ -23,7 +23,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Int'>,
     }),
   })
 # ---
@@ -99,7 +98,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Bool'>,
     }),
   })
 # ---

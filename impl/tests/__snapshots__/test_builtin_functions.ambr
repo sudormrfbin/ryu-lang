@@ -73,7 +73,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Int'>,
     }),
   })
 # ---

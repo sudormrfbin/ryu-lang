@@ -62,7 +62,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.String'>,
             }),
           }),
           dict({
@@ -93,7 +92,6 @@
                                       }),
                                     }),
                                   }),
-                                  'type': <class 'compiler.langtypes.String'>,
                                 }),
                               }),
                             ]),
@@ -175,7 +173,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.String'>,
             }),
           }),
           dict({
@@ -206,7 +203,6 @@
                                       }),
                                     }),
                                   }),
-                                  'type': <class 'compiler.langtypes.Int'>,
                                 }),
                               }),
                             ]),

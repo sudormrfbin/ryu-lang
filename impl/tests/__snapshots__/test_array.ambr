@@ -107,7 +107,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Array'>,
     }),
   })
 # ---
@@ -184,7 +183,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Array'>,
     }),
   })
 # ---
@@ -223,7 +221,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Array'>,
     }),
   })
 # ---

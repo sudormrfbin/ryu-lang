@@ -170,8 +170,8 @@ class VariableDeclaration(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment):
-        self.type = self.rvalue.typecheck(env)  # remove self.type
-        env.define_var_type(self.ident, self.type)
+        ty = self.rvalue.typecheck(env)
+        env.define_var_type(self.ident, ty)
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -186,7 +186,6 @@ class Assignment(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment):
-        # TODO: remove self.type
         lvalue_type = env.get_var_type(self.lvalue)
         if lvalue_type is None:
             raise errors.UndeclaredVariable(
@@ -199,8 +198,6 @@ class Assignment(_Statement):
         rvalue_type = self.rvalue.typecheck(env)
         if lvalue_type != rvalue_type:
             raise errors.InternalCompilerError("Type mismatch: TODO")  # TODO
-
-        self.type = rvalue_type
 
     @override
     def eval(self, env: RuntimeEnvironment):

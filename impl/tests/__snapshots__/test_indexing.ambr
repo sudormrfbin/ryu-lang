@@ -112,7 +112,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.Array'>,
             }),
           }),
           dict({
@@ -140,7 +139,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.Int'>,
             }),
           }),
         ]),
