@@ -187,7 +187,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.Function'>,
             }),
           }),
           dict({
@@ -509,7 +508,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.Function'>,
             }),
           }),
           dict({
@@ -695,7 +693,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.Function'>,
             }),
           }),
           dict({
@@ -824,7 +821,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.Function'>,
             }),
           }),
           dict({
@@ -964,7 +960,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Function'>,
     }),
   })
 # ---
@@ -1116,7 +1111,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Function'>,
     }),
   })
 # ---
@@ -1351,7 +1345,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Function'>,
     }),
   })
 # ---
@@ -1455,7 +1448,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Function'>,
     }),
   })
 # ---
@@ -1520,7 +1512,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Function'>,
     }),
   })
 # ---
@@ -1977,7 +1968,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.Function'>,
             }),
           }),
           dict({

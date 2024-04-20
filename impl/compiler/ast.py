@@ -1186,27 +1186,27 @@ class FunctionParams(_Ast, ast_utils.AsList):
 
 
 @dataclass
-class FunctionDefinition(_Ast):
+class FunctionDefinition(_Statement):
     name: Token
     args: Optional[FunctionParams]
     return_type: TypeAnnotation
     body: StatementBlock
 
     @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+    def typecheck(self, env: TypeEnvironment):
         ret_type = self.return_type.typecheck(env)
         params = (
             self.args.typecheck(env) if self.args else langtypes.Function.Params([])
         )
 
-        self.type = langtypes.Function(
+        type = langtypes.Function(
             function_name=self.name,
             arguments=params,
             return_type=ret_type,
         )
 
         body_env = TypeEnvironment(enclosing=env, fn_scope=FunctionDefScope(ret_type))
-        body_env.define_var_type(self.name, self.type)
+        body_env.define_var_type(self.name, type)
 
         if self.args:
             for arg in self.args.args:
@@ -1215,8 +1215,7 @@ class FunctionDefinition(_Ast):
 
         self.body.typecheck(body_env)
 
-        env.define_var_type(self.name, self.type)
-        return self.type
+        env.define_var_type(self.name, type)
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
