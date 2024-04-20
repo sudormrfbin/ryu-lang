@@ -548,9 +548,8 @@ class MatchStmt(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment):
-        # TODO: remove self.type
         expr_type = self.expr.typecheck(env)
-        self.type = self.cases.typecheck(env)
+        self.cases.typecheck(env)
 
         for case_ in self.cases.cases:
             case_type = case_.pattern.type
