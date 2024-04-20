@@ -83,7 +83,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.Enum'>,
             }),
           }),
           dict({
@@ -167,7 +166,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Enum'>,
     }),
   })
 # ---
@@ -358,7 +356,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.Enum'>,
             }),
           }),
           dict({
@@ -608,7 +605,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.Enum'>,
             }),
           }),
           dict({
@@ -699,7 +695,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Enum'>,
     }),
   })
 # ---
@@ -996,7 +991,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.Enum'>,
             }),
           }),
           dict({

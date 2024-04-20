@@ -1102,12 +1102,12 @@ class EnumMembers(_Ast, ast_utils.AsList):
 
 
 @dataclass
-class EnumStmt(_Ast):
+class EnumStmt(_Statement):
     name: Token
     members: EnumMembers
 
     @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+    def typecheck(self, env: TypeEnvironment):
         if isinstance(existing_type := env.get_type(self.name), langtypes.Enum):
             raise errors.TypeRedefinition(
                 message="Enum is redefined",
@@ -1116,16 +1116,15 @@ class EnumStmt(_Ast):
                 previous_type_span=existing_type.span,  # Use the stored span
             )
         self.members.typecheck(env)
-        self.type = langtypes.Enum(
+        ty = langtypes.Enum(
             enum_name=self.name,
             members=self.members.members_as_list(),
             span=errors.Span.from_token(self.name),
         )
-        env.define_type(self.name, self.type)
-        return self.type
+        env.define_type(self.name, ty)
 
     @override
-    def eval(self, env: RuntimeEnvironment) -> EvalResult:
+    def eval(self, env: RuntimeEnvironment):
         # Nothing to execute since enum statements are simply declarations
         pass
 
