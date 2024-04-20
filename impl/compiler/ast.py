@@ -435,10 +435,6 @@ class CaseLadder(_Ast, ast_utils.AsList):
         self.type = langtypes.BLOCK
         return self.type
 
-    def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        # eval is handled by match statement
-        pass
-
     def ensure_exhaustive_matching_bool(self, match_stmt: "MatchStmt"):
         matcher = BoolPatternMatcher()
 
@@ -672,10 +668,6 @@ class StructMember(_Ast):
         self.type = self.ident_type.typecheck(env)
         return self.type
 
-    def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        # eval is handled by struct statement
-        pass
-
 
 @dataclass
 class StructMembers(_Ast, ast_utils.AsList):
@@ -685,10 +677,6 @@ class StructMembers(_Ast, ast_utils.AsList):
         types = {str(mem.name): mem.typecheck(env) for mem in self.members}
         self.type = langtypes.Struct.Members(types)
         return self.type
-
-    def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        # eval is handled by struct statement
-        pass
 
 
 @dataclass
@@ -973,7 +961,6 @@ class IndexAssignment(_Ast):
         array_value = self.value.eval(env)
         array_index = self.index.eval(env)
         array_name[array_index] = array_value
-        pass
 
 
 @dataclass
@@ -983,10 +970,6 @@ class EnumMemberBare(_Ast):
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = langtypes.Type()  # TODO: assign separate type
         return self.type
-
-    def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        # eval is handled by enum statement
-        pass
 
 
 @dataclass
@@ -999,10 +982,6 @@ class EnumMemberTuple(_Ast):
 
         self.tuple_members.typecheck(env)
         return self.type
-
-    def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        # eval is handled by enum statement
-        pass
 
 
 @dataclass
@@ -1023,10 +1002,6 @@ class EnumMembers(_Ast, ast_utils.AsList):
 
         self.type = langtypes.BLOCK
         return self.type
-
-    def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        # eval is handled by enum statement
-        pass
 
     def members_as_list(
         self,
@@ -1094,9 +1069,6 @@ class TypeAnnotation(_Ast):
             # raise errors.UnassignableType()
         return self.type
 
-    def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        pass
-
 
 @dataclass
 class FunctionParam(_Ast):
@@ -1107,9 +1079,6 @@ class FunctionParam(_Ast):
         self.type = self.arg_type.typecheck(env)
         return self.type
 
-    def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        pass
-
 
 @dataclass
 class FunctionParams(_Ast, ast_utils.AsList):
@@ -1119,9 +1088,6 @@ class FunctionParams(_Ast, ast_utils.AsList):
         types = [arg.typecheck(env) for arg in self.args]
         self.type = langtypes.Function.Params(types)
         return self.type
-
-    def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        pass
 
     def param_names(self) -> list[str]:
         return [param.name for param in self.args]
@@ -1684,6 +1650,3 @@ class WildcardPattern(_Ast):
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = langtypes.PLACEHOLDER
         return self.type
-
-    def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        pass
