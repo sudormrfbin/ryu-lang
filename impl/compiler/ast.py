@@ -923,36 +923,36 @@ class Indexing(_Ast):
 
 
 @dataclass
-class IndexAssignment(_Ast):
+class IndexAssignment(_Statement):
     arrayname: "Variable"
     index: _Expression
     value: _Expression
 
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+    @override
+    def typecheck(self, env: TypeEnvironment):
         index_type = self.index.typecheck(env)
-        self.type = self.arrayname.typecheck(env)
+        type = self.arrayname.typecheck(env)
         value_type = self.value.typecheck(env)
-        if not isinstance(self.type, langtypes.Array):
+        if not isinstance(type, langtypes.Array):
             raise errors.IndexingNonArray(
                 message="indexing non array",
                 span=self.arrayname.span,
-                actual_type=self.type,
+                actual_type=type,
             )
 
         if not isinstance(index_type, langtypes.Int):
             raise  # TODO
 
-        if self.type.ty != value_type:
+        if type.ty != value_type:
             raise errors.ArrayIndexAssignmentTypeMismatch(
-                message=f"Expected type {self.type } but got {value_type}",
+                message=f"Expected type {type } but got {value_type}",
                 span=self.value.span,
                 actual_type=value_type,
-                expected_type=self.type.ty,
+                expected_type=type.ty,
                 expected_type_span=self.arrayname.span,
             )
 
-        return self.type
-
+    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         array_name = self.arrayname.eval(env)
         array_value = self.value.eval(env)
