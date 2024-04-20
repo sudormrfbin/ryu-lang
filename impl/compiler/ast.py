@@ -225,7 +225,6 @@ class IfStmt(_Ast):
 
     @override
     def typecheck(self, env: TypeEnvironment):
-        # TODO: remove self.type
         expr_type = self.cond.typecheck(env)
         if expr_type != langtypes.BOOL:
             raise errors.UnexpectedType(
@@ -235,7 +234,7 @@ class IfStmt(_Ast):
                 actual_type=expr_type,
             )
 
-        self.type = self.true_block.typecheck(env)
+        self.true_block.typecheck(env)
 
     @override
     def eval(self, env: RuntimeEnvironment) -> bool:
@@ -254,15 +253,11 @@ class IfChain(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment):
-        # TODO: remove self.type
-
         self.if_stmt.typecheck(env)
         if self.else_block:
             self.else_block.typecheck(env)
         if self.else_if_ladder:
             self.else_if_ladder.typecheck(env)
-
-        self.type = langtypes.BLOCK
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -290,11 +285,8 @@ class ElseIfLadder(_Ast, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment):
-        # TODO: remove self.type
         for block in self.blocks:
             block.typecheck(env)
-
-        self.type = langtypes.BLOCK
 
     @override
     def eval(self, env: RuntimeEnvironment) -> bool:
