@@ -608,7 +608,6 @@ class WhileStmt(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment):
-        # TODO: remove self.type
         expr_type = self.cond.typecheck(env)
         if expr_type != langtypes.BOOL:
             raise errors.UnexpectedType(
@@ -618,7 +617,7 @@ class WhileStmt(_Statement):
                 actual_type=expr_type,
             )
 
-        self.type = self.true_block.typecheck(env)
+        self.true_block.typecheck(env)
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -634,7 +633,6 @@ class ForStmt(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment):
-        # TODO: remove self.type
         array_type = self.arr_name.typecheck(env)
         if not isinstance(array_type, langtypes.Array) and not isinstance(
             array_type, langtypes.String
@@ -649,7 +647,7 @@ class ForStmt(_Statement):
         child_env = TypeEnvironment(enclosing=env)
         child_env.define_var_type(self.var, array_type)
 
-        self.type = self.stmts.typecheck(child_env)
+        self.stmts.typecheck(child_env)
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -669,7 +667,6 @@ class ForStmtInt(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment):
-        # TODO: remove self.type
         start_type = self.start.typecheck(env)
         end_type = self.end.typecheck(env)
         if not isinstance(start_type, langtypes.Int) and not isinstance(
@@ -680,7 +677,7 @@ class ForStmtInt(_Statement):
         child_env = TypeEnvironment(enclosing=env)
         child_env.define_var_type(self.var, start_type)
 
-        self.type = self.stmts.typecheck(child_env)
+        self.stmts.typecheck(child_env)
 
     @override
     def eval(self, env: RuntimeEnvironment):
