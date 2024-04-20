@@ -74,7 +74,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.Struct'>,
     }),
   })
 # ---
@@ -203,7 +202,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.Struct'>,
             }),
           }),
           dict({

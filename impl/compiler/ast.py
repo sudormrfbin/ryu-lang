@@ -728,16 +728,15 @@ class StructStmt(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment):
-        # TODO: remove self.type
         if env.get_type(self.name):
             raise  # TODO
             # raise errors.TypeRedefinition()
 
-        self.type = langtypes.Struct(
+        ty = langtypes.Struct(
             struct_name=self.name,
             members=self.members.typecheck(env),
         )
-        env.define_type(self.name, self.type)
+        env.define_type(self.name, ty)
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -817,7 +816,6 @@ class StructAccess(_Statement):  # TODO: make an expression
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:  # type: ignore
-        # TODO: remove self.type
         struct_type = env.get_var_type(self.name)
         if not isinstance(struct_type, langtypes.Struct):
             raise  # TODO
@@ -842,7 +840,6 @@ class StructAssignment(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment):
-        # TODO: remove self.type
         member_type = self.struct_access.typecheck(env)
         value_type = self.value.typecheck(env)
 
@@ -854,8 +851,6 @@ class StructAssignment(_Statement):
                 expected_type=member_type,
                 expected_type_span=self.struct_access.span,
             )
-
-        self.type = member_type
 
     @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
