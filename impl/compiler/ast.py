@@ -211,8 +211,7 @@ class PrintStmt(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment):
-        # TODO: remove self.type
-        self.type = self.expr.typecheck(env)
+        self.expr.typecheck(env)
 
     @override
     def eval(self, env: RuntimeEnvironment):

@@ -22,7 +22,6 @@
           }),
         }),
       }),
-      'type': <class 'compiler.langtypes.String'>,
     }),
   })
 # ---
@@ -106,7 +105,6 @@
                   }),
                 }),
               }),
-              'type': <class 'compiler.langtypes.Int'>,
             }),
           }),
         ]),
