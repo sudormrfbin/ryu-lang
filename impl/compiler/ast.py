@@ -1229,12 +1229,9 @@ class ReturnStmt(_Statement):
 
     @override
     def typecheck(self, env: TypeEnvironment):
-        # TODO: remove self.type
         return_type = self.return_value.typecheck(env)
         if return_type != env.fn_return_type():
             raise  # TODO
-
-        self.type = langtypes.BLOCK
 
     @override
     def eval(self, env: RuntimeEnvironment):
