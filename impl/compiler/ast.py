@@ -120,12 +120,9 @@ class StatementList(_Ast, ast_utils.AsList):
     stmts: list[_Statement]
 
     @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Block:
+    def typecheck(self, env: TypeEnvironment):
         for stmt in self.stmts:
             stmt.typecheck(env)
-
-        self.type = langtypes.BLOCK
-        return self.type
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -136,9 +133,9 @@ class StatementList(_Ast, ast_utils.AsList):
 @dataclass
 class StatementBlock(StatementList):
     @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Block:
+    def typecheck(self, env: TypeEnvironment):
         child_env = TypeEnvironment(enclosing=env)
-        return super().typecheck(child_env)
+        super().typecheck(child_env)
 
     @override
     def eval(self, env: RuntimeEnvironment):
@@ -469,11 +466,8 @@ class CaseLadder(_Ast, ast_utils.AsList):
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        types: list[langtypes.Type] = []
         for case_ in self.cases:
             case_.typecheck(env)
-            assert case_.block.type is not None
-            types.append(case_.block.type)
 
         self.type = langtypes.BLOCK
         return self.type

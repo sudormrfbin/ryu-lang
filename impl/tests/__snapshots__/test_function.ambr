@@ -177,7 +177,6 @@
                         }),
                       ]),
                     }),
-                    'type': <class 'compiler.langtypes.Block'>,
                   }),
                 }),
                 'return_type': dict({
@@ -237,7 +236,6 @@
           }),
         ]),
       }),
-      'type': <class 'compiler.langtypes.Block'>,
     }),
   })
 # ---
@@ -446,7 +444,6 @@
                                       }),
                                     ]),
                                   }),
-                                  'type': <class 'compiler.langtypes.Block'>,
                                 }),
                               }),
                               'if_stmt': dict({
@@ -493,11 +490,9 @@
                                             }),
                                           ]),
                                         }),
-                                        'type': <class 'compiler.langtypes.Block'>,
                                       }),
                                     }),
                                   }),
-                                  'type': <class 'compiler.langtypes.Block'>,
                                 }),
                               }),
                             }),
@@ -506,7 +501,6 @@
                         }),
                       ]),
                     }),
-                    'type': <class 'compiler.langtypes.Block'>,
                   }),
                 }),
                 'return_type': dict({
@@ -566,7 +560,6 @@
           }),
         ]),
       }),
-      'type': <class 'compiler.langtypes.Block'>,
     }),
   })
 # ---
@@ -695,7 +688,6 @@
                         }),
                       ]),
                     }),
-                    'type': <class 'compiler.langtypes.Block'>,
                   }),
                 }),
                 'return_type': dict({
@@ -748,7 +740,6 @@
           }),
         ]),
       }),
-      'type': <class 'compiler.langtypes.Block'>,
     }),
   })
 # ---
@@ -827,7 +818,6 @@
                         }),
                       ]),
                     }),
-                    'type': <class 'compiler.langtypes.Block'>,
                   }),
                 }),
                 'return_type': dict({
@@ -864,7 +854,6 @@
           }),
         ]),
       }),
-      'type': <class 'compiler.langtypes.Block'>,
     }),
   })
 # ---
@@ -970,7 +959,6 @@
                 }),
               ]),
             }),
-            'type': <class 'compiler.langtypes.Block'>,
           }),
         }),
         'return_type': dict({
@@ -1123,7 +1111,6 @@
                 }),
               ]),
             }),
-            'type': <class 'compiler.langtypes.Block'>,
           }),
         }),
         'return_type': dict({
@@ -1303,7 +1290,6 @@
                               }),
                             ]),
                           }),
-                          'type': <class 'compiler.langtypes.Block'>,
                         }),
                       }),
                       'if_stmt': dict({
@@ -1350,11 +1336,9 @@
                                     }),
                                   ]),
                                 }),
-                                'type': <class 'compiler.langtypes.Block'>,
                               }),
                             }),
                           }),
-                          'type': <class 'compiler.langtypes.Block'>,
                         }),
                       }),
                     }),
@@ -1363,7 +1347,6 @@
                 }),
               ]),
             }),
-            'type': <class 'compiler.langtypes.Block'>,
           }),
         }),
         'return_type': dict({
@@ -1468,7 +1451,6 @@
                 }),
               ]),
             }),
-            'type': <class 'compiler.langtypes.Block'>,
           }),
         }),
         'return_type': dict({
@@ -1534,7 +1516,6 @@
                 }),
               ]),
             }),
-            'type': <class 'compiler.langtypes.Block'>,
           }),
         }),
         'return_type': dict({
@@ -1936,7 +1917,6 @@
                                       }),
                                     ]),
                                   }),
-                                  'type': <class 'compiler.langtypes.Block'>,
                                 }),
                               }),
                               'if_stmt': dict({
@@ -1983,11 +1963,9 @@
                                             }),
                                           ]),
                                         }),
-                                        'type': <class 'compiler.langtypes.Block'>,
                                       }),
                                     }),
                                   }),
-                                  'type': <class 'compiler.langtypes.Block'>,
                                 }),
                               }),
                             }),
@@ -1996,7 +1974,6 @@
                         }),
                       ]),
                     }),
-                    'type': <class 'compiler.langtypes.Block'>,
                   }),
                 }),
                 'return_type': dict({
@@ -2234,7 +2211,6 @@
           }),
         ]),
       }),
-      'type': <class 'compiler.langtypes.Block'>,
     }),
   })
 # ---

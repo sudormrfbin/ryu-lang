@@ -145,7 +145,6 @@
           }),
         ]),
       }),
-      'type': <class 'compiler.langtypes.Block'>,
     }),
   })
 # ---

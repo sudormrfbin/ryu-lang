@@ -98,11 +98,9 @@
                               }),
                             ]),
                           }),
-                          'type': <class 'compiler.langtypes.Block'>,
                         }),
                       }),
                     }),
-                    'type': <class 'compiler.langtypes.Block'>,
                   }),
                 }),
               }),
@@ -111,7 +109,6 @@
           }),
         ]),
       }),
-      'type': <class 'compiler.langtypes.Block'>,
     }),
   })
 # ---
@@ -214,11 +211,9 @@
                               }),
                             ]),
                           }),
-                          'type': <class 'compiler.langtypes.Block'>,
                         }),
                       }),
                     }),
-                    'type': <class 'compiler.langtypes.Block'>,
                   }),
                 }),
               }),
@@ -227,7 +222,6 @@
           }),
         ]),
       }),
-      'type': <class 'compiler.langtypes.Block'>,
     }),
   })
 # ---
