@@ -45,14 +45,6 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
     def __post_init__(self, meta: LarkMeta):
         self.span = errors.Span.from_meta(meta)
 
-    @abc.abstractmethod
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type | None:
-        pass
-
-    @abc.abstractmethod
-    def eval(self, env: RuntimeEnvironment) -> EvalResult | None:
-        pass
-
     def to_dict(self) -> AstDict:
         attrs: dict[str, Any] = {}
 
@@ -105,11 +97,9 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
 
 class _Statement(_Ast):
     @abc.abstractmethod
-    @override
     def typecheck(self, env: TypeEnvironment):
         pass
 
-    @override
     @abc.abstractmethod
     def eval(self, env: RuntimeEnvironment):
         pass
@@ -119,12 +109,10 @@ class _Statement(_Ast):
 class StatementList(_Ast, ast_utils.AsList):
     stmts: list[_Statement]
 
-    @override
     def typecheck(self, env: TypeEnvironment):
         for stmt in self.stmts:
             stmt.typecheck(env)
 
-    @override
     def eval(self, env: RuntimeEnvironment):
         for child in self.stmts:
             child.eval(env)
@@ -153,11 +141,9 @@ class _Expression(_Ast):
     )
 
     @abc.abstractmethod
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         pass
 
-    @override
     @abc.abstractmethod
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         pass
@@ -223,7 +209,6 @@ class IfStmt(_Ast):
     cond: _Expression
     true_block: StatementBlock
 
-    @override
     def typecheck(self, env: TypeEnvironment):
         expr_type = self.cond.typecheck(env)
         if expr_type != langtypes.BOOL:
@@ -236,7 +221,6 @@ class IfStmt(_Ast):
 
         self.true_block.typecheck(env)
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> bool:
         if self.cond.eval(env) is True:
             self.true_block.eval(env)
@@ -283,12 +267,10 @@ class ElseIfStmt(IfStmt):
 class ElseIfLadder(_Ast, ast_utils.AsList):
     blocks: list[ElseIfStmt]
 
-    @override
     def typecheck(self, env: TypeEnvironment):
         for block in self.blocks:
             block.typecheck(env)
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> bool:
         """
         Returns True if any of the else if blocks execute.
@@ -303,12 +285,10 @@ class ElseIfLadder(_Ast, ast_utils.AsList):
 class ArrayPatternElement(_Ast):
     literal: "IntLiteral | WildcardPattern"
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = self.literal.typecheck(env)
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         return self.literal.eval(env)
 
@@ -324,7 +304,6 @@ class ArrayPatternElement(_Ast):
 class ArrayPattern(_Ast, ast_utils.AsList):
     elements: list[ArrayPatternElement]
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         ty = langtypes.UntypedArray()
 
@@ -343,7 +322,6 @@ class ArrayPattern(_Ast, ast_utils.AsList):
         self.type = ty
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> list[Any]:
         return [el.eval(env) for el in self.elements]
 
@@ -434,13 +412,11 @@ class CaseStmt(_Ast):
     pattern: MatchPattern
     block: StatementBlock
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.block.typecheck(env)
         self.type = self.pattern.typecheck(env)
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         self.block.eval(env)
 
@@ -452,7 +428,6 @@ class CaseStmt(_Ast):
 class CaseLadder(_Ast, ast_utils.AsList):
     cases: list[CaseStmt]
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         for case_ in self.cases:
             case_.typecheck(env)
@@ -460,7 +435,6 @@ class CaseLadder(_Ast, ast_utils.AsList):
         self.type = langtypes.BLOCK
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         # eval is handled by match statement
         pass
@@ -694,12 +668,10 @@ class StructMember(_Ast):
     name: Token
     ident_type: "TypeAnnotation"
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = self.ident_type.typecheck(env)
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         # eval is handled by struct statement
         pass
@@ -709,13 +681,11 @@ class StructMember(_Ast):
 class StructMembers(_Ast, ast_utils.AsList):
     members: list[StructMember]
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Struct.Members:
         types = {str(mem.name): mem.typecheck(env) for mem in self.members}
         self.type = langtypes.Struct.Members(types)
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         # eval is handled by struct statement
         pass
@@ -749,12 +719,10 @@ class StructInitMember(_Ast):
     name: Token
     value: _Expression
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = self.value.typecheck(env)
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         return self.value.eval(env)
 
@@ -763,13 +731,11 @@ class StructInitMember(_Ast):
 class StructInitMembers(_Ast, ast_utils.AsList):
     members: list[StructInitMember]
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Struct.Members:
         types = {str(mem.name): mem.typecheck(env) for mem in self.members}
         self.type = langtypes.Struct.Members(types)
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> dict[str, Any]:
         return {str(mem.name): mem.eval(env) for mem in self.members}
 
@@ -779,7 +745,6 @@ class StructInit(_Ast, ast_utils.AsList):
     name: Token
     members: Optional[StructInitMembers]
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Struct:
         struct_type = env.get_type(self.name)
         if not isinstance(struct_type, langtypes.Struct):
@@ -801,7 +766,6 @@ class StructInit(_Ast, ast_utils.AsList):
         self.type = struct_type
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> langvalues.StructValue:
         return langvalues.StructValue(
             name=self.name,
@@ -863,12 +827,10 @@ class StructAssignment(_Statement):
 class ArrayElement(_Ast):
     element: _Expression
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = self.element.typecheck(env)
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         return self.element.eval(env)
 
@@ -877,7 +839,6 @@ class ArrayElement(_Ast):
 class ArrayElements(_Ast, ast_utils.AsList):
     members: list[ArrayElement]
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         assert len(self.members) > 0
         check_type = self.members[0].typecheck(env)
@@ -893,7 +854,6 @@ class ArrayElements(_Ast, ast_utils.AsList):
         self.type = check_type
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         result: list[Any] = []
         for mem in self.members:
@@ -906,7 +866,6 @@ class ArrayLiteral(_Ast):
     declared_type: Optional["TypeAnnotation"]
     members: Optional[ArrayElements]
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         inferred_type = self.members.typecheck(env) if self.members else None
         declared_type = None
@@ -940,7 +899,6 @@ class ArrayLiteral(_Ast):
                 )
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         return self.members.eval(env) if self.members else []
 
@@ -950,7 +908,6 @@ class Indexing(_Ast):
     element: _Expression
     index: _Expression
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         array_type = self.element.typecheck(env)
         index_type = self.index.typecheck(env)
@@ -966,7 +923,6 @@ class Indexing(_Ast):
         self.type = array_type.ty
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         element_value = self.element.eval(env)
         array_ind = self.index.eval(env)
@@ -987,7 +943,6 @@ class IndexAssignment(_Ast):
     index: _Expression
     value: _Expression
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         index_type = self.index.typecheck(env)
         self.type = self.arrayname.typecheck(env)
@@ -1013,7 +968,6 @@ class IndexAssignment(_Ast):
 
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         array_name = self.arrayname.eval(env)
         array_value = self.value.eval(env)
@@ -1026,12 +980,10 @@ class IndexAssignment(_Ast):
 class EnumMemberBare(_Ast):
     name: Token
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = langtypes.Type()  # TODO: assign separate type
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         # eval is handled by enum statement
         pass
@@ -1042,14 +994,12 @@ class EnumMemberTuple(_Ast):
     name: Token
     tuple_members: "TypeAnnotation"
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = langtypes.Type()  # TODO: assign separate type
 
         self.tuple_members.typecheck(env)
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         # eval is handled by enum statement
         pass
@@ -1059,7 +1009,6 @@ class EnumMemberTuple(_Ast):
 class EnumMembers(_Ast, ast_utils.AsList):
     members: list[EnumMemberBare | EnumMemberTuple]
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         seen: dict[Token, EnumMemberBare | EnumMemberTuple] = {}
         for member in self.members:
@@ -1075,7 +1024,6 @@ class EnumMembers(_Ast, ast_utils.AsList):
         self.type = langtypes.BLOCK
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         # eval is handled by enum statement
         pass
@@ -1134,7 +1082,6 @@ class TypeAnnotation(_Ast):
     ty: Token
     generics: Optional["TypeAnnotation"]
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         if self.generics and self.ty == "array":  # TODO: harcoded
             generics = self.generics.typecheck(env)
@@ -1147,7 +1094,6 @@ class TypeAnnotation(_Ast):
             # raise errors.UnassignableType()
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         pass
 
@@ -1157,12 +1103,10 @@ class FunctionParam(_Ast):
     name: Token
     arg_type: TypeAnnotation
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = self.arg_type.typecheck(env)
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         pass
 
@@ -1171,13 +1115,11 @@ class FunctionParam(_Ast):
 class FunctionParams(_Ast, ast_utils.AsList):
     args: list[FunctionParam]
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Function.Params:
         types = [arg.typecheck(env) for arg in self.args]
         self.type = langtypes.Function.Params(types)
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         pass
 
@@ -1243,13 +1185,11 @@ class ReturnStmt(_Statement):
 class FunctionArgs(_Ast, ast_utils.AsList):
     args: list[_Expression]
 
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Function.Params:
         types = [arg.typecheck(env) for arg in self.args]
         self.type = langtypes.Function.Params(types)
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> list[EvalResult]:
         return [arg.eval(env) for arg in self.args]
 
@@ -1741,11 +1681,9 @@ class Variable(_Expression):
 
 
 class WildcardPattern(_Ast):
-    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = langtypes.PLACEHOLDER
         return self.type
 
-    @override
     def eval(self, env: RuntimeEnvironment) -> EvalResult:
         pass
