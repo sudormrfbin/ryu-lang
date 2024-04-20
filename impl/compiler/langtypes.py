@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Sequence, TypeAlias
+from typing import TYPE_CHECKING, TypeAlias
 from typing_extensions import override
 
 
@@ -106,13 +106,6 @@ BOOL = Bool()
 INT = Int()
 STRING = String()
 PLACEHOLDER = Placeholder()
-
-
-PRIMITIVE_TYPES: dict[str, Type] = {
-    "bool": BOOL,
-    "int": INT,
-    "string": STRING,
-}
 
 
 Primitive = Int | Bool | String

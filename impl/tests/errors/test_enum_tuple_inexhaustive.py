@@ -2,7 +2,6 @@ import pytest
 from _pytest.capture import CaptureFixture
 
 from compiler.compiler import get_default_environs, run
-from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.errors import InexhaustiveMatch
 from compiler.parser import parse, parse_tree_to_ast
 from tests.utils import multiline_sanitize

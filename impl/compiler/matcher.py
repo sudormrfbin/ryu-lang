@@ -13,7 +13,6 @@ from typing import (
 )
 
 from compiler import errors, langtypes
-from compiler.langvalues import EnumValue
 
 
 if TYPE_CHECKING:
