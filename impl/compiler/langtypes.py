@@ -31,10 +31,6 @@ class String(Type):
     pass
 
 
-class Block(Type):
-    pass
-
-
 @dataclass
 class Struct(Type):
     struct_name: str
@@ -109,7 +105,6 @@ class Function(Type):
 BOOL = Bool()
 INT = Int()
 STRING = String()
-BLOCK = Block()
 PLACEHOLDER = Placeholder()
 
 

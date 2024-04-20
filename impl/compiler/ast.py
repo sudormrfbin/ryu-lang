@@ -428,12 +428,9 @@ class CaseStmt(_Ast):
 class CaseLadder(_Ast, ast_utils.AsList):
     cases: list[CaseStmt]
 
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+    def typecheck(self, env: TypeEnvironment):
         for case_ in self.cases:
             case_.typecheck(env)
-
-        self.type = langtypes.BLOCK
-        return self.type
 
     def ensure_exhaustive_matching_bool(self, match_stmt: "MatchStmt"):
         matcher = BoolPatternMatcher()
@@ -988,7 +985,7 @@ class EnumMemberTuple(_Ast):
 class EnumMembers(_Ast, ast_utils.AsList):
     members: list[EnumMemberBare | EnumMemberTuple]
 
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+    def typecheck(self, env: TypeEnvironment):
         seen: dict[Token, EnumMemberBare | EnumMemberTuple] = {}
         for member in self.members:
             if member.name in seen:
@@ -999,9 +996,6 @@ class EnumMembers(_Ast, ast_utils.AsList):
                 )
             seen[member.name] = member
             member.typecheck(env)
-
-        self.type = langtypes.BLOCK
-        return self.type
 
     def members_as_list(
         self,

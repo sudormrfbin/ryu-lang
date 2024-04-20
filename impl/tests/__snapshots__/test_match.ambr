@@ -241,7 +241,6 @@
                         }),
                       ]),
                     }),
-                    'type': <class 'compiler.langtypes.Block'>,
                   }),
                 }),
               }),
@@ -356,7 +355,6 @@
                                       }),
                                     ]),
                                   }),
-                                  'type': <class 'compiler.langtypes.Block'>,
                                 }),
                               }),
                               'expr': dict({
@@ -1211,7 +1209,6 @@
                                       }),
                                     ]),
                                   }),
-                                  'type': <class 'compiler.langtypes.Block'>,
                                 }),
                               }),
                               'expr': dict({
@@ -2045,7 +2042,6 @@
                                       }),
                                     ]),
                                   }),
-                                  'type': <class 'compiler.langtypes.Block'>,
                                 }),
                               }),
                               'expr': dict({
@@ -3253,7 +3249,6 @@
                                       }),
                                     ]),
                                   }),
-                                  'type': <class 'compiler.langtypes.Block'>,
                                 }),
                               }),
                               'expr': dict({
@@ -3868,7 +3863,6 @@
                         }),
                       ]),
                     }),
-                    'type': <class 'compiler.langtypes.Block'>,
                   }),
                 }),
                 'expr': dict({
