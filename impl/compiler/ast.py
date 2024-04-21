@@ -1644,3 +1644,6 @@ class WildcardPattern(_Ast):
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = langtypes.PLACEHOLDER
         return self.type
+
+    def eval(self, env: RuntimeEnvironment):
+        pass  # TODO: remove
