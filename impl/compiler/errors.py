@@ -544,7 +544,7 @@ class IndexingOutOfRange(CompilerError):
     Raised when a index out of bound.
 
     let x=[1,2,3]
-    print x[3]
+    print(x[3])
     """
 
     code = 13

@@ -12,7 +12,7 @@ EMPTY_TYPE_ENV = TypeEnvironment()
 
 SOURCE_1 = """\
 let x = 2
-print x[2]
+print(x[2])
 """
 
 

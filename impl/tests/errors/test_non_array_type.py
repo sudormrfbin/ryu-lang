@@ -13,7 +13,7 @@ EMPTY_TYPE_ENV = TypeEnvironment()
 
 def test_for_stmt_non_array_cond():
     with pytest.raises(UnexpectedType) as excinfo:
-        ast = parse_tree_to_ast(parse("for i in 43 { print i }"))
+        ast = parse_tree_to_ast(parse("for i in 43 { print(i) }"))
         ast.typecheck(EMPTY_TYPE_ENV)
 
     err = excinfo.value
@@ -24,6 +24,6 @@ def test_for_stmt_non_array_cond():
 
 
 def test_for_stmt_output(capfd: CaptureFixture[str], snapshot: str):
-    run("for i in 43 { print i }", EMPTY_TYPE_ENV, EMPTY_ENV)
+    run("for i in 43 { print(i) }", EMPTY_TYPE_ENV, EMPTY_ENV)
     _, err = capfd.readouterr()
     assert snapshot == err
