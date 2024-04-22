@@ -5,7 +5,7 @@ import dataclasses
 from dataclasses import dataclass
 from typing_extensions import override
 
-from lark import Token, ast_utils
+from lark import Token
 from lark.tree import Meta as LarkMeta
 
 from compiler.env import FunctionDefScope, RuntimeEnvironment, TypeEnvironment
@@ -27,12 +27,11 @@ SKIP_SERIALIZE = "skip_serialize"
 # TODO: Narrow down this type
 EvalResult = Any
 
-AstDict = dict[typing.Type["_Ast"], dict[str, Any]]
+AstDict = dict[typing.Type["Ast"], dict[str, Any]]
 
 
-# TODO: explain requirement of underscore by lark
 @dataclass
-class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
+class Ast(abc.ABC):
     # InitVar makes meta available on the __post_init__ method
     # and excludes it in the generated __init__.
     meta: dataclasses.InitVar[LarkMeta]
@@ -53,13 +52,13 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
                 continue
 
             value = getattr(self, field.name)
-            if isinstance(value, _Ast):
+            if isinstance(value, Ast):
                 attrs[field.name] = value.to_dict()
             elif isinstance(value, list):
                 match value:
                     case []:
                         attrs[field.name] = []
-                    case [_Ast(), *_]:  # type: ignore
+                    case [Ast(), *_]:  # type: ignore
                         attrs[field.name] = [v.to_dict() for v in value]  # type: ignore
                     case _:  # type: ignore
                         pass
@@ -81,13 +80,13 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
                 continue
 
             value = getattr(self, field.name)
-            if isinstance(value, _Ast):
+            if isinstance(value, Ast):
                 fields[field.name] = value.to_type_dict()
             elif isinstance(value, list):
                 match value:
                     case []:
                         fields[field.name] = []
-                    case [_Ast(), *_]:  # type: ignore
+                    case [Ast(), *_]:  # type: ignore
                         fields[field.name] = [v.to_type_dict() for v in value]  # type: ignore
                     case _:  # type: ignore
                         pass
@@ -95,7 +94,7 @@ class _Ast(abc.ABC, ast_utils.Ast, ast_utils.WithMeta):
         return {type(self): attrs}
 
 
-class _Statement(_Ast):
+class Statement(Ast):
     @abc.abstractmethod
     def typecheck(self, env: TypeEnvironment):
         pass
@@ -106,8 +105,8 @@ class _Statement(_Ast):
 
 
 @dataclass
-class StatementList(_Ast, ast_utils.AsList):
-    stmts: list[_Statement]
+class StatementList(Ast):
+    stmts: list[Statement]
 
     def typecheck(self, env: TypeEnvironment):
         for stmt in self.stmts:
@@ -132,7 +131,7 @@ class StatementBlock(StatementList):
 
 
 @dataclass
-class _Expression(_Ast):
+class Expression(Ast):
     # kw_only is required to make dataclasses play nice with inheritance and
     # fields with default values. https://stackoverflow.com/a/69822584/7115678
     type: langtypes.Type | None = dataclasses.field(
@@ -150,9 +149,9 @@ class _Expression(_Ast):
 
 
 @dataclass
-class VariableDeclaration(_Statement):
+class VariableDeclaration(Statement):
     ident: str
-    rvalue: _Expression
+    rvalue: Expression
 
     @override
     def typecheck(self, env: TypeEnvironment):
@@ -166,9 +165,9 @@ class VariableDeclaration(_Statement):
 
 
 @dataclass
-class Assignment(_Statement):
+class Assignment(Statement):
     lvalue: Token
-    rvalue: _Expression
+    rvalue: Expression
 
     @override
     def typecheck(self, env: TypeEnvironment):
@@ -192,8 +191,8 @@ class Assignment(_Statement):
 
 
 @dataclass
-class PrintStmt(_Statement):
-    expr: _Expression
+class PrintStmt(Statement):
+    expr: Expression
 
     @override
     def typecheck(self, env: TypeEnvironment):
@@ -205,8 +204,8 @@ class PrintStmt(_Statement):
 
 
 @dataclass
-class IfStmt(_Ast):
-    cond: _Expression
+class IfStmt(Ast):
+    cond: Expression
     true_block: StatementBlock
 
     def typecheck(self, env: TypeEnvironment):
@@ -230,7 +229,7 @@ class IfStmt(_Ast):
 
 
 @dataclass
-class IfChain(_Statement):
+class IfChain(Statement):
     if_stmt: IfStmt
     else_if_ladder: Optional["ElseIfLadder"]
     else_block: Optional[StatementBlock]
@@ -264,7 +263,7 @@ class ElseIfStmt(IfStmt):
 
 
 @dataclass
-class ElseIfLadder(_Ast, ast_utils.AsList):
+class ElseIfLadder(Ast):
     blocks: list[ElseIfStmt]
 
     def typecheck(self, env: TypeEnvironment):
@@ -282,7 +281,7 @@ class ElseIfLadder(_Ast, ast_utils.AsList):
 
 
 @dataclass
-class ArrayPatternElement(_Ast):
+class ArrayPatternElement(Ast):
     literal: "IntLiteral | WildcardPattern"
 
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -301,7 +300,7 @@ class ArrayPatternElement(_Ast):
 
 
 @dataclass
-class ArrayPattern(_Ast, ast_utils.AsList):
+class ArrayPattern(Ast):
     elements: list[ArrayPatternElement]
 
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -367,7 +366,7 @@ def matches_pattern(pattern: MatchPattern, expr: Any) -> bool:
 
 
 @dataclass
-class EnumPattern(_Expression):
+class EnumPattern(Expression):
     enum_type: Token
     variant: Token
 
@@ -408,7 +407,7 @@ class EnumPatternTuple(EnumPattern):
 
 
 @dataclass
-class CaseStmt(_Ast):
+class CaseStmt(Ast):
     pattern: MatchPattern
     block: StatementBlock
 
@@ -425,7 +424,7 @@ class CaseStmt(_Ast):
 
 
 @dataclass
-class CaseLadder(_Ast, ast_utils.AsList):
+class CaseLadder(Ast):
     cases: list[CaseStmt]
 
     def typecheck(self, env: TypeEnvironment):
@@ -509,8 +508,8 @@ class CaseLadder(_Ast, ast_utils.AsList):
 
 
 @dataclass
-class MatchStmt(_Statement):
-    expr: _Expression
+class MatchStmt(Statement):
+    expr: Expression
     cases: CaseLadder
 
     @override
@@ -569,8 +568,8 @@ class MatchStmt(_Statement):
 
 
 @dataclass
-class WhileStmt(_Statement):
-    cond: _Expression
+class WhileStmt(Statement):
+    cond: Expression
     true_block: StatementBlock
 
     @override
@@ -593,9 +592,9 @@ class WhileStmt(_Statement):
 
 
 @dataclass
-class ForStmt(_Statement):
+class ForStmt(Statement):
     var: Token
-    arr_name: _Expression
+    arr_name: Expression
     stmts: StatementBlock
 
     @override
@@ -626,10 +625,10 @@ class ForStmt(_Statement):
 
 
 @dataclass
-class ForStmtInt(_Statement):
+class ForStmtInt(Statement):
     var: Token
-    start: _Expression
-    end: _Expression
+    start: Expression
+    end: Expression
     stmts: StatementBlock
 
     @override
@@ -657,7 +656,7 @@ class ForStmtInt(_Statement):
 
 
 @dataclass
-class StructMember(_Ast):
+class StructMember(Ast):
     name: Token
     ident_type: "TypeAnnotation"
 
@@ -667,7 +666,7 @@ class StructMember(_Ast):
 
 
 @dataclass
-class StructMembers(_Ast, ast_utils.AsList):
+class StructMembers(Ast):
     members: list[StructMember]
 
     def typecheck(self, env: TypeEnvironment) -> langtypes.Struct.Members:
@@ -677,7 +676,7 @@ class StructMembers(_Ast, ast_utils.AsList):
 
 
 @dataclass
-class StructStmt(_Statement):
+class StructStmt(Statement):
     name: Token
     members: StructMembers
 
@@ -700,9 +699,9 @@ class StructStmt(_Statement):
 
 
 @dataclass
-class StructInitMember(_Ast):
+class StructInitMember(Ast):
     name: Token
-    value: _Expression
+    value: Expression
 
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = self.value.typecheck(env)
@@ -713,7 +712,7 @@ class StructInitMember(_Ast):
 
 
 @dataclass
-class StructInitMembers(_Ast, ast_utils.AsList):
+class StructInitMembers(Ast):
     members: list[StructInitMember]
 
     def typecheck(self, env: TypeEnvironment) -> langtypes.Struct.Members:
@@ -726,7 +725,7 @@ class StructInitMembers(_Ast, ast_utils.AsList):
 
 
 @dataclass
-class StructInit(_Ast, ast_utils.AsList):
+class StructInit(Ast):
     name: Token
     members: Optional[StructInitMembers]
 
@@ -759,7 +758,7 @@ class StructInit(_Ast, ast_utils.AsList):
 
 
 @dataclass
-class StructAccess(_Statement):  # TODO: make an expression
+class StructAccess(Statement):  # TODO: make an expression
     name: Token
     member: Token
 
@@ -783,9 +782,9 @@ class StructAccess(_Statement):  # TODO: make an expression
 
 
 @dataclass
-class StructAssignment(_Statement):
+class StructAssignment(Statement):
     struct_access: StructAccess
-    value: _Expression
+    value: Expression
 
     @override
     def typecheck(self, env: TypeEnvironment):
@@ -809,8 +808,8 @@ class StructAssignment(_Statement):
 
 
 @dataclass
-class ArrayElement(_Ast):
-    element: _Expression
+class ArrayElement(Ast):
+    element: Expression
 
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = self.element.typecheck(env)
@@ -821,7 +820,7 @@ class ArrayElement(_Ast):
 
 
 @dataclass
-class ArrayElements(_Ast, ast_utils.AsList):
+class ArrayElements(Ast):
     members: list[ArrayElement]
 
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -847,7 +846,7 @@ class ArrayElements(_Ast, ast_utils.AsList):
 
 
 @dataclass
-class ArrayLiteral(_Ast):
+class ArrayLiteral(Ast):
     declared_type: Optional["TypeAnnotation"]
     members: Optional[ArrayElements]
 
@@ -889,9 +888,9 @@ class ArrayLiteral(_Ast):
 
 
 @dataclass
-class Indexing(_Ast):
-    element: _Expression
-    index: _Expression
+class Indexing(Ast):
+    element: Expression
+    index: Expression
 
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         array_type = self.element.typecheck(env)
@@ -923,10 +922,10 @@ class Indexing(_Ast):
 
 
 @dataclass
-class IndexAssignment(_Statement):
+class IndexAssignment(Statement):
     arrayname: "Variable"
-    index: _Expression
-    value: _Expression
+    index: Expression
+    value: Expression
 
     @override
     def typecheck(self, env: TypeEnvironment):
@@ -961,7 +960,7 @@ class IndexAssignment(_Statement):
 
 
 @dataclass
-class EnumMemberBare(_Ast):
+class EnumMemberBare(Ast):
     name: Token
 
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -970,7 +969,7 @@ class EnumMemberBare(_Ast):
 
 
 @dataclass
-class EnumMemberTuple(_Ast):
+class EnumMemberTuple(Ast):
     name: Token
     tuple_members: "TypeAnnotation"
 
@@ -982,7 +981,7 @@ class EnumMemberTuple(_Ast):
 
 
 @dataclass
-class EnumMembers(_Ast, ast_utils.AsList):
+class EnumMembers(Ast):
     members: list[EnumMemberBare | EnumMemberTuple]
 
     def typecheck(self, env: TypeEnvironment):
@@ -1019,7 +1018,7 @@ class EnumMembers(_Ast, ast_utils.AsList):
 
 
 @dataclass
-class EnumStmt(_Statement):
+class EnumStmt(Statement):
     name: Token
     members: EnumMembers
 
@@ -1047,7 +1046,7 @@ class EnumStmt(_Statement):
 
 
 @dataclass
-class TypeAnnotation(_Ast):
+class TypeAnnotation(Ast):
     ty: Token
     generics: Optional["TypeAnnotation"]
 
@@ -1065,7 +1064,7 @@ class TypeAnnotation(_Ast):
 
 
 @dataclass
-class FunctionParam(_Ast):
+class FunctionParam(Ast):
     name: Token
     arg_type: TypeAnnotation
 
@@ -1075,7 +1074,7 @@ class FunctionParam(_Ast):
 
 
 @dataclass
-class FunctionParams(_Ast, ast_utils.AsList):
+class FunctionParams(Ast):
     args: list[FunctionParam]
 
     def typecheck(self, env: TypeEnvironment) -> langtypes.Function.Params:
@@ -1088,7 +1087,7 @@ class FunctionParams(_Ast, ast_utils.AsList):
 
 
 @dataclass
-class FunctionDefinition(_Statement):
+class FunctionDefinition(Statement):
     name: Token
     args: Optional[FunctionParams]
     return_type: TypeAnnotation
@@ -1126,8 +1125,8 @@ class FunctionDefinition(_Statement):
 
 
 @dataclass
-class ReturnStmt(_Statement):
-    return_value: _Expression
+class ReturnStmt(Statement):
+    return_value: Expression
 
     @override
     def typecheck(self, env: TypeEnvironment):
@@ -1142,8 +1141,8 @@ class ReturnStmt(_Statement):
 
 
 @dataclass
-class FunctionArgs(_Ast, ast_utils.AsList):
-    args: list[_Expression]
+class FunctionArgs(Ast):
+    args: list[Expression]
 
     def typecheck(self, env: TypeEnvironment) -> langtypes.Function.Params:
         types = [arg.typecheck(env) for arg in self.args]
@@ -1155,7 +1154,7 @@ class FunctionArgs(_Ast, ast_utils.AsList):
 
 
 @dataclass
-class FunctionCall(_Expression):  # TODO: rename to FunctionCallOrStructInit
+class FunctionCall(Expression):  # TODO: rename to FunctionCallOrStructInit
     callee: "Variable"
     args: Optional[FunctionArgs | StructInitMembers]
 
@@ -1249,10 +1248,10 @@ class FunctionCall(_Expression):  # TODO: rename to FunctionCallOrStructInit
 
 
 @dataclass
-class Term(_Expression):
-    left: _Expression
+class Term(Expression):
+    left: Expression
     op: Token
-    right: _Expression
+    right: Expression
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -1294,10 +1293,10 @@ class Term(_Expression):
 
 
 @dataclass
-class Factor(_Expression):
-    left: _Expression
+class Factor(Expression):
+    left: Expression
     op: Token
-    right: _Expression
+    right: Expression
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -1351,10 +1350,10 @@ class Factor(_Expression):
 
 
 @dataclass
-class Comparison(_Expression):
-    left: _Expression
+class Comparison(Expression):
+    left: Expression
     op: Token
-    right: _Expression
+    right: Expression
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -1398,10 +1397,10 @@ class Comparison(_Expression):
 
 
 @dataclass
-class Logical(_Expression):
-    left: _Expression
+class Logical(Expression):
+    left: Expression
     op: Token
-    right: _Expression
+    right: Expression
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -1443,10 +1442,10 @@ class Logical(_Expression):
 
 
 @dataclass
-class Equality(_Expression):
-    left: _Expression
+class Equality(Expression):
+    left: Expression
     op: Token
-    right: _Expression
+    right: Expression
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -1485,9 +1484,9 @@ class Equality(_Expression):
 
 
 @dataclass
-class UnaryOp(_Expression):
+class UnaryOp(Expression):
     op: Token
-    operand: _Expression
+    operand: Expression
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -1526,7 +1525,7 @@ class UnaryOp(_Expression):
 
 
 @dataclass
-class BoolLiteral(_Expression):
+class BoolLiteral(Expression):
     value: bool
 
     @override
@@ -1540,7 +1539,7 @@ class BoolLiteral(_Expression):
 
 
 @dataclass
-class IntLiteral(_Expression):
+class IntLiteral(Expression):
     value: int
 
     @override
@@ -1554,7 +1553,7 @@ class IntLiteral(_Expression):
 
 
 @dataclass
-class StringLiteral(_Expression):
+class StringLiteral(Expression):
     value: str
 
     @override
@@ -1568,7 +1567,7 @@ class StringLiteral(_Expression):
 
 
 @dataclass
-class EnumLiteralSimple(_Expression):
+class EnumLiteralSimple(Expression):
     enum_type: Token
     variant: Token
 
@@ -1586,10 +1585,10 @@ class EnumLiteralSimple(_Expression):
 
 
 @dataclass
-class EnumLiteralTuple(_Expression):
+class EnumLiteralTuple(Expression):
     enum_type: Token
     variant: Token
-    inner: _Expression
+    inner: Expression
 
     @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
@@ -1620,7 +1619,7 @@ class EnumLiteralTuple(_Expression):
 
 
 @dataclass
-class Variable(_Expression):
+class Variable(Expression):
     value: str
 
     @override
@@ -1640,7 +1639,7 @@ class Variable(_Expression):
         return env.get(self.value)
 
 
-class WildcardPattern(_Ast):
+class WildcardPattern(Ast):
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = langtypes.PLACEHOLDER
         return self.type

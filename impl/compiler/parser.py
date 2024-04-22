@@ -99,5 +99,5 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
 _transformer = LarkTreeToAstTransformer()
 
 
-def parse_tree_to_ast(tree: Tree[Token]) -> ast._Ast:  # pyright: ignore [reportPrivateUsage]
+def parse_tree_to_ast(tree: Tree[Token]) -> ast.Ast:
     return _transformer.transform(tree)
