@@ -1,26 +1,29 @@
-from typing import Any
+from typing import Any, Type, TypeVar
 
 from compiler import ast
-from compiler.lalr import Token, Tree, Lark_StandAlone, v_args, Transformer, DATA
+from compiler.lalr import Meta, Token, Tree, Lark_StandAlone, v_args, Transformer, DATA  # type: ignore
 
 # https://github.com/lark-parser/lark/issues/565
-DATA["options"]["maybe_placeholders"] = True
+DATA["options"]["maybe_placeholders"] = True  # type: ignore
 _parser = Lark_StandAlone(propagate_positions=True)
 
 
 def parse(source: str) -> Tree[Token]:
-    return _parser.parse(source)
+    return _parser.parse(source)  # type: ignore
 
 
-def listify(cls):
-    @v_args(meta=True, inline=False)
-    def _(self, meta, lst):
+T = TypeVar("T")
+
+
+def listify(cls: Type[T]):
+    @v_args(meta=True, inline=False)  # type: ignore
+    def _(self: "LarkTreeToAstTransformer", meta: Meta, lst: list[Any]) -> T:
         return cls(meta, lst)
 
     return _
 
 
-@v_args(meta=True, inline=True)
+@v_args(meta=True, inline=True)  # type: ignore
 class LarkTreeToAstTransformer(Transformer[Token, Any]):
     def TRUE(self, _) -> bool:
         return True
