@@ -7,7 +7,7 @@ from tests.utils import docstring_source_with_snapshot
 @docstring_source_with_snapshot
 def test_print(source: str, snapshot: Any):
     """
-    print "hello world"
+    print("hello world")
     """
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
@@ -25,7 +25,7 @@ def test_print(source: str, snapshot: Any):
 def test_print_variable(source: str, snapshot: Any):
     """
     let x=2
-    print x+1
+    print(x+1)
     """
     ast = parse_tree_to_ast(parse(source))
     assert ast.to_dict() == snapshot
