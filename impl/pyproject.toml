@@ -2,6 +2,7 @@
 pythonpath = [
   "."
 ]
+testpaths = "tests"
 
 [tool.pyright]
 typeCheckingMode = "strict"
