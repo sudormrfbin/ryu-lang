@@ -1,16 +1,11 @@
 from typing import Any
-from lark import Lark, Token, Tree, Transformer, v_args
 
 from compiler import ast
+from compiler.lalr import Token, Tree, Lark_StandAlone, v_args, Transformer, DATA
 
-
-GRAMMAR_FILE = "g.lark"
-_parser = Lark.open(  # type: ignore
-    GRAMMAR_FILE,
-    parser="lalr",
-    propagate_positions=True,
-    rel_to=__file__,
-)
+# https://github.com/lark-parser/lark/issues/565
+DATA["options"]["maybe_placeholders"] = True
+_parser = Lark_StandAlone(propagate_positions=True)
 
 
 def parse(source: str) -> Tree[Token]:
