@@ -4,8 +4,8 @@ import dataclasses
 from dataclasses import dataclass
 from typing_extensions import override
 
-from lark.tree import Meta
-from lark.lexer import Token
+from compiler.lalr import Meta
+from compiler.lalr import Token
 
 from compiler import langtypes
 from compiler import report

@@ -5,8 +5,8 @@ import dataclasses
 from dataclasses import dataclass
 from typing_extensions import override
 
-from lark import Token
-from lark.tree import Meta as LarkMeta
+from compiler.lalr import Token
+from compiler.lalr import Meta as LarkMeta
 
 from compiler.env import FunctionDefScope, RuntimeEnvironment, TypeEnvironment
 

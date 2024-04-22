@@ -1,2 +1,5 @@
 dist:
-	nuitka3 --onefile --include-data-files=compiler/g.lark=compiler/g.lark ryuc
+	nuitka3 --onefile ryuc
+
+parser:
+	python3 -m lark.tools.standalone compiler/g.lark > compiler/lalr.py
