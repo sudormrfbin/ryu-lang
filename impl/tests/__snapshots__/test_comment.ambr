@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_if_stmt_false_literal
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -23,7 +23,7 @@
                   }),
                 }),
                 'true_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
                         <class 'compiler.ast.Assignment'>: dict({
@@ -48,7 +48,7 @@
 # ---
 # name: test_if_stmt_false_literal.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -78,7 +78,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'fields': dict({
                             'stmts': list([
                               dict({
@@ -111,7 +111,7 @@
 # ---
 # name: test_if_stmt_true_literal
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -133,7 +133,7 @@
                   }),
                 }),
                 'true_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
                         <class 'compiler.ast.Assignment'>: dict({
@@ -158,7 +158,7 @@
 # ---
 # name: test_if_stmt_true_literal.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -188,7 +188,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'fields': dict({
                             'stmts': list([
                               dict({

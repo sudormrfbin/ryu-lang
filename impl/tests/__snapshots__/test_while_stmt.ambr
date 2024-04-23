@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_while_stmt
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -31,7 +31,7 @@
               }),
             }),
             'true_block': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
                     <class 'compiler.ast.Assignment'>: dict({
@@ -64,7 +64,7 @@
 # ---
 # name: test_while_stmt.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -105,7 +105,7 @@
                   }),
                 }),
                 'true_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({

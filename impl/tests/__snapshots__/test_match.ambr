@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_enum_pattern_match_wildcard[ast]
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.EnumStmt'>: dict({
@@ -48,7 +48,7 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
                     <class 'compiler.ast.MatchStmt'>: dict({
@@ -58,7 +58,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -83,7 +83,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -208,7 +208,7 @@
 # ---
 # name: test_enum_pattern_match_wildcard[typed-ast]
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -273,7 +273,7 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
@@ -287,7 +287,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
@@ -322,7 +322,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
@@ -496,7 +496,7 @@
 # ---
 # name: test_match_array[ast]
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.FunctionDefinition'>: dict({
@@ -522,7 +522,7 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
                     <class 'compiler.ast.MatchStmt'>: dict({
@@ -532,7 +532,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -566,7 +566,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -609,7 +609,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -661,7 +661,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -923,7 +923,7 @@
 # ---
 # name: test_match_array[typed-ast]
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -960,7 +960,7 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
@@ -974,7 +974,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
@@ -1025,72 +1025,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
-                                                'fields': dict({
-                                                  'stmts': list([
-                                                    dict({
-                                                      <class 'compiler.ast.ReturnStmt'>: dict({
-                                                        'fields': dict({
-                                                          'return_value': dict({
-                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
-                                                              'fields': dict({
-                                                              }),
-                                                              'type': <class 'compiler.langtypes.Int'>,
-                                                            }),
-                                                          }),
-                                                        }),
-                                                      }),
-                                                    }),
-                                                  ]),
-                                                }),
-                                              }),
-                                            }),
-                                            'pattern': dict({
-                                              <class 'compiler.ast.ArrayPattern'>: dict({
-                                                'fields': dict({
-                                                  'elements': list([
-                                                    dict({
-                                                      <class 'compiler.ast.ArrayPatternElement'>: dict({
-                                                        'fields': dict({
-                                                          'literal': dict({
-                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
-                                                              'fields': dict({
-                                                              }),
-                                                              'type': <class 'compiler.langtypes.Int'>,
-                                                            }),
-                                                          }),
-                                                        }),
-                                                        'type': <class 'compiler.langtypes.Int'>,
-                                                      }),
-                                                    }),
-                                                    dict({
-                                                      <class 'compiler.ast.ArrayPatternElement'>: dict({
-                                                        'fields': dict({
-                                                          'literal': dict({
-                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
-                                                              'fields': dict({
-                                                              }),
-                                                              'type': <class 'compiler.langtypes.Int'>,
-                                                            }),
-                                                          }),
-                                                        }),
-                                                        'type': <class 'compiler.langtypes.Int'>,
-                                                      }),
-                                                    }),
-                                                  ]),
-                                                }),
-                                                'type': <class 'compiler.langtypes.Array'>,
-                                              }),
-                                            }),
-                                          }),
-                                          'type': <class 'compiler.langtypes.Array'>,
-                                        }),
-                                      }),
-                                      dict({
-                                        <class 'compiler.ast.CaseStmt'>: dict({
-                                          'fields': dict({
-                                            'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
@@ -1142,6 +1077,71 @@
                                                         'type': <class 'compiler.langtypes.Int'>,
                                                       }),
                                                     }),
+                                                  ]),
+                                                }),
+                                                'type': <class 'compiler.langtypes.Array'>,
+                                              }),
+                                            }),
+                                          }),
+                                          'type': <class 'compiler.langtypes.Array'>,
+                                        }),
+                                      }),
+                                      dict({
+                                        <class 'compiler.ast.CaseStmt'>: dict({
+                                          'fields': dict({
+                                            'block': dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
+                                                'fields': dict({
+                                                  'stmts': list([
+                                                    dict({
+                                                      <class 'compiler.ast.ReturnStmt'>: dict({
+                                                        'fields': dict({
+                                                          'return_value': dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
+                                                              'fields': dict({
+                                                              }),
+                                                              'type': <class 'compiler.langtypes.Int'>,
+                                                            }),
+                                                          }),
+                                                        }),
+                                                      }),
+                                                    }),
+                                                  ]),
+                                                }),
+                                              }),
+                                            }),
+                                            'pattern': dict({
+                                              <class 'compiler.ast.ArrayPattern'>: dict({
+                                                'fields': dict({
+                                                  'elements': list([
+                                                    dict({
+                                                      <class 'compiler.ast.ArrayPatternElement'>: dict({
+                                                        'fields': dict({
+                                                          'literal': dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
+                                                              'fields': dict({
+                                                              }),
+                                                              'type': <class 'compiler.langtypes.Int'>,
+                                                            }),
+                                                          }),
+                                                        }),
+                                                        'type': <class 'compiler.langtypes.Int'>,
+                                                      }),
+                                                    }),
+                                                    dict({
+                                                      <class 'compiler.ast.ArrayPatternElement'>: dict({
+                                                        'fields': dict({
+                                                          'literal': dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
+                                                              'fields': dict({
+                                                              }),
+                                                              'type': <class 'compiler.langtypes.Int'>,
+                                                            }),
+                                                          }),
+                                                        }),
+                                                        'type': <class 'compiler.langtypes.Int'>,
+                                                      }),
+                                                    }),
                                                     dict({
                                                       <class 'compiler.ast.ArrayPatternElement'>: dict({
                                                         'fields': dict({
@@ -1169,7 +1169,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
@@ -1562,7 +1562,7 @@
 # ---
 # name: test_match_array_empty_case[ast]
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.FunctionDefinition'>: dict({
@@ -1588,7 +1588,7 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
                     <class 'compiler.ast.MatchStmt'>: dict({
@@ -1598,7 +1598,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -1623,7 +1623,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -1914,7 +1914,7 @@
 # ---
 # name: test_match_array_empty_case[typed-ast]
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -1951,7 +1951,7 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
@@ -1965,7 +1965,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
@@ -2002,7 +2002,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
@@ -2438,7 +2438,7 @@
 # ---
 # name: test_match_array_wildcard_element[ast]
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.FunctionDefinition'>: dict({
@@ -2464,7 +2464,7 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
                     <class 'compiler.ast.MatchStmt'>: dict({
@@ -2474,7 +2474,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -2524,7 +2524,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -2574,7 +2574,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -2624,7 +2624,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -2928,7 +2928,7 @@
 # ---
 # name: test_match_array_wildcard_element[typed-ast]
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -2965,7 +2965,7 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
@@ -2979,7 +2979,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
@@ -3058,7 +3058,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
@@ -3137,7 +3137,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
@@ -3216,7 +3216,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
@@ -3673,7 +3673,7 @@
 # ---
 # name: test_match_case_bool
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -3698,7 +3698,7 @@
                   dict({
                     <class 'compiler.ast.CaseStmt'>: dict({
                       'block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.Assignment'>: dict({
@@ -3723,7 +3723,7 @@
                   dict({
                     <class 'compiler.ast.CaseStmt'>: dict({
                       'block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.Assignment'>: dict({
@@ -3761,7 +3761,7 @@
 # ---
 # name: test_match_case_bool.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -3795,7 +3795,7 @@
                           <class 'compiler.ast.CaseStmt'>: dict({
                             'fields': dict({
                               'block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
@@ -3830,7 +3830,7 @@
                           <class 'compiler.ast.CaseStmt'>: dict({
                             'fields': dict({
                               'block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({

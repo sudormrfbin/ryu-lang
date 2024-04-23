@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_indexing
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -61,7 +61,7 @@
 # ---
 # name: test_indexing.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({

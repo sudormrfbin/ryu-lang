@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_function_call_multiple_args
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.FunctionDefinition'>: dict({
@@ -32,7 +32,7 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
                     <class 'compiler.ast.ReturnStmt'>: dict({
@@ -100,7 +100,7 @@
 # ---
 # name: test_function_call_multiple_args.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -144,7 +144,7 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
@@ -238,7 +238,7 @@
 # ---
 # name: test_function_call_multiple_returns
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.FunctionDefinition'>: dict({
@@ -269,12 +269,12 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
                     <class 'compiler.ast.IfChain'>: dict({
                       'else_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.ReturnStmt'>: dict({
@@ -306,7 +306,7 @@
                             }),
                           }),
                           'true_block': dict({
-                            <class 'compiler.ast.StatementBlock'>: dict({
+                            <class 'compiler.ast.statements.StatementBlock'>: dict({
                               'stmts': list([
                                 dict({
                                   <class 'compiler.ast.ReturnStmt'>: dict({
@@ -371,7 +371,7 @@
 # ---
 # name: test_function_call_multiple_returns.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -415,14 +415,14 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
                           <class 'compiler.ast.IfChain'>: dict({
                             'fields': dict({
                               'else_block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
@@ -467,7 +467,7 @@
                                       }),
                                     }),
                                     'true_block': dict({
-                                      <class 'compiler.ast.StatementBlock'>: dict({
+                                      <class 'compiler.ast.statements.StatementBlock'>: dict({
                                         'fields': dict({
                                           'stmts': list([
                                             dict({
@@ -557,7 +557,7 @@
 # ---
 # name: test_function_call_one_arg
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.FunctionDefinition'>: dict({
@@ -578,7 +578,7 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
                     <class 'compiler.ast.ReturnStmt'>: dict({
@@ -631,7 +631,7 @@
 # ---
 # name: test_function_call_one_arg.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -661,7 +661,7 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
@@ -734,12 +734,12 @@
 # ---
 # name: test_function_call_zero_args
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.FunctionDefinition'>: dict({
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
                     <class 'compiler.ast.ReturnStmt'>: dict({
@@ -781,14 +781,14 @@
 # ---
 # name: test_function_call_zero_args.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
             <class 'compiler.ast.FunctionDefinition'>: dict({
               'fields': dict({
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
@@ -868,7 +868,7 @@
         }),
       }),
       'body': dict({
-        <class 'compiler.ast.StatementBlock'>: dict({
+        <class 'compiler.ast.statements.StatementBlock'>: dict({
           'stmts': list([
             dict({
               <class 'compiler.ast.ReturnStmt'>: dict({
@@ -926,7 +926,7 @@
           }),
         }),
         'body': dict({
-          <class 'compiler.ast.StatementBlock'>: dict({
+          <class 'compiler.ast.statements.StatementBlock'>: dict({
             'fields': dict({
               'stmts': list([
                 dict({
@@ -987,7 +987,7 @@
         }),
       }),
       'body': dict({
-        <class 'compiler.ast.StatementBlock'>: dict({
+        <class 'compiler.ast.statements.StatementBlock'>: dict({
           'stmts': list([
             dict({
               <class 'compiler.ast.ReturnStmt'>: dict({
@@ -1062,7 +1062,7 @@
           }),
         }),
         'body': dict({
-          <class 'compiler.ast.StatementBlock'>: dict({
+          <class 'compiler.ast.statements.StatementBlock'>: dict({
             'fields': dict({
               'stmts': list([
                 dict({
@@ -1137,12 +1137,12 @@
         }),
       }),
       'body': dict({
-        <class 'compiler.ast.StatementBlock'>: dict({
+        <class 'compiler.ast.statements.StatementBlock'>: dict({
           'stmts': list([
             dict({
               <class 'compiler.ast.IfChain'>: dict({
                 'else_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -1174,7 +1174,7 @@
                       }),
                     }),
                     'true_block': dict({
-                      <class 'compiler.ast.StatementBlock'>: dict({
+                      <class 'compiler.ast.statements.StatementBlock'>: dict({
                         'stmts': list([
                           dict({
                             <class 'compiler.ast.ReturnStmt'>: dict({
@@ -1246,14 +1246,14 @@
           }),
         }),
         'body': dict({
-          <class 'compiler.ast.StatementBlock'>: dict({
+          <class 'compiler.ast.statements.StatementBlock'>: dict({
             'fields': dict({
               'stmts': list([
                 dict({
                   <class 'compiler.ast.IfChain'>: dict({
                     'fields': dict({
                       'else_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'fields': dict({
                             'stmts': list([
                               dict({
@@ -1298,7 +1298,7 @@
                               }),
                             }),
                             'true_block': dict({
-                              <class 'compiler.ast.StatementBlock'>: dict({
+                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                 'fields': dict({
                                   'stmts': list([
                                     dict({
@@ -1359,7 +1359,7 @@
         }),
       }),
       'body': dict({
-        <class 'compiler.ast.StatementBlock'>: dict({
+        <class 'compiler.ast.statements.StatementBlock'>: dict({
           'stmts': list([
             dict({
               <class 'compiler.ast.ReturnStmt'>: dict({
@@ -1410,7 +1410,7 @@
           }),
         }),
         'body': dict({
-          <class 'compiler.ast.StatementBlock'>: dict({
+          <class 'compiler.ast.statements.StatementBlock'>: dict({
             'fields': dict({
               'stmts': list([
                 dict({
@@ -1445,7 +1445,7 @@
   dict({
     <class 'compiler.ast.FunctionDefinition'>: dict({
       'body': dict({
-        <class 'compiler.ast.StatementBlock'>: dict({
+        <class 'compiler.ast.statements.StatementBlock'>: dict({
           'stmts': list([
             dict({
               <class 'compiler.ast.ReturnStmt'>: dict({
@@ -1473,7 +1473,7 @@
     <class 'compiler.ast.FunctionDefinition'>: dict({
       'fields': dict({
         'body': dict({
-          <class 'compiler.ast.StatementBlock'>: dict({
+          <class 'compiler.ast.statements.StatementBlock'>: dict({
             'fields': dict({
               'stmts': list([
                 dict({
@@ -1506,7 +1506,7 @@
 # ---
 # name: test_function_recursive
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.FunctionDefinition'>: dict({
@@ -1527,12 +1527,12 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
                     <class 'compiler.ast.IfChain'>: dict({
                       'else_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.ReturnStmt'>: dict({
@@ -1599,7 +1599,7 @@
                             }),
                           }),
                           'true_block': dict({
-                            <class 'compiler.ast.StatementBlock'>: dict({
+                            <class 'compiler.ast.statements.StatementBlock'>: dict({
                               'stmts': list([
                                 dict({
                                   <class 'compiler.ast.ReturnStmt'>: dict({
@@ -1784,7 +1784,7 @@
 # ---
 # name: test_function_recursive.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -1814,14 +1814,14 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
                           <class 'compiler.ast.IfChain'>: dict({
                             'fields': dict({
                               'else_block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
@@ -1917,7 +1917,7 @@
                                       }),
                                     }),
                                     'true_block': dict({
-                                      <class 'compiler.ast.StatementBlock'>: dict({
+                                      <class 'compiler.ast.statements.StatementBlock'>: dict({
                                         'fields': dict({
                                           'stmts': list([
                                             dict({

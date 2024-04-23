@@ -79,7 +79,7 @@
 # ---
 # name: test_struct_init
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.StructStmt'>: dict({
@@ -158,7 +158,7 @@
 # ---
 # name: test_struct_init.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({

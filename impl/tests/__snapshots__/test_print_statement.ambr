@@ -27,7 +27,7 @@
 # ---
 # name: test_print_variable
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -64,7 +64,7 @@
 # ---
 # name: test_print_variable.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({

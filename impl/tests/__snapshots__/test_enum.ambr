@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_enum_assignment
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.EnumStmt'>: dict({
@@ -46,7 +46,7 @@
 # ---
 # name: test_enum_assignment.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -169,7 +169,7 @@
 # ---
 # name: test_enum_pattern_match
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.EnumStmt'>: dict({
@@ -226,7 +226,7 @@
                   dict({
                     <class 'compiler.ast.CaseStmt'>: dict({
                       'block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.Assignment'>: dict({
@@ -252,7 +252,7 @@
                   dict({
                     <class 'compiler.ast.CaseStmt'>: dict({
                       'block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.Assignment'>: dict({
@@ -278,7 +278,7 @@
                   dict({
                     <class 'compiler.ast.CaseStmt'>: dict({
                       'block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.Assignment'>: dict({
@@ -317,7 +317,7 @@
 # ---
 # name: test_enum_pattern_match.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -392,7 +392,7 @@
                           <class 'compiler.ast.CaseStmt'>: dict({
                             'fields': dict({
                               'block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
@@ -427,7 +427,7 @@
                           <class 'compiler.ast.CaseStmt'>: dict({
                             'fields': dict({
                               'block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
@@ -462,7 +462,7 @@
                           <class 'compiler.ast.CaseStmt'>: dict({
                             'fields': dict({
                               'block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
@@ -514,7 +514,7 @@
 # ---
 # name: test_tuple_enum_assignment
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.EnumStmt'>: dict({
@@ -564,7 +564,7 @@
 # ---
 # name: test_tuple_enum_assignment.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -694,7 +694,7 @@
 # ---
 # name: test_tuple_enum_match
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.EnumStmt'>: dict({
@@ -741,7 +741,7 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
                     <class 'compiler.ast.MatchStmt'>: dict({
@@ -751,7 +751,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -781,7 +781,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -811,7 +811,7 @@
                             dict({
                               <class 'compiler.ast.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
@@ -948,7 +948,7 @@
 # ---
 # name: test_tuple_enum_match.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -1013,7 +1013,7 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
@@ -1027,7 +1027,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
@@ -1069,7 +1069,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
@@ -1111,7 +1111,7 @@
                                         <class 'compiler.ast.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({

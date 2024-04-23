@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_block_with_multiple_statements
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -19,7 +19,7 @@
 # ---
 # name: test_block_with_multiple_statements.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -43,7 +43,7 @@
 # ---
 # name: test_block_with_multiple_statements_and_trailing_newline
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -61,7 +61,7 @@
 # ---
 # name: test_block_with_multiple_statements_and_trailing_newline.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({

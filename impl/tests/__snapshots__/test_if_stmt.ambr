@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_if_else
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -16,7 +16,7 @@
         dict({
           <class 'compiler.ast.IfChain'>: dict({
             'else_block': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
                     <class 'compiler.ast.Assignment'>: dict({
@@ -39,7 +39,7 @@
                   }),
                 }),
                 'true_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
                         <class 'compiler.ast.Assignment'>: dict({
@@ -64,7 +64,7 @@
 # ---
 # name: test_if_else.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -84,7 +84,7 @@
             <class 'compiler.ast.IfChain'>: dict({
               'fields': dict({
                 'else_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
@@ -115,7 +115,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'fields': dict({
                             'stmts': list([
                               dict({
@@ -148,7 +148,7 @@
 # ---
 # name: test_if_else_if
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -173,7 +173,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.Assignment'>: dict({
@@ -201,7 +201,7 @@
                   }),
                 }),
                 'true_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
                         <class 'compiler.ast.Assignment'>: dict({
@@ -226,7 +226,7 @@
 # ---
 # name: test_if_else_if.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -260,7 +260,7 @@
                                 }),
                               }),
                               'true_block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
@@ -298,7 +298,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'fields': dict({
                             'stmts': list([
                               dict({
@@ -331,7 +331,7 @@
 # ---
 # name: test_if_else_if_2
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -356,7 +356,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.Assignment'>: dict({
@@ -381,7 +381,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.Assignment'>: dict({
@@ -409,7 +409,7 @@
                   }),
                 }),
                 'true_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
                         <class 'compiler.ast.Assignment'>: dict({
@@ -434,7 +434,7 @@
 # ---
 # name: test_if_else_if_2.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -468,7 +468,7 @@
                                 }),
                               }),
                               'true_block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
@@ -502,7 +502,7 @@
                                 }),
                               }),
                               'true_block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
@@ -540,7 +540,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'fields': dict({
                             'stmts': list([
                               dict({
@@ -573,7 +573,7 @@
 # ---
 # name: test_if_else_if_else
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -588,7 +588,7 @@
         dict({
           <class 'compiler.ast.IfChain'>: dict({
             'else_block': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
                     <class 'compiler.ast.Assignment'>: dict({
@@ -614,7 +614,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.Assignment'>: dict({
@@ -639,7 +639,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.Assignment'>: dict({
@@ -667,7 +667,7 @@
                   }),
                 }),
                 'true_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
                         <class 'compiler.ast.Assignment'>: dict({
@@ -692,7 +692,7 @@
 # ---
 # name: test_if_else_if_else.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -712,7 +712,7 @@
             <class 'compiler.ast.IfChain'>: dict({
               'fields': dict({
                 'else_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
@@ -747,7 +747,7 @@
                                 }),
                               }),
                               'true_block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
@@ -781,7 +781,7 @@
                                 }),
                               }),
                               'true_block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
@@ -819,7 +819,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'fields': dict({
                             'stmts': list([
                               dict({
@@ -852,7 +852,7 @@
 # ---
 # name: test_if_else_if_none_executes
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -877,7 +877,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.Assignment'>: dict({
@@ -902,7 +902,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
                               <class 'compiler.ast.Assignment'>: dict({
@@ -930,7 +930,7 @@
                   }),
                 }),
                 'true_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
                         <class 'compiler.ast.Assignment'>: dict({
@@ -955,7 +955,7 @@
 # ---
 # name: test_if_else_if_none_executes.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -989,7 +989,7 @@
                                 }),
                               }),
                               'true_block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
@@ -1023,7 +1023,7 @@
                                 }),
                               }),
                               'true_block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
@@ -1061,7 +1061,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'fields': dict({
                             'stmts': list([
                               dict({
@@ -1094,7 +1094,7 @@
 # ---
 # name: test_if_stmt_false_literal
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -1116,7 +1116,7 @@
                   }),
                 }),
                 'true_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
                         <class 'compiler.ast.Assignment'>: dict({
@@ -1141,7 +1141,7 @@
 # ---
 # name: test_if_stmt_false_literal.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -1171,7 +1171,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'fields': dict({
                             'stmts': list([
                               dict({
@@ -1204,7 +1204,7 @@
 # ---
 # name: test_if_stmt_true_expr
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -1236,7 +1236,7 @@
                   }),
                 }),
                 'true_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
                         <class 'compiler.ast.Assignment'>: dict({
@@ -1261,7 +1261,7 @@
 # ---
 # name: test_if_stmt_true_expr.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -1305,7 +1305,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'fields': dict({
                             'stmts': list([
                               dict({
@@ -1338,7 +1338,7 @@
 # ---
 # name: test_if_stmt_true_literal
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
           <class 'compiler.ast.VariableDeclaration'>: dict({
@@ -1360,7 +1360,7 @@
                   }),
                 }),
                 'true_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
                         <class 'compiler.ast.Assignment'>: dict({
@@ -1385,7 +1385,7 @@
 # ---
 # name: test_if_stmt_true_literal.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
@@ -1415,7 +1415,7 @@
                         }),
                       }),
                       'true_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'fields': dict({
                             'stmts': list([
                               dict({
