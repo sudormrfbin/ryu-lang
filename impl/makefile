@@ -4,8 +4,8 @@ dist:
 parser:
 	python3 -m lark.tools.standalone compiler/g.lark > compiler/lalr.py
 
-test:
+t:
 	pytest --maxfail 1 -vv
 
-test-update:
+ut:
 	pytest --snapshot-update

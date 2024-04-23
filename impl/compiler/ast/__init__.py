@@ -239,39 +239,6 @@ class StructInitMembers(Ast):
 
 
 @dataclass
-class StructInit(Ast):
-    name: Token
-    members: Optional[StructInitMembers]
-
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Struct:
-        struct_type = env.get_type(self.name)
-        if not isinstance(struct_type, langtypes.Struct):
-            raise  # TODO errors.UnexpectedType()
-
-        if self.members:
-            members_type = self.members.typecheck(env)
-        else:
-            members_type = langtypes.Struct.Members({})
-
-        mem_len, param_len = len(members_type), len(struct_type.members)
-        if mem_len < param_len:
-            raise  # TODO insufficient members
-        if mem_len > param_len:
-            raise  # TODO too many members
-        if members_type != struct_type.members:
-            raise  # TODO type mismatch
-
-        self.type = struct_type
-        return self.type
-
-    def eval(self, env: RuntimeEnvironment) -> langvalues.StructValue:
-        return langvalues.StructValue(
-            name=self.name,
-            attrs=self.members.eval(env) if self.members else {},
-        )
-
-
-@dataclass
 class StructAccess(Statement):  # TODO: make an expression
     name: Token
     member: Token
