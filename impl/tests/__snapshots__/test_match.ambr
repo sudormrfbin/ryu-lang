@@ -63,7 +63,7 @@
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                               'value': True,
                                             }),
                                           }),
@@ -88,7 +88,7 @@
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                               'value': False,
                                             }),
                                           }),
@@ -294,7 +294,7 @@
                                                       <class 'compiler.ast.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Bool'>,
@@ -329,7 +329,7 @@
                                                       <class 'compiler.ast.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Bool'>,
@@ -537,7 +537,7 @@
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 1,
                                             }),
                                           }),
@@ -552,7 +552,7 @@
                                       dict({
                                         <class 'compiler.ast.ArrayPatternElement'>: dict({
                                           'literal': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 1,
                                             }),
                                           }),
@@ -571,7 +571,7 @@
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 2,
                                             }),
                                           }),
@@ -586,7 +586,7 @@
                                       dict({
                                         <class 'compiler.ast.ArrayPatternElement'>: dict({
                                           'literal': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 1,
                                             }),
                                           }),
@@ -595,7 +595,7 @@
                                       dict({
                                         <class 'compiler.ast.ArrayPatternElement'>: dict({
                                           'literal': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 2,
                                             }),
                                           }),
@@ -614,7 +614,7 @@
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 3,
                                             }),
                                           }),
@@ -629,7 +629,7 @@
                                       dict({
                                         <class 'compiler.ast.ArrayPatternElement'>: dict({
                                           'literal': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 1,
                                             }),
                                           }),
@@ -638,7 +638,7 @@
                                       dict({
                                         <class 'compiler.ast.ArrayPatternElement'>: dict({
                                           'literal': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 2,
                                             }),
                                           }),
@@ -647,7 +647,7 @@
                                       dict({
                                         <class 'compiler.ast.ArrayPatternElement'>: dict({
                                           'literal': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 3,
                                             }),
                                           }),
@@ -669,7 +669,7 @@
                                             <class 'compiler.ast.UnaryOp'>: dict({
                                               'op': Token('MINUS', '-'),
                                               'operand': dict({
-                                                <class 'compiler.ast.IntLiteral'>: dict({
+                                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                   'value': 1,
                                                 }),
                                               }),
@@ -723,7 +723,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 1,
                                       }),
                                     }),
@@ -762,7 +762,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 1,
                                       }),
                                     }),
@@ -771,7 +771,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 2,
                                       }),
                                     }),
@@ -810,7 +810,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 1,
                                       }),
                                     }),
@@ -819,7 +819,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 2,
                                       }),
                                     }),
@@ -828,7 +828,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 3,
                                       }),
                                     }),
@@ -867,7 +867,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 1,
                                       }),
                                     }),
@@ -876,7 +876,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 2,
                                       }),
                                     }),
@@ -885,7 +885,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 3,
                                       }),
                                     }),
@@ -894,7 +894,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 4,
                                       }),
                                     }),
@@ -981,7 +981,7 @@
                                                       <class 'compiler.ast.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1002,7 +1002,7 @@
                                                       <class 'compiler.ast.ArrayPatternElement'>: dict({
                                                         'fields': dict({
                                                           'literal': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1032,7 +1032,7 @@
                                                       <class 'compiler.ast.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1053,7 +1053,7 @@
                                                       <class 'compiler.ast.ArrayPatternElement'>: dict({
                                                         'fields': dict({
                                                           'literal': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1067,7 +1067,7 @@
                                                       <class 'compiler.ast.ArrayPatternElement'>: dict({
                                                         'fields': dict({
                                                           'literal': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1097,7 +1097,7 @@
                                                       <class 'compiler.ast.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1118,7 +1118,7 @@
                                                       <class 'compiler.ast.ArrayPatternElement'>: dict({
                                                         'fields': dict({
                                                           'literal': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1132,7 +1132,7 @@
                                                       <class 'compiler.ast.ArrayPatternElement'>: dict({
                                                         'fields': dict({
                                                           'literal': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1146,7 +1146,7 @@
                                                       <class 'compiler.ast.ArrayPatternElement'>: dict({
                                                         'fields': dict({
                                                           'literal': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1179,7 +1179,7 @@
                                                             <class 'compiler.ast.UnaryOp'>: dict({
                                                               'fields': dict({
                                                                 'operand': dict({
-                                                                  <class 'compiler.ast.IntLiteral'>: dict({
+                                                                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                                     'fields': dict({
                                                                     }),
                                                                     'type': <class 'compiler.langtypes.Int'>,
@@ -1256,7 +1256,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -1315,7 +1315,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -1329,94 +1329,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
-                                                      'fields': dict({
-                                                      }),
-                                                      'type': <class 'compiler.langtypes.Int'>,
-                                                    }),
-                                                  }),
-                                                }),
-                                                'type': <class 'compiler.langtypes.Int'>,
-                                              }),
-                                            }),
-                                          ]),
-                                        }),
-                                        'type': <class 'compiler.langtypes.Int'>,
-                                      }),
-                                    }),
-                                  }),
-                                  'type': <class 'compiler.langtypes.Array'>,
-                                }),
-                              }),
-                            ]),
-                          }),
-                          'type': <class 'compiler.langtypes.Function.Params'>,
-                        }),
-                      }),
-                      'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
-                          'fields': dict({
-                          }),
-                          'type': <class 'compiler.langtypes.Function'>,
-                        }),
-                      }),
-                    }),
-                    'type': <class 'compiler.langtypes.Int'>,
-                  }),
-                }),
-              }),
-            }),
-          }),
-          dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
-              'fields': dict({
-                'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
-                    'fields': dict({
-                      'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
-                          'fields': dict({
-                            'args': list([
-                              dict({
-                                <class 'compiler.ast.ArrayLiteral'>: dict({
-                                  'fields': dict({
-                                    'members': dict({
-                                      <class 'compiler.ast.ArrayElements'>: dict({
-                                        'fields': dict({
-                                          'members': list([
-                                            dict({
-                                              <class 'compiler.ast.ArrayElement'>: dict({
-                                                'fields': dict({
-                                                  'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
-                                                      'fields': dict({
-                                                      }),
-                                                      'type': <class 'compiler.langtypes.Int'>,
-                                                    }),
-                                                  }),
-                                                }),
-                                                'type': <class 'compiler.langtypes.Int'>,
-                                              }),
-                                            }),
-                                            dict({
-                                              <class 'compiler.ast.ArrayElement'>: dict({
-                                                'fields': dict({
-                                                  'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
-                                                      'fields': dict({
-                                                      }),
-                                                      'type': <class 'compiler.langtypes.Int'>,
-                                                    }),
-                                                  }),
-                                                }),
-                                                'type': <class 'compiler.langtypes.Int'>,
-                                              }),
-                                            }),
-                                            dict({
-                                              <class 'compiler.ast.ArrayElement'>: dict({
-                                                'fields': dict({
-                                                  'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -1475,7 +1388,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -1489,7 +1402,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -1503,7 +1416,66 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
+                                                      'fields': dict({
+                                                      }),
+                                                      'type': <class 'compiler.langtypes.Int'>,
+                                                    }),
+                                                  }),
+                                                }),
+                                                'type': <class 'compiler.langtypes.Int'>,
+                                              }),
+                                            }),
+                                          ]),
+                                        }),
+                                        'type': <class 'compiler.langtypes.Int'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Array'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Function.Params'>,
+                        }),
+                      }),
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Function'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
+              }),
+            }),
+          }),
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'args': dict({
+                        <class 'compiler.ast.FunctionArgs'>: dict({
+                          'fields': dict({
+                            'args': list([
+                              dict({
+                                <class 'compiler.ast.ArrayLiteral'>: dict({
+                                  'fields': dict({
+                                    'members': dict({
+                                      <class 'compiler.ast.ArrayElements'>: dict({
+                                        'fields': dict({
+                                          'members': list([
+                                            dict({
+                                              <class 'compiler.ast.ArrayElement'>: dict({
+                                                'fields': dict({
+                                                  'element': dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -1517,7 +1489,35 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
+                                                      'fields': dict({
+                                                      }),
+                                                      'type': <class 'compiler.langtypes.Int'>,
+                                                    }),
+                                                  }),
+                                                }),
+                                                'type': <class 'compiler.langtypes.Int'>,
+                                              }),
+                                            }),
+                                            dict({
+                                              <class 'compiler.ast.ArrayElement'>: dict({
+                                                'fields': dict({
+                                                  'element': dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
+                                                      'fields': dict({
+                                                      }),
+                                                      'type': <class 'compiler.langtypes.Int'>,
+                                                    }),
+                                                  }),
+                                                }),
+                                                'type': <class 'compiler.langtypes.Int'>,
+                                              }),
+                                            }),
+                                            dict({
+                                              <class 'compiler.ast.ArrayElement'>: dict({
+                                                'fields': dict({
+                                                  'element': dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -1603,7 +1603,7 @@
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 0,
                                             }),
                                           }),
@@ -1631,7 +1631,7 @@
                                             <class 'compiler.ast.UnaryOp'>: dict({
                                               'op': Token('MINUS', '-'),
                                               'operand': dict({
-                                                <class 'compiler.ast.IntLiteral'>: dict({
+                                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                   'value': 1,
                                                 }),
                                               }),
@@ -1714,7 +1714,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 1,
                                       }),
                                     }),
@@ -1753,7 +1753,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 1,
                                       }),
                                     }),
@@ -1762,7 +1762,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 2,
                                       }),
                                     }),
@@ -1801,7 +1801,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 1,
                                       }),
                                     }),
@@ -1810,7 +1810,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 2,
                                       }),
                                     }),
@@ -1819,7 +1819,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 3,
                                       }),
                                     }),
@@ -1858,7 +1858,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 1,
                                       }),
                                     }),
@@ -1867,7 +1867,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 2,
                                       }),
                                     }),
@@ -1876,7 +1876,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 3,
                                       }),
                                     }),
@@ -1885,7 +1885,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 4,
                                       }),
                                     }),
@@ -1972,7 +1972,7 @@
                                                       <class 'compiler.ast.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -2012,7 +2012,7 @@
                                                             <class 'compiler.ast.UnaryOp'>: dict({
                                                               'fields': dict({
                                                                 'operand': dict({
-                                                                  <class 'compiler.ast.IntLiteral'>: dict({
+                                                                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                                     'fields': dict({
                                                                     }),
                                                                     'type': <class 'compiler.langtypes.Int'>,
@@ -2132,7 +2132,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -2191,7 +2191,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -2205,94 +2205,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
-                                                      'fields': dict({
-                                                      }),
-                                                      'type': <class 'compiler.langtypes.Int'>,
-                                                    }),
-                                                  }),
-                                                }),
-                                                'type': <class 'compiler.langtypes.Int'>,
-                                              }),
-                                            }),
-                                          ]),
-                                        }),
-                                        'type': <class 'compiler.langtypes.Int'>,
-                                      }),
-                                    }),
-                                  }),
-                                  'type': <class 'compiler.langtypes.Array'>,
-                                }),
-                              }),
-                            ]),
-                          }),
-                          'type': <class 'compiler.langtypes.Function.Params'>,
-                        }),
-                      }),
-                      'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
-                          'fields': dict({
-                          }),
-                          'type': <class 'compiler.langtypes.Function'>,
-                        }),
-                      }),
-                    }),
-                    'type': <class 'compiler.langtypes.Int'>,
-                  }),
-                }),
-              }),
-            }),
-          }),
-          dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
-              'fields': dict({
-                'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
-                    'fields': dict({
-                      'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
-                          'fields': dict({
-                            'args': list([
-                              dict({
-                                <class 'compiler.ast.ArrayLiteral'>: dict({
-                                  'fields': dict({
-                                    'members': dict({
-                                      <class 'compiler.ast.ArrayElements'>: dict({
-                                        'fields': dict({
-                                          'members': list([
-                                            dict({
-                                              <class 'compiler.ast.ArrayElement'>: dict({
-                                                'fields': dict({
-                                                  'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
-                                                      'fields': dict({
-                                                      }),
-                                                      'type': <class 'compiler.langtypes.Int'>,
-                                                    }),
-                                                  }),
-                                                }),
-                                                'type': <class 'compiler.langtypes.Int'>,
-                                              }),
-                                            }),
-                                            dict({
-                                              <class 'compiler.ast.ArrayElement'>: dict({
-                                                'fields': dict({
-                                                  'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
-                                                      'fields': dict({
-                                                      }),
-                                                      'type': <class 'compiler.langtypes.Int'>,
-                                                    }),
-                                                  }),
-                                                }),
-                                                'type': <class 'compiler.langtypes.Int'>,
-                                              }),
-                                            }),
-                                            dict({
-                                              <class 'compiler.ast.ArrayElement'>: dict({
-                                                'fields': dict({
-                                                  'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -2351,7 +2264,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -2365,7 +2278,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -2379,7 +2292,66 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
+                                                      'fields': dict({
+                                                      }),
+                                                      'type': <class 'compiler.langtypes.Int'>,
+                                                    }),
+                                                  }),
+                                                }),
+                                                'type': <class 'compiler.langtypes.Int'>,
+                                              }),
+                                            }),
+                                          ]),
+                                        }),
+                                        'type': <class 'compiler.langtypes.Int'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Array'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Function.Params'>,
+                        }),
+                      }),
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Function'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Int'>,
+                  }),
+                }),
+              }),
+            }),
+          }),
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'args': dict({
+                        <class 'compiler.ast.FunctionArgs'>: dict({
+                          'fields': dict({
+                            'args': list([
+                              dict({
+                                <class 'compiler.ast.ArrayLiteral'>: dict({
+                                  'fields': dict({
+                                    'members': dict({
+                                      <class 'compiler.ast.ArrayElements'>: dict({
+                                        'fields': dict({
+                                          'members': list([
+                                            dict({
+                                              <class 'compiler.ast.ArrayElement'>: dict({
+                                                'fields': dict({
+                                                  'element': dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -2393,7 +2365,35 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
+                                                      'fields': dict({
+                                                      }),
+                                                      'type': <class 'compiler.langtypes.Int'>,
+                                                    }),
+                                                  }),
+                                                }),
+                                                'type': <class 'compiler.langtypes.Int'>,
+                                              }),
+                                            }),
+                                            dict({
+                                              <class 'compiler.ast.ArrayElement'>: dict({
+                                                'fields': dict({
+                                                  'element': dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
+                                                      'fields': dict({
+                                                      }),
+                                                      'type': <class 'compiler.langtypes.Int'>,
+                                                    }),
+                                                  }),
+                                                }),
+                                                'type': <class 'compiler.langtypes.Int'>,
+                                              }),
+                                            }),
+                                            dict({
+                                              <class 'compiler.ast.ArrayElement'>: dict({
+                                                'fields': dict({
+                                                  'element': dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -2479,7 +2479,7 @@
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                               'value': True,
                                             }),
                                           }),
@@ -2494,7 +2494,7 @@
                                       dict({
                                         <class 'compiler.ast.ArrayPatternElement'>: dict({
                                           'literal': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 1,
                                             }),
                                           }),
@@ -2529,7 +2529,7 @@
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                               'value': True,
                                             }),
                                           }),
@@ -2552,7 +2552,7 @@
                                       dict({
                                         <class 'compiler.ast.ArrayPatternElement'>: dict({
                                           'literal': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 1,
                                             }),
                                           }),
@@ -2579,7 +2579,7 @@
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                               'value': True,
                                             }),
                                           }),
@@ -2610,7 +2610,7 @@
                                       dict({
                                         <class 'compiler.ast.ArrayPatternElement'>: dict({
                                           'literal': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 1,
                                             }),
                                           }),
@@ -2629,7 +2629,7 @@
                                       dict({
                                         <class 'compiler.ast.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                               'value': False,
                                             }),
                                           }),
@@ -2710,7 +2710,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 1,
                                       }),
                                     }),
@@ -2719,7 +2719,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 2,
                                       }),
                                     }),
@@ -2728,7 +2728,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 3,
                                       }),
                                     }),
@@ -2767,7 +2767,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 3,
                                       }),
                                     }),
@@ -2776,7 +2776,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 1,
                                       }),
                                     }),
@@ -2785,7 +2785,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 2,
                                       }),
                                     }),
@@ -2824,7 +2824,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 2,
                                       }),
                                     }),
@@ -2833,7 +2833,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 3,
                                       }),
                                     }),
@@ -2842,7 +2842,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 1,
                                       }),
                                     }),
@@ -2881,7 +2881,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 2,
                                       }),
                                     }),
@@ -2890,7 +2890,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 3,
                                       }),
                                     }),
@@ -2899,7 +2899,7 @@
                                 dict({
                                   <class 'compiler.ast.ArrayElement'>: dict({
                                     'element': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 3,
                                       }),
                                     }),
@@ -2986,7 +2986,7 @@
                                                       <class 'compiler.ast.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Bool'>,
@@ -3007,7 +3007,7 @@
                                                       <class 'compiler.ast.ArrayPatternElement'>: dict({
                                                         'fields': dict({
                                                           'literal': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -3065,7 +3065,7 @@
                                                       <class 'compiler.ast.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Bool'>,
@@ -3100,7 +3100,7 @@
                                                       <class 'compiler.ast.ArrayPatternElement'>: dict({
                                                         'fields': dict({
                                                           'literal': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -3144,7 +3144,7 @@
                                                       <class 'compiler.ast.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Bool'>,
@@ -3193,7 +3193,7 @@
                                                       <class 'compiler.ast.ArrayPatternElement'>: dict({
                                                         'fields': dict({
                                                           'literal': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -3223,7 +3223,7 @@
                                                       <class 'compiler.ast.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.BoolLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Bool'>,
@@ -3339,7 +3339,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -3353,7 +3353,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -3367,94 +3367,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
-                                                      'fields': dict({
-                                                      }),
-                                                      'type': <class 'compiler.langtypes.Int'>,
-                                                    }),
-                                                  }),
-                                                }),
-                                                'type': <class 'compiler.langtypes.Int'>,
-                                              }),
-                                            }),
-                                          ]),
-                                        }),
-                                        'type': <class 'compiler.langtypes.Int'>,
-                                      }),
-                                    }),
-                                  }),
-                                  'type': <class 'compiler.langtypes.Array'>,
-                                }),
-                              }),
-                            ]),
-                          }),
-                          'type': <class 'compiler.langtypes.Function.Params'>,
-                        }),
-                      }),
-                      'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
-                          'fields': dict({
-                          }),
-                          'type': <class 'compiler.langtypes.Function'>,
-                        }),
-                      }),
-                    }),
-                    'type': <class 'compiler.langtypes.Bool'>,
-                  }),
-                }),
-              }),
-            }),
-          }),
-          dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
-              'fields': dict({
-                'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
-                    'fields': dict({
-                      'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
-                          'fields': dict({
-                            'args': list([
-                              dict({
-                                <class 'compiler.ast.ArrayLiteral'>: dict({
-                                  'fields': dict({
-                                    'members': dict({
-                                      <class 'compiler.ast.ArrayElements'>: dict({
-                                        'fields': dict({
-                                          'members': list([
-                                            dict({
-                                              <class 'compiler.ast.ArrayElement'>: dict({
-                                                'fields': dict({
-                                                  'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
-                                                      'fields': dict({
-                                                      }),
-                                                      'type': <class 'compiler.langtypes.Int'>,
-                                                    }),
-                                                  }),
-                                                }),
-                                                'type': <class 'compiler.langtypes.Int'>,
-                                              }),
-                                            }),
-                                            dict({
-                                              <class 'compiler.ast.ArrayElement'>: dict({
-                                                'fields': dict({
-                                                  'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
-                                                      'fields': dict({
-                                                      }),
-                                                      'type': <class 'compiler.langtypes.Int'>,
-                                                    }),
-                                                  }),
-                                                }),
-                                                'type': <class 'compiler.langtypes.Int'>,
-                                              }),
-                                            }),
-                                            dict({
-                                              <class 'compiler.ast.ArrayElement'>: dict({
-                                                'fields': dict({
-                                                  'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -3513,7 +3426,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -3527,7 +3440,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -3541,7 +3454,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -3600,7 +3513,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -3614,7 +3527,7 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -3628,7 +3541,94 @@
                                               <class 'compiler.ast.ArrayElement'>: dict({
                                                 'fields': dict({
                                                   'element': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
+                                                      'fields': dict({
+                                                      }),
+                                                      'type': <class 'compiler.langtypes.Int'>,
+                                                    }),
+                                                  }),
+                                                }),
+                                                'type': <class 'compiler.langtypes.Int'>,
+                                              }),
+                                            }),
+                                          ]),
+                                        }),
+                                        'type': <class 'compiler.langtypes.Int'>,
+                                      }),
+                                    }),
+                                  }),
+                                  'type': <class 'compiler.langtypes.Array'>,
+                                }),
+                              }),
+                            ]),
+                          }),
+                          'type': <class 'compiler.langtypes.Function.Params'>,
+                        }),
+                      }),
+                      'callee': dict({
+                        <class 'compiler.ast.Variable'>: dict({
+                          'fields': dict({
+                          }),
+                          'type': <class 'compiler.langtypes.Function'>,
+                        }),
+                      }),
+                    }),
+                    'type': <class 'compiler.langtypes.Bool'>,
+                  }),
+                }),
+              }),
+            }),
+          }),
+          dict({
+            <class 'compiler.ast.VariableDeclaration'>: dict({
+              'fields': dict({
+                'rvalue': dict({
+                  <class 'compiler.ast.FunctionCall'>: dict({
+                    'fields': dict({
+                      'args': dict({
+                        <class 'compiler.ast.FunctionArgs'>: dict({
+                          'fields': dict({
+                            'args': list([
+                              dict({
+                                <class 'compiler.ast.ArrayLiteral'>: dict({
+                                  'fields': dict({
+                                    'members': dict({
+                                      <class 'compiler.ast.ArrayElements'>: dict({
+                                        'fields': dict({
+                                          'members': list([
+                                            dict({
+                                              <class 'compiler.ast.ArrayElement'>: dict({
+                                                'fields': dict({
+                                                  'element': dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
+                                                      'fields': dict({
+                                                      }),
+                                                      'type': <class 'compiler.langtypes.Int'>,
+                                                    }),
+                                                  }),
+                                                }),
+                                                'type': <class 'compiler.langtypes.Int'>,
+                                              }),
+                                            }),
+                                            dict({
+                                              <class 'compiler.ast.ArrayElement'>: dict({
+                                                'fields': dict({
+                                                  'element': dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
+                                                      'fields': dict({
+                                                      }),
+                                                      'type': <class 'compiler.langtypes.Int'>,
+                                                    }),
+                                                  }),
+                                                }),
+                                                'type': <class 'compiler.langtypes.Int'>,
+                                              }),
+                                            }),
+                                            dict({
+                                              <class 'compiler.ast.ArrayElement'>: dict({
+                                                'fields': dict({
+                                                  'element': dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -3682,7 +3682,7 @@
               <class 'compiler.ast.UnaryOp'>: dict({
                 'op': Token('MINUS', '-'),
                 'operand': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'value': 1,
                   }),
                 }),
@@ -3704,7 +3704,7 @@
                               <class 'compiler.ast.Assignment'>: dict({
                                 'lvalue': Token('IDENTIFIER', 'result'),
                                 'rvalue': dict({
-                                  <class 'compiler.ast.IntLiteral'>: dict({
+                                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                                     'value': 1,
                                   }),
                                 }),
@@ -3714,7 +3714,7 @@
                         }),
                       }),
                       'pattern': dict({
-                        <class 'compiler.ast.BoolLiteral'>: dict({
+                        <class 'compiler.ast.literals.BoolLiteral'>: dict({
                           'value': True,
                         }),
                       }),
@@ -3729,7 +3729,7 @@
                               <class 'compiler.ast.Assignment'>: dict({
                                 'lvalue': Token('IDENTIFIER', 'result'),
                                 'rvalue': dict({
-                                  <class 'compiler.ast.IntLiteral'>: dict({
+                                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                                     'value': 0,
                                   }),
                                 }),
@@ -3739,7 +3739,7 @@
                         }),
                       }),
                       'pattern': dict({
-                        <class 'compiler.ast.BoolLiteral'>: dict({
+                        <class 'compiler.ast.literals.BoolLiteral'>: dict({
                           'value': False,
                         }),
                       }),
@@ -3749,7 +3749,7 @@
               }),
             }),
             'expr': dict({
-              <class 'compiler.ast.BoolLiteral'>: dict({
+              <class 'compiler.ast.literals.BoolLiteral'>: dict({
                 'value': True,
               }),
             }),
@@ -3771,7 +3771,7 @@
                   <class 'compiler.ast.UnaryOp'>: dict({
                     'fields': dict({
                       'operand': dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -3802,7 +3802,7 @@
                                         <class 'compiler.ast.Assignment'>: dict({
                                           'fields': dict({
                                             'rvalue': dict({
-                                              <class 'compiler.ast.IntLiteral'>: dict({
+                                              <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                 'fields': dict({
                                                 }),
                                                 'type': <class 'compiler.langtypes.Int'>,
@@ -3816,7 +3816,7 @@
                                 }),
                               }),
                               'pattern': dict({
-                                <class 'compiler.ast.BoolLiteral'>: dict({
+                                <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Bool'>,
@@ -3837,7 +3837,7 @@
                                         <class 'compiler.ast.Assignment'>: dict({
                                           'fields': dict({
                                             'rvalue': dict({
-                                              <class 'compiler.ast.IntLiteral'>: dict({
+                                              <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                 'fields': dict({
                                                 }),
                                                 'type': <class 'compiler.langtypes.Int'>,
@@ -3851,7 +3851,7 @@
                                 }),
                               }),
                               'pattern': dict({
-                                <class 'compiler.ast.BoolLiteral'>: dict({
+                                <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Bool'>,
@@ -3866,7 +3866,7 @@
                   }),
                 }),
                 'expr': dict({
-                  <class 'compiler.ast.BoolLiteral'>: dict({
+                  <class 'compiler.ast.literals.BoolLiteral'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Bool'>,

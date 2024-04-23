@@ -9,12 +9,12 @@
             <class 'compiler.ast.FunctionArgs'>: dict({
               'args': list([
                 dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'value': 2,
                   }),
                 }),
                 dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'value': 3,
                   }),
                 }),
@@ -43,14 +43,14 @@
                   'fields': dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
                         }),
                       }),
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,

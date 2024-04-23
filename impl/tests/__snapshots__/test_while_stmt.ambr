@@ -7,7 +7,7 @@
           <class 'compiler.ast.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
-              <class 'compiler.ast.IntLiteral'>: dict({
+              <class 'compiler.ast.literals.IntLiteral'>: dict({
                 'value': 5,
               }),
             }),
@@ -24,7 +24,7 @@
                 }),
                 'op': Token('__ANON_4', '!='),
                 'right': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'value': 0,
                   }),
                 }),
@@ -45,7 +45,7 @@
                           }),
                           'op': Token('MINUS', '-'),
                           'right': dict({
-                            <class 'compiler.ast.IntLiteral'>: dict({
+                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                               'value': 1,
                             }),
                           }),
@@ -71,7 +71,7 @@
             <class 'compiler.ast.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -94,7 +94,7 @@
                         }),
                       }),
                       'right': dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -122,7 +122,7 @@
                                       }),
                                     }),
                                     'right': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'fields': dict({
                                         }),
                                         'type': <class 'compiler.langtypes.Int'>,

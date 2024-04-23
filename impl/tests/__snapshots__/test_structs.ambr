@@ -124,7 +124,7 @@
                         <class 'compiler.ast.StructInitMember'>: dict({
                           'name': Token('IDENTIFIER', 'name'),
                           'value': dict({
-                            <class 'compiler.ast.StringLiteral'>: dict({
+                            <class 'compiler.ast.literals.StringLiteral'>: dict({
                               'value': 'bob',
                             }),
                           }),
@@ -134,7 +134,7 @@
                         <class 'compiler.ast.StructInitMember'>: dict({
                           'name': Token('IDENTIFIER', 'age'),
                           'value': dict({
-                            <class 'compiler.ast.IntLiteral'>: dict({
+                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                               'value': 23,
                             }),
                           }),
@@ -218,7 +218,7 @@
                                 <class 'compiler.ast.StructInitMember'>: dict({
                                   'fields': dict({
                                     'value': dict({
-                                      <class 'compiler.ast.StringLiteral'>: dict({
+                                      <class 'compiler.ast.literals.StringLiteral'>: dict({
                                         'fields': dict({
                                         }),
                                         'type': <class 'compiler.langtypes.String'>,
@@ -232,7 +232,7 @@
                                 <class 'compiler.ast.StructInitMember'>: dict({
                                   'fields': dict({
                                     'value': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'fields': dict({
                                         }),
                                         'type': <class 'compiler.langtypes.Int'>,

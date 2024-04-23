@@ -7,7 +7,7 @@
           <class 'compiler.ast.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
-              <class 'compiler.ast.StringLiteral'>: dict({
+              <class 'compiler.ast.literals.StringLiteral'>: dict({
                 'value': 'outside',
               }),
             }),
@@ -18,7 +18,7 @@
             'if_stmt': dict({
               <class 'compiler.ast.IfStmt'>: dict({
                 'cond': dict({
-                  <class 'compiler.ast.BoolLiteral'>: dict({
+                  <class 'compiler.ast.literals.BoolLiteral'>: dict({
                     'value': True,
                   }),
                 }),
@@ -29,7 +29,7 @@
                         <class 'compiler.ast.VariableDeclaration'>: dict({
                           'ident': Token('IDENTIFIER', 'x'),
                           'rvalue': dict({
-                            <class 'compiler.ast.StringLiteral'>: dict({
+                            <class 'compiler.ast.literals.StringLiteral'>: dict({
                               'value': 'inside',
                             }),
                           }),
@@ -55,7 +55,7 @@
             <class 'compiler.ast.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.StringLiteral'>: dict({
+                  <class 'compiler.ast.literals.StringLiteral'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.String'>,
@@ -71,7 +71,7 @@
                   <class 'compiler.ast.IfStmt'>: dict({
                     'fields': dict({
                       'cond': dict({
-                        <class 'compiler.ast.BoolLiteral'>: dict({
+                        <class 'compiler.ast.literals.BoolLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Bool'>,
@@ -85,7 +85,7 @@
                                 <class 'compiler.ast.VariableDeclaration'>: dict({
                                   'fields': dict({
                                     'rvalue': dict({
-                                      <class 'compiler.ast.StringLiteral'>: dict({
+                                      <class 'compiler.ast.literals.StringLiteral'>: dict({
                                         'fields': dict({
                                         }),
                                         'type': <class 'compiler.langtypes.String'>,
@@ -117,7 +117,7 @@
           <class 'compiler.ast.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
-              <class 'compiler.ast.StringLiteral'>: dict({
+              <class 'compiler.ast.literals.StringLiteral'>: dict({
                 'value': 'outside',
               }),
             }),
@@ -128,7 +128,7 @@
             'if_stmt': dict({
               <class 'compiler.ast.IfStmt'>: dict({
                 'cond': dict({
-                  <class 'compiler.ast.BoolLiteral'>: dict({
+                  <class 'compiler.ast.literals.BoolLiteral'>: dict({
                     'value': True,
                   }),
                 }),
@@ -139,7 +139,7 @@
                         <class 'compiler.ast.VariableDeclaration'>: dict({
                           'ident': Token('IDENTIFIER', 'x'),
                           'rvalue': dict({
-                            <class 'compiler.ast.IntLiteral'>: dict({
+                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                               'value': 8,
                             }),
                           }),
@@ -165,7 +165,7 @@
             <class 'compiler.ast.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.StringLiteral'>: dict({
+                  <class 'compiler.ast.literals.StringLiteral'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.String'>,
@@ -181,7 +181,7 @@
                   <class 'compiler.ast.IfStmt'>: dict({
                     'fields': dict({
                       'cond': dict({
-                        <class 'compiler.ast.BoolLiteral'>: dict({
+                        <class 'compiler.ast.literals.BoolLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Bool'>,
@@ -195,7 +195,7 @@
                                 <class 'compiler.ast.VariableDeclaration'>: dict({
                                   'fields': dict({
                                     'rvalue': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'fields': dict({
                                         }),
                                         'type': <class 'compiler.langtypes.Int'>,

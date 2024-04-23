@@ -3,7 +3,7 @@
   dict({
     <class 'compiler.ast.PrintStmt'>: dict({
       'expr': dict({
-        <class 'compiler.ast.StringLiteral'>: dict({
+        <class 'compiler.ast.literals.StringLiteral'>: dict({
           'value': 'hello world',
         }),
       }),
@@ -15,7 +15,7 @@
     <class 'compiler.ast.PrintStmt'>: dict({
       'fields': dict({
         'expr': dict({
-          <class 'compiler.ast.StringLiteral'>: dict({
+          <class 'compiler.ast.literals.StringLiteral'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.String'>,
@@ -33,7 +33,7 @@
           <class 'compiler.ast.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
-              <class 'compiler.ast.IntLiteral'>: dict({
+              <class 'compiler.ast.literals.IntLiteral'>: dict({
                 'value': 2,
               }),
             }),
@@ -50,7 +50,7 @@
                 }),
                 'op': Token('PLUS', '+'),
                 'right': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'value': 1,
                   }),
                 }),
@@ -71,7 +71,7 @@
             <class 'compiler.ast.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -94,7 +94,7 @@
                         }),
                       }),
                       'right': dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,

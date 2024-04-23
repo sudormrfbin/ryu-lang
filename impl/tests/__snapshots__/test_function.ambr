@@ -73,12 +73,12 @@
                   <class 'compiler.ast.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 1,
                         }),
                       }),
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 2,
                         }),
                       }),
@@ -199,14 +199,14 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
                                 }),
                               }),
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -344,12 +344,12 @@
                   <class 'compiler.ast.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 3,
                         }),
                       }),
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 9,
                         }),
                       }),
@@ -518,14 +518,14 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
                                 }),
                               }),
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -609,7 +609,7 @@
                   <class 'compiler.ast.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 8,
                         }),
                       }),
@@ -702,7 +702,7 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -744,7 +744,7 @@
                   dict({
                     <class 'compiler.ast.ReturnStmt'>: dict({
                       'return_value': dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 1,
                         }),
                       }),
@@ -795,7 +795,7 @@
                           <class 'compiler.ast.ReturnStmt'>: dict({
                             'fields': dict({
                               'return_value': dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -873,7 +873,7 @@
             dict({
               <class 'compiler.ast.ReturnStmt'>: dict({
                 'return_value': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'value': 1,
                   }),
                 }),
@@ -933,7 +933,7 @@
                   <class 'compiler.ast.ReturnStmt'>: dict({
                     'fields': dict({
                       'return_value': dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1450,7 +1450,7 @@
             dict({
               <class 'compiler.ast.ReturnStmt'>: dict({
                 'return_value': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'value': 1,
                   }),
                 }),
@@ -1480,7 +1480,7 @@
                   <class 'compiler.ast.ReturnStmt'>: dict({
                     'fields': dict({
                       'return_value': dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1552,7 +1552,7 @@
                                                   }),
                                                   'op': Token('MINUS', '-'),
                                                   'right': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'value': 1,
                                                     }),
                                                   }),
@@ -1592,7 +1592,7 @@
                               }),
                               'op': Token('__ANON_7', '<='),
                               'right': dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'value': 0,
                                 }),
                               }),
@@ -1604,7 +1604,7 @@
                                 dict({
                                   <class 'compiler.ast.ReturnStmt'>: dict({
                                     'return_value': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 1,
                                       }),
                                     }),
@@ -1637,7 +1637,7 @@
                   <class 'compiler.ast.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 1,
                         }),
                       }),
@@ -1662,7 +1662,7 @@
                   <class 'compiler.ast.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 2,
                         }),
                       }),
@@ -1687,7 +1687,7 @@
                   <class 'compiler.ast.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 3,
                         }),
                       }),
@@ -1712,7 +1712,7 @@
                   <class 'compiler.ast.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 4,
                         }),
                       }),
@@ -1737,7 +1737,7 @@
                   <class 'compiler.ast.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 5,
                         }),
                       }),
@@ -1762,7 +1762,7 @@
                   <class 'compiler.ast.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 6,
                         }),
                       }),
@@ -1848,7 +1848,7 @@
                                                                         }),
                                                                       }),
                                                                       'right': dict({
-                                                                        <class 'compiler.ast.IntLiteral'>: dict({
+                                                                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                                           'fields': dict({
                                                                           }),
                                                                           'type': <class 'compiler.langtypes.Int'>,
@@ -1906,7 +1906,7 @@
                                             }),
                                           }),
                                           'right': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'fields': dict({
                                               }),
                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1924,7 +1924,7 @@
                                               <class 'compiler.ast.ReturnStmt'>: dict({
                                                 'fields': dict({
                                                   'return_value': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -1968,7 +1968,7 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -2004,7 +2004,7 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -2040,7 +2040,7 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -2076,7 +2076,7 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -2112,7 +2112,7 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -2148,7 +2148,7 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,

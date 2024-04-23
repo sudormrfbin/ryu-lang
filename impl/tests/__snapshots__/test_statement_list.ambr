@@ -4,12 +4,12 @@
     <class 'compiler.ast.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.IntLiteral'>: dict({
+          <class 'compiler.ast.literals.IntLiteral'>: dict({
             'value': 1,
           }),
         }),
         dict({
-          <class 'compiler.ast.IntLiteral'>: dict({
+          <class 'compiler.ast.literals.IntLiteral'>: dict({
             'value': 2,
           }),
         }),
@@ -23,14 +23,14 @@
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.IntLiteral'>: dict({
+            <class 'compiler.ast.literals.IntLiteral'>: dict({
               'fields': dict({
               }),
               'type': <class 'compiler.langtypes.Int'>,
             }),
           }),
           dict({
-            <class 'compiler.ast.IntLiteral'>: dict({
+            <class 'compiler.ast.literals.IntLiteral'>: dict({
               'fields': dict({
               }),
               'type': <class 'compiler.langtypes.Int'>,
@@ -46,12 +46,12 @@
     <class 'compiler.ast.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.IntLiteral'>: dict({
+          <class 'compiler.ast.literals.IntLiteral'>: dict({
             'value': 1,
           }),
         }),
         dict({
-          <class 'compiler.ast.IntLiteral'>: dict({
+          <class 'compiler.ast.literals.IntLiteral'>: dict({
             'value': 2,
           }),
         }),
@@ -65,14 +65,14 @@
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.IntLiteral'>: dict({
+            <class 'compiler.ast.literals.IntLiteral'>: dict({
               'fields': dict({
               }),
               'type': <class 'compiler.langtypes.Int'>,
             }),
           }),
           dict({
-            <class 'compiler.ast.IntLiteral'>: dict({
+            <class 'compiler.ast.literals.IntLiteral'>: dict({
               'fields': dict({
               }),
               'type': <class 'compiler.langtypes.Int'>,
@@ -85,14 +85,14 @@
 # ---
 # name: test_statement_with_multiple_newlines_fallsthrough_to_expression
   dict({
-    <class 'compiler.ast.IntLiteral'>: dict({
+    <class 'compiler.ast.literals.IntLiteral'>: dict({
       'value': 1,
     }),
   })
 # ---
 # name: test_statement_with_multiple_newlines_fallsthrough_to_expression.1
   dict({
-    <class 'compiler.ast.IntLiteral'>: dict({
+    <class 'compiler.ast.literals.IntLiteral'>: dict({
       'fields': dict({
       }),
       'type': <class 'compiler.langtypes.Int'>,
@@ -101,14 +101,14 @@
 # ---
 # name: test_statement_with_single_newline_fallsthrough_to_expression
   dict({
-    <class 'compiler.ast.IntLiteral'>: dict({
+    <class 'compiler.ast.literals.IntLiteral'>: dict({
       'value': 1,
     }),
   })
 # ---
 # name: test_statement_with_single_newline_fallsthrough_to_expression.1
   dict({
-    <class 'compiler.ast.IntLiteral'>: dict({
+    <class 'compiler.ast.literals.IntLiteral'>: dict({
       'fields': dict({
       }),
       'type': <class 'compiler.langtypes.Int'>,
@@ -117,14 +117,14 @@
 # ---
 # name: test_statement_without_newline_fallsthrough_to_expression
   dict({
-    <class 'compiler.ast.IntLiteral'>: dict({
+    <class 'compiler.ast.literals.IntLiteral'>: dict({
       'value': 1,
     }),
   })
 # ---
 # name: test_statement_without_newline_fallsthrough_to_expression.1
   dict({
-    <class 'compiler.ast.IntLiteral'>: dict({
+    <class 'compiler.ast.literals.IntLiteral'>: dict({
       'fields': dict({
       }),
       'type': <class 'compiler.langtypes.Int'>,

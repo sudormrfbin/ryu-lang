@@ -1,12 +1,12 @@
 import abc
 from typing import Any, Optional, TypeAlias
-import typing
-import dataclasses
 from dataclasses import dataclass
 from typing_extensions import override
 
+from compiler.ast.base import Ast
+from compiler.ast.expressions import Expression
+from compiler.ast.literals import BoolLiteral, IntLiteral
 from compiler.lalr import Token
-from compiler.lalr import Meta as LarkMeta
 
 from compiler.env import FunctionDefScope, RuntimeEnvironment, TypeEnvironment
 
@@ -21,77 +21,11 @@ from compiler.matcher import (
     Wildcard,
 )
 
+from compiler.ast.literals import StringLiteral as StringLiteral
 
-SKIP_SERIALIZE = "skip_serialize"
 
 # TODO: Narrow down this type
 EvalResult = Any
-
-AstDict = dict[typing.Type["Ast"], dict[str, Any]]
-
-
-@dataclass
-class Ast(abc.ABC):
-    # InitVar makes meta available on the __post_init__ method
-    # and excludes it in the generated __init__.
-    meta: dataclasses.InitVar[LarkMeta]
-    """Line and column numbers from lark framework.
-    Converted to Span for strorage within the class."""
-
-    span: errors.Span = dataclasses.field(init=False, metadata={SKIP_SERIALIZE: True})
-    """Line and column number information."""
-
-    def __post_init__(self, meta: LarkMeta):
-        self.span = errors.Span.from_meta(meta)
-
-    def to_dict(self) -> AstDict:
-        attrs: dict[str, Any] = {}
-
-        for field in dataclasses.fields(self):
-            if SKIP_SERIALIZE in field.metadata:
-                continue
-
-            value = getattr(self, field.name)
-            if isinstance(value, Ast):
-                attrs[field.name] = value.to_dict()
-            elif isinstance(value, list):
-                match value:
-                    case []:
-                        attrs[field.name] = []
-                    case [Ast(), *_]:  # type: ignore
-                        attrs[field.name] = [v.to_dict() for v in value]  # type: ignore
-                    case _:  # type: ignore
-                        pass
-            elif value is not None:
-                attrs[field.name] = value
-
-        return {type(self): attrs}
-
-    def to_type_dict(self) -> dict[Any, Any]:
-        attrs = {}
-
-        if ty := getattr(self, "type", None):
-            attrs["type"] = type(ty)
-
-        fields = attrs["fields"] = {}
-
-        for field in dataclasses.fields(self):
-            if SKIP_SERIALIZE in field.metadata:
-                continue
-
-            value = getattr(self, field.name)
-            if isinstance(value, Ast):
-                fields[field.name] = value.to_type_dict()
-            elif isinstance(value, list):
-                match value:
-                    case []:
-                        fields[field.name] = []
-                    case [Ast(), *_]:  # type: ignore
-                        fields[field.name] = [v.to_type_dict() for v in value]  # type: ignore
-                    case _:  # type: ignore
-                        pass
-
-        return {type(self): attrs}
 
 
 class Statement(Ast):
@@ -128,24 +62,6 @@ class StatementBlock(StatementList):
     def eval(self, env: RuntimeEnvironment):
         child_env = RuntimeEnvironment(enclosing=env)
         return super().eval(child_env)
-
-
-@dataclass
-class Expression(Ast):
-    # kw_only is required to make dataclasses play nice with inheritance and
-    # fields with default values. https://stackoverflow.com/a/69822584/7115678
-    type: langtypes.Type | None = dataclasses.field(
-        default=None,
-        kw_only=True,
-    )
-
-    @abc.abstractmethod
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        pass
-
-    @abc.abstractmethod
-    def eval(self, env: RuntimeEnvironment) -> EvalResult:
-        pass
 
 
 @dataclass
@@ -1522,48 +1438,6 @@ class UnaryOp(Expression):
                 raise errors.InternalCompilerError(
                     f"{type(self).__name__} recieved invalid operator {self.op}"
                 )
-
-
-@dataclass
-class BoolLiteral(Expression):
-    value: bool
-
-    @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type = langtypes.BOOL
-        return self.type
-
-    @override
-    def eval(self, env: RuntimeEnvironment):
-        return self.value
-
-
-@dataclass
-class IntLiteral(Expression):
-    value: int
-
-    @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type = langtypes.INT
-        return self.type
-
-    @override
-    def eval(self, env: RuntimeEnvironment):
-        return self.value
-
-
-@dataclass
-class StringLiteral(Expression):
-    value: str
-
-    @override
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type = langtypes.STRING
-        return self.type
-
-    @override
-    def eval(self, env: RuntimeEnvironment):
-        return self.value
 
 
 @dataclass

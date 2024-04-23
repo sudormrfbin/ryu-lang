@@ -7,7 +7,7 @@
           <class 'compiler.ast.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
-              <class 'compiler.ast.IntLiteral'>: dict({
+              <class 'compiler.ast.literals.IntLiteral'>: dict({
                 'value': 1,
               }),
             }),
@@ -17,7 +17,7 @@
           <class 'compiler.ast.Assignment'>: dict({
             'lvalue': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
-              <class 'compiler.ast.IntLiteral'>: dict({
+              <class 'compiler.ast.literals.IntLiteral'>: dict({
                 'value': 4,
               }),
             }),
@@ -36,7 +36,7 @@
             <class 'compiler.ast.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -49,7 +49,7 @@
             <class 'compiler.ast.Assignment'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,

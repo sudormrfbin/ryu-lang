@@ -3,13 +3,13 @@
   dict({
     <class 'compiler.ast.Term'>: dict({
       'left': dict({
-        <class 'compiler.ast.StringLiteral'>: dict({
+        <class 'compiler.ast.literals.StringLiteral'>: dict({
           'value': 'hello',
         }),
       }),
       'op': Token('PLUS', '+'),
       'right': dict({
-        <class 'compiler.ast.StringLiteral'>: dict({
+        <class 'compiler.ast.literals.StringLiteral'>: dict({
           'value': 'world',
         }),
       }),
@@ -21,14 +21,14 @@
     <class 'compiler.ast.Term'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.StringLiteral'>: dict({
+          <class 'compiler.ast.literals.StringLiteral'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.String'>,
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.StringLiteral'>: dict({
+          <class 'compiler.ast.literals.StringLiteral'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.String'>,
@@ -43,7 +43,7 @@
   dict({
     <class 'compiler.ast.Term'>: dict({
       'left': dict({
-        <class 'compiler.ast.StringLiteral'>: dict({
+        <class 'compiler.ast.literals.StringLiteral'>: dict({
           'value': 'hello',
         }),
       }),
@@ -51,13 +51,13 @@
       'right': dict({
         <class 'compiler.ast.Term'>: dict({
           'left': dict({
-            <class 'compiler.ast.StringLiteral'>: dict({
+            <class 'compiler.ast.literals.StringLiteral'>: dict({
               'value': ' ',
             }),
           }),
           'op': Token('PLUS', '+'),
           'right': dict({
-            <class 'compiler.ast.StringLiteral'>: dict({
+            <class 'compiler.ast.literals.StringLiteral'>: dict({
               'value': 'world',
             }),
           }),
@@ -71,7 +71,7 @@
     <class 'compiler.ast.Term'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.StringLiteral'>: dict({
+          <class 'compiler.ast.literals.StringLiteral'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.String'>,
@@ -81,14 +81,14 @@
           <class 'compiler.ast.Term'>: dict({
             'fields': dict({
               'left': dict({
-                <class 'compiler.ast.StringLiteral'>: dict({
+                <class 'compiler.ast.literals.StringLiteral'>: dict({
                   'fields': dict({
                   }),
                   'type': <class 'compiler.langtypes.String'>,
                 }),
               }),
               'right': dict({
-                <class 'compiler.ast.StringLiteral'>: dict({
+                <class 'compiler.ast.literals.StringLiteral'>: dict({
                   'fields': dict({
                   }),
                   'type': <class 'compiler.langtypes.String'>,
