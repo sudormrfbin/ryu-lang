@@ -47,12 +47,12 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     if_stmt = ast.if_stmt.IfStmt
     else_if_ladder = listify(ast.if_stmt.ElseIfLadder)
     else_if_stmt = ast.if_stmt.ElseIfStmt
-    match_stmt = ast.MatchStmt
-    case_ladder = listify(ast.CaseLadder)
-    case_stmt = ast.CaseStmt
-    enum_pattern = ast.EnumPattern
-    enum_pattern_tuple = ast.EnumPatternTuple
-    wildcard_pattern = ast.WildcardPattern
+    match_stmt = ast.match.MatchStmt
+    case_ladder = listify(ast.match.CaseLadder)
+    case_stmt = ast.match.CaseStmt
+    enum_pattern = ast.match.EnumPattern
+    enum_pattern_tuple = ast.match.EnumPatternTuple
+    wildcard_pattern = ast.match.WildcardPattern
     while_stmt = ast.WhileStmt
     for_stmt = ast.ForStmt
     for_stmt_int = ast.ForStmtInt
@@ -81,8 +81,8 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     function_args = listify(ast.FunctionArgs)
     struct_init_members = listify(ast.StructInitMembers)
     struct_init_member = ast.StructInitMember
-    bool_literal = ast.BoolLiteral
-    int_literal = ast.IntLiteral
+    bool_literal = ast.literals.BoolLiteral
+    int_literal = ast.literals.IntLiteral
     string_literal = ast.StringLiteral
     enum_literal_simple = ast.EnumLiteralSimple
     enum_literal_tuple = ast.EnumLiteralTuple
@@ -90,8 +90,8 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     array_literal = ast.ArrayLiteral
     array_elements = listify(ast.ArrayElements)
     array_element = ast.ArrayElement
-    array_pattern = listify(ast.ArrayPattern)
-    array_pattern_element = ast.ArrayPatternElement
+    array_pattern = listify(ast.match.ArrayPattern)
+    array_pattern_element = ast.match.ArrayPatternElement
 
 
 _transformer = LarkTreeToAstTransformer()

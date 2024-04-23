@@ -16,10 +16,10 @@ from compiler import errors, langtypes
 
 
 if TYPE_CHECKING:
-    from compiler.ast import EnumPatternTuple
-    from compiler.ast import EnumPattern
-    from compiler.ast import ArrayPattern
-    from compiler.ast import BoolLiteral, WildcardPattern
+    from compiler.ast.match import EnumPatternTuple
+    from compiler.ast.match import EnumPattern
+    from compiler.ast.match import ArrayPattern, WildcardPattern
+    from compiler.ast import BoolLiteral
     from compiler.errors import Span
 
 
@@ -41,7 +41,7 @@ class BoolPatternMatcher:
         self.cases: dict[bool | Wildcard, Span] = {}
 
     def add_case(self, arm: "BoolLiteral | WildcardPattern"):
-        from compiler.ast import BoolLiteral, WildcardPattern
+        from compiler.ast.match import BoolLiteral, WildcardPattern
 
         match arm:
             case BoolLiteral():
@@ -70,7 +70,7 @@ class ArrayPatternMatcher:
         self.cases: dict[tuple[int | Wildcard, ...] | Wildcard, Span] = {}
 
     def add_case(self, arm: "ArrayPattern | WildcardPattern"):
-        from compiler.ast import ArrayPattern, WildcardPattern
+        from compiler.ast.match import ArrayPattern, WildcardPattern
 
         match arm:
             case ArrayPattern():
@@ -90,12 +90,6 @@ class ArrayPatternMatcher:
         return {"_"}
 
 
-@dataclass
-class _EnumVariant:
-    name: str
-    inner: "Optional[BoolPatternMatcher | ArrayPatternMatcher | EnumPatternMatcher]"
-
-
 Matcher: TypeAlias = "BoolPatternMatcher | ArrayPatternMatcher | EnumPatternMatcher"
 
 
@@ -105,7 +99,7 @@ class EnumPatternMatcher:
         self.enum = enum
 
     def add_case(self, arm: "EnumPattern | EnumPatternTuple | WildcardPattern"):
-        from compiler.ast import (
+        from compiler.ast.match import (
             EnumPattern,
             WildcardPattern,
             EnumPatternTuple,

@@ -219,12 +219,12 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.MatchStmt'>: dict({
+          <class 'compiler.ast.match.MatchStmt'>: dict({
             'cases': dict({
-              <class 'compiler.ast.CaseLadder'>: dict({
+              <class 'compiler.ast.match.CaseLadder'>: dict({
                 'cases': list([
                   dict({
-                    <class 'compiler.ast.CaseStmt'>: dict({
+                    <class 'compiler.ast.match.CaseStmt'>: dict({
                       'block': dict({
                         <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
@@ -242,7 +242,7 @@
                         }),
                       }),
                       'pattern': dict({
-                        <class 'compiler.ast.EnumPattern'>: dict({
+                        <class 'compiler.ast.match.EnumPattern'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'English'),
                         }),
@@ -250,7 +250,7 @@
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.CaseStmt'>: dict({
+                    <class 'compiler.ast.match.CaseStmt'>: dict({
                       'block': dict({
                         <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
@@ -268,7 +268,7 @@
                         }),
                       }),
                       'pattern': dict({
-                        <class 'compiler.ast.EnumPattern'>: dict({
+                        <class 'compiler.ast.match.EnumPattern'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'Malayalam'),
                         }),
@@ -276,7 +276,7 @@
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.CaseStmt'>: dict({
+                    <class 'compiler.ast.match.CaseStmt'>: dict({
                       'block': dict({
                         <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
@@ -294,7 +294,7 @@
                         }),
                       }),
                       'pattern': dict({
-                        <class 'compiler.ast.EnumPattern'>: dict({
+                        <class 'compiler.ast.match.EnumPattern'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'Japanese'),
                         }),
@@ -382,14 +382,14 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.MatchStmt'>: dict({
+            <class 'compiler.ast.match.MatchStmt'>: dict({
               'fields': dict({
                 'cases': dict({
-                  <class 'compiler.ast.CaseLadder'>: dict({
+                  <class 'compiler.ast.match.CaseLadder'>: dict({
                     'fields': dict({
                       'cases': list([
                         dict({
-                          <class 'compiler.ast.CaseStmt'>: dict({
+                          <class 'compiler.ast.match.CaseStmt'>: dict({
                             'fields': dict({
                               'block': dict({
                                 <class 'compiler.ast.statements.StatementBlock'>: dict({
@@ -413,7 +413,7 @@
                                 }),
                               }),
                               'pattern': dict({
-                                <class 'compiler.ast.EnumPattern'>: dict({
+                                <class 'compiler.ast.match.EnumPattern'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,
@@ -424,7 +424,7 @@
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.CaseStmt'>: dict({
+                          <class 'compiler.ast.match.CaseStmt'>: dict({
                             'fields': dict({
                               'block': dict({
                                 <class 'compiler.ast.statements.StatementBlock'>: dict({
@@ -448,7 +448,7 @@
                                 }),
                               }),
                               'pattern': dict({
-                                <class 'compiler.ast.EnumPattern'>: dict({
+                                <class 'compiler.ast.match.EnumPattern'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,
@@ -459,7 +459,7 @@
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.CaseStmt'>: dict({
+                          <class 'compiler.ast.match.CaseStmt'>: dict({
                             'fields': dict({
                               'block': dict({
                                 <class 'compiler.ast.statements.StatementBlock'>: dict({
@@ -483,7 +483,7 @@
                                 }),
                               }),
                               'pattern': dict({
-                                <class 'compiler.ast.EnumPattern'>: dict({
+                                <class 'compiler.ast.match.EnumPattern'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,
@@ -744,12 +744,12 @@
               <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
-                    <class 'compiler.ast.MatchStmt'>: dict({
+                    <class 'compiler.ast.match.MatchStmt'>: dict({
                       'cases': dict({
-                        <class 'compiler.ast.CaseLadder'>: dict({
+                        <class 'compiler.ast.match.CaseLadder'>: dict({
                           'cases': list([
                             dict({
-                              <class 'compiler.ast.CaseStmt'>: dict({
+                              <class 'compiler.ast.match.CaseStmt'>: dict({
                                 'block': dict({
                                   <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
@@ -766,7 +766,7 @@
                                   }),
                                 }),
                                 'pattern': dict({
-                                  <class 'compiler.ast.EnumPatternTuple'>: dict({
+                                  <class 'compiler.ast.match.EnumPatternTuple'>: dict({
                                     'enum_type': Token('IDENTIFIER', 'MaybeBool'),
                                     'tuple_pattern': dict({
                                       <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -779,7 +779,7 @@
                               }),
                             }),
                             dict({
-                              <class 'compiler.ast.CaseStmt'>: dict({
+                              <class 'compiler.ast.match.CaseStmt'>: dict({
                                 'block': dict({
                                   <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
@@ -796,7 +796,7 @@
                                   }),
                                 }),
                                 'pattern': dict({
-                                  <class 'compiler.ast.EnumPatternTuple'>: dict({
+                                  <class 'compiler.ast.match.EnumPatternTuple'>: dict({
                                     'enum_type': Token('IDENTIFIER', 'MaybeBool'),
                                     'tuple_pattern': dict({
                                       <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -809,7 +809,7 @@
                               }),
                             }),
                             dict({
-                              <class 'compiler.ast.CaseStmt'>: dict({
+                              <class 'compiler.ast.match.CaseStmt'>: dict({
                                 'block': dict({
                                   <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
@@ -826,7 +826,7 @@
                                   }),
                                 }),
                                 'pattern': dict({
-                                  <class 'compiler.ast.EnumPattern'>: dict({
+                                  <class 'compiler.ast.match.EnumPattern'>: dict({
                                     'enum_type': Token('IDENTIFIER', 'MaybeBool'),
                                     'variant': Token('IDENTIFIER', 'None'),
                                   }),
@@ -1017,14 +1017,14 @@
                     'fields': dict({
                       'stmts': list([
                         dict({
-                          <class 'compiler.ast.MatchStmt'>: dict({
+                          <class 'compiler.ast.match.MatchStmt'>: dict({
                             'fields': dict({
                               'cases': dict({
-                                <class 'compiler.ast.CaseLadder'>: dict({
+                                <class 'compiler.ast.match.CaseLadder'>: dict({
                                   'fields': dict({
                                     'cases': list([
                                       dict({
-                                        <class 'compiler.ast.CaseStmt'>: dict({
+                                        <class 'compiler.ast.match.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
                                               <class 'compiler.ast.statements.StatementBlock'>: dict({
@@ -1048,7 +1048,7 @@
                                               }),
                                             }),
                                             'pattern': dict({
-                                              <class 'compiler.ast.EnumPatternTuple'>: dict({
+                                              <class 'compiler.ast.match.EnumPatternTuple'>: dict({
                                                 'fields': dict({
                                                   'tuple_pattern': dict({
                                                     <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -1066,7 +1066,7 @@
                                         }),
                                       }),
                                       dict({
-                                        <class 'compiler.ast.CaseStmt'>: dict({
+                                        <class 'compiler.ast.match.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
                                               <class 'compiler.ast.statements.StatementBlock'>: dict({
@@ -1090,7 +1090,7 @@
                                               }),
                                             }),
                                             'pattern': dict({
-                                              <class 'compiler.ast.EnumPatternTuple'>: dict({
+                                              <class 'compiler.ast.match.EnumPatternTuple'>: dict({
                                                 'fields': dict({
                                                   'tuple_pattern': dict({
                                                     <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -1108,7 +1108,7 @@
                                         }),
                                       }),
                                       dict({
-                                        <class 'compiler.ast.CaseStmt'>: dict({
+                                        <class 'compiler.ast.match.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
                                               <class 'compiler.ast.statements.StatementBlock'>: dict({
@@ -1132,7 +1132,7 @@
                                               }),
                                             }),
                                             'pattern': dict({
-                                              <class 'compiler.ast.EnumPattern'>: dict({
+                                              <class 'compiler.ast.match.EnumPattern'>: dict({
                                                 'fields': dict({
                                                 }),
                                                 'type': <class 'compiler.langtypes.Enum'>,
