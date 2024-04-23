@@ -1,0 +1,15 @@
+enum Langs {
+    Malayalam
+    English
+    Japanese
+}
+let lang = Langs::English
+
+let langcode = ""
+match lang {
+    case Langs::English { langcode = "eng" }
+    case Langs::Malayalam { langcode = "ml" }
+    case Langs::Japanese { langcode = "jp" }
+}
+    
+print(langcode)
