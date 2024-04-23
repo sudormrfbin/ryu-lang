@@ -56,11 +56,11 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     while_stmt = ast.WhileStmt
     for_stmt = ast.ForStmt
     for_stmt_int = ast.ForStmtInt
-    struct_stmt = ast.StructStmt
-    struct_members = listify(ast.StructMembers)
-    struct_member = ast.StructMember
-    struct_access = ast.StructAccess
-    struct_assignment = ast.StructAssignment
+    struct_stmt = ast.struct.StructStmt
+    struct_members = listify(ast.struct.StructMembers)
+    struct_member = ast.struct.StructMember
+    struct_access = ast.struct.StructAccess
+    struct_assignment = ast.struct.StructAssignment
     enum_stmt = ast.EnumStmt
     enum_members = listify(ast.EnumMembers)
     enum_member_bare = ast.EnumMemberBare
@@ -80,7 +80,7 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     function_call = ast.FunctionCall
     function_args = listify(ast.FunctionArgs)
     struct_init_members = listify(ast.StructInitMembers)
-    struct_init_member = ast.StructInitMember
+    struct_init_member = ast.struct.StructInitMember
     bool_literal = ast.literals.BoolLiteral
     int_literal = ast.literals.IntLiteral
     string_literal = ast.StringLiteral

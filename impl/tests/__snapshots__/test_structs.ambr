@@ -1,12 +1,12 @@
 # serializer version: 1
 # name: test_struct_def
   dict({
-    <class 'compiler.ast.StructStmt'>: dict({
+    <class 'compiler.ast.struct.StructStmt'>: dict({
       'members': dict({
-        <class 'compiler.ast.StructMembers'>: dict({
+        <class 'compiler.ast.struct.StructMembers'>: dict({
           'members': list([
             dict({
-              <class 'compiler.ast.StructMember'>: dict({
+              <class 'compiler.ast.struct.StructMember'>: dict({
                 'ident_type': dict({
                   <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'string'),
@@ -16,7 +16,7 @@
               }),
             }),
             dict({
-              <class 'compiler.ast.StructMember'>: dict({
+              <class 'compiler.ast.struct.StructMember'>: dict({
                 'ident_type': dict({
                   <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
@@ -34,14 +34,14 @@
 # ---
 # name: test_struct_def.1
   dict({
-    <class 'compiler.ast.StructStmt'>: dict({
+    <class 'compiler.ast.struct.StructStmt'>: dict({
       'fields': dict({
         'members': dict({
-          <class 'compiler.ast.StructMembers'>: dict({
+          <class 'compiler.ast.struct.StructMembers'>: dict({
             'fields': dict({
               'members': list([
                 dict({
-                  <class 'compiler.ast.StructMember'>: dict({
+                  <class 'compiler.ast.struct.StructMember'>: dict({
                     'fields': dict({
                       'ident_type': dict({
                         <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
@@ -55,7 +55,7 @@
                   }),
                 }),
                 dict({
-                  <class 'compiler.ast.StructMember'>: dict({
+                  <class 'compiler.ast.struct.StructMember'>: dict({
                     'fields': dict({
                       'ident_type': dict({
                         <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
@@ -82,12 +82,12 @@
     <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.StructStmt'>: dict({
+          <class 'compiler.ast.struct.StructStmt'>: dict({
             'members': dict({
-              <class 'compiler.ast.StructMembers'>: dict({
+              <class 'compiler.ast.struct.StructMembers'>: dict({
                 'members': list([
                   dict({
-                    <class 'compiler.ast.StructMember'>: dict({
+                    <class 'compiler.ast.struct.StructMember'>: dict({
                       'ident_type': dict({
                         <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'string'),
@@ -97,7 +97,7 @@
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.StructMember'>: dict({
+                    <class 'compiler.ast.struct.StructMember'>: dict({
                       'ident_type': dict({
                         <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
@@ -118,10 +118,10 @@
             'rvalue': dict({
               <class 'compiler.ast.FunctionCall'>: dict({
                 'args': dict({
-                  <class 'compiler.ast.StructInitMembers'>: dict({
+                  <class 'compiler.ast.struct.StructInitMembers'>: dict({
                     'members': list([
                       dict({
-                        <class 'compiler.ast.StructInitMember'>: dict({
+                        <class 'compiler.ast.struct.StructInitMember'>: dict({
                           'name': Token('IDENTIFIER', 'name'),
                           'value': dict({
                             <class 'compiler.ast.literals.StringLiteral'>: dict({
@@ -131,7 +131,7 @@
                         }),
                       }),
                       dict({
-                        <class 'compiler.ast.StructInitMember'>: dict({
+                        <class 'compiler.ast.struct.StructInitMember'>: dict({
                           'name': Token('IDENTIFIER', 'age'),
                           'value': dict({
                             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -162,14 +162,14 @@
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.StructStmt'>: dict({
+            <class 'compiler.ast.struct.StructStmt'>: dict({
               'fields': dict({
                 'members': dict({
-                  <class 'compiler.ast.StructMembers'>: dict({
+                  <class 'compiler.ast.struct.StructMembers'>: dict({
                     'fields': dict({
                       'members': list([
                         dict({
-                          <class 'compiler.ast.StructMember'>: dict({
+                          <class 'compiler.ast.struct.StructMember'>: dict({
                             'fields': dict({
                               'ident_type': dict({
                                 <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
@@ -183,7 +183,7 @@
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.StructMember'>: dict({
+                          <class 'compiler.ast.struct.StructMember'>: dict({
                             'fields': dict({
                               'ident_type': dict({
                                 <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
@@ -211,11 +211,11 @@
                   <class 'compiler.ast.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
-                        <class 'compiler.ast.StructInitMembers'>: dict({
+                        <class 'compiler.ast.struct.StructInitMembers'>: dict({
                           'fields': dict({
                             'members': list([
                               dict({
-                                <class 'compiler.ast.StructInitMember'>: dict({
+                                <class 'compiler.ast.struct.StructInitMember'>: dict({
                                   'fields': dict({
                                     'value': dict({
                                       <class 'compiler.ast.literals.StringLiteral'>: dict({
@@ -229,7 +229,7 @@
                                 }),
                               }),
                               dict({
-                                <class 'compiler.ast.StructInitMember'>: dict({
+                                <class 'compiler.ast.struct.StructInitMember'>: dict({
                                   'fields': dict({
                                     'value': dict({
                                       <class 'compiler.ast.literals.IntLiteral'>: dict({
