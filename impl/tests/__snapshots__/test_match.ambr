@@ -4,22 +4,22 @@
     <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.EnumStmt'>: dict({
+          <class 'compiler.ast.enum.EnumStmt'>: dict({
             'members': dict({
-              <class 'compiler.ast.EnumMembers'>: dict({
+              <class 'compiler.ast.enum.EnumMembers'>: dict({
                 'members': list([
                   dict({
-                    <class 'compiler.ast.EnumMemberBare'>: dict({
+                    <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'Malayalam'),
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.EnumMemberBare'>: dict({
+                    <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'English'),
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.EnumMemberBare'>: dict({
+                    <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'Japanese'),
                     }),
                   }),
@@ -212,28 +212,28 @@
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.EnumStmt'>: dict({
+            <class 'compiler.ast.enum.EnumStmt'>: dict({
               'fields': dict({
                 'members': dict({
-                  <class 'compiler.ast.EnumMembers'>: dict({
+                  <class 'compiler.ast.enum.EnumMembers'>: dict({
                     'fields': dict({
                       'members': list([
                         dict({
-                          <class 'compiler.ast.EnumMemberBare'>: dict({
+                          <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
                             'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.EnumMemberBare'>: dict({
+                          <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
                             'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.EnumMemberBare'>: dict({
+                          <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
                             'type': <class 'compiler.langtypes.Type'>,

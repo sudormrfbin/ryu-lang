@@ -61,10 +61,10 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     struct_member = ast.struct.StructMember
     struct_access = ast.struct.StructAccess
     struct_assignment = ast.struct.StructAssignment
-    enum_stmt = ast.EnumStmt
-    enum_members = listify(ast.EnumMembers)
-    enum_member_bare = ast.EnumMemberBare
-    enum_member_tuple = ast.EnumMemberTuple
+    enum_stmt = ast.enum.EnumStmt
+    enum_members = listify(ast.enum.EnumMembers)
+    enum_member_bare = ast.enum.EnumMemberBare
+    enum_member_tuple = ast.enum.EnumMemberTuple
     function_definition = ast.FunctionDefinition
     function_params = listify(ast.FunctionParams)
     function_param = ast.FunctionParam
