@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_match_array_empty_case[ast]
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'ident': Token('IDENTIFIER', 'i'),
       'rvalue': dict({
         <class 'compiler.ast.FunctionCall'>: dict({
@@ -22,7 +22,7 @@
             }),
           }),
           'callee': dict({
-            <class 'compiler.ast.Variable'>: dict({
+            <class 'compiler.ast.variable.Variable'>: dict({
               'value': Token('IDENTIFIER', 'sum'),
             }),
           }),
@@ -33,7 +33,7 @@
 # ---
 # name: test_match_array_empty_case[typed-ast]
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'fields': dict({
         'rvalue': dict({
           <class 'compiler.ast.FunctionCall'>: dict({
@@ -62,7 +62,7 @@
                 }),
               }),
               'callee': dict({
-                <class 'compiler.ast.Variable'>: dict({
+                <class 'compiler.ast.variable.Variable'>: dict({
                   'fields': dict({
                   }),
                   'type': <class 'compiler.langtypes.Function'>,

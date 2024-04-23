@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_variable_delcaration
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'ident': Token('IDENTIFIER', 'x'),
       'rvalue': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -13,7 +13,7 @@
 # ---
 # name: test_variable_delcaration.1
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'fields': dict({
         'rvalue': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -28,7 +28,7 @@
 # ---
 # name: test_variable_delcaration_with_expressions
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'ident': Token('IDENTIFIER', 'variable'),
       'rvalue': dict({
         <class 'compiler.ast.Equality'>: dict({
@@ -60,7 +60,7 @@
 # ---
 # name: test_variable_delcaration_with_expressions.1
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'fields': dict({
         'rvalue': dict({
           <class 'compiler.ast.Equality'>: dict({

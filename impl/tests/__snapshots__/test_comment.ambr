@@ -4,7 +4,7 @@
     <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
               <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -26,7 +26,7 @@
                   <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
-                        <class 'compiler.ast.Assignment'>: dict({
+                        <class 'compiler.ast.variable.Assignment'>: dict({
                           'lvalue': Token('IDENTIFIER', 'x'),
                           'rvalue': dict({
                             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -52,7 +52,7 @@
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
                   <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -82,7 +82,7 @@
                           'fields': dict({
                             'stmts': list([
                               dict({
-                                <class 'compiler.ast.Assignment'>: dict({
+                                <class 'compiler.ast.variable.Assignment'>: dict({
                                   'fields': dict({
                                     'rvalue': dict({
                                       <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -114,7 +114,7 @@
     <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
               <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -136,7 +136,7 @@
                   <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
-                        <class 'compiler.ast.Assignment'>: dict({
+                        <class 'compiler.ast.variable.Assignment'>: dict({
                           'lvalue': Token('IDENTIFIER', 'x'),
                           'rvalue': dict({
                             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -162,7 +162,7 @@
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
                   <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -192,7 +192,7 @@
                           'fields': dict({
                             'stmts': list([
                               dict({
-                                <class 'compiler.ast.Assignment'>: dict({
+                                <class 'compiler.ast.variable.Assignment'>: dict({
                                   'fields': dict({
                                     'rvalue': dict({
                                       <class 'compiler.ast.literals.IntLiteral'>: dict({

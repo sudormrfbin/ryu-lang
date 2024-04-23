@@ -4,15 +4,15 @@
     <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
-              <class 'compiler.ast.ArrayLiteral'>: dict({
+              <class 'compiler.ast.array.ArrayLiteral'>: dict({
                 'members': dict({
-                  <class 'compiler.ast.ArrayElements'>: dict({
+                  <class 'compiler.ast.array.ArrayElements'>: dict({
                     'members': list([
                       dict({
-                        <class 'compiler.ast.ArrayElement'>: dict({
+                        <class 'compiler.ast.array.ArrayElement'>: dict({
                           'element': dict({
                             <class 'compiler.ast.literals.IntLiteral'>: dict({
                               'value': 2,
@@ -21,7 +21,7 @@
                         }),
                       }),
                       dict({
-                        <class 'compiler.ast.ArrayElement'>: dict({
+                        <class 'compiler.ast.array.ArrayElement'>: dict({
                           'element': dict({
                             <class 'compiler.ast.literals.IntLiteral'>: dict({
                               'value': 3,
@@ -37,12 +37,12 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'b'),
             'rvalue': dict({
-              <class 'compiler.ast.Indexing'>: dict({
+              <class 'compiler.ast.array.Indexing'>: dict({
                 'element': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'x'),
                   }),
                 }),
@@ -65,17 +65,17 @@
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.ArrayLiteral'>: dict({
+                  <class 'compiler.ast.array.ArrayLiteral'>: dict({
                     'fields': dict({
                       'members': dict({
-                        <class 'compiler.ast.ArrayElements'>: dict({
+                        <class 'compiler.ast.array.ArrayElements'>: dict({
                           'fields': dict({
                             'members': list([
                               dict({
-                                <class 'compiler.ast.ArrayElement'>: dict({
+                                <class 'compiler.ast.array.ArrayElement'>: dict({
                                   'fields': dict({
                                     'element': dict({
                                       <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -89,7 +89,7 @@
                                 }),
                               }),
                               dict({
-                                <class 'compiler.ast.ArrayElement'>: dict({
+                                <class 'compiler.ast.array.ArrayElement'>: dict({
                                   'fields': dict({
                                     'element': dict({
                                       <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -115,13 +115,13 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.Indexing'>: dict({
+                  <class 'compiler.ast.array.Indexing'>: dict({
                     'fields': dict({
                       'element': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Array'>,

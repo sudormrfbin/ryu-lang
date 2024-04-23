@@ -39,9 +39,9 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
 
     statement_list = listify(ast.StatementList)
     statement_block = listify(ast.StatementBlock)
-    variable_declaration = ast.VariableDeclaration
-    assignment = ast.Assignment
-    index_assignment = ast.IndexAssignment
+    variable_declaration = ast.variable.VariableDeclaration
+    assignment = ast.variable.Assignment
+    index_assignment = ast.array.IndexAssignment
     print_stmt = ast.PrintStmt
     if_chain = ast.if_stmt.IfChain
     if_stmt = ast.if_stmt.IfStmt
@@ -76,7 +76,7 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     term = ast.Term
     factor = ast.Factor
     unary_op = ast.UnaryOp
-    indexing = ast.Indexing
+    indexing = ast.array.Indexing
     function_call = ast.FunctionCall
     function_args = listify(ast.FunctionArgs)
     struct_init_members = listify(ast.StructInitMembers)
@@ -87,9 +87,9 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     enum_literal_simple = ast.EnumLiteralSimple
     enum_literal_tuple = ast.EnumLiteralTuple
     variable = ast.Variable
-    array_literal = ast.ArrayLiteral
-    array_elements = listify(ast.ArrayElements)
-    array_element = ast.ArrayElement
+    array_literal = ast.array.ArrayLiteral
+    array_elements = listify(ast.array.ArrayElements)
+    array_element = ast.array.ArrayElement
     array_pattern = listify(ast.match.ArrayPattern)
     array_pattern_element = ast.match.ArrayPatternElement
 

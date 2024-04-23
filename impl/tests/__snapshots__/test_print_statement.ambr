@@ -30,7 +30,7 @@
     <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
               <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -44,7 +44,7 @@
             'expr': dict({
               <class 'compiler.ast.Term'>: dict({
                 'left': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'x'),
                   }),
                 }),
@@ -68,7 +68,7 @@
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
                   <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -87,7 +87,7 @@
                   <class 'compiler.ast.Term'>: dict({
                     'fields': dict({
                       'left': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
