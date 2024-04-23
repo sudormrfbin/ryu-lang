@@ -272,7 +272,7 @@
               <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
-                    <class 'compiler.ast.IfChain'>: dict({
+                    <class 'compiler.ast.if_stmt.IfChain'>: dict({
                       'else_block': dict({
                         <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
@@ -289,7 +289,7 @@
                         }),
                       }),
                       'if_stmt': dict({
-                        <class 'compiler.ast.IfStmt'>: dict({
+                        <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                           'cond': dict({
                             <class 'compiler.ast.Comparison'>: dict({
                               'left': dict({
@@ -419,7 +419,7 @@
                     'fields': dict({
                       'stmts': list([
                         dict({
-                          <class 'compiler.ast.IfChain'>: dict({
+                          <class 'compiler.ast.if_stmt.IfChain'>: dict({
                             'fields': dict({
                               'else_block': dict({
                                 <class 'compiler.ast.statements.StatementBlock'>: dict({
@@ -443,7 +443,7 @@
                                 }),
                               }),
                               'if_stmt': dict({
-                                <class 'compiler.ast.IfStmt'>: dict({
+                                <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                                   'fields': dict({
                                     'cond': dict({
                                       <class 'compiler.ast.Comparison'>: dict({
@@ -1140,7 +1140,7 @@
         <class 'compiler.ast.statements.StatementBlock'>: dict({
           'stmts': list([
             dict({
-              <class 'compiler.ast.IfChain'>: dict({
+              <class 'compiler.ast.if_stmt.IfChain'>: dict({
                 'else_block': dict({
                   <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
@@ -1157,7 +1157,7 @@
                   }),
                 }),
                 'if_stmt': dict({
-                  <class 'compiler.ast.IfStmt'>: dict({
+                  <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                     'cond': dict({
                       <class 'compiler.ast.Comparison'>: dict({
                         'left': dict({
@@ -1250,7 +1250,7 @@
             'fields': dict({
               'stmts': list([
                 dict({
-                  <class 'compiler.ast.IfChain'>: dict({
+                  <class 'compiler.ast.if_stmt.IfChain'>: dict({
                     'fields': dict({
                       'else_block': dict({
                         <class 'compiler.ast.statements.StatementBlock'>: dict({
@@ -1274,7 +1274,7 @@
                         }),
                       }),
                       'if_stmt': dict({
-                        <class 'compiler.ast.IfStmt'>: dict({
+                        <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                           'fields': dict({
                             'cond': dict({
                               <class 'compiler.ast.Comparison'>: dict({
@@ -1530,7 +1530,7 @@
               <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
-                    <class 'compiler.ast.IfChain'>: dict({
+                    <class 'compiler.ast.if_stmt.IfChain'>: dict({
                       'else_block': dict({
                         <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
@@ -1582,7 +1582,7 @@
                         }),
                       }),
                       'if_stmt': dict({
-                        <class 'compiler.ast.IfStmt'>: dict({
+                        <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                           'cond': dict({
                             <class 'compiler.ast.Comparison'>: dict({
                               'left': dict({
@@ -1818,7 +1818,7 @@
                     'fields': dict({
                       'stmts': list([
                         dict({
-                          <class 'compiler.ast.IfChain'>: dict({
+                          <class 'compiler.ast.if_stmt.IfChain'>: dict({
                             'fields': dict({
                               'else_block': dict({
                                 <class 'compiler.ast.statements.StatementBlock'>: dict({
@@ -1893,7 +1893,7 @@
                                 }),
                               }),
                               'if_stmt': dict({
-                                <class 'compiler.ast.IfStmt'>: dict({
+                                <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                                   'fields': dict({
                                     'cond': dict({
                                       <class 'compiler.ast.Comparison'>: dict({

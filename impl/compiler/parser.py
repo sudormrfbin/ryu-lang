@@ -43,10 +43,10 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     assignment = ast.Assignment
     index_assignment = ast.IndexAssignment
     print_stmt = ast.PrintStmt
-    if_chain = ast.IfChain
-    if_stmt = ast.IfStmt
-    else_if_ladder = listify(ast.ElseIfLadder)
-    else_if_stmt = ast.ElseIfStmt
+    if_chain = ast.if_stmt.IfChain
+    if_stmt = ast.if_stmt.IfStmt
+    else_if_ladder = listify(ast.if_stmt.ElseIfLadder)
+    else_if_stmt = ast.if_stmt.ElseIfStmt
     match_stmt = ast.MatchStmt
     case_ladder = listify(ast.CaseLadder)
     case_stmt = ast.CaseStmt

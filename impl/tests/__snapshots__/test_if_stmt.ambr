@@ -14,7 +14,7 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.IfChain'>: dict({
+          <class 'compiler.ast.if_stmt.IfChain'>: dict({
             'else_block': dict({
               <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
@@ -32,7 +32,7 @@
               }),
             }),
             'if_stmt': dict({
-              <class 'compiler.ast.IfStmt'>: dict({
+              <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                 'cond': dict({
                   <class 'compiler.ast.literals.BoolLiteral'>: dict({
                     'value': False,
@@ -81,7 +81,7 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.IfChain'>: dict({
+            <class 'compiler.ast.if_stmt.IfChain'>: dict({
               'fields': dict({
                 'else_block': dict({
                   <class 'compiler.ast.statements.StatementBlock'>: dict({
@@ -105,7 +105,7 @@
                   }),
                 }),
                 'if_stmt': dict({
-                  <class 'compiler.ast.IfStmt'>: dict({
+                  <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                     'fields': dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -161,12 +161,12 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.IfChain'>: dict({
+          <class 'compiler.ast.if_stmt.IfChain'>: dict({
             'else_if_ladder': dict({
-              <class 'compiler.ast.ElseIfLadder'>: dict({
+              <class 'compiler.ast.if_stmt.ElseIfLadder'>: dict({
                 'blocks': list([
                   dict({
-                    <class 'compiler.ast.ElseIfStmt'>: dict({
+                    <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
                           'value': True,
@@ -194,7 +194,7 @@
               }),
             }),
             'if_stmt': dict({
-              <class 'compiler.ast.IfStmt'>: dict({
+              <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                 'cond': dict({
                   <class 'compiler.ast.literals.BoolLiteral'>: dict({
                     'value': False,
@@ -243,14 +243,14 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.IfChain'>: dict({
+            <class 'compiler.ast.if_stmt.IfChain'>: dict({
               'fields': dict({
                 'else_if_ladder': dict({
-                  <class 'compiler.ast.ElseIfLadder'>: dict({
+                  <class 'compiler.ast.if_stmt.ElseIfLadder'>: dict({
                     'fields': dict({
                       'blocks': list([
                         dict({
-                          <class 'compiler.ast.ElseIfStmt'>: dict({
+                          <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                             'fields': dict({
                               'cond': dict({
                                 <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -288,7 +288,7 @@
                   }),
                 }),
                 'if_stmt': dict({
-                  <class 'compiler.ast.IfStmt'>: dict({
+                  <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                     'fields': dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -344,12 +344,12 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.IfChain'>: dict({
+          <class 'compiler.ast.if_stmt.IfChain'>: dict({
             'else_if_ladder': dict({
-              <class 'compiler.ast.ElseIfLadder'>: dict({
+              <class 'compiler.ast.if_stmt.ElseIfLadder'>: dict({
                 'blocks': list([
                   dict({
-                    <class 'compiler.ast.ElseIfStmt'>: dict({
+                    <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
                           'value': False,
@@ -374,7 +374,7 @@
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.ElseIfStmt'>: dict({
+                    <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
                           'value': True,
@@ -402,7 +402,7 @@
               }),
             }),
             'if_stmt': dict({
-              <class 'compiler.ast.IfStmt'>: dict({
+              <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                 'cond': dict({
                   <class 'compiler.ast.literals.BoolLiteral'>: dict({
                     'value': False,
@@ -451,14 +451,14 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.IfChain'>: dict({
+            <class 'compiler.ast.if_stmt.IfChain'>: dict({
               'fields': dict({
                 'else_if_ladder': dict({
-                  <class 'compiler.ast.ElseIfLadder'>: dict({
+                  <class 'compiler.ast.if_stmt.ElseIfLadder'>: dict({
                     'fields': dict({
                       'blocks': list([
                         dict({
-                          <class 'compiler.ast.ElseIfStmt'>: dict({
+                          <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                             'fields': dict({
                               'cond': dict({
                                 <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -492,7 +492,7 @@
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.ElseIfStmt'>: dict({
+                          <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                             'fields': dict({
                               'cond': dict({
                                 <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -530,7 +530,7 @@
                   }),
                 }),
                 'if_stmt': dict({
-                  <class 'compiler.ast.IfStmt'>: dict({
+                  <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                     'fields': dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -586,7 +586,7 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.IfChain'>: dict({
+          <class 'compiler.ast.if_stmt.IfChain'>: dict({
             'else_block': dict({
               <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
@@ -604,10 +604,10 @@
               }),
             }),
             'else_if_ladder': dict({
-              <class 'compiler.ast.ElseIfLadder'>: dict({
+              <class 'compiler.ast.if_stmt.ElseIfLadder'>: dict({
                 'blocks': list([
                   dict({
-                    <class 'compiler.ast.ElseIfStmt'>: dict({
+                    <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
                           'value': False,
@@ -632,7 +632,7 @@
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.ElseIfStmt'>: dict({
+                    <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
                           'value': False,
@@ -660,7 +660,7 @@
               }),
             }),
             'if_stmt': dict({
-              <class 'compiler.ast.IfStmt'>: dict({
+              <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                 'cond': dict({
                   <class 'compiler.ast.literals.BoolLiteral'>: dict({
                     'value': False,
@@ -709,7 +709,7 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.IfChain'>: dict({
+            <class 'compiler.ast.if_stmt.IfChain'>: dict({
               'fields': dict({
                 'else_block': dict({
                   <class 'compiler.ast.statements.StatementBlock'>: dict({
@@ -733,11 +733,11 @@
                   }),
                 }),
                 'else_if_ladder': dict({
-                  <class 'compiler.ast.ElseIfLadder'>: dict({
+                  <class 'compiler.ast.if_stmt.ElseIfLadder'>: dict({
                     'fields': dict({
                       'blocks': list([
                         dict({
-                          <class 'compiler.ast.ElseIfStmt'>: dict({
+                          <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                             'fields': dict({
                               'cond': dict({
                                 <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -771,7 +771,7 @@
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.ElseIfStmt'>: dict({
+                          <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                             'fields': dict({
                               'cond': dict({
                                 <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -809,7 +809,7 @@
                   }),
                 }),
                 'if_stmt': dict({
-                  <class 'compiler.ast.IfStmt'>: dict({
+                  <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                     'fields': dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -865,12 +865,12 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.IfChain'>: dict({
+          <class 'compiler.ast.if_stmt.IfChain'>: dict({
             'else_if_ladder': dict({
-              <class 'compiler.ast.ElseIfLadder'>: dict({
+              <class 'compiler.ast.if_stmt.ElseIfLadder'>: dict({
                 'blocks': list([
                   dict({
-                    <class 'compiler.ast.ElseIfStmt'>: dict({
+                    <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
                           'value': False,
@@ -895,7 +895,7 @@
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.ElseIfStmt'>: dict({
+                    <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
                           'value': False,
@@ -923,7 +923,7 @@
               }),
             }),
             'if_stmt': dict({
-              <class 'compiler.ast.IfStmt'>: dict({
+              <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                 'cond': dict({
                   <class 'compiler.ast.literals.BoolLiteral'>: dict({
                     'value': False,
@@ -972,14 +972,14 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.IfChain'>: dict({
+            <class 'compiler.ast.if_stmt.IfChain'>: dict({
               'fields': dict({
                 'else_if_ladder': dict({
-                  <class 'compiler.ast.ElseIfLadder'>: dict({
+                  <class 'compiler.ast.if_stmt.ElseIfLadder'>: dict({
                     'fields': dict({
                       'blocks': list([
                         dict({
-                          <class 'compiler.ast.ElseIfStmt'>: dict({
+                          <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                             'fields': dict({
                               'cond': dict({
                                 <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -1013,7 +1013,7 @@
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.ElseIfStmt'>: dict({
+                          <class 'compiler.ast.if_stmt.ElseIfStmt'>: dict({
                             'fields': dict({
                               'cond': dict({
                                 <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -1051,7 +1051,7 @@
                   }),
                 }),
                 'if_stmt': dict({
-                  <class 'compiler.ast.IfStmt'>: dict({
+                  <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                     'fields': dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -1107,9 +1107,9 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.IfChain'>: dict({
+          <class 'compiler.ast.if_stmt.IfChain'>: dict({
             'if_stmt': dict({
-              <class 'compiler.ast.IfStmt'>: dict({
+              <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                 'cond': dict({
                   <class 'compiler.ast.literals.BoolLiteral'>: dict({
                     'value': False,
@@ -1158,10 +1158,10 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.IfChain'>: dict({
+            <class 'compiler.ast.if_stmt.IfChain'>: dict({
               'fields': dict({
                 'if_stmt': dict({
-                  <class 'compiler.ast.IfStmt'>: dict({
+                  <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                     'fields': dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -1217,9 +1217,9 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.IfChain'>: dict({
+          <class 'compiler.ast.if_stmt.IfChain'>: dict({
             'if_stmt': dict({
-              <class 'compiler.ast.IfStmt'>: dict({
+              <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                 'cond': dict({
                   <class 'compiler.ast.Equality'>: dict({
                     'left': dict({
@@ -1278,10 +1278,10 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.IfChain'>: dict({
+            <class 'compiler.ast.if_stmt.IfChain'>: dict({
               'fields': dict({
                 'if_stmt': dict({
-                  <class 'compiler.ast.IfStmt'>: dict({
+                  <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                     'fields': dict({
                       'cond': dict({
                         <class 'compiler.ast.Equality'>: dict({
@@ -1351,9 +1351,9 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.IfChain'>: dict({
+          <class 'compiler.ast.if_stmt.IfChain'>: dict({
             'if_stmt': dict({
-              <class 'compiler.ast.IfStmt'>: dict({
+              <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                 'cond': dict({
                   <class 'compiler.ast.literals.BoolLiteral'>: dict({
                     'value': True,
@@ -1402,10 +1402,10 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.IfChain'>: dict({
+            <class 'compiler.ast.if_stmt.IfChain'>: dict({
               'fields': dict({
                 'if_stmt': dict({
-                  <class 'compiler.ast.IfStmt'>: dict({
+                  <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                     'fields': dict({
                       'cond': dict({
                         <class 'compiler.ast.literals.BoolLiteral'>: dict({
