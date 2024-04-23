@@ -525,7 +525,7 @@
                     <class 'compiler.ast.EnumMemberTuple'>: dict({
                       'name': Token('IDENTIFIER', 'Some'),
                       'tuple_members': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -578,7 +578,7 @@
                           <class 'compiler.ast.EnumMemberTuple'>: dict({
                             'fields': dict({
                               'tuple_members': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -637,7 +637,7 @@
               <class 'compiler.ast.EnumMemberTuple'>: dict({
                 'name': Token('IDENTIFIER', 'Some'),
                 'tuple_members': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
                   }),
                 }),
@@ -667,7 +667,7 @@
                   <class 'compiler.ast.EnumMemberTuple'>: dict({
                     'fields': dict({
                       'tuple_members': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -705,7 +705,7 @@
                     <class 'compiler.ast.EnumMemberTuple'>: dict({
                       'name': Token('IDENTIFIER', 'Some'),
                       'tuple_members': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'bool'),
                         }),
                       }),
@@ -730,7 +730,7 @@
                   dict({
                     <class 'compiler.ast.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'MaybeBool'),
                         }),
                       }),
@@ -848,7 +848,7 @@
             }),
             'name': Token('IDENTIFIER', 'eval'),
             'return_type': dict({
-              <class 'compiler.ast.TypeAnnotation'>: dict({
+              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                 'ty': Token('IDENTIFIER', 'int'),
               }),
             }),
@@ -962,7 +962,7 @@
                           <class 'compiler.ast.EnumMemberTuple'>: dict({
                             'fields': dict({
                               'tuple_members': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Bool'>,
@@ -997,7 +997,7 @@
                           <class 'compiler.ast.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,
@@ -1161,7 +1161,7 @@
                   }),
                 }),
                 'return_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,

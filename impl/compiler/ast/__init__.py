@@ -20,6 +20,7 @@ from compiler.ast.statements import (
 from compiler.ast import if_stmt as if_stmt
 from compiler.ast import match as match
 from compiler.ast import literals as literals
+from compiler.ast.annotation import TypeAnnotation
 
 
 # TODO: Narrow down this type
@@ -524,24 +525,6 @@ class EnumStmt(Statement):
     def eval(self, env: RuntimeEnvironment):
         # Nothing to execute since enum statements are simply declarations
         pass
-
-
-@dataclass
-class TypeAnnotation(Ast):
-    ty: Token
-    generics: Optional["TypeAnnotation"]
-
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        if self.generics and self.ty == "array":  # TODO: harcoded
-            generics = self.generics.typecheck(env)
-            self.type = langtypes.Array(generics)
-        else:
-            self.type = env.get_type(self.ty)
-
-        if self.type is None:
-            raise  # TODO
-            # raise errors.UnassignableType()
-        return self.type
 
 
 @dataclass

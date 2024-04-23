@@ -8,7 +8,7 @@
             dict({
               <class 'compiler.ast.StructMember'>: dict({
                 'ident_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'string'),
                   }),
                 }),
@@ -18,7 +18,7 @@
             dict({
               <class 'compiler.ast.StructMember'>: dict({
                 'ident_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
                   }),
                 }),
@@ -44,7 +44,7 @@
                   <class 'compiler.ast.StructMember'>: dict({
                     'fields': dict({
                       'ident_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.String'>,
@@ -58,7 +58,7 @@
                   <class 'compiler.ast.StructMember'>: dict({
                     'fields': dict({
                       'ident_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -89,7 +89,7 @@
                   dict({
                     <class 'compiler.ast.StructMember'>: dict({
                       'ident_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'string'),
                         }),
                       }),
@@ -99,7 +99,7 @@
                   dict({
                     <class 'compiler.ast.StructMember'>: dict({
                       'ident_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -172,7 +172,7 @@
                           <class 'compiler.ast.StructMember'>: dict({
                             'fields': dict({
                               'ident_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.String'>,
@@ -186,7 +186,7 @@
                           <class 'compiler.ast.StructMember'>: dict({
                             'fields': dict({
                               'ident_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,

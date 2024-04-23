@@ -11,7 +11,7 @@
                   dict({
                     <class 'compiler.ast.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -21,7 +21,7 @@
                   dict({
                     <class 'compiler.ast.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -58,7 +58,7 @@
             }),
             'name': Token('IDENTIFIER', 'sum'),
             'return_type': dict({
-              <class 'compiler.ast.TypeAnnotation'>: dict({
+              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                 'ty': Token('IDENTIFIER', 'int'),
               }),
             }),
@@ -114,7 +114,7 @@
                           <class 'compiler.ast.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -128,7 +128,7 @@
                           <class 'compiler.ast.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -179,7 +179,7 @@
                   }),
                 }),
                 'return_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -248,7 +248,7 @@
                   dict({
                     <class 'compiler.ast.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -258,7 +258,7 @@
                   dict({
                     <class 'compiler.ast.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -329,7 +329,7 @@
             }),
             'name': Token('IDENTIFIER', 'max'),
             'return_type': dict({
-              <class 'compiler.ast.TypeAnnotation'>: dict({
+              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                 'ty': Token('IDENTIFIER', 'int'),
               }),
             }),
@@ -385,7 +385,7 @@
                           <class 'compiler.ast.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -399,7 +399,7 @@
                           <class 'compiler.ast.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -498,7 +498,7 @@
                   }),
                 }),
                 'return_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -567,7 +567,7 @@
                   dict({
                     <class 'compiler.ast.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -594,7 +594,7 @@
             }),
             'name': Token('IDENTIFIER', 'identity'),
             'return_type': dict({
-              <class 'compiler.ast.TypeAnnotation'>: dict({
+              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                 'ty': Token('IDENTIFIER', 'int'),
               }),
             }),
@@ -645,7 +645,7 @@
                           <class 'compiler.ast.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -682,7 +682,7 @@
                   }),
                 }),
                 'return_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -755,7 +755,7 @@
             }),
             'name': Token('IDENTIFIER', 'one'),
             'return_type': dict({
-              <class 'compiler.ast.TypeAnnotation'>: dict({
+              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                 'ty': Token('IDENTIFIER', 'int'),
               }),
             }),
@@ -809,7 +809,7 @@
                   }),
                 }),
                 'return_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -852,9 +852,9 @@
             dict({
               <class 'compiler.ast.FunctionParam'>: dict({
                 'arg_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'generics': dict({
-                      <class 'compiler.ast.TypeAnnotation'>: dict({
+                      <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                         'ty': Token('IDENTIFIER', 'int'),
                       }),
                     }),
@@ -884,7 +884,7 @@
       }),
       'name': Token('IDENTIFIER', 'one'),
       'return_type': dict({
-        <class 'compiler.ast.TypeAnnotation'>: dict({
+        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
           'ty': Token('IDENTIFIER', 'int'),
         }),
       }),
@@ -903,10 +903,10 @@
                   <class 'compiler.ast.FunctionParam'>: dict({
                     'fields': dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                             'generics': dict({
-                              <class 'compiler.ast.TypeAnnotation'>: dict({
+                              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                 'fields': dict({
                                 }),
                                 'type': <class 'compiler.langtypes.Int'>,
@@ -947,7 +947,7 @@
           }),
         }),
         'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: dict({
+          <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.Int'>,
@@ -966,7 +966,7 @@
             dict({
               <class 'compiler.ast.FunctionParam'>: dict({
                 'arg_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
                   }),
                 }),
@@ -976,7 +976,7 @@
             dict({
               <class 'compiler.ast.FunctionParam'>: dict({
                 'arg_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
                   }),
                 }),
@@ -1013,7 +1013,7 @@
       }),
       'name': Token('IDENTIFIER', 'sum'),
       'return_type': dict({
-        <class 'compiler.ast.TypeAnnotation'>: dict({
+        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
           'ty': Token('IDENTIFIER', 'int'),
         }),
       }),
@@ -1032,7 +1032,7 @@
                   <class 'compiler.ast.FunctionParam'>: dict({
                     'fields': dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1046,7 +1046,7 @@
                   <class 'compiler.ast.FunctionParam'>: dict({
                     'fields': dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1097,7 +1097,7 @@
           }),
         }),
         'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: dict({
+          <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.Int'>,
@@ -1116,7 +1116,7 @@
             dict({
               <class 'compiler.ast.FunctionParam'>: dict({
                 'arg_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
                   }),
                 }),
@@ -1126,7 +1126,7 @@
             dict({
               <class 'compiler.ast.FunctionParam'>: dict({
                 'arg_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
                   }),
                 }),
@@ -1197,7 +1197,7 @@
       }),
       'name': Token('IDENTIFIER', 'max'),
       'return_type': dict({
-        <class 'compiler.ast.TypeAnnotation'>: dict({
+        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
           'ty': Token('IDENTIFIER', 'int'),
         }),
       }),
@@ -1216,7 +1216,7 @@
                   <class 'compiler.ast.FunctionParam'>: dict({
                     'fields': dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1230,7 +1230,7 @@
                   <class 'compiler.ast.FunctionParam'>: dict({
                     'fields': dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1329,7 +1329,7 @@
           }),
         }),
         'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: dict({
+          <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.Int'>,
@@ -1348,7 +1348,7 @@
             dict({
               <class 'compiler.ast.FunctionParam'>: dict({
                 'arg_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
                   }),
                 }),
@@ -1375,7 +1375,7 @@
       }),
       'name': Token('IDENTIFIER', 'identity'),
       'return_type': dict({
-        <class 'compiler.ast.TypeAnnotation'>: dict({
+        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
           'ty': Token('IDENTIFIER', 'int'),
         }),
       }),
@@ -1394,7 +1394,7 @@
                   <class 'compiler.ast.FunctionParam'>: dict({
                     'fields': dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1431,7 +1431,7 @@
           }),
         }),
         'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: dict({
+          <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.Int'>,
@@ -1461,7 +1461,7 @@
       }),
       'name': Token('IDENTIFIER', 'one'),
       'return_type': dict({
-        <class 'compiler.ast.TypeAnnotation'>: dict({
+        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
           'ty': Token('IDENTIFIER', 'int'),
         }),
       }),
@@ -1494,7 +1494,7 @@
           }),
         }),
         'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: dict({
+          <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.Int'>,
@@ -1516,7 +1516,7 @@
                   dict({
                     <class 'compiler.ast.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -1622,7 +1622,7 @@
             }),
             'name': Token('IDENTIFIER', 'fact'),
             'return_type': dict({
-              <class 'compiler.ast.TypeAnnotation'>: dict({
+              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                 'ty': Token('IDENTIFIER', 'int'),
               }),
             }),
@@ -1798,7 +1798,7 @@
                           <class 'compiler.ast.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -1948,7 +1948,7 @@
                   }),
                 }),
                 'return_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,

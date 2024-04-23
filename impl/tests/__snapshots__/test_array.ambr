@@ -117,7 +117,7 @@
       'rvalue': dict({
         <class 'compiler.ast.ArrayLiteral'>: dict({
           'declared_type': dict({
-            <class 'compiler.ast.TypeAnnotation'>: dict({
+            <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
               'ty': Token('IDENTIFIER', 'int'),
             }),
           }),
@@ -149,7 +149,7 @@
           <class 'compiler.ast.ArrayLiteral'>: dict({
             'fields': dict({
               'declared_type': dict({
-                <class 'compiler.ast.TypeAnnotation'>: dict({
+                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                   'fields': dict({
                   }),
                   'type': <class 'compiler.langtypes.Int'>,
@@ -193,7 +193,7 @@
       'rvalue': dict({
         <class 'compiler.ast.ArrayLiteral'>: dict({
           'declared_type': dict({
-            <class 'compiler.ast.TypeAnnotation'>: dict({
+            <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
               'ty': Token('IDENTIFIER', 'int'),
             }),
           }),
@@ -210,7 +210,7 @@
           <class 'compiler.ast.ArrayLiteral'>: dict({
             'fields': dict({
               'declared_type': dict({
-                <class 'compiler.ast.TypeAnnotation'>: dict({
+                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                   'fields': dict({
                   }),
                   'type': <class 'compiler.langtypes.Int'>,
