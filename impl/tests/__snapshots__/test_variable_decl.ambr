@@ -1,10 +1,10 @@
 # serializer version: 1
 # name: test_variable_delcaration
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'ident': Token('IDENTIFIER', 'x'),
       'rvalue': dict({
-        <class 'compiler.ast.IntLiteral'>: dict({
+        <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 1,
         }),
       }),
@@ -13,10 +13,10 @@
 # ---
 # name: test_variable_delcaration.1
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'fields': dict({
         'rvalue': dict({
-          <class 'compiler.ast.IntLiteral'>: dict({
+          <class 'compiler.ast.literals.IntLiteral'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.Int'>,
@@ -28,20 +28,20 @@
 # ---
 # name: test_variable_delcaration_with_expressions
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'ident': Token('IDENTIFIER', 'variable'),
       'rvalue': dict({
-        <class 'compiler.ast.Equality'>: dict({
+        <class 'compiler.ast.operators.Equality'>: dict({
           'left': dict({
-            <class 'compiler.ast.Factor'>: dict({
+            <class 'compiler.ast.operators.Factor'>: dict({
               'left': dict({
-                <class 'compiler.ast.IntLiteral'>: dict({
+                <class 'compiler.ast.literals.IntLiteral'>: dict({
                   'value': 3,
                 }),
               }),
               'op': Token('STAR', '*'),
               'right': dict({
-                <class 'compiler.ast.IntLiteral'>: dict({
+                <class 'compiler.ast.literals.IntLiteral'>: dict({
                   'value': 4,
                 }),
               }),
@@ -49,7 +49,7 @@
           }),
           'op': Token('__ANON_3', '=='),
           'right': dict({
-            <class 'compiler.ast.IntLiteral'>: dict({
+            <class 'compiler.ast.literals.IntLiteral'>: dict({
               'value': 10,
             }),
           }),
@@ -60,23 +60,23 @@
 # ---
 # name: test_variable_delcaration_with_expressions.1
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'fields': dict({
         'rvalue': dict({
-          <class 'compiler.ast.Equality'>: dict({
+          <class 'compiler.ast.operators.Equality'>: dict({
             'fields': dict({
               'left': dict({
-                <class 'compiler.ast.Factor'>: dict({
+                <class 'compiler.ast.operators.Factor'>: dict({
                   'fields': dict({
                     'left': dict({
-                      <class 'compiler.ast.IntLiteral'>: dict({
+                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                         'fields': dict({
                         }),
                         'type': <class 'compiler.langtypes.Int'>,
                       }),
                     }),
                     'right': dict({
-                      <class 'compiler.ast.IntLiteral'>: dict({
+                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                         'fields': dict({
                         }),
                         'type': <class 'compiler.langtypes.Int'>,
@@ -87,7 +87,7 @@
                 }),
               }),
               'right': dict({
-                <class 'compiler.ast.IntLiteral'>: dict({
+                <class 'compiler.ast.literals.IntLiteral'>: dict({
                   'fields': dict({
                   }),
                   'type': <class 'compiler.langtypes.Int'>,

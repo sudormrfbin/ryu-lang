@@ -1,20 +1,20 @@
 # serializer version: 1
 # name: test_match_array_empty_case[ast]
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'ident': Token('IDENTIFIER', 'i'),
       'rvalue': dict({
-        <class 'compiler.ast.FunctionCall'>: dict({
+        <class 'compiler.ast.function.FunctionCall'>: dict({
           'args': dict({
-            <class 'compiler.ast.FunctionArgs'>: dict({
+            <class 'compiler.ast.function.FunctionArgs'>: dict({
               'args': list([
                 dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'value': 2,
                   }),
                 }),
                 dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'value': 3,
                   }),
                 }),
@@ -22,7 +22,7 @@
             }),
           }),
           'callee': dict({
-            <class 'compiler.ast.Variable'>: dict({
+            <class 'compiler.ast.variable.Variable'>: dict({
               'value': Token('IDENTIFIER', 'sum'),
             }),
           }),
@@ -33,24 +33,24 @@
 # ---
 # name: test_match_array_empty_case[typed-ast]
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'fields': dict({
         'rvalue': dict({
-          <class 'compiler.ast.FunctionCall'>: dict({
+          <class 'compiler.ast.function.FunctionCall'>: dict({
             'fields': dict({
               'args': dict({
-                <class 'compiler.ast.FunctionArgs'>: dict({
+                <class 'compiler.ast.function.FunctionArgs'>: dict({
                   'fields': dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
                         }),
                       }),
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -62,7 +62,7 @@
                 }),
               }),
               'callee': dict({
-                <class 'compiler.ast.Variable'>: dict({
+                <class 'compiler.ast.variable.Variable'>: dict({
                   'fields': dict({
                   }),
                   'type': <class 'compiler.langtypes.Function'>,

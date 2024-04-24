@@ -1,25 +1,25 @@
 # serializer version: 1
 # name: test_enum_assignment
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.EnumStmt'>: dict({
+          <class 'compiler.ast.enum.EnumStmt'>: dict({
             'members': dict({
-              <class 'compiler.ast.EnumMembers'>: dict({
+              <class 'compiler.ast.enum.EnumMembers'>: dict({
                 'members': list([
                   dict({
-                    <class 'compiler.ast.EnumMemberBare'>: dict({
+                    <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'Malayalam'),
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.EnumMemberBare'>: dict({
+                    <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'English'),
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.EnumMemberBare'>: dict({
+                    <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'Japanese'),
                     }),
                   }),
@@ -30,10 +30,10 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'lang'),
             'rvalue': dict({
-              <class 'compiler.ast.EnumLiteralSimple'>: dict({
+              <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                 'enum_type': Token('IDENTIFIER', 'Langs'),
                 'variant': Token('IDENTIFIER', 'English'),
               }),
@@ -46,32 +46,32 @@
 # ---
 # name: test_enum_assignment.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.EnumStmt'>: dict({
+            <class 'compiler.ast.enum.EnumStmt'>: dict({
               'fields': dict({
                 'members': dict({
-                  <class 'compiler.ast.EnumMembers'>: dict({
+                  <class 'compiler.ast.enum.EnumMembers'>: dict({
                     'fields': dict({
                       'members': list([
                         dict({
-                          <class 'compiler.ast.EnumMemberBare'>: dict({
+                          <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
                             'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.EnumMemberBare'>: dict({
+                          <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
                             'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.EnumMemberBare'>: dict({
+                          <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
                             'type': <class 'compiler.langtypes.Type'>,
@@ -85,10 +85,10 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                  <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Enum'>,
@@ -104,22 +104,22 @@
 # ---
 # name: test_enum_def
   dict({
-    <class 'compiler.ast.EnumStmt'>: dict({
+    <class 'compiler.ast.enum.EnumStmt'>: dict({
       'members': dict({
-        <class 'compiler.ast.EnumMembers'>: dict({
+        <class 'compiler.ast.enum.EnumMembers'>: dict({
           'members': list([
             dict({
-              <class 'compiler.ast.EnumMemberBare'>: dict({
+              <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                 'name': Token('IDENTIFIER', 'Malayalam'),
               }),
             }),
             dict({
-              <class 'compiler.ast.EnumMemberBare'>: dict({
+              <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                 'name': Token('IDENTIFIER', 'English'),
               }),
             }),
             dict({
-              <class 'compiler.ast.EnumMemberBare'>: dict({
+              <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                 'name': Token('IDENTIFIER', 'Japanese'),
               }),
             }),
@@ -132,28 +132,28 @@
 # ---
 # name: test_enum_def.1
   dict({
-    <class 'compiler.ast.EnumStmt'>: dict({
+    <class 'compiler.ast.enum.EnumStmt'>: dict({
       'fields': dict({
         'members': dict({
-          <class 'compiler.ast.EnumMembers'>: dict({
+          <class 'compiler.ast.enum.EnumMembers'>: dict({
             'fields': dict({
               'members': list([
                 dict({
-                  <class 'compiler.ast.EnumMemberBare'>: dict({
+                  <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Type'>,
                   }),
                 }),
                 dict({
-                  <class 'compiler.ast.EnumMemberBare'>: dict({
+                  <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Type'>,
                   }),
                 }),
                 dict({
-                  <class 'compiler.ast.EnumMemberBare'>: dict({
+                  <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Type'>,
@@ -169,25 +169,25 @@
 # ---
 # name: test_enum_pattern_match
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.EnumStmt'>: dict({
+          <class 'compiler.ast.enum.EnumStmt'>: dict({
             'members': dict({
-              <class 'compiler.ast.EnumMembers'>: dict({
+              <class 'compiler.ast.enum.EnumMembers'>: dict({
                 'members': list([
                   dict({
-                    <class 'compiler.ast.EnumMemberBare'>: dict({
+                    <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'Malayalam'),
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.EnumMemberBare'>: dict({
+                    <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'English'),
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.EnumMemberBare'>: dict({
+                    <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'Japanese'),
                     }),
                   }),
@@ -198,10 +198,10 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'lang'),
             'rvalue': dict({
-              <class 'compiler.ast.EnumLiteralSimple'>: dict({
+              <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                 'enum_type': Token('IDENTIFIER', 'Langs'),
                 'variant': Token('IDENTIFIER', 'English'),
               }),
@@ -209,30 +209,30 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'langcode'),
             'rvalue': dict({
-              <class 'compiler.ast.StringLiteral'>: dict({
+              <class 'compiler.ast.literals.StringLiteral'>: dict({
                 'value': '',
               }),
             }),
           }),
         }),
         dict({
-          <class 'compiler.ast.MatchStmt'>: dict({
+          <class 'compiler.ast.match.MatchStmt'>: dict({
             'cases': dict({
-              <class 'compiler.ast.CaseLadder'>: dict({
+              <class 'compiler.ast.match.CaseLadder'>: dict({
                 'cases': list([
                   dict({
-                    <class 'compiler.ast.CaseStmt'>: dict({
+                    <class 'compiler.ast.match.CaseStmt'>: dict({
                       'block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
-                              <class 'compiler.ast.Assignment'>: dict({
+                              <class 'compiler.ast.variable.Assignment'>: dict({
                                 'lvalue': Token('IDENTIFIER', 'langcode'),
                                 'rvalue': dict({
-                                  <class 'compiler.ast.StringLiteral'>: dict({
+                                  <class 'compiler.ast.literals.StringLiteral'>: dict({
                                     'value': 'eng',
                                   }),
                                 }),
@@ -242,7 +242,7 @@
                         }),
                       }),
                       'pattern': dict({
-                        <class 'compiler.ast.EnumPattern'>: dict({
+                        <class 'compiler.ast.match.EnumPattern'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'English'),
                         }),
@@ -250,15 +250,15 @@
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.CaseStmt'>: dict({
+                    <class 'compiler.ast.match.CaseStmt'>: dict({
                       'block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
-                              <class 'compiler.ast.Assignment'>: dict({
+                              <class 'compiler.ast.variable.Assignment'>: dict({
                                 'lvalue': Token('IDENTIFIER', 'langcode'),
                                 'rvalue': dict({
-                                  <class 'compiler.ast.StringLiteral'>: dict({
+                                  <class 'compiler.ast.literals.StringLiteral'>: dict({
                                     'value': 'ml',
                                   }),
                                 }),
@@ -268,7 +268,7 @@
                         }),
                       }),
                       'pattern': dict({
-                        <class 'compiler.ast.EnumPattern'>: dict({
+                        <class 'compiler.ast.match.EnumPattern'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'Malayalam'),
                         }),
@@ -276,15 +276,15 @@
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.CaseStmt'>: dict({
+                    <class 'compiler.ast.match.CaseStmt'>: dict({
                       'block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
-                              <class 'compiler.ast.Assignment'>: dict({
+                              <class 'compiler.ast.variable.Assignment'>: dict({
                                 'lvalue': Token('IDENTIFIER', 'langcode'),
                                 'rvalue': dict({
-                                  <class 'compiler.ast.StringLiteral'>: dict({
+                                  <class 'compiler.ast.literals.StringLiteral'>: dict({
                                     'value': 'jp',
                                   }),
                                 }),
@@ -294,7 +294,7 @@
                         }),
                       }),
                       'pattern': dict({
-                        <class 'compiler.ast.EnumPattern'>: dict({
+                        <class 'compiler.ast.match.EnumPattern'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'Japanese'),
                         }),
@@ -305,7 +305,7 @@
               }),
             }),
             'expr': dict({
-              <class 'compiler.ast.Variable'>: dict({
+              <class 'compiler.ast.variable.Variable'>: dict({
                 'value': Token('IDENTIFIER', 'lang'),
               }),
             }),
@@ -317,32 +317,32 @@
 # ---
 # name: test_enum_pattern_match.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.EnumStmt'>: dict({
+            <class 'compiler.ast.enum.EnumStmt'>: dict({
               'fields': dict({
                 'members': dict({
-                  <class 'compiler.ast.EnumMembers'>: dict({
+                  <class 'compiler.ast.enum.EnumMembers'>: dict({
                     'fields': dict({
                       'members': list([
                         dict({
-                          <class 'compiler.ast.EnumMemberBare'>: dict({
+                          <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
                             'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.EnumMemberBare'>: dict({
+                          <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
                             'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.EnumMemberBare'>: dict({
+                          <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
                             'type': <class 'compiler.langtypes.Type'>,
@@ -356,10 +356,10 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                  <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Enum'>,
@@ -369,10 +369,10 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.StringLiteral'>: dict({
+                  <class 'compiler.ast.literals.StringLiteral'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.String'>,
@@ -382,24 +382,24 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.MatchStmt'>: dict({
+            <class 'compiler.ast.match.MatchStmt'>: dict({
               'fields': dict({
                 'cases': dict({
-                  <class 'compiler.ast.CaseLadder'>: dict({
+                  <class 'compiler.ast.match.CaseLadder'>: dict({
                     'fields': dict({
                       'cases': list([
                         dict({
-                          <class 'compiler.ast.CaseStmt'>: dict({
+                          <class 'compiler.ast.match.CaseStmt'>: dict({
                             'fields': dict({
                               'block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
-                                        <class 'compiler.ast.Assignment'>: dict({
+                                        <class 'compiler.ast.variable.Assignment'>: dict({
                                           'fields': dict({
                                             'rvalue': dict({
-                                              <class 'compiler.ast.StringLiteral'>: dict({
+                                              <class 'compiler.ast.literals.StringLiteral'>: dict({
                                                 'fields': dict({
                                                 }),
                                                 'type': <class 'compiler.langtypes.String'>,
@@ -413,7 +413,7 @@
                                 }),
                               }),
                               'pattern': dict({
-                                <class 'compiler.ast.EnumPattern'>: dict({
+                                <class 'compiler.ast.match.EnumPattern'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,
@@ -424,17 +424,17 @@
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.CaseStmt'>: dict({
+                          <class 'compiler.ast.match.CaseStmt'>: dict({
                             'fields': dict({
                               'block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
-                                        <class 'compiler.ast.Assignment'>: dict({
+                                        <class 'compiler.ast.variable.Assignment'>: dict({
                                           'fields': dict({
                                             'rvalue': dict({
-                                              <class 'compiler.ast.StringLiteral'>: dict({
+                                              <class 'compiler.ast.literals.StringLiteral'>: dict({
                                                 'fields': dict({
                                                 }),
                                                 'type': <class 'compiler.langtypes.String'>,
@@ -448,7 +448,7 @@
                                 }),
                               }),
                               'pattern': dict({
-                                <class 'compiler.ast.EnumPattern'>: dict({
+                                <class 'compiler.ast.match.EnumPattern'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,
@@ -459,17 +459,17 @@
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.CaseStmt'>: dict({
+                          <class 'compiler.ast.match.CaseStmt'>: dict({
                             'fields': dict({
                               'block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
-                                        <class 'compiler.ast.Assignment'>: dict({
+                                        <class 'compiler.ast.variable.Assignment'>: dict({
                                           'fields': dict({
                                             'rvalue': dict({
-                                              <class 'compiler.ast.StringLiteral'>: dict({
+                                              <class 'compiler.ast.literals.StringLiteral'>: dict({
                                                 'fields': dict({
                                                 }),
                                                 'type': <class 'compiler.langtypes.String'>,
@@ -483,7 +483,7 @@
                                 }),
                               }),
                               'pattern': dict({
-                                <class 'compiler.ast.EnumPattern'>: dict({
+                                <class 'compiler.ast.match.EnumPattern'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,
@@ -498,7 +498,7 @@
                   }),
                 }),
                 'expr': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Enum'>,
@@ -514,25 +514,25 @@
 # ---
 # name: test_tuple_enum_assignment
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.EnumStmt'>: dict({
+          <class 'compiler.ast.enum.EnumStmt'>: dict({
             'members': dict({
-              <class 'compiler.ast.EnumMembers'>: dict({
+              <class 'compiler.ast.enum.EnumMembers'>: dict({
                 'members': list([
                   dict({
-                    <class 'compiler.ast.EnumMemberTuple'>: dict({
+                    <class 'compiler.ast.enum.EnumMemberTuple'>: dict({
                       'name': Token('IDENTIFIER', 'Some'),
                       'tuple_members': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.EnumMemberBare'>: dict({
+                    <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'None'),
                     }),
                   }),
@@ -543,13 +543,13 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
-              <class 'compiler.ast.EnumLiteralTuple'>: dict({
+              <class 'compiler.ast.enum.EnumLiteralTuple'>: dict({
                 'enum_type': Token('IDENTIFIER', 'MaybeInt'),
                 'inner': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'value': 8,
                   }),
                 }),
@@ -564,21 +564,21 @@
 # ---
 # name: test_tuple_enum_assignment.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.EnumStmt'>: dict({
+            <class 'compiler.ast.enum.EnumStmt'>: dict({
               'fields': dict({
                 'members': dict({
-                  <class 'compiler.ast.EnumMembers'>: dict({
+                  <class 'compiler.ast.enum.EnumMembers'>: dict({
                     'fields': dict({
                       'members': list([
                         dict({
-                          <class 'compiler.ast.EnumMemberTuple'>: dict({
+                          <class 'compiler.ast.enum.EnumMemberTuple'>: dict({
                             'fields': dict({
                               'tuple_members': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -589,7 +589,7 @@
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.EnumMemberBare'>: dict({
+                          <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
                             'type': <class 'compiler.langtypes.Type'>,
@@ -603,13 +603,13 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.EnumLiteralTuple'>: dict({
+                  <class 'compiler.ast.enum.EnumLiteralTuple'>: dict({
                     'fields': dict({
                       'inner': dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -629,22 +629,22 @@
 # ---
 # name: test_tuple_enum_def
   dict({
-    <class 'compiler.ast.EnumStmt'>: dict({
+    <class 'compiler.ast.enum.EnumStmt'>: dict({
       'members': dict({
-        <class 'compiler.ast.EnumMembers'>: dict({
+        <class 'compiler.ast.enum.EnumMembers'>: dict({
           'members': list([
             dict({
-              <class 'compiler.ast.EnumMemberTuple'>: dict({
+              <class 'compiler.ast.enum.EnumMemberTuple'>: dict({
                 'name': Token('IDENTIFIER', 'Some'),
                 'tuple_members': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
                   }),
                 }),
               }),
             }),
             dict({
-              <class 'compiler.ast.EnumMemberBare'>: dict({
+              <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                 'name': Token('IDENTIFIER', 'None'),
               }),
             }),
@@ -657,17 +657,17 @@
 # ---
 # name: test_tuple_enum_def.1
   dict({
-    <class 'compiler.ast.EnumStmt'>: dict({
+    <class 'compiler.ast.enum.EnumStmt'>: dict({
       'fields': dict({
         'members': dict({
-          <class 'compiler.ast.EnumMembers'>: dict({
+          <class 'compiler.ast.enum.EnumMembers'>: dict({
             'fields': dict({
               'members': list([
                 dict({
-                  <class 'compiler.ast.EnumMemberTuple'>: dict({
+                  <class 'compiler.ast.enum.EnumMemberTuple'>: dict({
                     'fields': dict({
                       'tuple_members': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -678,7 +678,7 @@
                   }),
                 }),
                 dict({
-                  <class 'compiler.ast.EnumMemberBare'>: dict({
+                  <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Type'>,
@@ -694,25 +694,25 @@
 # ---
 # name: test_tuple_enum_match
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.EnumStmt'>: dict({
+          <class 'compiler.ast.enum.EnumStmt'>: dict({
             'members': dict({
-              <class 'compiler.ast.EnumMembers'>: dict({
+              <class 'compiler.ast.enum.EnumMembers'>: dict({
                 'members': list([
                   dict({
-                    <class 'compiler.ast.EnumMemberTuple'>: dict({
+                    <class 'compiler.ast.enum.EnumMemberTuple'>: dict({
                       'name': Token('IDENTIFIER', 'Some'),
                       'tuple_members': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'bool'),
                         }),
                       }),
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.EnumMemberBare'>: dict({
+                    <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                       'name': Token('IDENTIFIER', 'None'),
                     }),
                   }),
@@ -723,14 +723,14 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.FunctionDefinition'>: dict({
+          <class 'compiler.ast.function.FunctionDefinition'>: dict({
             'args': dict({
-              <class 'compiler.ast.FunctionParams'>: dict({
+              <class 'compiler.ast.function.FunctionParams'>: dict({
                 'args': list([
                   dict({
-                    <class 'compiler.ast.FunctionParam'>: dict({
+                    <class 'compiler.ast.function.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'MaybeBool'),
                         }),
                       }),
@@ -741,22 +741,22 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
-                    <class 'compiler.ast.MatchStmt'>: dict({
+                    <class 'compiler.ast.match.MatchStmt'>: dict({
                       'cases': dict({
-                        <class 'compiler.ast.CaseLadder'>: dict({
+                        <class 'compiler.ast.match.CaseLadder'>: dict({
                           'cases': list([
                             dict({
-                              <class 'compiler.ast.CaseStmt'>: dict({
+                              <class 'compiler.ast.match.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
-                                        <class 'compiler.ast.ReturnStmt'>: dict({
+                                        <class 'compiler.ast.function.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 0,
                                             }),
                                           }),
@@ -766,10 +766,10 @@
                                   }),
                                 }),
                                 'pattern': dict({
-                                  <class 'compiler.ast.EnumPatternTuple'>: dict({
+                                  <class 'compiler.ast.match.EnumPatternTuple'>: dict({
                                     'enum_type': Token('IDENTIFIER', 'MaybeBool'),
                                     'tuple_pattern': dict({
-                                      <class 'compiler.ast.BoolLiteral'>: dict({
+                                      <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                         'value': True,
                                       }),
                                     }),
@@ -779,14 +779,14 @@
                               }),
                             }),
                             dict({
-                              <class 'compiler.ast.CaseStmt'>: dict({
+                              <class 'compiler.ast.match.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
-                                        <class 'compiler.ast.ReturnStmt'>: dict({
+                                        <class 'compiler.ast.function.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 1,
                                             }),
                                           }),
@@ -796,10 +796,10 @@
                                   }),
                                 }),
                                 'pattern': dict({
-                                  <class 'compiler.ast.EnumPatternTuple'>: dict({
+                                  <class 'compiler.ast.match.EnumPatternTuple'>: dict({
                                     'enum_type': Token('IDENTIFIER', 'MaybeBool'),
                                     'tuple_pattern': dict({
-                                      <class 'compiler.ast.BoolLiteral'>: dict({
+                                      <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                         'value': False,
                                       }),
                                     }),
@@ -809,14 +809,14 @@
                               }),
                             }),
                             dict({
-                              <class 'compiler.ast.CaseStmt'>: dict({
+                              <class 'compiler.ast.match.CaseStmt'>: dict({
                                 'block': dict({
-                                  <class 'compiler.ast.StatementBlock'>: dict({
+                                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                                     'stmts': list([
                                       dict({
-                                        <class 'compiler.ast.ReturnStmt'>: dict({
+                                        <class 'compiler.ast.function.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'value': 2,
                                             }),
                                           }),
@@ -826,7 +826,7 @@
                                   }),
                                 }),
                                 'pattern': dict({
-                                  <class 'compiler.ast.EnumPattern'>: dict({
+                                  <class 'compiler.ast.match.EnumPattern'>: dict({
                                     'enum_type': Token('IDENTIFIER', 'MaybeBool'),
                                     'variant': Token('IDENTIFIER', 'None'),
                                   }),
@@ -837,7 +837,7 @@
                         }),
                       }),
                       'expr': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'value': Token('IDENTIFIER', 'v'),
                         }),
                       }),
@@ -848,25 +848,25 @@
             }),
             'name': Token('IDENTIFIER', 'eval'),
             'return_type': dict({
-              <class 'compiler.ast.TypeAnnotation'>: dict({
+              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                 'ty': Token('IDENTIFIER', 'int'),
               }),
             }),
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'zero'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionArgs'>: dict({
+                  <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.EnumLiteralTuple'>: dict({
+                        <class 'compiler.ast.enum.EnumLiteralTuple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'MaybeBool'),
                           'inner': dict({
-                            <class 'compiler.ast.BoolLiteral'>: dict({
+                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                               'value': True,
                             }),
                           }),
@@ -877,7 +877,7 @@
                   }),
                 }),
                 'callee': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'eval'),
                   }),
                 }),
@@ -886,18 +886,18 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'one'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionArgs'>: dict({
+                  <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.EnumLiteralTuple'>: dict({
+                        <class 'compiler.ast.enum.EnumLiteralTuple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'MaybeBool'),
                           'inner': dict({
-                            <class 'compiler.ast.BoolLiteral'>: dict({
+                            <class 'compiler.ast.literals.BoolLiteral'>: dict({
                               'value': False,
                             }),
                           }),
@@ -908,7 +908,7 @@
                   }),
                 }),
                 'callee': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'eval'),
                   }),
                 }),
@@ -917,15 +917,15 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'two'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionArgs'>: dict({
+                  <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                        <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'MaybeBool'),
                           'variant': Token('IDENTIFIER', 'None'),
                         }),
@@ -934,7 +934,7 @@
                   }),
                 }),
                 'callee': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'eval'),
                   }),
                 }),
@@ -948,21 +948,21 @@
 # ---
 # name: test_tuple_enum_match.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.EnumStmt'>: dict({
+            <class 'compiler.ast.enum.EnumStmt'>: dict({
               'fields': dict({
                 'members': dict({
-                  <class 'compiler.ast.EnumMembers'>: dict({
+                  <class 'compiler.ast.enum.EnumMembers'>: dict({
                     'fields': dict({
                       'members': list([
                         dict({
-                          <class 'compiler.ast.EnumMemberTuple'>: dict({
+                          <class 'compiler.ast.enum.EnumMemberTuple'>: dict({
                             'fields': dict({
                               'tuple_members': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Bool'>,
@@ -973,7 +973,7 @@
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.EnumMemberBare'>: dict({
+                          <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
                             'type': <class 'compiler.langtypes.Type'>,
@@ -987,17 +987,17 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.FunctionDefinition'>: dict({
+            <class 'compiler.ast.function.FunctionDefinition'>: dict({
               'fields': dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionParams'>: dict({
+                  <class 'compiler.ast.function.FunctionParams'>: dict({
                     'fields': dict({
                       'args': list([
                         dict({
-                          <class 'compiler.ast.FunctionParam'>: dict({
+                          <class 'compiler.ast.function.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,
@@ -1013,28 +1013,28 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
-                          <class 'compiler.ast.MatchStmt'>: dict({
+                          <class 'compiler.ast.match.MatchStmt'>: dict({
                             'fields': dict({
                               'cases': dict({
-                                <class 'compiler.ast.CaseLadder'>: dict({
+                                <class 'compiler.ast.match.CaseLadder'>: dict({
                                   'fields': dict({
                                     'cases': list([
                                       dict({
-                                        <class 'compiler.ast.CaseStmt'>: dict({
+                                        <class 'compiler.ast.match.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
-                                                      <class 'compiler.ast.ReturnStmt'>: dict({
+                                                      <class 'compiler.ast.function.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1048,10 +1048,10 @@
                                               }),
                                             }),
                                             'pattern': dict({
-                                              <class 'compiler.ast.EnumPatternTuple'>: dict({
+                                              <class 'compiler.ast.match.EnumPatternTuple'>: dict({
                                                 'fields': dict({
                                                   'tuple_pattern': dict({
-                                                    <class 'compiler.ast.BoolLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Bool'>,
@@ -1066,17 +1066,17 @@
                                         }),
                                       }),
                                       dict({
-                                        <class 'compiler.ast.CaseStmt'>: dict({
+                                        <class 'compiler.ast.match.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
-                                                      <class 'compiler.ast.ReturnStmt'>: dict({
+                                                      <class 'compiler.ast.function.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1090,10 +1090,10 @@
                                               }),
                                             }),
                                             'pattern': dict({
-                                              <class 'compiler.ast.EnumPatternTuple'>: dict({
+                                              <class 'compiler.ast.match.EnumPatternTuple'>: dict({
                                                 'fields': dict({
                                                   'tuple_pattern': dict({
-                                                    <class 'compiler.ast.BoolLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Bool'>,
@@ -1108,17 +1108,17 @@
                                         }),
                                       }),
                                       dict({
-                                        <class 'compiler.ast.CaseStmt'>: dict({
+                                        <class 'compiler.ast.match.CaseStmt'>: dict({
                                           'fields': dict({
                                             'block': dict({
-                                              <class 'compiler.ast.StatementBlock'>: dict({
+                                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                                 'fields': dict({
                                                   'stmts': list([
                                                     dict({
-                                                      <class 'compiler.ast.ReturnStmt'>: dict({
+                                                      <class 'compiler.ast.function.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                               'fields': dict({
                                                               }),
                                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1132,7 +1132,7 @@
                                               }),
                                             }),
                                             'pattern': dict({
-                                              <class 'compiler.ast.EnumPattern'>: dict({
+                                              <class 'compiler.ast.match.EnumPattern'>: dict({
                                                 'fields': dict({
                                                 }),
                                                 'type': <class 'compiler.langtypes.Enum'>,
@@ -1147,7 +1147,7 @@
                                 }),
                               }),
                               'expr': dict({
-                                <class 'compiler.ast.Variable'>: dict({
+                                <class 'compiler.ast.variable.Variable'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,
@@ -1161,7 +1161,7 @@
                   }),
                 }),
                 'return_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -1171,20 +1171,20 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
+                        <class 'compiler.ast.function.FunctionArgs'>: dict({
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.EnumLiteralTuple'>: dict({
+                                <class 'compiler.ast.enum.EnumLiteralTuple'>: dict({
                                   'fields': dict({
                                     'inner': dict({
-                                      <class 'compiler.ast.BoolLiteral'>: dict({
+                                      <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                         'fields': dict({
                                         }),
                                         'type': <class 'compiler.langtypes.Bool'>,
@@ -1200,7 +1200,7 @@
                         }),
                       }),
                       'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Function'>,
@@ -1214,20 +1214,20 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
+                        <class 'compiler.ast.function.FunctionArgs'>: dict({
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.EnumLiteralTuple'>: dict({
+                                <class 'compiler.ast.enum.EnumLiteralTuple'>: dict({
                                   'fields': dict({
                                     'inner': dict({
-                                      <class 'compiler.ast.BoolLiteral'>: dict({
+                                      <class 'compiler.ast.literals.BoolLiteral'>: dict({
                                         'fields': dict({
                                         }),
                                         'type': <class 'compiler.langtypes.Bool'>,
@@ -1243,7 +1243,7 @@
                         }),
                       }),
                       'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Function'>,
@@ -1257,17 +1257,17 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
+                        <class 'compiler.ast.function.FunctionArgs'>: dict({
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                                <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,
@@ -1279,7 +1279,7 @@
                         }),
                       }),
                       'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Function'>,

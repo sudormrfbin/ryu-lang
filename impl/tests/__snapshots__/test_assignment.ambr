@@ -1,23 +1,23 @@
 # serializer version: 1
 # name: test_variable_assignment
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
-              <class 'compiler.ast.IntLiteral'>: dict({
+              <class 'compiler.ast.literals.IntLiteral'>: dict({
                 'value': 1,
               }),
             }),
           }),
         }),
         dict({
-          <class 'compiler.ast.Assignment'>: dict({
+          <class 'compiler.ast.variable.Assignment'>: dict({
             'lvalue': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
-              <class 'compiler.ast.IntLiteral'>: dict({
+              <class 'compiler.ast.literals.IntLiteral'>: dict({
                 'value': 4,
               }),
             }),
@@ -29,14 +29,14 @@
 # ---
 # name: test_variable_assignment.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -46,10 +46,10 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.Assignment'>: dict({
+            <class 'compiler.ast.variable.Assignment'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,

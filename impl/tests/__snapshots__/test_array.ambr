@@ -1,34 +1,34 @@
 # serializer version: 1
 # name: test_array_statement_basic
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'ident': Token('IDENTIFIER', 'x'),
       'rvalue': dict({
-        <class 'compiler.ast.ArrayLiteral'>: dict({
+        <class 'compiler.ast.array.ArrayLiteral'>: dict({
           'members': dict({
-            <class 'compiler.ast.ArrayElements'>: dict({
+            <class 'compiler.ast.array.ArrayElements'>: dict({
               'members': list([
                 dict({
-                  <class 'compiler.ast.ArrayElement'>: dict({
+                  <class 'compiler.ast.array.ArrayElement'>: dict({
                     'element': dict({
-                      <class 'compiler.ast.IntLiteral'>: dict({
+                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                         'value': 2,
                       }),
                     }),
                   }),
                 }),
                 dict({
-                  <class 'compiler.ast.ArrayElement'>: dict({
+                  <class 'compiler.ast.array.ArrayElement'>: dict({
                     'element': dict({
-                      <class 'compiler.ast.Term'>: dict({
+                      <class 'compiler.ast.operators.Term'>: dict({
                         'left': dict({
-                          <class 'compiler.ast.IntLiteral'>: dict({
+                          <class 'compiler.ast.literals.IntLiteral'>: dict({
                             'value': 3,
                           }),
                         }),
                         'op': Token('PLUS', '+'),
                         'right': dict({
-                          <class 'compiler.ast.IntLiteral'>: dict({
+                          <class 'compiler.ast.literals.IntLiteral'>: dict({
                             'value': 3,
                           }),
                         }),
@@ -46,20 +46,20 @@
 # ---
 # name: test_array_statement_basic.1
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'fields': dict({
         'rvalue': dict({
-          <class 'compiler.ast.ArrayLiteral'>: dict({
+          <class 'compiler.ast.array.ArrayLiteral'>: dict({
             'fields': dict({
               'members': dict({
-                <class 'compiler.ast.ArrayElements'>: dict({
+                <class 'compiler.ast.array.ArrayElements'>: dict({
                   'fields': dict({
                     'members': list([
                       dict({
-                        <class 'compiler.ast.ArrayElement'>: dict({
+                        <class 'compiler.ast.array.ArrayElement'>: dict({
                           'fields': dict({
                             'element': dict({
-                              <class 'compiler.ast.IntLiteral'>: dict({
+                              <class 'compiler.ast.literals.IntLiteral'>: dict({
                                 'fields': dict({
                                 }),
                                 'type': <class 'compiler.langtypes.Int'>,
@@ -70,20 +70,20 @@
                         }),
                       }),
                       dict({
-                        <class 'compiler.ast.ArrayElement'>: dict({
+                        <class 'compiler.ast.array.ArrayElement'>: dict({
                           'fields': dict({
                             'element': dict({
-                              <class 'compiler.ast.Term'>: dict({
+                              <class 'compiler.ast.operators.Term'>: dict({
                                 'fields': dict({
                                   'left': dict({
-                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                       'fields': dict({
                                       }),
                                       'type': <class 'compiler.langtypes.Int'>,
                                     }),
                                   }),
                                   'right': dict({
-                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                       'fields': dict({
                                       }),
                                       'type': <class 'compiler.langtypes.Int'>,
@@ -112,22 +112,22 @@
 # ---
 # name: test_array_with_annotation
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'ident': Token('IDENTIFIER', 'x'),
       'rvalue': dict({
-        <class 'compiler.ast.ArrayLiteral'>: dict({
+        <class 'compiler.ast.array.ArrayLiteral'>: dict({
           'declared_type': dict({
-            <class 'compiler.ast.TypeAnnotation'>: dict({
+            <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
               'ty': Token('IDENTIFIER', 'int'),
             }),
           }),
           'members': dict({
-            <class 'compiler.ast.ArrayElements'>: dict({
+            <class 'compiler.ast.array.ArrayElements'>: dict({
               'members': list([
                 dict({
-                  <class 'compiler.ast.ArrayElement'>: dict({
+                  <class 'compiler.ast.array.ArrayElement'>: dict({
                     'element': dict({
-                      <class 'compiler.ast.IntLiteral'>: dict({
+                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                         'value': 1,
                       }),
                     }),
@@ -143,27 +143,27 @@
 # ---
 # name: test_array_with_annotation.1
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'fields': dict({
         'rvalue': dict({
-          <class 'compiler.ast.ArrayLiteral'>: dict({
+          <class 'compiler.ast.array.ArrayLiteral'>: dict({
             'fields': dict({
               'declared_type': dict({
-                <class 'compiler.ast.TypeAnnotation'>: dict({
+                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                   'fields': dict({
                   }),
                   'type': <class 'compiler.langtypes.Int'>,
                 }),
               }),
               'members': dict({
-                <class 'compiler.ast.ArrayElements'>: dict({
+                <class 'compiler.ast.array.ArrayElements'>: dict({
                   'fields': dict({
                     'members': list([
                       dict({
-                        <class 'compiler.ast.ArrayElement'>: dict({
+                        <class 'compiler.ast.array.ArrayElement'>: dict({
                           'fields': dict({
                             'element': dict({
-                              <class 'compiler.ast.IntLiteral'>: dict({
+                              <class 'compiler.ast.literals.IntLiteral'>: dict({
                                 'fields': dict({
                                 }),
                                 'type': <class 'compiler.langtypes.Int'>,
@@ -188,12 +188,12 @@
 # ---
 # name: test_empty_array
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'ident': Token('IDENTIFIER', 'x'),
       'rvalue': dict({
-        <class 'compiler.ast.ArrayLiteral'>: dict({
+        <class 'compiler.ast.array.ArrayLiteral'>: dict({
           'declared_type': dict({
-            <class 'compiler.ast.TypeAnnotation'>: dict({
+            <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
               'ty': Token('IDENTIFIER', 'int'),
             }),
           }),
@@ -204,13 +204,13 @@
 # ---
 # name: test_empty_array.1
   dict({
-    <class 'compiler.ast.VariableDeclaration'>: dict({
+    <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'fields': dict({
         'rvalue': dict({
-          <class 'compiler.ast.ArrayLiteral'>: dict({
+          <class 'compiler.ast.array.ArrayLiteral'>: dict({
             'fields': dict({
               'declared_type': dict({
-                <class 'compiler.ast.TypeAnnotation'>: dict({
+                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                   'fields': dict({
                   }),
                   'type': <class 'compiler.langtypes.Int'>,

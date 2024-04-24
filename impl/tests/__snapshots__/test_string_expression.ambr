@@ -1,15 +1,15 @@
 # serializer version: 1
 # name: test_string_concat_2
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'left': dict({
-        <class 'compiler.ast.StringLiteral'>: dict({
+        <class 'compiler.ast.literals.StringLiteral'>: dict({
           'value': 'hello',
         }),
       }),
       'op': Token('PLUS', '+'),
       'right': dict({
-        <class 'compiler.ast.StringLiteral'>: dict({
+        <class 'compiler.ast.literals.StringLiteral'>: dict({
           'value': 'world',
         }),
       }),
@@ -18,17 +18,17 @@
 # ---
 # name: test_string_concat_2.1
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.StringLiteral'>: dict({
+          <class 'compiler.ast.literals.StringLiteral'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.String'>,
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.StringLiteral'>: dict({
+          <class 'compiler.ast.literals.StringLiteral'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.String'>,
@@ -41,23 +41,23 @@
 # ---
 # name: test_string_concat_3
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'left': dict({
-        <class 'compiler.ast.StringLiteral'>: dict({
+        <class 'compiler.ast.literals.StringLiteral'>: dict({
           'value': 'hello',
         }),
       }),
       'op': Token('PLUS', '+'),
       'right': dict({
-        <class 'compiler.ast.Term'>: dict({
+        <class 'compiler.ast.operators.Term'>: dict({
           'left': dict({
-            <class 'compiler.ast.StringLiteral'>: dict({
+            <class 'compiler.ast.literals.StringLiteral'>: dict({
               'value': ' ',
             }),
           }),
           'op': Token('PLUS', '+'),
           'right': dict({
-            <class 'compiler.ast.StringLiteral'>: dict({
+            <class 'compiler.ast.literals.StringLiteral'>: dict({
               'value': 'world',
             }),
           }),
@@ -68,27 +68,27 @@
 # ---
 # name: test_string_concat_3.1
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.StringLiteral'>: dict({
+          <class 'compiler.ast.literals.StringLiteral'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.String'>,
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.Term'>: dict({
+          <class 'compiler.ast.operators.Term'>: dict({
             'fields': dict({
               'left': dict({
-                <class 'compiler.ast.StringLiteral'>: dict({
+                <class 'compiler.ast.literals.StringLiteral'>: dict({
                   'fields': dict({
                   }),
                   'type': <class 'compiler.langtypes.String'>,
                 }),
               }),
               'right': dict({
-                <class 'compiler.ast.StringLiteral'>: dict({
+                <class 'compiler.ast.literals.StringLiteral'>: dict({
                   'fields': dict({
                   }),
                   'type': <class 'compiler.langtypes.String'>,

@@ -1,17 +1,17 @@
 # serializer version: 1
 # name: test_function_call_multiple_args
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.FunctionDefinition'>: dict({
+          <class 'compiler.ast.function.FunctionDefinition'>: dict({
             'args': dict({
-              <class 'compiler.ast.FunctionParams'>: dict({
+              <class 'compiler.ast.function.FunctionParams'>: dict({
                 'args': list([
                   dict({
-                    <class 'compiler.ast.FunctionParam'>: dict({
+                    <class 'compiler.ast.function.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -19,9 +19,9 @@
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.FunctionParam'>: dict({
+                    <class 'compiler.ast.function.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -32,20 +32,20 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
-                    <class 'compiler.ast.ReturnStmt'>: dict({
+                    <class 'compiler.ast.function.ReturnStmt'>: dict({
                       'return_value': dict({
-                        <class 'compiler.ast.Term'>: dict({
+                        <class 'compiler.ast.operators.Term'>: dict({
                           'left': dict({
-                            <class 'compiler.ast.Variable'>: dict({
+                            <class 'compiler.ast.variable.Variable'>: dict({
                               'value': Token('IDENTIFIER', 'a'),
                             }),
                           }),
                           'op': Token('PLUS', '+'),
                           'right': dict({
-                            <class 'compiler.ast.Variable'>: dict({
+                            <class 'compiler.ast.variable.Variable'>: dict({
                               'value': Token('IDENTIFIER', 'b'),
                             }),
                           }),
@@ -58,27 +58,27 @@
             }),
             'name': Token('IDENTIFIER', 'sum'),
             'return_type': dict({
-              <class 'compiler.ast.TypeAnnotation'>: dict({
+              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                 'ty': Token('IDENTIFIER', 'int'),
               }),
             }),
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 's'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionArgs'>: dict({
+                  <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 1,
                         }),
                       }),
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 2,
                         }),
                       }),
@@ -86,7 +86,7 @@
                   }),
                 }),
                 'callee': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'sum'),
                   }),
                 }),
@@ -100,21 +100,21 @@
 # ---
 # name: test_function_call_multiple_args.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.FunctionDefinition'>: dict({
+            <class 'compiler.ast.function.FunctionDefinition'>: dict({
               'fields': dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionParams'>: dict({
+                  <class 'compiler.ast.function.FunctionParams'>: dict({
                     'fields': dict({
                       'args': list([
                         dict({
-                          <class 'compiler.ast.FunctionParam'>: dict({
+                          <class 'compiler.ast.function.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -125,10 +125,10 @@
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.FunctionParam'>: dict({
+                          <class 'compiler.ast.function.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -144,24 +144,24 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
-                          <class 'compiler.ast.ReturnStmt'>: dict({
+                          <class 'compiler.ast.function.ReturnStmt'>: dict({
                             'fields': dict({
                               'return_value': dict({
-                                <class 'compiler.ast.Term'>: dict({
+                                <class 'compiler.ast.operators.Term'>: dict({
                                   'fields': dict({
                                     'left': dict({
-                                      <class 'compiler.ast.Variable'>: dict({
+                                      <class 'compiler.ast.variable.Variable'>: dict({
                                         'fields': dict({
                                         }),
                                         'type': <class 'compiler.langtypes.Int'>,
                                       }),
                                     }),
                                     'right': dict({
-                                      <class 'compiler.ast.Variable'>: dict({
+                                      <class 'compiler.ast.variable.Variable'>: dict({
                                         'fields': dict({
                                         }),
                                         'type': <class 'compiler.langtypes.Int'>,
@@ -179,7 +179,7 @@
                   }),
                 }),
                 'return_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -189,24 +189,24 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
+                        <class 'compiler.ast.function.FunctionArgs'>: dict({
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
                                 }),
                               }),
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -218,7 +218,7 @@
                         }),
                       }),
                       'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Function'>,
@@ -238,17 +238,17 @@
 # ---
 # name: test_function_call_multiple_returns
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.FunctionDefinition'>: dict({
+          <class 'compiler.ast.function.FunctionDefinition'>: dict({
             'args': dict({
-              <class 'compiler.ast.FunctionParams'>: dict({
+              <class 'compiler.ast.function.FunctionParams'>: dict({
                 'args': list([
                   dict({
-                    <class 'compiler.ast.FunctionParam'>: dict({
+                    <class 'compiler.ast.function.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -256,9 +256,9 @@
                     }),
                   }),
                   dict({
-                    <class 'compiler.ast.FunctionParam'>: dict({
+                    <class 'compiler.ast.function.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -269,17 +269,17 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
-                    <class 'compiler.ast.IfChain'>: dict({
+                    <class 'compiler.ast.if_stmt.IfChain'>: dict({
                       'else_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
-                              <class 'compiler.ast.ReturnStmt'>: dict({
+                              <class 'compiler.ast.function.ReturnStmt'>: dict({
                                 'return_value': dict({
-                                  <class 'compiler.ast.Variable'>: dict({
+                                  <class 'compiler.ast.variable.Variable'>: dict({
                                     'value': Token('IDENTIFIER', 'b'),
                                   }),
                                 }),
@@ -289,29 +289,29 @@
                         }),
                       }),
                       'if_stmt': dict({
-                        <class 'compiler.ast.IfStmt'>: dict({
+                        <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                           'cond': dict({
-                            <class 'compiler.ast.Comparison'>: dict({
+                            <class 'compiler.ast.operators.Comparison'>: dict({
                               'left': dict({
-                                <class 'compiler.ast.Variable'>: dict({
+                                <class 'compiler.ast.variable.Variable'>: dict({
                                   'value': Token('IDENTIFIER', 'a'),
                                 }),
                               }),
                               'op': Token('MORETHAN', '>'),
                               'right': dict({
-                                <class 'compiler.ast.Variable'>: dict({
+                                <class 'compiler.ast.variable.Variable'>: dict({
                                   'value': Token('IDENTIFIER', 'b'),
                                 }),
                               }),
                             }),
                           }),
                           'true_block': dict({
-                            <class 'compiler.ast.StatementBlock'>: dict({
+                            <class 'compiler.ast.statements.StatementBlock'>: dict({
                               'stmts': list([
                                 dict({
-                                  <class 'compiler.ast.ReturnStmt'>: dict({
+                                  <class 'compiler.ast.function.ReturnStmt'>: dict({
                                     'return_value': dict({
-                                      <class 'compiler.ast.Variable'>: dict({
+                                      <class 'compiler.ast.variable.Variable'>: dict({
                                         'value': Token('IDENTIFIER', 'a'),
                                       }),
                                     }),
@@ -329,27 +329,27 @@
             }),
             'name': Token('IDENTIFIER', 'max'),
             'return_type': dict({
-              <class 'compiler.ast.TypeAnnotation'>: dict({
+              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                 'ty': Token('IDENTIFIER', 'int'),
               }),
             }),
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'm'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionArgs'>: dict({
+                  <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 3,
                         }),
                       }),
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 9,
                         }),
                       }),
@@ -357,7 +357,7 @@
                   }),
                 }),
                 'callee': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'max'),
                   }),
                 }),
@@ -371,21 +371,21 @@
 # ---
 # name: test_function_call_multiple_returns.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.FunctionDefinition'>: dict({
+            <class 'compiler.ast.function.FunctionDefinition'>: dict({
               'fields': dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionParams'>: dict({
+                  <class 'compiler.ast.function.FunctionParams'>: dict({
                     'fields': dict({
                       'args': list([
                         dict({
-                          <class 'compiler.ast.FunctionParam'>: dict({
+                          <class 'compiler.ast.function.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -396,10 +396,10 @@
                           }),
                         }),
                         dict({
-                          <class 'compiler.ast.FunctionParam'>: dict({
+                          <class 'compiler.ast.function.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -415,21 +415,21 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
-                          <class 'compiler.ast.IfChain'>: dict({
+                          <class 'compiler.ast.if_stmt.IfChain'>: dict({
                             'fields': dict({
                               'else_block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
-                                        <class 'compiler.ast.ReturnStmt'>: dict({
+                                        <class 'compiler.ast.function.ReturnStmt'>: dict({
                                           'fields': dict({
                                             'return_value': dict({
-                                              <class 'compiler.ast.Variable'>: dict({
+                                              <class 'compiler.ast.variable.Variable'>: dict({
                                                 'fields': dict({
                                                 }),
                                                 'type': <class 'compiler.langtypes.Int'>,
@@ -443,20 +443,20 @@
                                 }),
                               }),
                               'if_stmt': dict({
-                                <class 'compiler.ast.IfStmt'>: dict({
+                                <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                                   'fields': dict({
                                     'cond': dict({
-                                      <class 'compiler.ast.Comparison'>: dict({
+                                      <class 'compiler.ast.operators.Comparison'>: dict({
                                         'fields': dict({
                                           'left': dict({
-                                            <class 'compiler.ast.Variable'>: dict({
+                                            <class 'compiler.ast.variable.Variable'>: dict({
                                               'fields': dict({
                                               }),
                                               'type': <class 'compiler.langtypes.Int'>,
                                             }),
                                           }),
                                           'right': dict({
-                                            <class 'compiler.ast.Variable'>: dict({
+                                            <class 'compiler.ast.variable.Variable'>: dict({
                                               'fields': dict({
                                               }),
                                               'type': <class 'compiler.langtypes.Int'>,
@@ -467,14 +467,14 @@
                                       }),
                                     }),
                                     'true_block': dict({
-                                      <class 'compiler.ast.StatementBlock'>: dict({
+                                      <class 'compiler.ast.statements.StatementBlock'>: dict({
                                         'fields': dict({
                                           'stmts': list([
                                             dict({
-                                              <class 'compiler.ast.ReturnStmt'>: dict({
+                                              <class 'compiler.ast.function.ReturnStmt'>: dict({
                                                 'fields': dict({
                                                   'return_value': dict({
-                                                    <class 'compiler.ast.Variable'>: dict({
+                                                    <class 'compiler.ast.variable.Variable'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -498,7 +498,7 @@
                   }),
                 }),
                 'return_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -508,24 +508,24 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
+                        <class 'compiler.ast.function.FunctionArgs'>: dict({
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
                                 }),
                               }),
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -537,7 +537,7 @@
                         }),
                       }),
                       'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Function'>,
@@ -557,17 +557,17 @@
 # ---
 # name: test_function_call_one_arg
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.FunctionDefinition'>: dict({
+          <class 'compiler.ast.function.FunctionDefinition'>: dict({
             'args': dict({
-              <class 'compiler.ast.FunctionParams'>: dict({
+              <class 'compiler.ast.function.FunctionParams'>: dict({
                 'args': list([
                   dict({
-                    <class 'compiler.ast.FunctionParam'>: dict({
+                    <class 'compiler.ast.function.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -578,12 +578,12 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
-                    <class 'compiler.ast.ReturnStmt'>: dict({
+                    <class 'compiler.ast.function.ReturnStmt'>: dict({
                       'return_value': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'value': Token('IDENTIFIER', 'a'),
                         }),
                       }),
@@ -594,22 +594,22 @@
             }),
             'name': Token('IDENTIFIER', 'identity'),
             'return_type': dict({
-              <class 'compiler.ast.TypeAnnotation'>: dict({
+              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                 'ty': Token('IDENTIFIER', 'int'),
               }),
             }),
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'i'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionArgs'>: dict({
+                  <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 8,
                         }),
                       }),
@@ -617,7 +617,7 @@
                   }),
                 }),
                 'callee': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'identity'),
                   }),
                 }),
@@ -631,21 +631,21 @@
 # ---
 # name: test_function_call_one_arg.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.FunctionDefinition'>: dict({
+            <class 'compiler.ast.function.FunctionDefinition'>: dict({
               'fields': dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionParams'>: dict({
+                  <class 'compiler.ast.function.FunctionParams'>: dict({
                     'fields': dict({
                       'args': list([
                         dict({
-                          <class 'compiler.ast.FunctionParam'>: dict({
+                          <class 'compiler.ast.function.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -661,14 +661,14 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
-                          <class 'compiler.ast.ReturnStmt'>: dict({
+                          <class 'compiler.ast.function.ReturnStmt'>: dict({
                             'fields': dict({
                               'return_value': dict({
-                                <class 'compiler.ast.Variable'>: dict({
+                                <class 'compiler.ast.variable.Variable'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -682,7 +682,7 @@
                   }),
                 }),
                 'return_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -692,17 +692,17 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
+                        <class 'compiler.ast.function.FunctionArgs'>: dict({
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -714,7 +714,7 @@
                         }),
                       }),
                       'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Function'>,
@@ -734,17 +734,17 @@
 # ---
 # name: test_function_call_zero_args
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.FunctionDefinition'>: dict({
+          <class 'compiler.ast.function.FunctionDefinition'>: dict({
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
-                    <class 'compiler.ast.ReturnStmt'>: dict({
+                    <class 'compiler.ast.function.ReturnStmt'>: dict({
                       'return_value': dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 1,
                         }),
                       }),
@@ -755,19 +755,19 @@
             }),
             'name': Token('IDENTIFIER', 'one'),
             'return_type': dict({
-              <class 'compiler.ast.TypeAnnotation'>: dict({
+              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                 'ty': Token('IDENTIFIER', 'int'),
               }),
             }),
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'o'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'callee': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'one'),
                   }),
                 }),
@@ -781,21 +781,21 @@
 # ---
 # name: test_function_call_zero_args.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.FunctionDefinition'>: dict({
+            <class 'compiler.ast.function.FunctionDefinition'>: dict({
               'fields': dict({
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
-                          <class 'compiler.ast.ReturnStmt'>: dict({
+                          <class 'compiler.ast.function.ReturnStmt'>: dict({
                             'fields': dict({
                               'return_value': dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -809,7 +809,7 @@
                   }),
                 }),
                 'return_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -819,13 +819,13 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Function'>,
@@ -845,16 +845,16 @@
 # ---
 # name: test_function_def_array_arg
   dict({
-    <class 'compiler.ast.FunctionDefinition'>: dict({
+    <class 'compiler.ast.function.FunctionDefinition'>: dict({
       'args': dict({
-        <class 'compiler.ast.FunctionParams'>: dict({
+        <class 'compiler.ast.function.FunctionParams'>: dict({
           'args': list([
             dict({
-              <class 'compiler.ast.FunctionParam'>: dict({
+              <class 'compiler.ast.function.FunctionParam'>: dict({
                 'arg_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'generics': dict({
-                      <class 'compiler.ast.TypeAnnotation'>: dict({
+                      <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                         'ty': Token('IDENTIFIER', 'int'),
                       }),
                     }),
@@ -868,12 +868,12 @@
         }),
       }),
       'body': dict({
-        <class 'compiler.ast.StatementBlock'>: dict({
+        <class 'compiler.ast.statements.StatementBlock'>: dict({
           'stmts': list([
             dict({
-              <class 'compiler.ast.ReturnStmt'>: dict({
+              <class 'compiler.ast.function.ReturnStmt'>: dict({
                 'return_value': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'value': 1,
                   }),
                 }),
@@ -884,7 +884,7 @@
       }),
       'name': Token('IDENTIFIER', 'one'),
       'return_type': dict({
-        <class 'compiler.ast.TypeAnnotation'>: dict({
+        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
           'ty': Token('IDENTIFIER', 'int'),
         }),
       }),
@@ -893,20 +893,20 @@
 # ---
 # name: test_function_def_array_arg.1
   dict({
-    <class 'compiler.ast.FunctionDefinition'>: dict({
+    <class 'compiler.ast.function.FunctionDefinition'>: dict({
       'fields': dict({
         'args': dict({
-          <class 'compiler.ast.FunctionParams'>: dict({
+          <class 'compiler.ast.function.FunctionParams'>: dict({
             'fields': dict({
               'args': list([
                 dict({
-                  <class 'compiler.ast.FunctionParam'>: dict({
+                  <class 'compiler.ast.function.FunctionParam'>: dict({
                     'fields': dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                             'generics': dict({
-                              <class 'compiler.ast.TypeAnnotation'>: dict({
+                              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                 'fields': dict({
                                 }),
                                 'type': <class 'compiler.langtypes.Int'>,
@@ -926,14 +926,14 @@
           }),
         }),
         'body': dict({
-          <class 'compiler.ast.StatementBlock'>: dict({
+          <class 'compiler.ast.statements.StatementBlock'>: dict({
             'fields': dict({
               'stmts': list([
                 dict({
-                  <class 'compiler.ast.ReturnStmt'>: dict({
+                  <class 'compiler.ast.function.ReturnStmt'>: dict({
                     'fields': dict({
                       'return_value': dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -947,7 +947,7 @@
           }),
         }),
         'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: dict({
+          <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.Int'>,
@@ -959,14 +959,14 @@
 # ---
 # name: test_function_def_multiple_args
   dict({
-    <class 'compiler.ast.FunctionDefinition'>: dict({
+    <class 'compiler.ast.function.FunctionDefinition'>: dict({
       'args': dict({
-        <class 'compiler.ast.FunctionParams'>: dict({
+        <class 'compiler.ast.function.FunctionParams'>: dict({
           'args': list([
             dict({
-              <class 'compiler.ast.FunctionParam'>: dict({
+              <class 'compiler.ast.function.FunctionParam'>: dict({
                 'arg_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
                   }),
                 }),
@@ -974,9 +974,9 @@
               }),
             }),
             dict({
-              <class 'compiler.ast.FunctionParam'>: dict({
+              <class 'compiler.ast.function.FunctionParam'>: dict({
                 'arg_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
                   }),
                 }),
@@ -987,20 +987,20 @@
         }),
       }),
       'body': dict({
-        <class 'compiler.ast.StatementBlock'>: dict({
+        <class 'compiler.ast.statements.StatementBlock'>: dict({
           'stmts': list([
             dict({
-              <class 'compiler.ast.ReturnStmt'>: dict({
+              <class 'compiler.ast.function.ReturnStmt'>: dict({
                 'return_value': dict({
-                  <class 'compiler.ast.Term'>: dict({
+                  <class 'compiler.ast.operators.Term'>: dict({
                     'left': dict({
-                      <class 'compiler.ast.Variable'>: dict({
+                      <class 'compiler.ast.variable.Variable'>: dict({
                         'value': Token('IDENTIFIER', 'a'),
                       }),
                     }),
                     'op': Token('PLUS', '+'),
                     'right': dict({
-                      <class 'compiler.ast.Variable'>: dict({
+                      <class 'compiler.ast.variable.Variable'>: dict({
                         'value': Token('IDENTIFIER', 'b'),
                       }),
                     }),
@@ -1013,7 +1013,7 @@
       }),
       'name': Token('IDENTIFIER', 'sum'),
       'return_type': dict({
-        <class 'compiler.ast.TypeAnnotation'>: dict({
+        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
           'ty': Token('IDENTIFIER', 'int'),
         }),
       }),
@@ -1022,17 +1022,17 @@
 # ---
 # name: test_function_def_multiple_args.1
   dict({
-    <class 'compiler.ast.FunctionDefinition'>: dict({
+    <class 'compiler.ast.function.FunctionDefinition'>: dict({
       'fields': dict({
         'args': dict({
-          <class 'compiler.ast.FunctionParams'>: dict({
+          <class 'compiler.ast.function.FunctionParams'>: dict({
             'fields': dict({
               'args': list([
                 dict({
-                  <class 'compiler.ast.FunctionParam'>: dict({
+                  <class 'compiler.ast.function.FunctionParam'>: dict({
                     'fields': dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1043,10 +1043,10 @@
                   }),
                 }),
                 dict({
-                  <class 'compiler.ast.FunctionParam'>: dict({
+                  <class 'compiler.ast.function.FunctionParam'>: dict({
                     'fields': dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1062,24 +1062,24 @@
           }),
         }),
         'body': dict({
-          <class 'compiler.ast.StatementBlock'>: dict({
+          <class 'compiler.ast.statements.StatementBlock'>: dict({
             'fields': dict({
               'stmts': list([
                 dict({
-                  <class 'compiler.ast.ReturnStmt'>: dict({
+                  <class 'compiler.ast.function.ReturnStmt'>: dict({
                     'fields': dict({
                       'return_value': dict({
-                        <class 'compiler.ast.Term'>: dict({
+                        <class 'compiler.ast.operators.Term'>: dict({
                           'fields': dict({
                             'left': dict({
-                              <class 'compiler.ast.Variable'>: dict({
+                              <class 'compiler.ast.variable.Variable'>: dict({
                                 'fields': dict({
                                 }),
                                 'type': <class 'compiler.langtypes.Int'>,
                               }),
                             }),
                             'right': dict({
-                              <class 'compiler.ast.Variable'>: dict({
+                              <class 'compiler.ast.variable.Variable'>: dict({
                                 'fields': dict({
                                 }),
                                 'type': <class 'compiler.langtypes.Int'>,
@@ -1097,7 +1097,7 @@
           }),
         }),
         'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: dict({
+          <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.Int'>,
@@ -1109,14 +1109,14 @@
 # ---
 # name: test_function_def_multiple_returns
   dict({
-    <class 'compiler.ast.FunctionDefinition'>: dict({
+    <class 'compiler.ast.function.FunctionDefinition'>: dict({
       'args': dict({
-        <class 'compiler.ast.FunctionParams'>: dict({
+        <class 'compiler.ast.function.FunctionParams'>: dict({
           'args': list([
             dict({
-              <class 'compiler.ast.FunctionParam'>: dict({
+              <class 'compiler.ast.function.FunctionParam'>: dict({
                 'arg_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
                   }),
                 }),
@@ -1124,9 +1124,9 @@
               }),
             }),
             dict({
-              <class 'compiler.ast.FunctionParam'>: dict({
+              <class 'compiler.ast.function.FunctionParam'>: dict({
                 'arg_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
                   }),
                 }),
@@ -1137,17 +1137,17 @@
         }),
       }),
       'body': dict({
-        <class 'compiler.ast.StatementBlock'>: dict({
+        <class 'compiler.ast.statements.StatementBlock'>: dict({
           'stmts': list([
             dict({
-              <class 'compiler.ast.IfChain'>: dict({
+              <class 'compiler.ast.if_stmt.IfChain'>: dict({
                 'else_block': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'stmts': list([
                       dict({
-                        <class 'compiler.ast.ReturnStmt'>: dict({
+                        <class 'compiler.ast.function.ReturnStmt'>: dict({
                           'return_value': dict({
-                            <class 'compiler.ast.Variable'>: dict({
+                            <class 'compiler.ast.variable.Variable'>: dict({
                               'value': Token('IDENTIFIER', 'b'),
                             }),
                           }),
@@ -1157,29 +1157,29 @@
                   }),
                 }),
                 'if_stmt': dict({
-                  <class 'compiler.ast.IfStmt'>: dict({
+                  <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                     'cond': dict({
-                      <class 'compiler.ast.Comparison'>: dict({
+                      <class 'compiler.ast.operators.Comparison'>: dict({
                         'left': dict({
-                          <class 'compiler.ast.Variable'>: dict({
+                          <class 'compiler.ast.variable.Variable'>: dict({
                             'value': Token('IDENTIFIER', 'a'),
                           }),
                         }),
                         'op': Token('MORETHAN', '>'),
                         'right': dict({
-                          <class 'compiler.ast.Variable'>: dict({
+                          <class 'compiler.ast.variable.Variable'>: dict({
                             'value': Token('IDENTIFIER', 'b'),
                           }),
                         }),
                       }),
                     }),
                     'true_block': dict({
-                      <class 'compiler.ast.StatementBlock'>: dict({
+                      <class 'compiler.ast.statements.StatementBlock'>: dict({
                         'stmts': list([
                           dict({
-                            <class 'compiler.ast.ReturnStmt'>: dict({
+                            <class 'compiler.ast.function.ReturnStmt'>: dict({
                               'return_value': dict({
-                                <class 'compiler.ast.Variable'>: dict({
+                                <class 'compiler.ast.variable.Variable'>: dict({
                                   'value': Token('IDENTIFIER', 'a'),
                                 }),
                               }),
@@ -1197,7 +1197,7 @@
       }),
       'name': Token('IDENTIFIER', 'max'),
       'return_type': dict({
-        <class 'compiler.ast.TypeAnnotation'>: dict({
+        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
           'ty': Token('IDENTIFIER', 'int'),
         }),
       }),
@@ -1206,17 +1206,17 @@
 # ---
 # name: test_function_def_multiple_returns.1
   dict({
-    <class 'compiler.ast.FunctionDefinition'>: dict({
+    <class 'compiler.ast.function.FunctionDefinition'>: dict({
       'fields': dict({
         'args': dict({
-          <class 'compiler.ast.FunctionParams'>: dict({
+          <class 'compiler.ast.function.FunctionParams'>: dict({
             'fields': dict({
               'args': list([
                 dict({
-                  <class 'compiler.ast.FunctionParam'>: dict({
+                  <class 'compiler.ast.function.FunctionParam'>: dict({
                     'fields': dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1227,10 +1227,10 @@
                   }),
                 }),
                 dict({
-                  <class 'compiler.ast.FunctionParam'>: dict({
+                  <class 'compiler.ast.function.FunctionParam'>: dict({
                     'fields': dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1246,21 +1246,21 @@
           }),
         }),
         'body': dict({
-          <class 'compiler.ast.StatementBlock'>: dict({
+          <class 'compiler.ast.statements.StatementBlock'>: dict({
             'fields': dict({
               'stmts': list([
                 dict({
-                  <class 'compiler.ast.IfChain'>: dict({
+                  <class 'compiler.ast.if_stmt.IfChain'>: dict({
                     'fields': dict({
                       'else_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'fields': dict({
                             'stmts': list([
                               dict({
-                                <class 'compiler.ast.ReturnStmt'>: dict({
+                                <class 'compiler.ast.function.ReturnStmt'>: dict({
                                   'fields': dict({
                                     'return_value': dict({
-                                      <class 'compiler.ast.Variable'>: dict({
+                                      <class 'compiler.ast.variable.Variable'>: dict({
                                         'fields': dict({
                                         }),
                                         'type': <class 'compiler.langtypes.Int'>,
@@ -1274,20 +1274,20 @@
                         }),
                       }),
                       'if_stmt': dict({
-                        <class 'compiler.ast.IfStmt'>: dict({
+                        <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                           'fields': dict({
                             'cond': dict({
-                              <class 'compiler.ast.Comparison'>: dict({
+                              <class 'compiler.ast.operators.Comparison'>: dict({
                                 'fields': dict({
                                   'left': dict({
-                                    <class 'compiler.ast.Variable'>: dict({
+                                    <class 'compiler.ast.variable.Variable'>: dict({
                                       'fields': dict({
                                       }),
                                       'type': <class 'compiler.langtypes.Int'>,
                                     }),
                                   }),
                                   'right': dict({
-                                    <class 'compiler.ast.Variable'>: dict({
+                                    <class 'compiler.ast.variable.Variable'>: dict({
                                       'fields': dict({
                                       }),
                                       'type': <class 'compiler.langtypes.Int'>,
@@ -1298,14 +1298,14 @@
                               }),
                             }),
                             'true_block': dict({
-                              <class 'compiler.ast.StatementBlock'>: dict({
+                              <class 'compiler.ast.statements.StatementBlock'>: dict({
                                 'fields': dict({
                                   'stmts': list([
                                     dict({
-                                      <class 'compiler.ast.ReturnStmt'>: dict({
+                                      <class 'compiler.ast.function.ReturnStmt'>: dict({
                                         'fields': dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.Variable'>: dict({
+                                            <class 'compiler.ast.variable.Variable'>: dict({
                                               'fields': dict({
                                               }),
                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1329,7 +1329,7 @@
           }),
         }),
         'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: dict({
+          <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.Int'>,
@@ -1341,14 +1341,14 @@
 # ---
 # name: test_function_def_one_arg
   dict({
-    <class 'compiler.ast.FunctionDefinition'>: dict({
+    <class 'compiler.ast.function.FunctionDefinition'>: dict({
       'args': dict({
-        <class 'compiler.ast.FunctionParams'>: dict({
+        <class 'compiler.ast.function.FunctionParams'>: dict({
           'args': list([
             dict({
-              <class 'compiler.ast.FunctionParam'>: dict({
+              <class 'compiler.ast.function.FunctionParam'>: dict({
                 'arg_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'ty': Token('IDENTIFIER', 'int'),
                   }),
                 }),
@@ -1359,12 +1359,12 @@
         }),
       }),
       'body': dict({
-        <class 'compiler.ast.StatementBlock'>: dict({
+        <class 'compiler.ast.statements.StatementBlock'>: dict({
           'stmts': list([
             dict({
-              <class 'compiler.ast.ReturnStmt'>: dict({
+              <class 'compiler.ast.function.ReturnStmt'>: dict({
                 'return_value': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'a'),
                   }),
                 }),
@@ -1375,7 +1375,7 @@
       }),
       'name': Token('IDENTIFIER', 'identity'),
       'return_type': dict({
-        <class 'compiler.ast.TypeAnnotation'>: dict({
+        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
           'ty': Token('IDENTIFIER', 'int'),
         }),
       }),
@@ -1384,17 +1384,17 @@
 # ---
 # name: test_function_def_one_arg.1
   dict({
-    <class 'compiler.ast.FunctionDefinition'>: dict({
+    <class 'compiler.ast.function.FunctionDefinition'>: dict({
       'fields': dict({
         'args': dict({
-          <class 'compiler.ast.FunctionParams'>: dict({
+          <class 'compiler.ast.function.FunctionParams'>: dict({
             'fields': dict({
               'args': list([
                 dict({
-                  <class 'compiler.ast.FunctionParam'>: dict({
+                  <class 'compiler.ast.function.FunctionParam'>: dict({
                     'fields': dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1410,14 +1410,14 @@
           }),
         }),
         'body': dict({
-          <class 'compiler.ast.StatementBlock'>: dict({
+          <class 'compiler.ast.statements.StatementBlock'>: dict({
             'fields': dict({
               'stmts': list([
                 dict({
-                  <class 'compiler.ast.ReturnStmt'>: dict({
+                  <class 'compiler.ast.function.ReturnStmt'>: dict({
                     'fields': dict({
                       'return_value': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1431,7 +1431,7 @@
           }),
         }),
         'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: dict({
+          <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.Int'>,
@@ -1443,14 +1443,14 @@
 # ---
 # name: test_function_def_zero_args
   dict({
-    <class 'compiler.ast.FunctionDefinition'>: dict({
+    <class 'compiler.ast.function.FunctionDefinition'>: dict({
       'body': dict({
-        <class 'compiler.ast.StatementBlock'>: dict({
+        <class 'compiler.ast.statements.StatementBlock'>: dict({
           'stmts': list([
             dict({
-              <class 'compiler.ast.ReturnStmt'>: dict({
+              <class 'compiler.ast.function.ReturnStmt'>: dict({
                 'return_value': dict({
-                  <class 'compiler.ast.IntLiteral'>: dict({
+                  <class 'compiler.ast.literals.IntLiteral'>: dict({
                     'value': 1,
                   }),
                 }),
@@ -1461,7 +1461,7 @@
       }),
       'name': Token('IDENTIFIER', 'one'),
       'return_type': dict({
-        <class 'compiler.ast.TypeAnnotation'>: dict({
+        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
           'ty': Token('IDENTIFIER', 'int'),
         }),
       }),
@@ -1470,17 +1470,17 @@
 # ---
 # name: test_function_def_zero_args.1
   dict({
-    <class 'compiler.ast.FunctionDefinition'>: dict({
+    <class 'compiler.ast.function.FunctionDefinition'>: dict({
       'fields': dict({
         'body': dict({
-          <class 'compiler.ast.StatementBlock'>: dict({
+          <class 'compiler.ast.statements.StatementBlock'>: dict({
             'fields': dict({
               'stmts': list([
                 dict({
-                  <class 'compiler.ast.ReturnStmt'>: dict({
+                  <class 'compiler.ast.function.ReturnStmt'>: dict({
                     'fields': dict({
                       'return_value': dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Int'>,
@@ -1494,7 +1494,7 @@
           }),
         }),
         'return_type': dict({
-          <class 'compiler.ast.TypeAnnotation'>: dict({
+          <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
             'fields': dict({
             }),
             'type': <class 'compiler.langtypes.Int'>,
@@ -1506,17 +1506,17 @@
 # ---
 # name: test_function_recursive
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'stmts': list([
         dict({
-          <class 'compiler.ast.FunctionDefinition'>: dict({
+          <class 'compiler.ast.function.FunctionDefinition'>: dict({
             'args': dict({
-              <class 'compiler.ast.FunctionParams'>: dict({
+              <class 'compiler.ast.function.FunctionParams'>: dict({
                 'args': list([
                   dict({
-                    <class 'compiler.ast.FunctionParam'>: dict({
+                    <class 'compiler.ast.function.FunctionParam'>: dict({
                       'arg_type': dict({
-                        <class 'compiler.ast.TypeAnnotation'>: dict({
+                        <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                           'ty': Token('IDENTIFIER', 'int'),
                         }),
                       }),
@@ -1527,32 +1527,32 @@
               }),
             }),
             'body': dict({
-              <class 'compiler.ast.StatementBlock'>: dict({
+              <class 'compiler.ast.statements.StatementBlock'>: dict({
                 'stmts': list([
                   dict({
-                    <class 'compiler.ast.IfChain'>: dict({
+                    <class 'compiler.ast.if_stmt.IfChain'>: dict({
                       'else_block': dict({
-                        <class 'compiler.ast.StatementBlock'>: dict({
+                        <class 'compiler.ast.statements.StatementBlock'>: dict({
                           'stmts': list([
                             dict({
-                              <class 'compiler.ast.ReturnStmt'>: dict({
+                              <class 'compiler.ast.function.ReturnStmt'>: dict({
                                 'return_value': dict({
-                                  <class 'compiler.ast.Factor'>: dict({
+                                  <class 'compiler.ast.operators.Factor'>: dict({
                                     'left': dict({
-                                      <class 'compiler.ast.FunctionCall'>: dict({
+                                      <class 'compiler.ast.function.FunctionCall'>: dict({
                                         'args': dict({
-                                          <class 'compiler.ast.FunctionArgs'>: dict({
+                                          <class 'compiler.ast.function.FunctionArgs'>: dict({
                                             'args': list([
                                               dict({
-                                                <class 'compiler.ast.Term'>: dict({
+                                                <class 'compiler.ast.operators.Term'>: dict({
                                                   'left': dict({
-                                                    <class 'compiler.ast.Variable'>: dict({
+                                                    <class 'compiler.ast.variable.Variable'>: dict({
                                                       'value': Token('IDENTIFIER', 'n'),
                                                     }),
                                                   }),
                                                   'op': Token('MINUS', '-'),
                                                   'right': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'value': 1,
                                                     }),
                                                   }),
@@ -1562,7 +1562,7 @@
                                           }),
                                         }),
                                         'callee': dict({
-                                          <class 'compiler.ast.Variable'>: dict({
+                                          <class 'compiler.ast.variable.Variable'>: dict({
                                             'value': Token('IDENTIFIER', 'fact'),
                                           }),
                                         }),
@@ -1570,7 +1570,7 @@
                                     }),
                                     'op': Token('STAR', '*'),
                                     'right': dict({
-                                      <class 'compiler.ast.Variable'>: dict({
+                                      <class 'compiler.ast.variable.Variable'>: dict({
                                         'value': Token('IDENTIFIER', 'n'),
                                       }),
                                     }),
@@ -1582,29 +1582,29 @@
                         }),
                       }),
                       'if_stmt': dict({
-                        <class 'compiler.ast.IfStmt'>: dict({
+                        <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                           'cond': dict({
-                            <class 'compiler.ast.Comparison'>: dict({
+                            <class 'compiler.ast.operators.Comparison'>: dict({
                               'left': dict({
-                                <class 'compiler.ast.Variable'>: dict({
+                                <class 'compiler.ast.variable.Variable'>: dict({
                                   'value': Token('IDENTIFIER', 'n'),
                                 }),
                               }),
                               'op': Token('__ANON_7', '<='),
                               'right': dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'value': 0,
                                 }),
                               }),
                             }),
                           }),
                           'true_block': dict({
-                            <class 'compiler.ast.StatementBlock'>: dict({
+                            <class 'compiler.ast.statements.StatementBlock'>: dict({
                               'stmts': list([
                                 dict({
-                                  <class 'compiler.ast.ReturnStmt'>: dict({
+                                  <class 'compiler.ast.function.ReturnStmt'>: dict({
                                     'return_value': dict({
-                                      <class 'compiler.ast.IntLiteral'>: dict({
+                                      <class 'compiler.ast.literals.IntLiteral'>: dict({
                                         'value': 1,
                                       }),
                                     }),
@@ -1622,22 +1622,22 @@
             }),
             'name': Token('IDENTIFIER', 'fact'),
             'return_type': dict({
-              <class 'compiler.ast.TypeAnnotation'>: dict({
+              <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                 'ty': Token('IDENTIFIER', 'int'),
               }),
             }),
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x1'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionArgs'>: dict({
+                  <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 1,
                         }),
                       }),
@@ -1645,7 +1645,7 @@
                   }),
                 }),
                 'callee': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'fact'),
                   }),
                 }),
@@ -1654,15 +1654,15 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x2'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionArgs'>: dict({
+                  <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 2,
                         }),
                       }),
@@ -1670,7 +1670,7 @@
                   }),
                 }),
                 'callee': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'fact'),
                   }),
                 }),
@@ -1679,15 +1679,15 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x3'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionArgs'>: dict({
+                  <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 3,
                         }),
                       }),
@@ -1695,7 +1695,7 @@
                   }),
                 }),
                 'callee': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'fact'),
                   }),
                 }),
@@ -1704,15 +1704,15 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x4'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionArgs'>: dict({
+                  <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 4,
                         }),
                       }),
@@ -1720,7 +1720,7 @@
                   }),
                 }),
                 'callee': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'fact'),
                   }),
                 }),
@@ -1729,15 +1729,15 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x5'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionArgs'>: dict({
+                  <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 5,
                         }),
                       }),
@@ -1745,7 +1745,7 @@
                   }),
                 }),
                 'callee': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'fact'),
                   }),
                 }),
@@ -1754,15 +1754,15 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.VariableDeclaration'>: dict({
+          <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x6'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionArgs'>: dict({
+                  <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.IntLiteral'>: dict({
+                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                           'value': 6,
                         }),
                       }),
@@ -1770,7 +1770,7 @@
                   }),
                 }),
                 'callee': dict({
-                  <class 'compiler.ast.Variable'>: dict({
+                  <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'fact'),
                   }),
                 }),
@@ -1784,21 +1784,21 @@
 # ---
 # name: test_function_recursive.1
   dict({
-    <class 'compiler.ast.StatementList'>: dict({
+    <class 'compiler.ast.statements.StatementList'>: dict({
       'fields': dict({
         'stmts': list([
           dict({
-            <class 'compiler.ast.FunctionDefinition'>: dict({
+            <class 'compiler.ast.function.FunctionDefinition'>: dict({
               'fields': dict({
                 'args': dict({
-                  <class 'compiler.ast.FunctionParams'>: dict({
+                  <class 'compiler.ast.function.FunctionParams'>: dict({
                     'fields': dict({
                       'args': list([
                         dict({
-                          <class 'compiler.ast.FunctionParam'>: dict({
+                          <class 'compiler.ast.function.FunctionParam'>: dict({
                             'fields': dict({
                               'arg_type': dict({
-                                <class 'compiler.ast.TypeAnnotation'>: dict({
+                                <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -1814,41 +1814,41 @@
                   }),
                 }),
                 'body': dict({
-                  <class 'compiler.ast.StatementBlock'>: dict({
+                  <class 'compiler.ast.statements.StatementBlock'>: dict({
                     'fields': dict({
                       'stmts': list([
                         dict({
-                          <class 'compiler.ast.IfChain'>: dict({
+                          <class 'compiler.ast.if_stmt.IfChain'>: dict({
                             'fields': dict({
                               'else_block': dict({
-                                <class 'compiler.ast.StatementBlock'>: dict({
+                                <class 'compiler.ast.statements.StatementBlock'>: dict({
                                   'fields': dict({
                                     'stmts': list([
                                       dict({
-                                        <class 'compiler.ast.ReturnStmt'>: dict({
+                                        <class 'compiler.ast.function.ReturnStmt'>: dict({
                                           'fields': dict({
                                             'return_value': dict({
-                                              <class 'compiler.ast.Factor'>: dict({
+                                              <class 'compiler.ast.operators.Factor'>: dict({
                                                 'fields': dict({
                                                   'left': dict({
-                                                    <class 'compiler.ast.FunctionCall'>: dict({
+                                                    <class 'compiler.ast.function.FunctionCall'>: dict({
                                                       'fields': dict({
                                                         'args': dict({
-                                                          <class 'compiler.ast.FunctionArgs'>: dict({
+                                                          <class 'compiler.ast.function.FunctionArgs'>: dict({
                                                             'fields': dict({
                                                               'args': list([
                                                                 dict({
-                                                                  <class 'compiler.ast.Term'>: dict({
+                                                                  <class 'compiler.ast.operators.Term'>: dict({
                                                                     'fields': dict({
                                                                       'left': dict({
-                                                                        <class 'compiler.ast.Variable'>: dict({
+                                                                        <class 'compiler.ast.variable.Variable'>: dict({
                                                                           'fields': dict({
                                                                           }),
                                                                           'type': <class 'compiler.langtypes.Int'>,
                                                                         }),
                                                                       }),
                                                                       'right': dict({
-                                                                        <class 'compiler.ast.IntLiteral'>: dict({
+                                                                        <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                                           'fields': dict({
                                                                           }),
                                                                           'type': <class 'compiler.langtypes.Int'>,
@@ -1864,7 +1864,7 @@
                                                           }),
                                                         }),
                                                         'callee': dict({
-                                                          <class 'compiler.ast.Variable'>: dict({
+                                                          <class 'compiler.ast.variable.Variable'>: dict({
                                                             'fields': dict({
                                                             }),
                                                             'type': <class 'compiler.langtypes.Function'>,
@@ -1875,7 +1875,7 @@
                                                     }),
                                                   }),
                                                   'right': dict({
-                                                    <class 'compiler.ast.Variable'>: dict({
+                                                    <class 'compiler.ast.variable.Variable'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -1893,20 +1893,20 @@
                                 }),
                               }),
                               'if_stmt': dict({
-                                <class 'compiler.ast.IfStmt'>: dict({
+                                <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                                   'fields': dict({
                                     'cond': dict({
-                                      <class 'compiler.ast.Comparison'>: dict({
+                                      <class 'compiler.ast.operators.Comparison'>: dict({
                                         'fields': dict({
                                           'left': dict({
-                                            <class 'compiler.ast.Variable'>: dict({
+                                            <class 'compiler.ast.variable.Variable'>: dict({
                                               'fields': dict({
                                               }),
                                               'type': <class 'compiler.langtypes.Int'>,
                                             }),
                                           }),
                                           'right': dict({
-                                            <class 'compiler.ast.IntLiteral'>: dict({
+                                            <class 'compiler.ast.literals.IntLiteral'>: dict({
                                               'fields': dict({
                                               }),
                                               'type': <class 'compiler.langtypes.Int'>,
@@ -1917,14 +1917,14 @@
                                       }),
                                     }),
                                     'true_block': dict({
-                                      <class 'compiler.ast.StatementBlock'>: dict({
+                                      <class 'compiler.ast.statements.StatementBlock'>: dict({
                                         'fields': dict({
                                           'stmts': list([
                                             dict({
-                                              <class 'compiler.ast.ReturnStmt'>: dict({
+                                              <class 'compiler.ast.function.ReturnStmt'>: dict({
                                                 'fields': dict({
                                                   'return_value': dict({
-                                                    <class 'compiler.ast.IntLiteral'>: dict({
+                                                    <class 'compiler.ast.literals.IntLiteral'>: dict({
                                                       'fields': dict({
                                                       }),
                                                       'type': <class 'compiler.langtypes.Int'>,
@@ -1948,7 +1948,7 @@
                   }),
                 }),
                 'return_type': dict({
-                  <class 'compiler.ast.TypeAnnotation'>: dict({
+                  <class 'compiler.ast.annotation.TypeAnnotation'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Int'>,
@@ -1958,17 +1958,17 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
+                        <class 'compiler.ast.function.FunctionArgs'>: dict({
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -1980,7 +1980,7 @@
                         }),
                       }),
                       'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Function'>,
@@ -1994,17 +1994,17 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
+                        <class 'compiler.ast.function.FunctionArgs'>: dict({
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -2016,7 +2016,7 @@
                         }),
                       }),
                       'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Function'>,
@@ -2030,17 +2030,17 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
+                        <class 'compiler.ast.function.FunctionArgs'>: dict({
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -2052,7 +2052,7 @@
                         }),
                       }),
                       'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Function'>,
@@ -2066,17 +2066,17 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
+                        <class 'compiler.ast.function.FunctionArgs'>: dict({
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -2088,7 +2088,7 @@
                         }),
                       }),
                       'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Function'>,
@@ -2102,17 +2102,17 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
+                        <class 'compiler.ast.function.FunctionArgs'>: dict({
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -2124,7 +2124,7 @@
                         }),
                       }),
                       'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Function'>,
@@ -2138,17 +2138,17 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.VariableDeclaration'>: dict({
+            <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
-                        <class 'compiler.ast.FunctionArgs'>: dict({
+                        <class 'compiler.ast.function.FunctionArgs'>: dict({
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.IntLiteral'>: dict({
+                                <class 'compiler.ast.literals.IntLiteral'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Int'>,
@@ -2160,7 +2160,7 @@
                         }),
                       }),
                       'callee': dict({
-                        <class 'compiler.ast.Variable'>: dict({
+                        <class 'compiler.ast.variable.Variable'>: dict({
                           'fields': dict({
                           }),
                           'type': <class 'compiler.langtypes.Function'>,

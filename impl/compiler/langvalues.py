@@ -7,7 +7,7 @@ from compiler import langtypes, runtime
 from compiler.env import RuntimeEnvironment
 
 if TYPE_CHECKING:
-    from compiler.ast import StatementBlock
+    from impl.compiler.ast.statements import StatementBlock
 
 
 @dataclass
@@ -50,10 +50,10 @@ class StructValue:
     @override
     def __hash__(self) -> int:
         return hash(repr(self))
-    
+
     def set_attr(self, member: str, value: Any):
         self.attrs[member] = value
-    
+
     def get_attr(self, member: str) -> Any:
         return self.attrs[member]
 
