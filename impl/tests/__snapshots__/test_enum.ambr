@@ -60,21 +60,18 @@
                           <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
-                            'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
                           <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
-                            'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
                           <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
-                            'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                       ]),
@@ -142,21 +139,18 @@
                   <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                     'fields': dict({
                     }),
-                    'type': <class 'compiler.langtypes.Type'>,
                   }),
                 }),
                 dict({
                   <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                     'fields': dict({
                     }),
-                    'type': <class 'compiler.langtypes.Type'>,
                   }),
                 }),
                 dict({
                   <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                     'fields': dict({
                     }),
-                    'type': <class 'compiler.langtypes.Type'>,
                   }),
                 }),
               ]),
@@ -331,21 +325,18 @@
                           <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
-                            'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
                           <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
-                            'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
                           <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
-                            'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                       ]),
@@ -585,14 +576,12 @@
                                 }),
                               }),
                             }),
-                            'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
                           <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
-                            'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                       ]),
@@ -674,14 +663,12 @@
                         }),
                       }),
                     }),
-                    'type': <class 'compiler.langtypes.Type'>,
                   }),
                 }),
                 dict({
                   <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                     'fields': dict({
                     }),
-                    'type': <class 'compiler.langtypes.Type'>,
                   }),
                 }),
               ]),
@@ -969,14 +956,12 @@
                                 }),
                               }),
                             }),
-                            'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
                           <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
-                            'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                       ]),

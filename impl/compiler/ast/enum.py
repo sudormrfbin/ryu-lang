@@ -14,9 +14,8 @@ from compiler.lalr import Token
 class EnumMemberBare(Ast):
     name: Token
 
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type = langtypes.Type()  # TODO: assign separate type
-        return self.type
+    def typecheck(self, env: TypeEnvironment):
+        pass
 
 
 @dataclass
@@ -24,11 +23,8 @@ class EnumMemberTuple(Ast):
     name: Token
     tuple_members: TypeAnnotation
 
-    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
-        self.type = langtypes.Type()  # TODO: assign separate type
-
+    def typecheck(self, env: TypeEnvironment):
         self.tuple_members.typecheck(env)
-        return self.type
 
 
 @dataclass

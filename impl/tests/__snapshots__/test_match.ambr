@@ -222,21 +222,18 @@
                           <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
-                            'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
                           <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
-                            'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                         dict({
                           <class 'compiler.ast.enum.EnumMemberBare'>: dict({
                             'fields': dict({
                             }),
-                            'type': <class 'compiler.langtypes.Type'>,
                           }),
                         }),
                       ]),
