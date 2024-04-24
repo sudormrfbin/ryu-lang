@@ -133,7 +133,7 @@
                   <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                        <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'English'),
                         }),
@@ -159,7 +159,7 @@
                   <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                        <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'Malayalam'),
                         }),
@@ -185,7 +185,7 @@
                   <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                        <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'Langs'),
                           'variant': Token('IDENTIFIER', 'Japanese'),
                         }),
@@ -392,7 +392,7 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                                <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,
@@ -428,7 +428,7 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                                <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,
@@ -464,7 +464,7 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                                <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,

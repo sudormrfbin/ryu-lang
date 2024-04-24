@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 from typing_extensions import override
 
-from compiler import errors, langtypes
+from compiler import errors, langtypes, langvalues
 from compiler.ast.annotation import TypeAnnotation
 from compiler.ast.base import Ast
+from compiler.ast.expressions import Expression
 from compiler.ast.statements import Statement
 from compiler.env import RuntimeEnvironment, TypeEnvironment
 from compiler.lalr import Token
@@ -93,3 +94,58 @@ class EnumStmt(Statement):
     def eval(self, env: RuntimeEnvironment):
         # Nothing to execute since enum statements are simply declarations
         pass
+
+
+# =============================== Literals ================================
+
+
+@dataclass
+class EnumLiteralSimple(Expression):
+    enum_type: Token
+    variant: Token
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type = env.get_type(self.enum_type)
+        if self.type is None:
+            raise  # TODO
+            # raise errors.UndeclaredType()
+        return self.type
+
+    @override
+    def eval(self, env: RuntimeEnvironment) -> langvalues.EnumValue:
+        return langvalues.EnumValue(ty=self.enum_type, variant=self.variant)
+
+
+@dataclass
+class EnumLiteralTuple(Expression):
+    enum_type: Token
+    variant: Token
+    inner: Expression
+
+    @override
+    def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
+        self.type = env.get_type(self.enum_type)
+        if self.type is None:
+            raise  # TODO
+            # raise errors.UndeclaredType()
+        if not isinstance(self.type, langtypes.Enum):
+            raise  # TODO
+
+        inner_type = self.inner.typecheck(env)
+        variant_type = self.type.variant_from_str(self.variant)
+        if not isinstance(variant_type, langtypes.Enum.Tuple):
+            raise  # TODO
+
+        if variant_type.inner != inner_type:
+            raise  # TODO
+
+        return self.type
+
+    @override
+    def eval(self, env: RuntimeEnvironment):
+        return langvalues.EnumTupleValue(
+            ty=self.enum_type,
+            variant=self.variant,
+            tuple_value=self.inner.eval(env),
+        )

@@ -33,7 +33,7 @@
           <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'lang'),
             'rvalue': dict({
-              <class 'compiler.ast.EnumLiteralSimple'>: dict({
+              <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                 'enum_type': Token('IDENTIFIER', 'Langs'),
                 'variant': Token('IDENTIFIER', 'English'),
               }),
@@ -88,7 +88,7 @@
             <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                  <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Enum'>,
@@ -201,7 +201,7 @@
           <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'lang'),
             'rvalue': dict({
-              <class 'compiler.ast.EnumLiteralSimple'>: dict({
+              <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                 'enum_type': Token('IDENTIFIER', 'Langs'),
                 'variant': Token('IDENTIFIER', 'English'),
               }),
@@ -359,7 +359,7 @@
             <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                  <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                     'fields': dict({
                     }),
                     'type': <class 'compiler.langtypes.Enum'>,
@@ -546,7 +546,7 @@
           <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'x'),
             'rvalue': dict({
-              <class 'compiler.ast.EnumLiteralTuple'>: dict({
+              <class 'compiler.ast.enum.EnumLiteralTuple'>: dict({
                 'enum_type': Token('IDENTIFIER', 'MaybeInt'),
                 'inner': dict({
                   <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -606,7 +606,7 @@
             <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.EnumLiteralTuple'>: dict({
+                  <class 'compiler.ast.enum.EnumLiteralTuple'>: dict({
                     'fields': dict({
                       'inner': dict({
                         <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -863,7 +863,7 @@
                   <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.EnumLiteralTuple'>: dict({
+                        <class 'compiler.ast.enum.EnumLiteralTuple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'MaybeBool'),
                           'inner': dict({
                             <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -894,7 +894,7 @@
                   <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.EnumLiteralTuple'>: dict({
+                        <class 'compiler.ast.enum.EnumLiteralTuple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'MaybeBool'),
                           'inner': dict({
                             <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -925,7 +925,7 @@
                   <class 'compiler.ast.function.FunctionArgs'>: dict({
                     'args': list([
                       dict({
-                        <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                        <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                           'enum_type': Token('IDENTIFIER', 'MaybeBool'),
                           'variant': Token('IDENTIFIER', 'None'),
                         }),
@@ -1181,7 +1181,7 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.EnumLiteralTuple'>: dict({
+                                <class 'compiler.ast.enum.EnumLiteralTuple'>: dict({
                                   'fields': dict({
                                     'inner': dict({
                                       <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -1224,7 +1224,7 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.EnumLiteralTuple'>: dict({
+                                <class 'compiler.ast.enum.EnumLiteralTuple'>: dict({
                                   'fields': dict({
                                     'inner': dict({
                                       <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -1267,7 +1267,7 @@
                           'fields': dict({
                             'args': list([
                               dict({
-                                <class 'compiler.ast.EnumLiteralSimple'>: dict({
+                                <class 'compiler.ast.enum.EnumLiteralSimple'>: dict({
                                   'fields': dict({
                                   }),
                                   'type': <class 'compiler.langtypes.Enum'>,

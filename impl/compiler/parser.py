@@ -85,8 +85,8 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     bool_literal = ast.literals.BoolLiteral
     int_literal = ast.literals.IntLiteral
     string_literal = ast.StringLiteral
-    enum_literal_simple = ast.EnumLiteralSimple
-    enum_literal_tuple = ast.EnumLiteralTuple
+    enum_literal_simple = ast.enum.EnumLiteralSimple
+    enum_literal_tuple = ast.enum.EnumLiteralTuple
     variable = ast.variable.Variable
     array_literal = ast.array.ArrayLiteral
     array_elements = listify(ast.array.ArrayElements)
