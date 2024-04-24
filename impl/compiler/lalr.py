@@ -30,28 +30,9 @@ from copy import deepcopy
 from abc import ABC, abstractmethod
 from types import ModuleType
 from typing import (
-    TypeVar,
-    Generic,
-    Type,
-    Tuple,
-    List,
-    Dict,
-    Iterator,
-    Collection,
-    Callable,
-    Optional,
-    FrozenSet,
-    Any,
-    Union,
-    Iterable,
-    IO,
-    TYPE_CHECKING,
-    overload,
-    Sequence,
-    Pattern as REPattern,
-    ClassVar,
-    Set,
-    Mapping,
+    TypeVar, Generic, Type, Tuple, List, Dict, Iterator, Collection, Callable, Optional, FrozenSet, Any,
+    Union, Iterable, IO, TYPE_CHECKING, overload, Sequence,
+    Pattern as REPattern, ClassVar, Set, Mapping
 )
 
 
@@ -63,7 +44,7 @@ class ConfigurationError(LarkError, ValueError):
     pass
 
 
-def assert_config(value, options: Collection, msg="Got %r, expected one of %s"):
+def assert_config(value, options: Collection, msg='Got %r, expected one of %s'):
     if value not in options:
         raise ConfigurationError(msg % (value, options))
 
@@ -79,44 +60,38 @@ class ParseError(LarkError):
 class LexError(LarkError):
     pass
 
-
-T = TypeVar("T")
-
+T = TypeVar('T')
 
 class UnexpectedInput(LarkError):
-    # --
+    #--
     line: int
     column: int
     pos_in_stream = None
     state: Any
     _terminals_by_name = None
-    interactive_parser: "InteractiveParser"
+    interactive_parser: 'InteractiveParser'
 
-    def get_context(self, text: str, span: int = 40) -> str:
-        # --
+    def get_context(self, text: str, span: int=40) -> str:
+        #--
         assert self.pos_in_stream is not None, self
         pos = self.pos_in_stream
         start = max(pos - span, 0)
         end = pos + span
         if not isinstance(text, bytes):
-            before = text[start:pos].rsplit("\n", 1)[-1]
-            after = text[pos:end].split("\n", 1)[0]
-            return before + after + "\n" + " " * len(before.expandtabs()) + "^\n"
+            before = text[start:pos].rsplit('\n', 1)[-1]
+            after = text[pos:end].split('\n', 1)[0]
+            return before + after + '\n' + ' ' * len(before.expandtabs()) + '^\n'
         else:
-            before = text[start:pos].rsplit(b"\n", 1)[-1]
-            after = text[pos:end].split(b"\n", 1)[0]
-            return (
-                before + after + b"\n" + b" " * len(before.expandtabs()) + b"^\n"
-            ).decode("ascii", "backslashreplace")
+            before = text[start:pos].rsplit(b'\n', 1)[-1]
+            after = text[pos:end].split(b'\n', 1)[0]
+            return (before + after + b'\n' + b' ' * len(before.expandtabs()) + b'^\n').decode("ascii", "backslashreplace")
 
-    def match_examples(
-        self,
-        parse_fn: "Callable[[str], Tree]",
-        examples: Union[Mapping[T, Iterable[str]], Iterable[Tuple[T, Iterable[str]]]],
-        token_type_match_fallback: bool = False,
-        use_accepts: bool = True,
-    ) -> Optional[T]:
-        # --
+    def match_examples(self, parse_fn: 'Callable[[str], Tree]',
+                             examples: Union[Mapping[T, Iterable[str]], Iterable[Tuple[T, Iterable[str]]]],
+                             token_type_match_fallback: bool=False,
+                             use_accepts: bool=True
+                         ) -> Optional[T]:
+        #--
         assert self.state is not None, "Not supported for this exception"
 
         if isinstance(examples, Mapping):
@@ -137,34 +112,27 @@ class UnexpectedInput(LarkError):
                             and isinstance(ut, UnexpectedToken)
                             and ut.accepts != self.accepts
                         ):
-                            logger.debug(
-                                "Different accepts with same state[%d]: %s != %s at example [%s][%s]"
-                                % (self.state, self.accepts, ut.accepts, i, j)
-                            )
+                            logger.debug("Different accepts with same state[%d]: %s != %s at example [%s][%s]" %
+                                         (self.state, self.accepts, ut.accepts, i, j))
                             continue
-                        if isinstance(
-                            self, (UnexpectedToken, UnexpectedEOF)
-                        ) and isinstance(ut, (UnexpectedToken, UnexpectedEOF)):
+                        if (
+                            isinstance(self, (UnexpectedToken, UnexpectedEOF))
+                            and isinstance(ut, (UnexpectedToken, UnexpectedEOF))
+                        ):
                             if ut.token == self.token:  ##
+
                                 logger.debug("Exact Match at example [%s][%s]" % (i, j))
                                 return label
 
                             if token_type_match_fallback:
                                 ##
 
-                                if (ut.token.type == self.token.type) and not candidate[
-                                    -1
-                                ]:
-                                    logger.debug(
-                                        "Token Type Fallback at example [%s][%s]"
-                                        % (i, j)
-                                    )
+                                if (ut.token.type == self.token.type) and not candidate[-1]:
+                                    logger.debug("Token Type Fallback at example [%s][%s]" % (i, j))
                                     candidate = label, True
 
                         if candidate[0] is None:
-                            logger.debug(
-                                "Same State match at example [%s][%s]" % (i, j)
-                            )
+                            logger.debug("Same State match at example [%s][%s]" % (i, j))
                             candidate = label, False
 
         return candidate[0]
@@ -172,15 +140,13 @@ class UnexpectedInput(LarkError):
     def _format_expected(self, expected):
         if self._terminals_by_name:
             d = self._terminals_by_name
-            expected = [
-                d[t_name].user_repr() if t_name in d else t_name for t_name in expected
-            ]
-        return "Expected one of: \n\t* %s\n" % "\n\t* ".join(expected)
+            expected = [d[t_name].user_repr() if t_name in d else t_name for t_name in expected]
+        return "Expected one of: \n\t* %s\n" % '\n\t* '.join(expected)
 
 
 class UnexpectedEOF(ParseError, UnexpectedInput):
-    # --
-    expected: "List[Token]"
+    #--
+    expected: 'List[Token]'
 
     def __init__(self, expected, state=None, terminals_by_name=None):
         super(UnexpectedEOF, self).__init__()
@@ -188,13 +154,13 @@ class UnexpectedEOF(ParseError, UnexpectedInput):
         self.expected = expected
         self.state = state
         from .lexer import Token
-
         self.token = Token("<EOF>", "")  ##
 
         self.pos_in_stream = -1
         self.line = -1
         self.column = -1
         self._terminals_by_name = terminals_by_name
+
 
     def __str__(self):
         message = "Unexpected end-of-input. "
@@ -203,24 +169,13 @@ class UnexpectedEOF(ParseError, UnexpectedInput):
 
 
 class UnexpectedCharacters(LexError, UnexpectedInput):
-    # --
+    #--
 
     allowed: Set[str]
     considered_tokens: Set[Any]
 
-    def __init__(
-        self,
-        seq,
-        lex_pos,
-        line,
-        column,
-        allowed=None,
-        considered_tokens=None,
-        state=None,
-        token_history=None,
-        terminals_by_name=None,
-        considered_rules=None,
-    ):
+    def __init__(self, seq, lex_pos, line, column, allowed=None, considered_tokens=None, state=None, token_history=None,
+                 terminals_by_name=None, considered_rules=None):
         super(UnexpectedCharacters, self).__init__()
 
         ##
@@ -237,49 +192,36 @@ class UnexpectedCharacters(LexError, UnexpectedInput):
         self.token_history = token_history
 
         if isinstance(seq, bytes):
-            self.char = seq[lex_pos : lex_pos + 1].decode("ascii", "backslashreplace")
+            self.char = seq[lex_pos:lex_pos + 1].decode("ascii", "backslashreplace")
         else:
             self.char = seq[lex_pos]
         self._context = self.get_context(seq)
 
+
     def __str__(self):
-        message = (
-            "No terminal matches '%s' in the current parser context, at line %d col %d"
-            % (self.char, self.line, self.column)
-        )
-        message += "\n\n" + self._context
+        message = "No terminal matches '%s' in the current parser context, at line %d col %d" % (self.char, self.line, self.column)
+        message += '\n\n' + self._context
         if self.allowed:
             message += self._format_expected(self.allowed)
         if self.token_history:
-            message += "\nPrevious tokens: %s\n" % ", ".join(
-                repr(t) for t in self.token_history
-            )
+            message += '\nPrevious tokens: %s\n' % ', '.join(repr(t) for t in self.token_history)
         return message
 
 
 class UnexpectedToken(ParseError, UnexpectedInput):
-    # --
+    #--
 
     expected: Set[str]
     considered_rules: Set[str]
 
-    def __init__(
-        self,
-        token,
-        expected,
-        considered_rules=None,
-        state=None,
-        interactive_parser=None,
-        terminals_by_name=None,
-        token_history=None,
-    ):
+    def __init__(self, token, expected, considered_rules=None, state=None, interactive_parser=None, terminals_by_name=None, token_history=None):
         super(UnexpectedToken, self).__init__()
 
         ##
 
-        self.line = getattr(token, "line", "?")
-        self.column = getattr(token, "column", "?")
-        self.pos_in_stream = getattr(token, "start_pos", None)
+        self.line = getattr(token, 'line', '?')
+        self.column = getattr(token, 'column', '?')
+        self.pos_in_stream = getattr(token, 'start_pos', None)
         self.state = state
 
         self.token = token
@@ -291,31 +233,27 @@ class UnexpectedToken(ParseError, UnexpectedInput):
         self._terminals_by_name = terminals_by_name
         self.token_history = token_history
 
+
     @property
     def accepts(self) -> Set[str]:
         if self._accepts is NO_VALUE:
-            self._accepts = (
-                self.interactive_parser and self.interactive_parser.accepts()
-            )
+            self._accepts = self.interactive_parser and self.interactive_parser.accepts()
         return self._accepts
 
     def __str__(self):
-        message = "Unexpected token %r at line %s, column %s.\n%s" % (
-            self.token,
-            self.line,
-            self.column,
-            self._format_expected(self.accepts or self.expected),
-        )
+        message = ("Unexpected token %r at line %s, column %s.\n%s"
+                   % (self.token, self.line, self.column, self._format_expected(self.accepts or self.expected)))
         if self.token_history:
             message += "Previous tokens: %r\n" % self.token_history
 
         return message
 
 
-class VisitError(LarkError):
-    # --
 
-    obj: "Union[Tree, Token]"
+class VisitError(LarkError):
+    #--
+
+    obj: 'Union[Tree, Token]'
     orig_exc: Exception
 
     def __init__(self, rule, obj, orig_exc):
@@ -348,9 +286,7 @@ NO_VALUE = object()
 T = TypeVar("T")
 
 
-def classify(
-    seq: Iterable, key: Optional[Callable] = None, value: Optional[Callable] = None
-) -> Dict:
+def classify(seq: Iterable, key: Optional[Callable] = None, value: Optional[Callable] = None) -> Dict:
     d: Dict[Any, Any] = {}
     for item in seq:
         k = key(item) if (key is not None) else item
@@ -364,14 +300,13 @@ def classify(
 
 def _deserialize(data: Any, namespace: Dict[str, Any], memo: Dict) -> Any:
     if isinstance(data, dict):
-        if "__type__" in data:  ##
-            class_ = namespace[data["__type__"]]
+        if '__type__' in data:  ##
+
+            class_ = namespace[data['__type__']]
             return class_.deserialize(data, memo)
-        elif "@" in data:
-            return memo[data["@"]]
-        return {
-            key: _deserialize(value, namespace, memo) for key, value in data.items()
-        }
+        elif '@' in data:
+            return memo[data['@']]
+        return {key:_deserialize(value, namespace, memo) for key, value in data.items()}
     elif isinstance(data, list):
         return [_deserialize(value, namespace, memo) for value in data]
     return data
@@ -379,35 +314,34 @@ def _deserialize(data: Any, namespace: Dict[str, Any], memo: Dict) -> Any:
 
 _T = TypeVar("_T", bound="Serialize")
 
-
 class Serialize:
-    # --
+    #--
 
     def memo_serialize(self, types_to_memoize: List) -> Any:
         memo = SerializeMemoizer(types_to_memoize)
         return self.serialize(memo), memo.serialize()
 
-    def serialize(self, memo=None) -> Dict[str, Any]:
+    def serialize(self, memo = None) -> Dict[str, Any]:
         if memo and memo.in_types(self):
-            return {"@": memo.memoized.get(self)}
+            return {'@': memo.memoized.get(self)}
 
-        fields = getattr(self, "__serialize_fields__")
+        fields = getattr(self, '__serialize_fields__')
         res = {f: _serialize(getattr(self, f), memo) for f in fields}
-        res["__type__"] = type(self).__name__
-        if hasattr(self, "_serialize"):
+        res['__type__'] = type(self).__name__
+        if hasattr(self, '_serialize'):
             self._serialize(res, memo)  ##
 
         return res
 
     @classmethod
     def deserialize(cls: Type[_T], data: Dict[str, Any], memo: Dict[int, Any]) -> _T:
-        namespace = getattr(cls, "__serialize_namespace__", [])
-        namespace = {c.__name__: c for c in namespace}
+        namespace = getattr(cls, '__serialize_namespace__', [])
+        namespace = {c.__name__:c for c in namespace}
 
-        fields = getattr(cls, "__serialize_fields__")
+        fields = getattr(cls, '__serialize_fields__')
 
-        if "@" in data:
-            return memo[data["@"]]
+        if '@' in data:
+            return memo[data['@']]
 
         inst = cls.__new__(cls)
         for f in fields:
@@ -416,16 +350,17 @@ class Serialize:
             except KeyError as e:
                 raise KeyError("Cannot find key for class", cls, e)
 
-        if hasattr(inst, "_deserialize"):
+        if hasattr(inst, '_deserialize'):
             inst._deserialize()  ##
+
 
         return inst
 
 
 class SerializeMemoizer(Serialize):
-    # --
+    #--
 
-    __serialize_fields__ = ("memoized",)
+    __serialize_fields__ = 'memoized',
 
     def __init__(self, types_to_memoize: List) -> None:
         self.types_to_memoize = tuple(types_to_memoize)
@@ -435,18 +370,17 @@ class SerializeMemoizer(Serialize):
         return isinstance(value, self.types_to_memoize)
 
     def serialize(self) -> Dict[int, Any]:  ##
+
         return _serialize(self.memoized.reversed(), None)
 
     @classmethod
-    def deserialize(
-        cls, data: Dict[int, Any], namespace: Dict[str, Any], memo: Dict[Any, Any]
-    ) -> Dict[int, Any]:  ##
+    def deserialize(cls, data: Dict[int, Any], namespace: Dict[str, Any], memo: Dict[Any, Any]) -> Dict[int, Any]:  ##
+
         return _deserialize(data, namespace, memo)
 
 
 try:
     import regex
-
     _has_regex = True
 except ImportError:
     _has_regex = False
@@ -458,8 +392,7 @@ else:
     import sre_parse
     import sre_constants
 
-categ_pattern = re.compile(r"\\p{[A-Za-z_]+}")
-
+categ_pattern = re.compile(r'\\p{[A-Za-z_]+}')
 
 def get_regexp_width(expr: str) -> Union[Tuple[int, int], List[int]]:
     if _has_regex:
@@ -469,18 +402,15 @@ def get_regexp_width(expr: str) -> Union[Tuple[int, int], List[int]]:
 
         ##
 
-        regexp_final = re.sub(categ_pattern, "A", expr)
+        regexp_final = re.sub(categ_pattern, 'A', expr)
     else:
         if re.search(categ_pattern, expr):
-            raise ImportError(
-                "`regex` module must be installed in order to use Unicode categories.",
-                expr,
-            )
+            raise ImportError('`regex` module must be installed in order to use Unicode categories.', expr)
         regexp_final = expr
     try:
         ##
 
-        return [int(x) for x in sre_parse.parse(regexp_final).getwidth()]  ##
+        return [int(x) for x in sre_parse.parse(regexp_final).getwidth()]   ##
 
     except sre_constants.error:
         if not _has_regex:
@@ -491,7 +421,7 @@ def get_regexp_width(expr: str) -> Union[Tuple[int, int], List[int]]:
             ##
 
             c = regex.compile(regexp_final)
-            if c.match("") is None:
+            if c.match('') is None:
                 ##
 
                 return 1, int(sre_constants.MAXREPEAT)
@@ -501,8 +431,8 @@ def get_regexp_width(expr: str) -> Union[Tuple[int, int], List[int]]:
 
 from collections import OrderedDict
 
-
 class Meta:
+
     empty: bool
     line: int
     column: int
@@ -510,7 +440,7 @@ class Meta:
     end_line: int
     end_column: int
     end_pos: int
-    orig_expansion: "List[TerminalDef]"
+    orig_expansion: 'List[TerminalDef]'
     match_tree: bool
 
     def __init__(self):
@@ -518,18 +448,16 @@ class Meta:
 
 
 _Leaf_T = TypeVar("_Leaf_T")
-Branch = Union[_Leaf_T, "Tree[_Leaf_T]"]
+Branch = Union[_Leaf_T, 'Tree[_Leaf_T]']
 
 
 class Tree(Generic[_Leaf_T]):
-    # --
+    #--
 
     data: str
-    children: "List[Branch[_Leaf_T]]"
+    children: 'List[Branch[_Leaf_T]]'
 
-    def __init__(
-        self, data: str, children: "List[Branch[_Leaf_T]]", meta: Optional[Meta] = None
-    ) -> None:
+    def __init__(self, data: str, children: 'List[Branch[_Leaf_T]]', meta: Optional[Meta]=None) -> None:
         self.data = data
         self.children = children
         self._meta = meta
@@ -541,44 +469,43 @@ class Tree(Generic[_Leaf_T]):
         return self._meta
 
     def __repr__(self):
-        return "Tree(%r, %r)" % (self.data, self.children)
+        return 'Tree(%r, %r)' % (self.data, self.children)
 
     def _pretty_label(self):
         return self.data
 
     def _pretty(self, level, indent_str):
-        yield f"{indent_str*level}{self._pretty_label()}"
+        yield f'{indent_str*level}{self._pretty_label()}'
         if len(self.children) == 1 and not isinstance(self.children[0], Tree):
-            yield f"\t{self.children[0]}\n"
+            yield f'\t{self.children[0]}\n'
         else:
-            yield "\n"
+            yield '\n'
             for n in self.children:
                 if isinstance(n, Tree):
-                    yield from n._pretty(level + 1, indent_str)
+                    yield from n._pretty(level+1, indent_str)
                 else:
-                    yield f"{indent_str*(level+1)}{n}\n"
+                    yield f'{indent_str*(level+1)}{n}\n'
 
-    def pretty(self, indent_str: str = "  ") -> str:
-        # --
-        return "".join(self._pretty(0, indent_str))
+    def pretty(self, indent_str: str='  ') -> str:
+        #--
+        return ''.join(self._pretty(0, indent_str))
 
-    def __rich__(self, parent: Optional["rich.tree.Tree"] = None) -> "rich.tree.Tree":
-        # --
+    def __rich__(self, parent:Optional['rich.tree.Tree']=None) -> 'rich.tree.Tree':
+        #--
         return self._rich(parent)
 
     def _rich(self, parent):
         if parent:
-            tree = parent.add(f"[bold]{self.data}[/bold]")
+            tree = parent.add(f'[bold]{self.data}[/bold]')
         else:
             import rich.tree
-
             tree = rich.tree.Tree(self.data)
 
         for c in self.children:
             if isinstance(c, Tree):
                 c._rich(tree)
             else:
-                tree.add(f"[green]{c}[/green]")
+                tree.add(f'[green]{c}[/green]')
 
         return tree
 
@@ -594,25 +521,23 @@ class Tree(Generic[_Leaf_T]):
     def __hash__(self) -> int:
         return hash((self.data, tuple(self.children)))
 
-    def iter_subtrees(self) -> "Iterator[Tree[_Leaf_T]]":
-        # --
+    def iter_subtrees(self) -> 'Iterator[Tree[_Leaf_T]]':
+        #--
         queue = [self]
         subtrees = OrderedDict()
         for subtree in queue:
             subtrees[id(subtree)] = subtree
             ##
 
-            queue += [
-                c
-                for c in reversed(subtree.children)  ##
-                if isinstance(c, Tree) and id(c) not in subtrees
-            ]
+            queue += [c for c in reversed(subtree.children)  ##
+
+                      if isinstance(c, Tree) and id(c) not in subtrees]
 
         del queue
         return reversed(list(subtrees.values()))
 
     def iter_subtrees_topdown(self):
-        # --
+        #--
         stack = [self]
         stack_append = stack.append
         stack_pop = stack.pop
@@ -624,35 +549,31 @@ class Tree(Generic[_Leaf_T]):
             for child in reversed(node.children):
                 stack_append(child)
 
-    def find_pred(
-        self, pred: "Callable[[Tree[_Leaf_T]], bool]"
-    ) -> "Iterator[Tree[_Leaf_T]]":
-        # --
+    def find_pred(self, pred: 'Callable[[Tree[_Leaf_T]], bool]') -> 'Iterator[Tree[_Leaf_T]]':
+        #--
         return filter(pred, self.iter_subtrees())
 
-    def find_data(self, data: str) -> "Iterator[Tree[_Leaf_T]]":
-        # --
+    def find_data(self, data: str) -> 'Iterator[Tree[_Leaf_T]]':
+        #--
         return self.find_pred(lambda t: t.data == data)
 
 
 from functools import wraps, update_wrapper
 from inspect import getmembers, getmro
 
-_Return_T = TypeVar("_Return_T")
-_Return_V = TypeVar("_Return_V")
-_Leaf_T = TypeVar("_Leaf_T")
-_Leaf_U = TypeVar("_Leaf_U")
-_R = TypeVar("_R")
+_Return_T = TypeVar('_Return_T')
+_Return_V = TypeVar('_Return_V')
+_Leaf_T = TypeVar('_Leaf_T')
+_Leaf_U = TypeVar('_Leaf_U')
+_R = TypeVar('_R')
 _FUNC = Callable[..., _Return_T]
 _DECORATED = Union[_FUNC, type]
 
-
 class _DiscardType:
-    # --
+    #--
 
     def __repr__(self):
         return "lark.visitors.Discard"
-
 
 Discard = _DiscardType()
 
@@ -660,7 +581,7 @@ Discard = _DiscardType()
 
 
 class _Decoratable:
-    # --
+    #--
 
     @classmethod
     def _apply_v_args(cls, visit_wrapper):
@@ -668,11 +589,10 @@ class _Decoratable:
         assert mro[0] is cls
         libmembers = {name for _cls in mro[1:] for name, _ in getmembers(_cls)}
         for name, value in getmembers(cls):
+
             ##
 
-            if name.startswith("_") or (
-                name in libmembers and name not in cls.__dict__
-            ):
+            if name.startswith('_') or (name in libmembers and name not in cls.__dict__):
                 continue
             if not callable(value):
                 continue
@@ -690,10 +610,11 @@ class _Decoratable:
 
 
 class Transformer(_Decoratable, ABC, Generic[_Leaf_T, _Return_T]):
-    # --
-    __visit_tokens__ = True  ##
+    #--
+    __visit_tokens__ = True   ##
 
-    def __init__(self, visit_tokens: bool = True) -> None:
+
+    def __init__(self,  visit_tokens: bool=True) -> None:
         self.__visit_tokens__ = visit_tokens
 
     def _call_userfunc(self, tree, new_children=None):
@@ -706,7 +627,7 @@ class Transformer(_Decoratable, ABC, Generic[_Leaf_T, _Return_T]):
             return self.__default__(tree.data, children, tree.meta)
         else:
             try:
-                wrapper = getattr(f, "visit_wrapper", None)
+                wrapper = getattr(f, 'visit_wrapper', None)
                 if wrapper is not None:
                     return f.visit_wrapper(f, tree.data, children, tree.meta)
                 else:
@@ -746,27 +667,27 @@ class Transformer(_Decoratable, ABC, Generic[_Leaf_T, _Return_T]):
         return self._call_userfunc(tree, children)
 
     def transform(self, tree: Tree[_Leaf_T]) -> _Return_T:
-        # --
+        #--
         return self._transform_tree(tree)
 
     def __mul__(
-        self: "Transformer[_Leaf_T, Tree[_Leaf_U]]",
-        other: "Union[Transformer[_Leaf_U, _Return_V], TransformerChain[_Leaf_U, _Return_V,]]",
-    ) -> "TransformerChain[_Leaf_T, _Return_V]":
-        # --
+            self: 'Transformer[_Leaf_T, Tree[_Leaf_U]]',
+            other: 'Union[Transformer[_Leaf_U, _Return_V], TransformerChain[_Leaf_U, _Return_V,]]'
+    ) -> 'TransformerChain[_Leaf_T, _Return_V]':
+        #--
         return TransformerChain(self, other)
 
     def __default__(self, data, children, meta):
-        # --
+        #--
         return Tree(data, children, meta)
 
     def __default_token__(self, token):
-        # --
+        #--
         return token
 
 
 def merge_transformers(base_transformer=None, **transformers_to_merge):
-    # --
+    #--
     if base_transformer is None:
         base_transformer = Transformer()
     for prefix, transformer in transformers_to_merge.items():
@@ -778,16 +699,15 @@ def merge_transformers(base_transformer=None, **transformers_to_merge):
                 continue
             prefixed_method = prefix + "__" + method_name
             if hasattr(base_transformer, prefixed_method):
-                raise AttributeError(
-                    "Cannot merge: method '%s' appears more than once" % prefixed_method
-                )
+                raise AttributeError("Cannot merge: method '%s' appears more than once" % prefixed_method)
 
             setattr(base_transformer, prefixed_method, method)
 
     return base_transformer
 
 
-class InlineTransformer(Transformer):  ##
+class InlineTransformer(Transformer):   ##
+
     def _call_userfunc(self, tree, new_children=None):
         ##
 
@@ -801,9 +721,10 @@ class InlineTransformer(Transformer):  ##
 
 
 class TransformerChain(Generic[_Leaf_T, _Return_T]):
-    transformers: "Tuple[Union[Transformer, TransformerChain], ...]"
 
-    def __init__(self, *transformers: "Union[Transformer, TransformerChain]") -> None:
+    transformers: 'Tuple[Union[Transformer, TransformerChain], ...]'
+
+    def __init__(self, *transformers: 'Union[Transformer, TransformerChain]') -> None:
         self.transformers = transformers
 
     def transform(self, tree: Tree[_Leaf_T]) -> _Return_T:
@@ -812,15 +733,16 @@ class TransformerChain(Generic[_Leaf_T, _Return_T]):
         return cast(_Return_T, tree)
 
     def __mul__(
-        self: "TransformerChain[_Leaf_T, Tree[_Leaf_U]]",
-        other: "Union[Transformer[_Leaf_U, _Return_V], TransformerChain[_Leaf_U, _Return_V]]",
-    ) -> "TransformerChain[_Leaf_T, _Return_V]":
+            self: 'TransformerChain[_Leaf_T, Tree[_Leaf_U]]',
+            other: 'Union[Transformer[_Leaf_U, _Return_V], TransformerChain[_Leaf_U, _Return_V]]'
+    ) -> 'TransformerChain[_Leaf_T, _Return_V]':
         return TransformerChain(*self.transformers + (other,))
 
 
 class Transformer_InPlace(Transformer[_Leaf_T, _Return_T]):
-    # --
-    def _transform_tree(self, tree):  ##
+    #--
+    def _transform_tree(self, tree):           ##
+
         return self._call_userfunc(tree)
 
     def transform(self, tree: Tree[_Leaf_T]) -> _Return_T:
@@ -831,7 +753,7 @@ class Transformer_InPlace(Transformer[_Leaf_T, _Return_T]):
 
 
 class Transformer_NonRecursive(Transformer[_Leaf_T, _Return_T]):
-    # --
+    #--
 
     def transform(self, tree: Tree[_Leaf_T]) -> _Return_T:
         ##
@@ -867,7 +789,7 @@ class Transformer_NonRecursive(Transformer[_Leaf_T, _Return_T]):
             else:
                 stack.append(x)
 
-        (result,) = stack  ##
+        result, = stack  ##
 
         ##
 
@@ -879,7 +801,7 @@ class Transformer_NonRecursive(Transformer[_Leaf_T, _Return_T]):
 
 
 class Transformer_InPlaceRecursive(Transformer):
-    # --
+    #--
     def _transform_tree(self, tree):
         tree.children = list(self._transform_children(tree.children))
         return self._call_userfunc(tree)
@@ -893,7 +815,7 @@ class VisitorBase:
         return getattr(self, tree.data, self.__default__)(tree)
 
     def __default__(self, tree):
-        # --
+        #--
         return tree
 
     def __class_getitem__(cls, _):
@@ -901,26 +823,26 @@ class VisitorBase:
 
 
 class Visitor(VisitorBase, ABC, Generic[_Leaf_T]):
-    # --
+    #--
 
     def visit(self, tree: Tree[_Leaf_T]) -> Tree[_Leaf_T]:
-        # --
+        #--
         for subtree in tree.iter_subtrees():
             self._call_userfunc(subtree)
         return tree
 
     def visit_topdown(self, tree: Tree[_Leaf_T]) -> Tree[_Leaf_T]:
-        # --
+        #--
         for subtree in tree.iter_subtrees_topdown():
             self._call_userfunc(subtree)
         return tree
 
 
 class Visitor_Recursive(VisitorBase, Generic[_Leaf_T]):
-    # --
+    #--
 
     def visit(self, tree: Tree[_Leaf_T]) -> Tree[_Leaf_T]:
-        # --
+        #--
         for child in tree.children:
             if isinstance(child, Tree):
                 self.visit(child)
@@ -928,8 +850,8 @@ class Visitor_Recursive(VisitorBase, Generic[_Leaf_T]):
         self._call_userfunc(tree)
         return tree
 
-    def visit_topdown(self, tree: Tree[_Leaf_T]) -> Tree[_Leaf_T]:
-        # --
+    def visit_topdown(self,tree: Tree[_Leaf_T]) -> Tree[_Leaf_T]:
+        #--
         self._call_userfunc(tree)
 
         for child in tree.children:
@@ -940,7 +862,7 @@ class Visitor_Recursive(VisitorBase, Generic[_Leaf_T]):
 
 
 class Interpreter(_Decoratable, ABC, Generic[_Leaf_T, _Return_T]):
-    # --
+    #--
 
     def visit(self, tree: Tree[_Leaf_T]) -> _Return_T:
         ##
@@ -953,17 +875,15 @@ class Interpreter(_Decoratable, ABC, Generic[_Leaf_T, _Return_T]):
 
     def _visit_tree(self, tree: Tree[_Leaf_T]):
         f = getattr(self, tree.data)
-        wrapper = getattr(f, "visit_wrapper", None)
+        wrapper = getattr(f, 'visit_wrapper', None)
         if wrapper is not None:
             return f.visit_wrapper(f, tree.data, tree.children, tree.meta)
         else:
             return f(tree)
 
     def visit_children(self, tree: Tree[_Leaf_T]) -> List:
-        return [
-            self._visit_tree(child) if isinstance(child, Tree) else child
-            for child in tree.children
-        ]
+        return [self._visit_tree(child) if isinstance(child, Tree) else child
+                for child in tree.children]
 
     def __getattr__(self, name):
         return self.__default__
@@ -974,16 +894,13 @@ class Interpreter(_Decoratable, ABC, Generic[_Leaf_T, _Return_T]):
 
 _InterMethod = Callable[[Type[Interpreter], _Return_T], _R]
 
-
 def visit_children_decor(func: _InterMethod) -> _InterMethod:
-    # --
+    #--
     @wraps(func)
     def inner(cls, tree):
         values = cls.visit_children(tree)
         return func(cls, values)
-
     return inner
-
 
 ##
 
@@ -998,12 +915,10 @@ def _apply_v_args(obj, visit_wrapper):
 
 
 class _VArgsWrapper:
-    # --
+    #--
     base_func: Callable
 
-    def __init__(
-        self, func: Callable, visit_wrapper: Callable[[Callable, str, list, Any], Any]
-    ):
+    def __init__(self, func: Callable, visit_wrapper: Callable[[Callable, str, list, Any], Any]):
         if isinstance(func, _VArgsWrapper):
             func = func.base_func
         ##
@@ -1039,31 +954,18 @@ class _VArgsWrapper:
 
 def _vargs_inline(f, _data, children, _meta):
     return f(*children)
-
-
 def _vargs_meta_inline(f, _data, children, meta):
     return f(meta, *children)
-
-
 def _vargs_meta(f, _data, children, meta):
     return f(meta, children)
-
-
 def _vargs_tree(f, data, children, meta):
     return f(Tree(data, children, meta))
 
 
-def v_args(
-    inline: bool = False,
-    meta: bool = False,
-    tree: bool = False,
-    wrapper: Optional[Callable] = None,
-) -> Callable[[_DECORATED], _DECORATED]:
-    # --
+def v_args(inline: bool = False, meta: bool = False, tree: bool = False, wrapper: Optional[Callable] = None) -> Callable[[_DECORATED], _DECORATED]:
+    #--
     if tree and (meta or inline):
-        raise ValueError(
-            "Visitor functions cannot combine 'tree' with 'meta' or 'inline'."
-        )
+        raise ValueError("Visitor functions cannot combine 'tree' with 'meta' or 'inline'.")
 
     func = None
     if meta:
@@ -1078,22 +980,20 @@ def v_args(
 
     if wrapper is not None:
         if func is not None:
-            raise ValueError(
-                "Cannot use 'wrapper' along with 'tree', 'meta' or 'inline'."
-            )
+            raise ValueError("Cannot use 'wrapper' along with 'tree', 'meta' or 'inline'.")
         func = wrapper
 
     def _visitor_args_dec(obj):
         return _apply_v_args(obj, func)
-
     return _visitor_args_dec
+
 
 
 TOKEN_DEFAULT_PRIORITY = 0
 
 
 class Symbol(Serialize):
-    __slots__ = ("name",)
+    __slots__ = ('name',)
 
     name: str
     is_term: ClassVar[bool] = NotImplemented
@@ -1112,7 +1012,7 @@ class Symbol(Serialize):
         return hash(self.name)
 
     def __repr__(self):
-        return "%s(%r)" % (type(self).__name__, self.name)
+        return '%s(%r)' % (type(self).__name__, self.name)
 
     fullrepr = property(__repr__)
 
@@ -1121,7 +1021,7 @@ class Symbol(Serialize):
 
 
 class Terminal(Symbol):
-    __serialize_fields__ = "name", "filter_out"
+    __serialize_fields__ = 'name', 'filter_out'
 
     is_term: ClassVar[bool] = True
 
@@ -1131,26 +1031,20 @@ class Terminal(Symbol):
 
     @property
     def fullrepr(self):
-        return "%s(%r, %r)" % (type(self).__name__, self.name, self.filter_out)
+        return '%s(%r, %r)' % (type(self).__name__, self.name, self.filter_out)
 
     def renamed(self, f):
         return type(self)(f(self.name), self.filter_out)
 
 
 class NonTerminal(Symbol):
-    __serialize_fields__ = ("name",)
+    __serialize_fields__ = 'name',
 
     is_term: ClassVar[bool] = False
 
 
 class RuleOptions(Serialize):
-    __serialize_fields__ = (
-        "keep_all_tokens",
-        "expand1",
-        "priority",
-        "template_source",
-        "empty_indices",
-    )
+    __serialize_fields__ = 'keep_all_tokens', 'expand1', 'priority', 'template_source', 'empty_indices'
 
     keep_all_tokens: bool
     expand1: bool
@@ -1158,14 +1052,7 @@ class RuleOptions(Serialize):
     template_source: Optional[str]
     empty_indices: Tuple[bool, ...]
 
-    def __init__(
-        self,
-        keep_all_tokens: bool = False,
-        expand1: bool = False,
-        priority: Optional[int] = None,
-        template_source: Optional[str] = None,
-        empty_indices: Tuple[bool, ...] = (),
-    ) -> None:
+    def __init__(self, keep_all_tokens: bool=False, expand1: bool=False, priority: Optional[int]=None, template_source: Optional[str]=None, empty_indices: Tuple[bool, ...]=()) -> None:
         self.keep_all_tokens = keep_all_tokens
         self.expand1 = expand1
         self.priority = priority
@@ -1173,19 +1060,19 @@ class RuleOptions(Serialize):
         self.empty_indices = empty_indices
 
     def __repr__(self):
-        return "RuleOptions(%r, %r, %r, %r)" % (
+        return 'RuleOptions(%r, %r, %r, %r)' % (
             self.keep_all_tokens,
             self.expand1,
             self.priority,
-            self.template_source,
+            self.template_source
         )
 
 
 class Rule(Serialize):
-    # --
-    __slots__ = ("origin", "expansion", "alias", "options", "order", "_hash")
+    #--
+    __slots__ = ('origin', 'expansion', 'alias', 'options', 'order', '_hash')
 
-    __serialize_fields__ = "origin", "expansion", "order", "alias", "options"
+    __serialize_fields__ = 'origin', 'expansion', 'order', 'alias', 'options'
     __serialize_namespace__ = Terminal, NonTerminal, RuleOptions
 
     origin: NonTerminal
@@ -1195,14 +1082,8 @@ class Rule(Serialize):
     options: RuleOptions
     _hash: int
 
-    def __init__(
-        self,
-        origin: NonTerminal,
-        expansion: Sequence[Symbol],
-        order: int = 0,
-        alias: Optional[str] = None,
-        options: Optional[RuleOptions] = None,
-    ):
+    def __init__(self, origin: NonTerminal, expansion: Sequence[Symbol],
+                 order: int=0, alias: Optional[str]=None, options: Optional[RuleOptions]=None):
         self.origin = origin
         self.expansion = expansion
         self.alias = alias
@@ -1214,18 +1095,10 @@ class Rule(Serialize):
         self._hash = hash((self.origin, tuple(self.expansion)))
 
     def __str__(self):
-        return "<%s : %s>" % (
-            self.origin.name,
-            " ".join(x.name for x in self.expansion),
-        )
+        return '<%s : %s>' % (self.origin.name, ' '.join(x.name for x in self.expansion))
 
     def __repr__(self):
-        return "Rule(%r, %r, %r, %r)" % (
-            self.origin,
-            self.expansion,
-            self.alias,
-            self.options,
-        )
+        return 'Rule(%r, %r, %r, %r)' % (self.origin, self.expansion, self.alias, self.options)
 
     def __hash__(self):
         return self._hash
@@ -1236,25 +1109,24 @@ class Rule(Serialize):
         return self.origin == other.origin and self.expansion == other.expansion
 
 
+
 from copy import copy
 
 try:  ##
+
     has_interegular = bool(interegular)
 except NameError:
     has_interegular = False
 
-
 class Pattern(Serialize, ABC):
-    # --
+    #--
 
     value: str
     flags: Collection[str]
     raw: Optional[str]
     type: ClassVar[str]
 
-    def __init__(
-        self, value: str, flags: Collection[str] = (), raw: Optional[str] = None
-    ) -> None:
+    def __init__(self, value: str, flags: Collection[str] = (), raw: Optional[str] = None) -> None:
         self.value = value
         self.flags = frozenset(flags)
         self.raw = raw
@@ -1268,11 +1140,7 @@ class Pattern(Serialize, ABC):
         return hash((type(self), self.value, self.flags))
 
     def __eq__(self, other):
-        return (
-            type(self) == type(other)
-            and self.value == other.value
-            and self.flags == other.flags
-        )
+        return type(self) == type(other) and self.value == other.value and self.flags == other.flags
 
     @abstractmethod
     def to_regexp(self) -> str:
@@ -1290,12 +1158,12 @@ class Pattern(Serialize, ABC):
 
     def _get_flags(self, value):
         for f in self.flags:
-            value = "(?%s:%s)" % (f, value)
+            value = ('(?%s:%s)' % (f, value))
         return value
 
 
 class PatternStr(Pattern):
-    __serialize_fields__ = "value", "flags", "raw"
+    __serialize_fields__ = 'value', 'flags', 'raw'
 
     type: ClassVar[str] = "str"
 
@@ -1312,7 +1180,7 @@ class PatternStr(Pattern):
 
 
 class PatternRE(Pattern):
-    __serialize_fields__ = "value", "flags", "raw", "_width"
+    __serialize_fields__ = 'value', 'flags', 'raw', '_width'
 
     type: ClassVar[str] = "re"
 
@@ -1320,7 +1188,6 @@ class PatternRE(Pattern):
         return self._get_flags(self.value)
 
     _width = None
-
     def _get_width(self):
         if self._width is None:
             self._width = get_regexp_width(self.to_regexp())
@@ -1336,49 +1203,37 @@ class PatternRE(Pattern):
 
 
 class TerminalDef(Serialize):
-    # --
-    __serialize_fields__ = "name", "pattern", "priority"
+    #--
+    __serialize_fields__ = 'name', 'pattern', 'priority'
     __serialize_namespace__ = PatternStr, PatternRE
 
     name: str
     pattern: Pattern
     priority: int
 
-    def __init__(
-        self, name: str, pattern: Pattern, priority: int = TOKEN_DEFAULT_PRIORITY
-    ) -> None:
+    def __init__(self, name: str, pattern: Pattern, priority: int = TOKEN_DEFAULT_PRIORITY) -> None:
         assert isinstance(pattern, Pattern), pattern
         self.name = name
         self.pattern = pattern
         self.priority = priority
 
     def __repr__(self):
-        return "%s(%r, %r)" % (type(self).__name__, self.name, self.pattern)
+        return '%s(%r, %r)' % (type(self).__name__, self.name, self.pattern)
 
     def user_repr(self) -> str:
-        if self.name.startswith("__"):  ##
+        if self.name.startswith('__'):  ##
+
             return self.pattern.raw or self.name
         else:
             return self.name
 
-
-_T = TypeVar("_T", bound="Token")
-
+_T = TypeVar('_T', bound="Token")
 
 class Token(str):
-    # --
-    __slots__ = (
-        "type",
-        "start_pos",
-        "value",
-        "line",
-        "column",
-        "end_line",
-        "end_column",
-        "end_pos",
-    )
+    #--
+    __slots__ = ('type', 'start_pos', 'value', 'line', 'column', 'end_line', 'end_column', 'end_pos')
 
-    __match_args__ = ("type", "value")
+    __match_args__ = ('type', 'value')
 
     type: str
     start_pos: Optional[int]
@@ -1389,58 +1244,47 @@ class Token(str):
     end_column: Optional[int]
     end_pos: Optional[int]
 
-    @overload
-    def __new__(
-        cls,
-        type: str,
-        value: Any,
-        start_pos: Optional[int] = None,
-        line: Optional[int] = None,
-        column: Optional[int] = None,
-        end_line: Optional[int] = None,
-        end_column: Optional[int] = None,
-        end_pos: Optional[int] = None,
-    ) -> "Token": ...
 
     @overload
     def __new__(
-        cls,
-        type_: str,
-        value: Any,
-        start_pos: Optional[int] = None,
-        line: Optional[int] = None,
-        column: Optional[int] = None,
-        end_line: Optional[int] = None,
-        end_column: Optional[int] = None,
-        end_pos: Optional[int] = None,
-    ) -> "Token": ...
+            cls,
+            type: str,
+            value: Any,
+            start_pos: Optional[int] = None,
+            line: Optional[int] = None,
+            column: Optional[int] = None,
+            end_line: Optional[int] = None,
+            end_column: Optional[int] = None,
+            end_pos: Optional[int] = None
+    ) -> 'Token':
+        ...
+
+    @overload
+    def __new__(
+            cls,
+            type_: str,
+            value: Any,
+            start_pos: Optional[int] = None,
+            line: Optional[int] = None,
+            column: Optional[int] = None,
+            end_line: Optional[int] = None,
+            end_column: Optional[int] = None,
+            end_pos: Optional[int] = None
+    ) -> 'Token':        ...
 
     def __new__(cls, *args, **kwargs):
         if "type_" in kwargs:
-            warnings.warn(
-                "`type_` is deprecated use `type` instead", DeprecationWarning
-            )
+            warnings.warn("`type_` is deprecated use `type` instead", DeprecationWarning)
 
             if "type" in kwargs:
-                raise TypeError(
-                    "Error: using both 'type' and the deprecated 'type_' as arguments."
-                )
+                raise TypeError("Error: using both 'type' and the deprecated 'type_' as arguments.")
             kwargs["type"] = kwargs.pop("type_")
 
         return cls._future_new(*args, **kwargs)
 
+
     @classmethod
-    def _future_new(
-        cls,
-        type,
-        value,
-        start_pos=None,
-        line=None,
-        column=None,
-        end_line=None,
-        end_column=None,
-        end_pos=None,
-    ):
+    def _future_new(cls, type, value, start_pos=None, line=None, column=None, end_line=None, end_column=None, end_pos=None):
         inst = super(Token, cls).__new__(cls, value)
 
         inst.type = type
@@ -1454,59 +1298,39 @@ class Token(str):
         return inst
 
     @overload
-    def update(
-        self, type: Optional[str] = None, value: Optional[Any] = None
-    ) -> "Token": ...
+    def update(self, type: Optional[str] = None, value: Optional[Any] = None) -> 'Token':
+        ...
 
     @overload
-    def update(
-        self, type_: Optional[str] = None, value: Optional[Any] = None
-    ) -> "Token": ...
+    def update(self, type_: Optional[str] = None, value: Optional[Any] = None) -> 'Token':
+        ...
 
     def update(self, *args, **kwargs):
         if "type_" in kwargs:
-            warnings.warn(
-                "`type_` is deprecated use `type` instead", DeprecationWarning
-            )
+            warnings.warn("`type_` is deprecated use `type` instead", DeprecationWarning)
 
             if "type" in kwargs:
-                raise TypeError(
-                    "Error: using both 'type' and the deprecated 'type_' as arguments."
-                )
+                raise TypeError("Error: using both 'type' and the deprecated 'type_' as arguments.")
             kwargs["type"] = kwargs.pop("type_")
 
         return self._future_update(*args, **kwargs)
 
-    def _future_update(
-        self, type: Optional[str] = None, value: Optional[Any] = None
-    ) -> "Token":
+    def _future_update(self, type: Optional[str] = None, value: Optional[Any] = None) -> 'Token':
         return Token.new_borrow_pos(
             type if type is not None else self.type,
             value if value is not None else self.value,
-            self,
+            self
         )
 
     @classmethod
-    def new_borrow_pos(cls: Type[_T], type_: str, value: Any, borrow_t: "Token") -> _T:
-        return cls(
-            type_,
-            value,
-            borrow_t.start_pos,
-            borrow_t.line,
-            borrow_t.column,
-            borrow_t.end_line,
-            borrow_t.end_column,
-            borrow_t.end_pos,
-        )
+    def new_borrow_pos(cls: Type[_T], type_: str, value: Any, borrow_t: 'Token') -> _T:
+        return cls(type_, value, borrow_t.start_pos, borrow_t.line, borrow_t.column, borrow_t.end_line, borrow_t.end_column, borrow_t.end_pos)
 
     def __reduce__(self):
-        return (
-            self.__class__,
-            (self.type, self.value, self.start_pos, self.line, self.column),
-        )
+        return (self.__class__, (self.type, self.value, self.start_pos, self.line, self.column))
 
     def __repr__(self):
-        return "Token(%r, %r)" % (self.type, self.value)
+        return 'Token(%r, %r)' % (self.type, self.value)
 
     def __deepcopy__(self, memo):
         return Token(self.type, self.value, self.start_pos, self.line, self.column)
@@ -1521,9 +1345,9 @@ class Token(str):
 
 
 class LineCounter:
-    # --
+    #--
 
-    __slots__ = "char_pos", "line", "column", "line_start_pos", "newline_char"
+    __slots__ = 'char_pos', 'line', 'column', 'line_start_pos', 'newline_char'
 
     def __init__(self, newline_char):
         self.newline_char = newline_char
@@ -1536,19 +1360,15 @@ class LineCounter:
         if not isinstance(other, LineCounter):
             return NotImplemented
 
-        return (
-            self.char_pos == other.char_pos and self.newline_char == other.newline_char
-        )
+        return self.char_pos == other.char_pos and self.newline_char == other.newline_char
 
     def feed(self, token: Token, test_newline=True):
-        # --
+        #--
         if test_newline:
             newlines = token.count(self.newline_char)
             if newlines:
                 self.line += newlines
-                self.line_start_pos = (
-                    self.char_pos + token.rindex(self.newline_char) + 1
-                )
+                self.line_start_pos = self.char_pos + token.rindex(self.newline_char) + 1
 
         self.char_pos += len(token)
         self.column = self.char_pos - self.line_start_pos + 1
@@ -1581,7 +1401,6 @@ def _get_match(re_, regexp, s, flags):
     if m:
         return m.group(0)
 
-
 def _create_unless(terminals, g_regex_flags, re_, use_bytes):
     tokens_by_type = classify(terminals, lambda t: type(t.pattern))
     assert len(tokens_by_type) <= 2, tokens_by_type.keys()
@@ -1598,11 +1417,7 @@ def _create_unless(terminals, g_regex_flags, re_, use_bytes):
                 if strtok.pattern.flags <= retok.pattern.flags:
                     embedded_strs.add(strtok)
         if unless:
-            callback[retok.name] = UnlessCallback(
-                Scanner(
-                    unless, g_regex_flags, re_, match_whole=True, use_bytes=use_bytes
-                )
-            )
+            callback[retok.name] = UnlessCallback(Scanner(unless, g_regex_flags, re_, match_whole=True, use_bytes=use_bytes))
 
     new_terminals = [t for t in terminals if t not in embedded_strs]
     return new_terminals, callback
@@ -1627,18 +1442,16 @@ class Scanner:
 
         ##
 
-        postfix = "$" if self.match_whole else ""
+        postfix = '$' if self.match_whole else ''
         mres = []
         while terminals:
-            pattern = "|".join(
-                "(?P<%s>%s)" % (t.name, t.pattern.to_regexp() + postfix)
-                for t in terminals[:max_size]
-            )
+            pattern = u'|'.join(u'(?P<%s>%s)' % (t.name, t.pattern.to_regexp() + postfix) for t in terminals[:max_size])
             if self.use_bytes:
-                pattern = pattern.encode("latin-1")
+                pattern = pattern.encode('latin-1')
             try:
                 mre = self.re_.compile(pattern, self.g_regex_flags)
             except AssertionError:  ##
+
                 return self._build_mres(terminals, max_size // 2)
 
             mres.append(mre)
@@ -1653,56 +1466,43 @@ class Scanner:
 
 
 def _regexp_has_newline(r: str):
-    # --
-    return (
-        "\n" in r or "\\n" in r or "\\s" in r or "[^" in r or ("(?s" in r and "." in r)
-    )
+    #--
+    return '\n' in r or '\\n' in r or '\\s' in r or '[^' in r or ('(?s' in r and '.' in r)
 
 
 class LexerState:
-    # --
+    #--
 
-    __slots__ = "text", "line_ctr", "last_token"
+    __slots__ = 'text', 'line_ctr', 'last_token'
 
     text: str
     line_ctr: LineCounter
     last_token: Optional[Token]
 
-    def __init__(
-        self,
-        text: str,
-        line_ctr: Optional[LineCounter] = None,
-        last_token: Optional[Token] = None,
-    ):
+    def __init__(self, text: str, line_ctr: Optional[LineCounter]=None, last_token: Optional[Token]=None):
         self.text = text
-        self.line_ctr = line_ctr or LineCounter(
-            b"\n" if isinstance(text, bytes) else "\n"
-        )
+        self.line_ctr = line_ctr or LineCounter(b'\n' if isinstance(text, bytes) else '\n')
         self.last_token = last_token
 
     def __eq__(self, other):
         if not isinstance(other, LexerState):
             return NotImplemented
 
-        return (
-            self.text is other.text
-            and self.line_ctr == other.line_ctr
-            and self.last_token == other.last_token
-        )
+        return self.text is other.text and self.line_ctr == other.line_ctr and self.last_token == other.last_token
 
     def __copy__(self):
         return type(self)(self.text, copy(self.line_ctr), self.last_token)
 
 
 class LexerThread:
-    # --
+    #--
 
-    def __init__(self, lexer: "Lexer", lexer_state: LexerState):
+    def __init__(self, lexer: 'Lexer', lexer_state: LexerState):
         self.lexer = lexer
         self.state = lexer_state
 
     @classmethod
-    def from_text(cls, lexer: "Lexer", text: str) -> "LexerThread":
+    def from_text(cls, lexer: 'Lexer', text: str) -> 'LexerThread':
         return cls(lexer, LexerState(text))
 
     def lex(self, parser_state):
@@ -1716,24 +1516,18 @@ class LexerThread:
 
 _Callback = Callable[[Token], Token]
 
-
 class Lexer(ABC):
-    # --
+    #--
     @abstractmethod
     def lex(self, lexer_state: LexerState, parser_state: Any) -> Iterator[Token]:
         return NotImplemented
 
     def make_lexer_state(self, text):
-        # --
+        #--
         return LexerState(text)
 
 
-def _check_regex_collisions(
-    terminal_to_regexp: Dict[TerminalDef, str],
-    comparator,
-    strict_mode,
-    max_collisions_to_show=8,
-):
+def _check_regex_collisions(terminal_to_regexp: Dict[TerminalDef, str], comparator, strict_mode, max_collisions_to_show=8):
     if not comparator:
         comparator = interegular.Comparator.from_regexes(terminal_to_regexp)
 
@@ -1758,20 +1552,14 @@ def _check_regex_collisions(
 
             message = f"Collision between Terminals {a.name} and {b.name}. "
             try:
-                example = comparator.get_example_overlap(
-                    a, b, max_time
-                ).format_multiline()
+                example = comparator.get_example_overlap(a, b, max_time).format_multiline()
             except ValueError:
                 ##
 
                 example = "No example could be found fast enough. However, the collision does still exists"
             if strict_mode:
                 raise LexError(f"{message}\n{example}")
-            logger.warning(
-                "%s The lexer will choose between them arbitrarily.\n%s",
-                message,
-                example,
-            )
+            logger.warning("%s The lexer will choose between them arbitrarily.\n%s", message, example)
             if comparator.count_marked_pairs() >= max_collisions_to_show:
                 logger.warning("Found 8 regex collisions, will not check for more.")
                 return
@@ -1781,10 +1569,12 @@ class AbstractBasicLexer(Lexer):
     terminals_by_name: Dict[str, TerminalDef]
 
     @abstractmethod
-    def __init__(self, conf: "LexerConf", comparator=None) -> None: ...
+    def __init__(self, conf: 'LexerConf', comparator=None) -> None:
+        ...
 
     @abstractmethod
-    def next_token(self, lex_state: LexerState, parser_state: Any = None) -> Token: ...
+    def next_token(self, lex_state: LexerState, parser_state: Any = None) -> Token:
+        ...
 
     def lex(self, state: LexerState, parser_state: Any) -> Iterator[Token]:
         with suppress(EOFError):
@@ -1800,7 +1590,7 @@ class BasicLexer(AbstractBasicLexer):
     callback: Dict[str, _Callback]
     re: ModuleType
 
-    def __init__(self, conf: "LexerConf", comparator=None) -> None:
+    def __init__(self, conf: 'LexerConf', comparator=None) -> None:
         terminals = list(conf.terminals)
         assert all(isinstance(t, TerminalDef) for t in terminals), terminals
 
@@ -1818,41 +1608,24 @@ class BasicLexer(AbstractBasicLexer):
                     raise LexError("Cannot compile token %s: %s" % (t.name, t.pattern))
 
                 if t.pattern.min_width == 0:
-                    raise LexError(
-                        "Lexer does not allow zero-width terminals. (%s: %s)"
-                        % (t.name, t.pattern)
-                    )
+                    raise LexError("Lexer does not allow zero-width terminals. (%s: %s)" % (t.name, t.pattern))
                 if t.pattern.type == "re":
                     terminal_to_regexp[t] = regexp
 
             if not (set(conf.ignore) <= {t.name for t in terminals}):
-                raise LexError(
-                    "Ignore terminals are not defined: %s"
-                    % (set(conf.ignore) - {t.name for t in terminals})
-                )
+                raise LexError("Ignore terminals are not defined: %s" % (set(conf.ignore) - {t.name for t in terminals}))
 
             if has_interegular:
                 _check_regex_collisions(terminal_to_regexp, comparator, conf.strict)
             elif conf.strict:
-                raise LexError(
-                    "interegular must be installed for strict mode. Use `pip install 'lark[interegular]'`."
-                )
+                raise LexError("interegular must be installed for strict mode. Use `pip install 'lark[interegular]'`.")
 
         ##
 
-        self.newline_types = frozenset(
-            t.name for t in terminals if _regexp_has_newline(t.pattern.to_regexp())
-        )
+        self.newline_types = frozenset(t.name for t in terminals if _regexp_has_newline(t.pattern.to_regexp()))
         self.ignore_types = frozenset(conf.ignore)
 
-        terminals.sort(
-            key=lambda x: (
-                -x.priority,
-                -x.pattern.max_width,
-                -len(x.pattern.value),
-                x.name,
-            )
-        )
+        terminals.sort(key=lambda x: (-x.priority, -x.pattern.max_width, -len(x.pattern.value), x.name))
         self.terminals = terminals
         self.user_callbacks = conf.callbacks
         self.g_regex_flags = conf.g_regex_flags
@@ -1862,18 +1635,14 @@ class BasicLexer(AbstractBasicLexer):
         self._scanner = None
 
     def _build_scanner(self):
-        terminals, self.callback = _create_unless(
-            self.terminals, self.g_regex_flags, self.re, self.use_bytes
-        )
+        terminals, self.callback = _create_unless(self.terminals, self.g_regex_flags, self.re, self.use_bytes)
         assert all(self.callback.values())
 
         for type_, f in self.user_callbacks.items():
             if type_ in self.callback:
                 ##
 
-                self.callback[type_] = CallChain(
-                    self.callback[type_], f, lambda t: t.type == type_
-                )
+                self.callback[type_] = CallChain(self.callback[type_], f, lambda t: t.type == type_)
             else:
                 self.callback[type_] = f
 
@@ -1896,25 +1665,16 @@ class BasicLexer(AbstractBasicLexer):
                 allowed = self.scanner.allowed_types - self.ignore_types
                 if not allowed:
                     allowed = {"<END-OF-FILE>"}
-                raise UnexpectedCharacters(
-                    lex_state.text,
-                    line_ctr.char_pos,
-                    line_ctr.line,
-                    line_ctr.column,
-                    allowed=allowed,
-                    token_history=lex_state.last_token and [lex_state.last_token],
-                    state=parser_state,
-                    terminals_by_name=self.terminals_by_name,
-                )
+                raise UnexpectedCharacters(lex_state.text, line_ctr.char_pos, line_ctr.line, line_ctr.column,
+                                           allowed=allowed, token_history=lex_state.last_token and [lex_state.last_token],
+                                           state=parser_state, terminals_by_name=self.terminals_by_name)
 
             value, type_ = res
 
             ignored = type_ in self.ignore_types
             t = None
             if not ignored or type_ in self.callback:
-                t = Token(
-                    type_, value, line_ctr.char_pos, line_ctr.line, line_ctr.column
-                )
+                t = Token(type_, value, line_ctr.char_pos, line_ctr.line, line_ctr.column)
             line_ctr.feed(value, type_ in self.newline_types)
             if t is not None:
                 t.end_line = line_ctr.line
@@ -1924,9 +1684,7 @@ class BasicLexer(AbstractBasicLexer):
                     t = self.callback[t.type](t)
                 if not ignored:
                     if not isinstance(t, Token):
-                        raise LexError(
-                            "Callbacks must return a token (returned %r)" % t
-                        )
+                        raise LexError("Callbacks must return a token (returned %r)" % t)
                     lex_state.last_token = t
                     return t
 
@@ -1941,12 +1699,7 @@ class ContextualLexer(Lexer):
 
     BasicLexer: Type[AbstractBasicLexer] = BasicLexer
 
-    def __init__(
-        self,
-        conf: "LexerConf",
-        states: Dict[int, Collection[str]],
-        always_accept: Collection[str] = (),
-    ) -> None:
+    def __init__(self, conf: 'LexerConf', states: Dict[int, Collection[str]], always_accept: Collection[str]=()) -> None:
         terminals = list(conf.terminals)
         terminals_by_name = conf.terminals_by_name
 
@@ -1954,9 +1707,7 @@ class ContextualLexer(Lexer):
         trad_conf.terminals = terminals
 
         if has_interegular and not conf.skip_validation:
-            comparator = interegular.Comparator.from_regexes(
-                {t: t.pattern.to_regexp() for t in terminals}
-            )
+            comparator = interegular.Comparator.from_regexes({t: t.pattern.to_regexp() for t in terminals})
         else:
             comparator = None
         lexer_by_tokens: Dict[FrozenSet[str], AbstractBasicLexer] = {}
@@ -1968,9 +1719,7 @@ class ContextualLexer(Lexer):
             except KeyError:
                 accepts = set(accepts) | set(conf.ignore) | set(always_accept)
                 lexer_conf = copy(trad_conf)
-                lexer_conf.terminals = [
-                    terminals_by_name[n] for n in accepts if n in terminals_by_name
-                ]
+                lexer_conf.terminals = [terminals_by_name[n] for n in accepts if n in terminals_by_name]
                 lexer = self.BasicLexer(lexer_conf, comparator)
                 lexer_by_tokens[key] = lexer
 
@@ -1981,9 +1730,7 @@ class ContextualLexer(Lexer):
 
         self.root_lexer = self.BasicLexer(trad_conf, comparator)
 
-    def lex(
-        self, lexer_state: LexerState, parser_state: "ParserState"
-    ) -> Iterator[Token]:
+    def lex(self, lexer_state: LexerState, parser_state: 'ParserState') -> Iterator[Token]:
         try:
             while True:
                 lexer = self.lexers[parser_state.position]
@@ -1999,37 +1746,26 @@ class ContextualLexer(Lexer):
                 last_token = lexer_state.last_token  ##
 
                 token = self.root_lexer.next_token(lexer_state, parser_state)
-                raise UnexpectedToken(
-                    token,
-                    e.allowed,
-                    state=parser_state,
-                    token_history=[last_token],
-                    terminals_by_name=self.root_lexer.terminals_by_name,
-                )
+                raise UnexpectedToken(token, e.allowed, state=parser_state, token_history=[last_token], terminals_by_name=self.root_lexer.terminals_by_name)
             except UnexpectedCharacters:
                 raise e  ##
 
 
-_ParserArgType: "TypeAlias" = 'Literal["earley", "lalr", "cyk", "auto"]'
-_LexerArgType: "TypeAlias" = 'Union[Literal["auto", "basic", "contextual", "dynamic", "dynamic_complete"], Type[Lexer]]'
+
+
+_ParserArgType: 'TypeAlias' = 'Literal["earley", "lalr", "cyk", "auto"]'
+_LexerArgType: 'TypeAlias' = 'Union[Literal["auto", "basic", "contextual", "dynamic", "dynamic_complete"], Type[Lexer]]'
 _LexerCallback = Callable[[Token], Token]
 ParserCallbacks = Dict[str, Callable]
 
-
 class LexerConf(Serialize):
-    __serialize_fields__ = (
-        "terminals",
-        "ignore",
-        "g_regex_flags",
-        "use_bytes",
-        "lexer_type",
-    )
-    __serialize_namespace__ = (TerminalDef,)
+    __serialize_fields__ = 'terminals', 'ignore', 'g_regex_flags', 'use_bytes', 'lexer_type'
+    __serialize_namespace__ = TerminalDef,
 
     terminals: Collection[TerminalDef]
     re_module: ModuleType
     ignore: Collection[str]
-    postlex: "Optional[PostLex]"
+    postlex: 'Optional[PostLex]'
     callbacks: Dict[str, _LexerCallback]
     g_regex_flags: int
     skip_validation: bool
@@ -2037,18 +1773,8 @@ class LexerConf(Serialize):
     lexer_type: Optional[_LexerArgType]
     strict: bool
 
-    def __init__(
-        self,
-        terminals: Collection[TerminalDef],
-        re_module: ModuleType,
-        ignore: Collection[str] = (),
-        postlex: "Optional[PostLex]" = None,
-        callbacks: Optional[Dict[str, _LexerCallback]] = None,
-        g_regex_flags: int = 0,
-        skip_validation: bool = False,
-        use_bytes: bool = False,
-        strict: bool = False,
-    ):
+    def __init__(self, terminals: Collection[TerminalDef], re_module: ModuleType, ignore: Collection[str]=(), postlex: 'Optional[PostLex]'=None,
+                 callbacks: Optional[Dict[str, _LexerCallback]]=None, g_regex_flags: int=0, skip_validation: bool=False, use_bytes: bool=False, strict: bool=False):
         self.terminals = terminals
         self.terminals_by_name = {t.name: t for t in self.terminals}
         assert len(self.terminals) == len(self.terminals_by_name)
@@ -2077,18 +1803,15 @@ class LexerConf(Serialize):
             deepcopy(self.use_bytes, memo),
         )
 
-
 class ParserConf(Serialize):
-    __serialize_fields__ = "rules", "start", "parser_type"
+    __serialize_fields__ = 'rules', 'start', 'parser_type'
 
-    rules: List["Rule"]
+    rules: List['Rule']
     callbacks: ParserCallbacks
     start: List[str]
     parser_type: _ParserArgType
 
-    def __init__(
-        self, rules: List["Rule"], callbacks: ParserCallbacks, start: List[str]
-    ):
+    def __init__(self, rules: List['Rule'], callbacks: ParserCallbacks, start: List[str]):
         assert isinstance(start, list)
         self.rules = rules
         self.callbacks = callbacks
@@ -2110,6 +1833,7 @@ class ExpandSingleChild:
             return self.node_builder(children)
 
 
+
 class PropagatePositions:
     def __init__(self, node_builder, node_filter=None):
         self.node_builder = node_builder
@@ -2127,57 +1851,34 @@ class PropagatePositions:
 
             ##
 
+
             res_meta = res.meta
 
             first_meta = self._pp_get_meta(children)
             if first_meta is not None:
-                if not hasattr(res_meta, "line"):
+                if not hasattr(res_meta, 'line'):
                     ##
 
-                    res_meta.line = getattr(
-                        first_meta, "container_line", first_meta.line
-                    )
-                    res_meta.column = getattr(
-                        first_meta, "container_column", first_meta.column
-                    )
-                    res_meta.start_pos = getattr(
-                        first_meta, "container_start_pos", first_meta.start_pos
-                    )
+                    res_meta.line = getattr(first_meta, 'container_line', first_meta.line)
+                    res_meta.column = getattr(first_meta, 'container_column', first_meta.column)
+                    res_meta.start_pos = getattr(first_meta, 'container_start_pos', first_meta.start_pos)
                     res_meta.empty = False
 
-                res_meta.container_line = getattr(
-                    first_meta, "container_line", first_meta.line
-                )
-                res_meta.container_column = getattr(
-                    first_meta, "container_column", first_meta.column
-                )
-                res_meta.container_start_pos = getattr(
-                    first_meta, "container_start_pos", first_meta.start_pos
-                )
+                res_meta.container_line = getattr(first_meta, 'container_line', first_meta.line)
+                res_meta.container_column = getattr(first_meta, 'container_column', first_meta.column)
+                res_meta.container_start_pos = getattr(first_meta, 'container_start_pos', first_meta.start_pos)
 
             last_meta = self._pp_get_meta(reversed(children))
             if last_meta is not None:
-                if not hasattr(res_meta, "end_line"):
-                    res_meta.end_line = getattr(
-                        last_meta, "container_end_line", last_meta.end_line
-                    )
-                    res_meta.end_column = getattr(
-                        last_meta, "container_end_column", last_meta.end_column
-                    )
-                    res_meta.end_pos = getattr(
-                        last_meta, "container_end_pos", last_meta.end_pos
-                    )
+                if not hasattr(res_meta, 'end_line'):
+                    res_meta.end_line = getattr(last_meta, 'container_end_line', last_meta.end_line)
+                    res_meta.end_column = getattr(last_meta, 'container_end_column', last_meta.end_column)
+                    res_meta.end_pos = getattr(last_meta, 'container_end_pos', last_meta.end_pos)
                     res_meta.empty = False
 
-                res_meta.container_end_line = getattr(
-                    last_meta, "container_end_line", last_meta.end_line
-                )
-                res_meta.container_end_column = getattr(
-                    last_meta, "container_end_column", last_meta.end_column
-                )
-                res_meta.container_end_pos = getattr(
-                    last_meta, "container_end_pos", last_meta.end_pos
-                )
+                res_meta.container_end_line = getattr(last_meta, 'container_end_line', last_meta.end_line)
+                res_meta.container_end_column = getattr(last_meta, 'container_end_column', last_meta.end_column)
+                res_meta.container_end_pos = getattr(last_meta, 'container_end_pos', last_meta.end_pos)
 
         return res
 
@@ -2190,9 +1891,8 @@ class PropagatePositions:
                     return c.meta
             elif isinstance(c, Token):
                 return c
-            elif hasattr(c, "__lark_meta__"):
+            elif hasattr(c, '__lark_meta__'):
                 return c.__lark_meta__()
-
 
 def make_propagate_positions(option):
     if callable(option):
@@ -2202,7 +1902,7 @@ def make_propagate_positions(option):
     elif option is False:
         return None
 
-    raise ConfigurationError("Invalid option for propagate_positions: %r" % option)
+    raise ConfigurationError('Invalid option for propagate_positions: %r' % option)
 
 
 class ChildFilter:
@@ -2229,7 +1929,7 @@ class ChildFilter:
 
 
 class ChildFilterLALR(ChildFilter):
-    # --
+    #--
 
     def __call__(self, children):
         filtered = []
@@ -2239,7 +1939,8 @@ class ChildFilterLALR(ChildFilter):
             if to_expand:
                 if filtered:
                     filtered += children[i].children
-                else:  ##
+                else:   ##
+
                     filtered = children[i].children
             else:
                 filtered.append(children[i])
@@ -2251,7 +1952,7 @@ class ChildFilterLALR(ChildFilter):
 
 
 class ChildFilterLALR_NoPlaceholders(ChildFilter):
-    # --
+    #--
     def __init__(self, to_include, node_builder):
         self.node_builder = node_builder
         self.to_include = to_include
@@ -2262,7 +1963,8 @@ class ChildFilterLALR_NoPlaceholders(ChildFilter):
             if to_expand:
                 if filtered:
                     filtered += children[i].children
-                else:  ##
+                else:   ##
+
                     filtered = children[i].children
             else:
                 filtered.append(children[i])
@@ -2270,21 +1972,19 @@ class ChildFilterLALR_NoPlaceholders(ChildFilter):
 
 
 def _should_expand(sym):
-    return not sym.is_term and sym.name.startswith("_")
+    return not sym.is_term and sym.name.startswith('_')
 
 
-def maybe_create_child_filter(
-    expansion, keep_all_tokens, ambiguous, _empty_indices: List[bool]
-):
+def maybe_create_child_filter(expansion, keep_all_tokens, ambiguous, _empty_indices: List[bool]):
     ##
 
     if _empty_indices:
         assert _empty_indices.count(False) == len(expansion)
-        s = "".join(str(int(b)) for b in _empty_indices)
-        empty_indices = [len(ones) for ones in s.split("0")]
-        assert len(empty_indices) == len(expansion) + 1, (empty_indices, len(expansion))
+        s = ''.join(str(int(b)) for b in _empty_indices)
+        empty_indices = [len(ones) for ones in s.split('0')]
+        assert len(empty_indices) == len(expansion)+1, (empty_indices, len(expansion))
     else:
-        empty_indices = [0] * (len(expansion) + 1)
+        empty_indices = [0] * (len(expansion)+1)
 
     to_include = []
     nones_to_add = 0
@@ -2296,25 +1996,17 @@ def maybe_create_child_filter(
 
     nones_to_add += empty_indices[len(expansion)]
 
-    if (
-        _empty_indices
-        or len(to_include) < len(expansion)
-        or any(to_expand for i, to_expand, _ in to_include)
-    ):
+    if _empty_indices or len(to_include) < len(expansion) or any(to_expand for i, to_expand,_ in to_include):
         if _empty_indices or ambiguous:
-            return partial(
-                ChildFilter if ambiguous else ChildFilterLALR, to_include, nones_to_add
-            )
+            return partial(ChildFilter if ambiguous else ChildFilterLALR, to_include, nones_to_add)
         else:
             ##
 
-            return partial(
-                ChildFilterLALR_NoPlaceholders, [(i, x) for i, x, _ in to_include]
-            )
+            return partial(ChildFilterLALR_NoPlaceholders, [(i, x) for i,x,_ in to_include])
 
 
 class AmbiguousExpander:
-    # --
+    #--
     def __init__(self, to_expand, tree_class, node_builder):
         self.node_builder = node_builder
         self.tree_class = tree_class
@@ -2322,7 +2014,7 @@ class AmbiguousExpander:
 
     def __call__(self, children):
         def _is_ambig_tree(t):
-            return hasattr(t, "data") and t.data == "_ambig"
+            return hasattr(t, 'data') and t.data == '_ambig'
 
         ##
 
@@ -2338,33 +2030,24 @@ class AmbiguousExpander:
                 if i in self.to_expand:
                     ambiguous.append(i)
 
-                child.expand_kids_by_data("_ambig")
+                child.expand_kids_by_data('_ambig')
 
         if not ambiguous:
             return self.node_builder(children)
 
-        expand = [
-            child.children if i in ambiguous else (child,)
-            for i, child in enumerate(children)
-        ]
-        return self.tree_class(
-            "_ambig", [self.node_builder(list(f)) for f in product(*expand)]
-        )
+        expand = [child.children if i in ambiguous else (child,) for i, child in enumerate(children)]
+        return self.tree_class('_ambig', [self.node_builder(list(f)) for f in product(*expand)])
 
 
 def maybe_create_ambiguous_expander(tree_class, expansion, keep_all_tokens):
-    to_expand = [
-        i
-        for i, sym in enumerate(expansion)
-        if keep_all_tokens
-        or ((not (sym.is_term and sym.filter_out)) and _should_expand(sym))
-    ]
+    to_expand = [i for i, sym in enumerate(expansion)
+                 if keep_all_tokens or ((not (sym.is_term and sym.filter_out)) and _should_expand(sym))]
     if to_expand:
         return partial(AmbiguousExpander, to_expand, tree_class)
 
 
 class AmbiguousIntermediateExpander:
-    # --
+    #--
 
     def __init__(self, tree_class, node_builder):
         self.node_builder = node_builder
@@ -2372,10 +2055,10 @@ class AmbiguousIntermediateExpander:
 
     def __call__(self, children):
         def _is_iambig_tree(child):
-            return hasattr(child, "data") and child.data == "_iambig"
+            return hasattr(child, 'data') and child.data == '_iambig'
 
         def _collapse_iambig(children):
-            # --
+            #--
 
             ##
 
@@ -2391,18 +2074,17 @@ class AmbiguousIntermediateExpander:
                             child.children += children[1:]
                         result += collapsed
                     else:
-                        new_tree = self.tree_class(
-                            "_inter", grandchild.children + children[1:]
-                        )
+                        new_tree = self.tree_class('_inter', grandchild.children + children[1:])
                         result.append(new_tree)
                 return result
 
         collapsed = _collapse_iambig(children)
         if collapsed:
             processed_nodes = [self.node_builder(c.children) for c in collapsed]
-            return self.tree_class("_ambig", processed_nodes)
+            return self.tree_class('_ambig', processed_nodes)
 
         return self.node_builder(children)
+
 
 
 def inplace_transformer(func):
@@ -2412,7 +2094,6 @@ def inplace_transformer(func):
 
         tree = Tree(func.__name__, children)
         return func(tree)
-
     return f
 
 
@@ -2423,19 +2104,11 @@ def apply_visit_wrapper(func, name, wrapper):
     @wraps(func)
     def f(children):
         return wrapper(func, name, children, None)
-
     return f
 
 
 class ParseTreeBuilder:
-    def __init__(
-        self,
-        rules,
-        tree_class,
-        propagate_positions=False,
-        ambiguous=False,
-        maybe_placeholders=True,
-    ):
+    def __init__(self, rules, tree_class, propagate_positions=False, ambiguous=False, maybe_placeholders=False):
         self.tree_class = tree_class
         self.propagate_positions = propagate_positions
         self.ambiguous = ambiguous
@@ -2451,48 +2124,32 @@ class ParseTreeBuilder:
             keep_all_tokens = options.keep_all_tokens
             expand_single_child = options.expand1
 
-            wrapper_chain = list(
-                filter(
-                    None,
-                    [
-                        (expand_single_child and not rule.alias) and ExpandSingleChild,
-                        maybe_create_child_filter(
-                            rule.expansion,
-                            keep_all_tokens,
-                            self.ambiguous,
-                            options.empty_indices if self.maybe_placeholders else None,
-                        ),
-                        propagate_positions,
-                        self.ambiguous
-                        and maybe_create_ambiguous_expander(
-                            self.tree_class, rule.expansion, keep_all_tokens
-                        ),
-                        self.ambiguous
-                        and partial(AmbiguousIntermediateExpander, self.tree_class),
-                    ],
-                )
-            )
+            wrapper_chain = list(filter(None, [
+                (expand_single_child and not rule.alias) and ExpandSingleChild,
+                maybe_create_child_filter(rule.expansion, keep_all_tokens, self.ambiguous, options.empty_indices if self.maybe_placeholders else None),
+                propagate_positions,
+                self.ambiguous and maybe_create_ambiguous_expander(self.tree_class, rule.expansion, keep_all_tokens),
+                self.ambiguous and partial(AmbiguousIntermediateExpander, self.tree_class)
+            ]))
 
             yield rule, wrapper_chain
 
     def create_callback(self, transformer=None):
         callbacks = {}
 
-        default_handler = getattr(transformer, "__default__", None)
+        default_handler = getattr(transformer, '__default__', None)
         if default_handler:
-
             def default_callback(data, children):
                 return default_handler(data, children, None)
         else:
             default_callback = self.tree_class
 
         for rule, wrapper_chain in self.rule_builders:
-            user_callback_name = (
-                rule.alias or rule.options.template_source or rule.origin.name
-            )
+
+            user_callback_name = rule.alias or rule.options.template_source or rule.origin.name
             try:
                 f = getattr(transformer, user_callback_name)
-                wrapper = getattr(f, "visit_wrapper", None)
+                wrapper = getattr(f, 'visit_wrapper', None)
                 if wrapper is not None:
                     f = apply_visit_wrapper(f, user_callback_name, wrapper)
                 elif isinstance(transformer, Transformer_InPlace):
@@ -2511,22 +2168,19 @@ class ParseTreeBuilder:
         return callbacks
 
 
+
 class Action:
     def __init__(self, name):
         self.name = name
-
     def __str__(self):
         return self.name
-
     def __repr__(self):
         return str(self)
 
-
-Shift = Action("Shift")
-Reduce = Action("Reduce")
+Shift = Action('Shift')
+Reduce = Action('Reduce')
 
 StateT = TypeVar("StateT")
-
 
 class ParseTableBase(Generic[StateT]):
     states: Dict[StateT, Dict[str, Tuple]]
@@ -2542,78 +2196,56 @@ class ParseTableBase(Generic[StateT]):
         tokens = Enumerator()
 
         states = {
-            state: {
-                tokens.get(token): (
-                    (1, arg.serialize(memo)) if action is Reduce else (0, arg)
-                )
-                for token, (action, arg) in actions.items()
-            }
+            state: {tokens.get(token): ((1, arg.serialize(memo)) if action is Reduce else (0, arg))
+                    for token, (action, arg) in actions.items()}
             for state, actions in self.states.items()
         }
 
         return {
-            "tokens": tokens.reversed(),
-            "states": states,
-            "start_states": self.start_states,
-            "end_states": self.end_states,
+            'tokens': tokens.reversed(),
+            'states': states,
+            'start_states': self.start_states,
+            'end_states': self.end_states,
         }
 
     @classmethod
     def deserialize(cls, data, memo):
-        tokens = data["tokens"]
+        tokens = data['tokens']
         states = {
-            state: {
-                tokens[token]: (
-                    (Reduce, Rule.deserialize(arg, memo))
-                    if action == 1
-                    else (Shift, arg)
-                )
-                for token, (action, arg) in actions.items()
-            }
-            for state, actions in data["states"].items()
+            state: {tokens[token]: ((Reduce, Rule.deserialize(arg, memo)) if action==1 else (Shift, arg))
+                    for token, (action, arg) in actions.items()}
+            for state, actions in data['states'].items()
         }
-        return cls(states, data["start_states"], data["end_states"])
+        return cls(states, data['start_states'], data['end_states'])
 
-
-class ParseTable(ParseTableBase["State"]):
-    # --
+class ParseTable(ParseTableBase['State']):
+    #--
     pass
 
 
 class IntParseTable(ParseTableBase[int]):
-    # --
+    #--
 
     @classmethod
     def from_ParseTable(cls, parse_table: ParseTable):
         enum = list(parse_table.states)
-        state_to_idx: Dict["State", int] = {s: i for i, s in enumerate(enum)}
+        state_to_idx: Dict['State', int] = {s:i for i,s in enumerate(enum)}
         int_states = {}
 
         for s, la in parse_table.states.items():
-            la = {
-                k: (v[0], state_to_idx[v[1]]) if v[0] is Shift else v
-                for k, v in la.items()
-            }
-            int_states[state_to_idx[s]] = la
+            la = {k:(v[0], state_to_idx[v[1]]) if v[0] is Shift else v
+                  for k,v in la.items()}
+            int_states[ state_to_idx[s] ] = la
 
-        start_states = {
-            start: state_to_idx[s] for start, s in parse_table.start_states.items()
-        }
-        end_states = {
-            start: state_to_idx[s] for start, s in parse_table.end_states.items()
-        }
+
+        start_states = {start:state_to_idx[s] for start, s in parse_table.start_states.items()}
+        end_states = {start:state_to_idx[s] for start, s in parse_table.end_states.items()}
         return cls(int_states, start_states, end_states)
 
 
+
 class ParseConf(Generic[StateT]):
-    __slots__ = (
-        "parse_table",
-        "callbacks",
-        "start",
-        "start_state",
-        "end_state",
-        "states",
-    )
+    __slots__ = 'parse_table', 'callbacks', 'start', 'start_state', 'end_state', 'states'
 
     parse_table: ParseTableBase[StateT]
     callbacks: ParserCallbacks
@@ -2623,12 +2255,7 @@ class ParseConf(Generic[StateT]):
     end_state: StateT
     states: Dict[StateT, Dict[str, tuple]]
 
-    def __init__(
-        self,
-        parse_table: ParseTableBase[StateT],
-        callbacks: ParserCallbacks,
-        start: str,
-    ):
+    def __init__(self, parse_table: ParseTableBase[StateT], callbacks: ParserCallbacks, start: str):
         self.parse_table = parse_table
 
         self.start_state = self.parse_table.start_states[start]
@@ -2638,22 +2265,15 @@ class ParseConf(Generic[StateT]):
         self.callbacks = callbacks
         self.start = start
 
-
 class ParserState(Generic[StateT]):
-    __slots__ = "parse_conf", "lexer", "state_stack", "value_stack"
+    __slots__ = 'parse_conf', 'lexer', 'state_stack', 'value_stack'
 
     parse_conf: ParseConf[StateT]
     lexer: LexerThread
     state_stack: List[StateT]
     value_stack: list
 
-    def __init__(
-        self,
-        parse_conf: ParseConf[StateT],
-        lexer: LexerThread,
-        state_stack=None,
-        value_stack=None,
-    ):
+    def __init__(self, parse_conf: ParseConf[StateT], lexer: LexerThread, state_stack=None, value_stack=None):
         self.parse_conf = parse_conf
         self.lexer = lexer
         self.state_stack = state_stack or [self.parse_conf.start_state]
@@ -2668,20 +2288,18 @@ class ParserState(Generic[StateT]):
     def __eq__(self, other) -> bool:
         if not isinstance(other, ParserState):
             return NotImplemented
-        return (
-            len(self.state_stack) == len(other.state_stack)
-            and self.position == other.position
-        )
+        return len(self.state_stack) == len(other.state_stack) and self.position == other.position
 
     def __copy__(self):
         return type(self)(
             self.parse_conf,
-            self.lexer,  ##
+            self.lexer, ##
+
             copy(self.state_stack),
             deepcopy(self.value_stack),
         )
 
-    def copy(self) -> "ParserState[StateT]":
+    def copy(self) -> 'ParserState[StateT]':
         return copy(self)
 
     def feed_token(self, token: Token, is_end=False) -> Any:
@@ -2697,9 +2315,7 @@ class ParserState(Generic[StateT]):
                 action, arg = states[state][token.type]
             except KeyError:
                 expected = {s for s in states[state].keys() if s.isupper()}
-                raise UnexpectedToken(
-                    token, expected, state=self, interactive_parser=None
-                )
+                raise UnexpectedToken(token, expected, state=self, interactive_parser=None)
 
             assert arg != end_state
 
@@ -2708,11 +2324,7 @@ class ParserState(Generic[StateT]):
 
                 assert not is_end
                 state_stack.append(arg)
-                value_stack.append(
-                    token
-                    if token.type not in callbacks
-                    else callbacks[token.type](token)
-                )
+                value_stack.append(token if token.type not in callbacks else callbacks[token.type](token))
                 return
             else:
                 ##
@@ -2738,9 +2350,7 @@ class ParserState(Generic[StateT]):
 
 
 class LALR_Parser(Serialize):
-    def __init__(
-        self, parser_conf: ParserConf, debug: bool = False, strict: bool = False
-    ):
+    def __init__(self, parser_conf: ParserConf, debug: bool=False, strict: bool=False):
         analysis = LALR_Analyzer(parser_conf, debug=debug, strict=strict)
         analysis.compute_lalr()
         callbacks = parser_conf.callbacks
@@ -2781,16 +2391,14 @@ class LALR_Parser(Serialize):
                     ##
 
                     if p == s.line_ctr.char_pos:
-                        s.line_ctr.feed(s.text[p : p + 1])
+                        s.line_ctr.feed(s.text[p:p+1])
 
                 try:
                     return e.interactive_parser.resume_parse()
                 except UnexpectedToken as e2:
-                    if (
-                        isinstance(e, UnexpectedToken)
-                        and e.token.type == e2.token.type == "$END"
-                        and e.interactive_parser == e2.interactive_parser
-                    ):
+                    if (isinstance(e, UnexpectedToken)
+                        and e.token.type == e2.token.type == '$END'
+                        and e.interactive_parser == e2.interactive_parser):
                         ##
 
                         raise e2
@@ -2804,43 +2412,28 @@ class _Parser:
     callbacks: ParserCallbacks
     debug: bool
 
-    def __init__(
-        self,
-        parse_table: ParseTableBase,
-        callbacks: ParserCallbacks,
-        debug: bool = False,
-    ):
+    def __init__(self, parse_table: ParseTableBase, callbacks: ParserCallbacks, debug: bool=False):
         self.parse_table = parse_table
         self.callbacks = callbacks
         self.debug = debug
 
-    def parse(
-        self,
-        lexer: LexerThread,
-        start: str,
-        value_stack=None,
-        state_stack=None,
-        start_interactive=False,
-    ):
+    def parse(self, lexer: LexerThread, start: str, value_stack=None, state_stack=None, start_interactive=False):
         parse_conf = ParseConf(self.parse_table, self.callbacks, start)
         parser_state = ParserState(parse_conf, lexer, state_stack, value_stack)
         if start_interactive:
             return InteractiveParser(self, parser_state, parser_state.lexer)
         return self.parse_from_state(parser_state)
 
-    def parse_from_state(self, state: ParserState, last_token: Optional[Token] = None):
-        # --
+
+    def parse_from_state(self, state: ParserState, last_token: Optional[Token]=None):
+        #--
         try:
             token = last_token
             for token in state.lexer.lex(state):
                 assert token is not None
                 state.feed_token(token)
 
-            end_token = (
-                Token.new_borrow_pos("$END", "", token)
-                if token
-                else Token("$END", "", 0, 1, 1)
-            )
+            end_token = Token.new_borrow_pos('$END', '', token) if token else Token('$END', '', 0, 1, 1)
             return state.feed_token(end_token, True)
         except UnexpectedInput as e:
             try:
@@ -2854,14 +2447,14 @@ class _Parser:
                 print("STATE STACK DUMP")
                 print("----------------")
                 for i, s in enumerate(state.state_stack):
-                    print("%d)" % i, s)
+                    print('%d)' % i , s)
                 print("")
 
             raise
 
 
 class InteractiveParser:
-    # --
+    #--
     def __init__(self, parser, parser_state, lexer_thread: LexerThread):
         self.parser = parser
         self.parser_state = parser_state
@@ -2870,37 +2463,32 @@ class InteractiveParser:
 
     @property
     def lexer_state(self) -> LexerThread:
-        warnings.warn(
-            "lexer_state will be removed in subsequent releases. Use lexer_thread instead.",
-            DeprecationWarning,
-        )
+        warnings.warn("lexer_state will be removed in subsequent releases. Use lexer_thread instead.", DeprecationWarning)
         return self.lexer_thread
 
     def feed_token(self, token: Token):
-        # --
-        return self.parser_state.feed_token(token, token.type == "$END")
+        #--
+        return self.parser_state.feed_token(token, token.type == '$END')
 
     def iter_parse(self) -> Iterator[Token]:
-        # --
+        #--
         for token in self.lexer_thread.lex(self.parser_state):
             yield token
             self.result = self.feed_token(token)
 
     def exhaust_lexer(self) -> List[Token]:
-        # --
+        #--
         return list(self.iter_parse())
 
+
     def feed_eof(self, last_token=None):
-        # --
-        eof = (
-            Token.new_borrow_pos("$END", "", last_token)
-            if last_token is not None
-            else self.lexer_thread._Token("$END", "", 0, 1, 1)
-        )
+        #--
+        eof = Token.new_borrow_pos('$END', '', last_token) if last_token is not None else self.lexer_thread._Token('$END', '', 0, 1, 1)
         return self.feed_token(eof)
 
+
     def __copy__(self):
-        # --
+        #--
         return type(self)(
             self.parser,
             copy(self.parser_state),
@@ -2914,32 +2502,27 @@ class InteractiveParser:
         if not isinstance(other, InteractiveParser):
             return False
 
-        return (
-            self.parser_state == other.parser_state
-            and self.lexer_thread == other.lexer_thread
-        )
+        return self.parser_state == other.parser_state and self.lexer_thread == other.lexer_thread
 
     def as_immutable(self):
-        # --
+        #--
         p = copy(self)
         return ImmutableInteractiveParser(p.parser, p.parser_state, p.lexer_thread)
 
     def pretty(self):
-        # --
+        #--
         out = ["Parser choices:"]
         for k, v in self.choices().items():
-            out.append("\t- %s -> %r" % (k, v))
-        out.append("stack size: %s" % len(self.parser_state.state_stack))
-        return "\n".join(out)
+            out.append('\t- %s -> %r' % (k, v))
+        out.append('stack size: %s' % len(self.parser_state.state_stack))
+        return '\n'.join(out)
 
     def choices(self):
-        # --
-        return self.parser_state.parse_conf.parse_table.states[
-            self.parser_state.position
-        ]
+        #--
+        return self.parser_state.parse_conf.parse_table.states[self.parser_state.position]
 
     def accepts(self):
-        # --
+        #--
         accepts = set()
         conf_no_callbacks = copy(self.parser_state.parse_conf)
         ##
@@ -2948,11 +2531,12 @@ class InteractiveParser:
 
         conf_no_callbacks.callbacks = {}
         for t in self.choices():
-            if t.isupper():  ##
+            if t.isupper(): ##
+
                 new_cursor = copy(self)
                 new_cursor.parser_state.parse_conf = conf_no_callbacks
                 try:
-                    new_cursor.feed_token(self.lexer_thread._Token(t, ""))
+                    new_cursor.feed_token(self.lexer_thread._Token(t, ''))
                 except UnexpectedToken:
                     pass
                 else:
@@ -2960,14 +2544,13 @@ class InteractiveParser:
         return accepts
 
     def resume_parse(self):
-        # --
-        return self.parser.parse_from_state(
-            self.parser_state, last_token=self.lexer_thread.state.last_token
-        )
+        #--
+        return self.parser.parse_from_state(self.parser_state, last_token=self.lexer_thread.state.last_token)
+
 
 
 class ImmutableInteractiveParser(InteractiveParser):
-    # --
+    #--
 
     result = None
 
@@ -2980,54 +2563,50 @@ class ImmutableInteractiveParser(InteractiveParser):
         return c
 
     def exhaust_lexer(self):
-        # --
+        #--
         cursor = self.as_mutable()
         cursor.exhaust_lexer()
         return cursor.as_immutable()
 
     def as_mutable(self):
-        # --
+        #--
         p = copy(self)
         return InteractiveParser(p.parser, p.parser_state, p.lexer_thread)
 
 
+
 def _wrap_lexer(lexer_class):
-    future_interface = getattr(lexer_class, "__future_interface__", False)
+    future_interface = getattr(lexer_class, '__future_interface__', False)
     if future_interface:
         return lexer_class
     else:
-
         class CustomLexerWrapper(Lexer):
             def __init__(self, lexer_conf):
                 self.lexer = lexer_class(lexer_conf)
-
             def lex(self, lexer_state, parser_state):
                 return self.lexer.lex(lexer_state.text)
-
         return CustomLexerWrapper
 
 
 def _deserialize_parsing_frontend(data, memo, lexer_conf, callbacks, options):
-    parser_conf = ParserConf.deserialize(data["parser_conf"], memo)
-    cls = (options and options._plugins.get("LALR_Parser")) or LALR_Parser
-    parser = cls.deserialize(data["parser"], memo, callbacks, options.debug)
+    parser_conf = ParserConf.deserialize(data['parser_conf'], memo)
+    cls = (options and options._plugins.get('LALR_Parser')) or LALR_Parser
+    parser = cls.deserialize(data['parser'], memo, callbacks, options.debug)
     parser_conf.callbacks = callbacks
     return ParsingFrontend(lexer_conf, parser_conf, options, parser=parser)
 
 
-_parser_creators: "Dict[str, Callable[[LexerConf, Any, Any], Any]]" = {}
+_parser_creators: 'Dict[str, Callable[[LexerConf, Any, Any], Any]]' = {}
 
 
 class ParsingFrontend(Serialize):
-    __serialize_fields__ = "lexer_conf", "parser_conf", "parser"
+    __serialize_fields__ = 'lexer_conf', 'parser_conf', 'parser'
 
     lexer_conf: LexerConf
     parser_conf: ParserConf
     options: Any
 
-    def __init__(
-        self, lexer_conf: LexerConf, parser_conf: ParserConf, options, parser=None
-    ):
+    def __init__(self, lexer_conf: LexerConf, parser_conf: ParserConf, options, parser=None):
         self.parser_conf = parser_conf
         self.lexer_conf = lexer_conf
         self.options = options
@@ -3035,19 +2614,20 @@ class ParsingFrontend(Serialize):
         ##
 
         if parser:  ##
+
             self.parser = parser
         else:
             create_parser = _parser_creators.get(parser_conf.parser_type)
-            assert (
-                create_parser is not None
-            ), "{} is not supported in standalone mode".format(parser_conf.parser_type)
+            assert create_parser is not None, "{} is not supported in standalone mode".format(
+                    parser_conf.parser_type
+                )
             self.parser = create_parser(lexer_conf, parser_conf, options)
 
         ##
 
         lexer_type = lexer_conf.lexer_type
         self.skip_lexer = False
-        if lexer_type in ("dynamic", "dynamic_complete"):
+        if lexer_type in ('dynamic', 'dynamic_complete'):
             assert lexer_conf.postlex is None
             self.skip_lexer = True
             return
@@ -3057,12 +2637,10 @@ class ParsingFrontend(Serialize):
             self.lexer = _wrap_lexer(lexer_type)(lexer_conf)
         elif isinstance(lexer_type, str):
             create_lexer = {
-                "basic": create_basic_lexer,
-                "contextual": create_contextual_lexer,
+                'basic': create_basic_lexer,
+                'contextual': create_contextual_lexer,
             }[lexer_type]
-            self.lexer = create_lexer(
-                lexer_conf, self.parser, lexer_conf.postlex, options
-            )
+            self.lexer = create_lexer(lexer_conf, self.parser, lexer_conf.postlex, options)
         else:
             raise TypeError("Bad value for lexer_type: {lexer_type}")
 
@@ -3073,56 +2651,45 @@ class ParsingFrontend(Serialize):
         if start is None:
             start_decls = self.parser_conf.start
             if len(start_decls) > 1:
-                raise ConfigurationError(
-                    "Lark initialized with more than 1 possible start rule. Must specify which start rule to parse",
-                    start_decls,
-                )
-            (start,) = start_decls
+                raise ConfigurationError("Lark initialized with more than 1 possible start rule. Must specify which start rule to parse", start_decls)
+            start ,= start_decls
         elif start not in self.parser_conf.start:
-            raise ConfigurationError(
-                "Unknown start rule %s. Must be one of %r"
-                % (start, self.parser_conf.start)
-            )
+            raise ConfigurationError("Unknown start rule %s. Must be one of %r" % (start, self.parser_conf.start))
         return start
 
     def _make_lexer_thread(self, text: str) -> Union[str, LexerThread]:
-        cls = (self.options and self.options._plugins.get("LexerThread")) or LexerThread
+        cls = (self.options and self.options._plugins.get('LexerThread')) or LexerThread
         return text if self.skip_lexer else cls.from_text(self.lexer, text)
 
     def parse(self, text: str, start=None, on_error=None):
         chosen_start = self._verify_start(start)
-        kw = {} if on_error is None else {"on_error": on_error}
+        kw = {} if on_error is None else {'on_error': on_error}
         stream = self._make_lexer_thread(text)
         return self.parser.parse(stream, chosen_start, **kw)
 
-    def parse_interactive(self, text: Optional[str] = None, start=None):
+    def parse_interactive(self, text: Optional[str]=None, start=None):
         ##
 
         ##
 
         chosen_start = self._verify_start(start)
-        if self.parser_conf.parser_type != "lalr":
-            raise ConfigurationError(
-                "parse_interactive() currently only works with parser='lalr' "
-            )
+        if self.parser_conf.parser_type != 'lalr':
+            raise ConfigurationError("parse_interactive() currently only works with parser='lalr' ")
         stream = self._make_lexer_thread(text)  ##
 
         return self.parser.parse_interactive(stream, chosen_start)
 
 
 def _validate_frontend_args(parser, lexer) -> None:
-    assert_config(parser, ("lalr", "earley", "cyk"))
-    if not isinstance(lexer, type):  ##
+    assert_config(parser, ('lalr', 'earley', 'cyk'))
+    if not isinstance(lexer, type):     ##
+
         expected = {
-            "lalr": ("basic", "contextual"),
-            "earley": ("basic", "dynamic", "dynamic_complete"),
-            "cyk": ("basic",),
-        }[parser]
-        assert_config(
-            lexer,
-            expected,
-            "Parser %r does not support lexer %%r, expected one of %%s" % parser,
-        )
+            'lalr': ('basic', 'contextual'),
+            'earley': ('basic', 'dynamic', 'dynamic_complete'),
+            'cyk': ('basic', ),
+         }[parser]
+        assert_config(lexer, expected, 'Parser %r does not support lexer %%r, expected one of %%s' % parser)
 
 
 def _get_lexer_callbacks(transformer, terminals):
@@ -3132,7 +2699,6 @@ def _get_lexer_callbacks(transformer, terminals):
         if callback is not None:
             result[terminal.name] = callback
     return result
-
 
 class PostLexConnector:
     def __init__(self, lexer, postlexer):
@@ -3144,33 +2710,27 @@ class PostLexConnector:
         return self.postlexer.process(i)
 
 
+
 def create_basic_lexer(lexer_conf, parser, postlex, options) -> BasicLexer:
-    cls = (options and options._plugins.get("BasicLexer")) or BasicLexer
+    cls = (options and options._plugins.get('BasicLexer')) or BasicLexer
     return cls(lexer_conf)
 
-
-def create_contextual_lexer(
-    lexer_conf: LexerConf, parser, postlex, options
-) -> ContextualLexer:
-    cls = (options and options._plugins.get("ContextualLexer")) or ContextualLexer
+def create_contextual_lexer(lexer_conf: LexerConf, parser, postlex, options) -> ContextualLexer:
+    cls = (options and options._plugins.get('ContextualLexer')) or ContextualLexer
     parse_table: ParseTableBase[int] = parser._parse_table
-    states: Dict[int, Collection[str]] = {
-        idx: list(t.keys()) for idx, t in parse_table.states.items()
-    }
+    states: Dict[int, Collection[str]] = {idx:list(t.keys()) for idx, t in parse_table.states.items()}
     always_accept: Collection[str] = postlex.always_accept if postlex else ()
     return cls(lexer_conf, states, always_accept=always_accept)
 
-
-def create_lalr_parser(
-    lexer_conf: LexerConf, parser_conf: ParserConf, options=None
-) -> LALR_Parser:
+def create_lalr_parser(lexer_conf: LexerConf, parser_conf: ParserConf, options=None) -> LALR_Parser:
     debug = options.debug if options else False
     strict = options.strict if options else False
-    cls = (options and options._plugins.get("LALR_Parser")) or LALR_Parser
+    cls = (options and options._plugins.get('LALR_Parser')) or LALR_Parser
     return cls(parser_conf, debug=debug, strict=strict)
 
+_parser_creators['lalr'] = create_lalr_parser
 
-_parser_creators["lalr"] = create_lalr_parser
+
 
 
 class PostLex(ABC):
@@ -3180,14 +2740,13 @@ class PostLex(ABC):
 
     always_accept: Iterable[str] = ()
 
-
 class LarkOptions(Serialize):
-    # --
+    #--
 
     start: List[str]
     debug: bool
     strict: bool
-    transformer: "Optional[Transformer]"
+    transformer: 'Optional[Transformer]'
     propagate_positions: Union[bool, str]
     maybe_placeholders: bool
     cache: Union[bool, str]
@@ -3204,7 +2763,7 @@ class LarkOptions(Serialize):
     use_bytes: bool
     ordered_sets: bool
     edit_terminals: Optional[Callable[[TerminalDef], TerminalDef]]
-    import_paths: "List[Union[str, Callable[[Union[None, str, PackageResource], str], Tuple[str, str]]]]"
+    import_paths: 'List[Union[str, Callable[[Union[None, str, PackageResource], str], Tuple[str, str]]]]'
     source_path: Optional[str]
 
     OPTIONS_DOC = r"""
@@ -3287,6 +2846,7 @@ class LarkOptions(Serialize):
     if __doc__:
         __doc__ += OPTIONS_DOC
 
+
     ##
 
     ##
@@ -3300,29 +2860,29 @@ class LarkOptions(Serialize):
     ##
 
     _defaults: Dict[str, Any] = {
-        "debug": False,
-        "strict": False,
-        "keep_all_tokens": False,
-        "tree_class": None,
-        "cache": False,
-        "postlex": None,
-        "parser": "earley",
-        "lexer": "auto",
-        "transformer": None,
-        "start": "start",
-        "priority": "auto",
-        "ambiguity": "auto",
-        "regex": False,
-        "propagate_positions": False,
-        "lexer_callbacks": {},
-        "maybe_placeholders": True,
-        "edit_terminals": None,
-        "g_regex_flags": 0,
-        "use_bytes": False,
-        "ordered_sets": True,
-        "import_paths": [],
-        "source_path": None,
-        "_plugins": {},
+        'debug': False,
+        'strict': False,
+        'keep_all_tokens': False,
+        'tree_class': None,
+        'cache': False,
+        'postlex': None,
+        'parser': 'earley',
+        'lexer': 'auto',
+        'transformer': None,
+        'start': 'start',
+        'priority': 'auto',
+        'ambiguity': 'auto',
+        'regex': False,
+        'propagate_positions': False,
+        'lexer_callbacks': {},
+        'maybe_placeholders': True,
+        'edit_terminals': None,
+        'g_regex_flags': 0,
+        'use_bytes': False,
+        'ordered_sets': True,
+        'import_paths': [],
+        'source_path': None,
+        '_plugins': {},
     }
 
     def __init__(self, options_dict: Dict[str, Any]) -> None:
@@ -3332,52 +2892,43 @@ class LarkOptions(Serialize):
         for name, default in self._defaults.items():
             if name in o:
                 value = o.pop(name)
-                if isinstance(default, bool) and name not in (
-                    "cache",
-                    "use_bytes",
-                    "propagate_positions",
-                ):
+                if isinstance(default, bool) and name not in ('cache', 'use_bytes', 'propagate_positions'):
                     value = bool(value)
             else:
                 value = default
 
             options[name] = value
 
-        if isinstance(options["start"], str):
-            options["start"] = [options["start"]]
+        if isinstance(options['start'], str):
+            options['start'] = [options['start']]
 
-        self.__dict__["options"] = options
+        self.__dict__['options'] = options
 
-        assert_config(self.parser, ("earley", "lalr", "cyk", None))
 
-        if self.parser == "earley" and self.transformer:
-            raise ConfigurationError(
-                "Cannot specify an embedded transformer when using the Earley algorithm. "
-                "Please use your transformer on the resulting parse tree, or use a different algorithm (i.e. LALR)"
-            )
+        assert_config(self.parser, ('earley', 'lalr', 'cyk', None))
+
+        if self.parser == 'earley' and self.transformer:
+            raise ConfigurationError('Cannot specify an embedded transformer when using the Earley algorithm. '
+                             'Please use your transformer on the resulting parse tree, or use a different algorithm (i.e. LALR)')
 
         if o:
             raise ConfigurationError("Unknown options: %s" % o.keys())
 
     def __getattr__(self, name: str) -> Any:
         try:
-            return self.__dict__["options"][name]
+            return self.__dict__['options'][name]
         except KeyError as e:
             raise AttributeError(e)
 
     def __setattr__(self, name: str, value: str) -> None:
-        assert_config(
-            name, self.options.keys(), "%r isn't a valid option. Expected one of: %s"
-        )
+        assert_config(name, self.options.keys(), "%r isn't a valid option. Expected one of: %s")
         self.options[name] = value
 
-    def serialize(self, memo=None) -> Dict[str, Any]:
+    def serialize(self, memo = None) -> Dict[str, Any]:
         return self.options
 
     @classmethod
-    def deserialize(
-        cls, data: Dict[str, Any], memo: Dict[int, Union[TerminalDef, Rule]]
-    ) -> "LarkOptions":
+    def deserialize(cls, data: Dict[str, Any], memo: Dict[int, Union[TerminalDef, Rule]]) -> "LarkOptions":
         return cls(data)
 
 
@@ -3385,38 +2936,26 @@ class LarkOptions(Serialize):
 
 ##
 
-_LOAD_ALLOWED_OPTIONS = {
-    "postlex",
-    "transformer",
-    "lexer_callbacks",
-    "use_bytes",
-    "debug",
-    "g_regex_flags",
-    "regex",
-    "propagate_positions",
-    "tree_class",
-    "_plugins",
-}
+_LOAD_ALLOWED_OPTIONS = {'postlex', 'transformer', 'lexer_callbacks', 'use_bytes', 'debug', 'g_regex_flags', 'regex', 'propagate_positions', 'tree_class', '_plugins'}
 
-_VALID_PRIORITY_OPTIONS = ("auto", "normal", "invert", None)
-_VALID_AMBIGUITY_OPTIONS = ("auto", "resolve", "explicit", "forest")
+_VALID_PRIORITY_OPTIONS = ('auto', 'normal', 'invert', None)
+_VALID_AMBIGUITY_OPTIONS = ('auto', 'resolve', 'explicit', 'forest')
 
 
-_T = TypeVar("_T", bound="Lark")
-
+_T = TypeVar('_T', bound="Lark")
 
 class Lark(Serialize):
-    # --
+    #--
 
     source_path: str
     source_grammar: str
-    grammar: "Grammar"
+    grammar: 'Grammar'
     options: LarkOptions
     lexer: Lexer
-    parser: "ParsingFrontend"
+    parser: 'ParsingFrontend'
     terminals: Collection[TerminalDef]
 
-    def __init__(self, grammar: "Union[Grammar, str, IO[str]]", **options) -> None:
+    def __init__(self, grammar: 'Union[Grammar, str, IO[str]]', **options) -> None:
         self.options = LarkOptions(options)
         re_module: types.ModuleType
 
@@ -3427,9 +2966,7 @@ class Lark(Serialize):
             if _has_regex:
                 re_module = regex
             else:
-                raise ImportError(
-                    "`regex` module must be installed if calling `Lark(regex=True)`."
-                )
+                raise ImportError('`regex` module must be installed if calling `Lark(regex=True)`.')
         else:
             re_module = re
 
@@ -3440,7 +2977,7 @@ class Lark(Serialize):
                 self.source_path = grammar.name  ##
 
             except AttributeError:
-                self.source_path = "<string>"
+                self.source_path = '<string>'
         else:
             self.source_path = self.options.source_path
 
@@ -3460,28 +2997,15 @@ class Lark(Serialize):
             self.source_grammar = grammar
             if self.options.use_bytes:
                 if not isascii(grammar):
-                    raise ConfigurationError(
-                        "Grammar must be ascii only, when use_bytes=True"
-                    )
+                    raise ConfigurationError("Grammar must be ascii only, when use_bytes=True")
 
             if self.options.cache:
-                if self.options.parser != "lalr":
-                    raise ConfigurationError(
-                        "cache only works with parser='lalr' for now"
-                    )
+                if self.options.parser != 'lalr':
+                    raise ConfigurationError("cache only works with parser='lalr' for now")
 
-                unhashable = (
-                    "transformer",
-                    "postlex",
-                    "lexer_callbacks",
-                    "edit_terminals",
-                    "_plugins",
-                )
-                options_str = "".join(
-                    k + str(v) for k, v in options.items() if k not in unhashable
-                )
+                unhashable = ('transformer', 'postlex', 'lexer_callbacks', 'edit_terminals', '_plugins')
+                options_str = ''.join(k+str(v) for k, v in options.items() if k not in unhashable)
                 from . import __version__
-
                 s = grammar + options_str + __version__ + str(sys.version_info[:2])
                 cache_sha256 = sha256_digest(s)
 
@@ -3502,25 +3026,19 @@ class Lark(Serialize):
 
                         username = "unknown"
 
-                    cache_fn = (
-                        tempfile.gettempdir()
-                        + "/.lark_cache_%s_%s_%s_%s.tmp"
-                        % (username, cache_sha256, *sys.version_info[:2])
-                    )
+                    cache_fn = tempfile.gettempdir() + "/.lark_cache_%s_%s_%s_%s.tmp" % (username, cache_sha256, *sys.version_info[:2])
 
                 old_options = self.options
                 try:
-                    with FS.open(cache_fn, "rb") as f:
-                        logger.debug("Loading grammar from cache: %s", cache_fn)
+                    with FS.open(cache_fn, 'rb') as f:
+                        logger.debug('Loading grammar from cache: %s', cache_fn)
                         ##
 
-                        for name in set(options) - _LOAD_ALLOWED_OPTIONS:
+                        for name in (set(options) - _LOAD_ALLOWED_OPTIONS):
                             del options[name]
-                        file_sha256 = f.readline().rstrip(b"\n")
+                        file_sha256 = f.readline().rstrip(b'\n')
                         cached_used_files = pickle.load(f)
-                        if file_sha256 == cache_sha256.encode(
-                            "utf8"
-                        ) and verify_used_files(cached_used_files):
+                        if file_sha256 == cache_sha256.encode('utf8') and verify_used_files(cached_used_files):
                             cached_parser_data = pickle.load(f)
                             self._load(cached_parser_data, **options)
                             return
@@ -3528,11 +3046,9 @@ class Lark(Serialize):
                     ##
 
                     pass
-                except Exception:  ##
-                    logger.exception(
-                        "Failed to load Lark from cache: %r. We will try to carry on.",
-                        cache_fn,
-                    )
+                except Exception: ##
+
+                    logger.exception("Failed to load Lark from cache: %r. We will try to carry on.", cache_fn)
 
                     ##
 
@@ -3540,71 +3056,54 @@ class Lark(Serialize):
 
                     self.options = old_options
 
+
             ##
 
-            self.grammar, used_files = load_grammar(
-                grammar,
-                self.source_path,
-                self.options.import_paths,
-                self.options.keep_all_tokens,
-            )
+            self.grammar, used_files = load_grammar(grammar, self.source_path, self.options.import_paths, self.options.keep_all_tokens)
         else:
             assert isinstance(grammar, Grammar)
             self.grammar = grammar
 
-        if self.options.lexer == "auto":
-            if self.options.parser == "lalr":
-                self.options.lexer = "contextual"
-            elif self.options.parser == "earley":
+
+        if self.options.lexer == 'auto':
+            if self.options.parser == 'lalr':
+                self.options.lexer = 'contextual'
+            elif self.options.parser == 'earley':
                 if self.options.postlex is not None:
-                    logger.info(
-                        "postlex can't be used with the dynamic lexer, so we use 'basic' instead. "
-                        "Consider using lalr with contextual instead of earley"
-                    )
-                    self.options.lexer = "basic"
+                    logger.info("postlex can't be used with the dynamic lexer, so we use 'basic' instead. "
+                                "Consider using lalr with contextual instead of earley")
+                    self.options.lexer = 'basic'
                 else:
-                    self.options.lexer = "dynamic"
-            elif self.options.parser == "cyk":
-                self.options.lexer = "basic"
+                    self.options.lexer = 'dynamic'
+            elif self.options.parser == 'cyk':
+                self.options.lexer = 'basic'
             else:
                 assert False, self.options.parser
         lexer = self.options.lexer
         if isinstance(lexer, type):
-            assert issubclass(lexer, Lexer)  ##
+            assert issubclass(lexer, Lexer)     ##
 
         else:
-            assert_config(lexer, ("basic", "contextual", "dynamic", "dynamic_complete"))
-            if self.options.postlex is not None and "dynamic" in lexer:
-                raise ConfigurationError(
-                    "Can't use postlex with a dynamic lexer. Use basic or contextual instead"
-                )
+            assert_config(lexer, ('basic', 'contextual', 'dynamic', 'dynamic_complete'))
+            if self.options.postlex is not None and 'dynamic' in lexer:
+                raise ConfigurationError("Can't use postlex with a dynamic lexer. Use basic or contextual instead")
 
-        if self.options.ambiguity == "auto":
-            if self.options.parser == "earley":
-                self.options.ambiguity = "resolve"
+        if self.options.ambiguity == 'auto':
+            if self.options.parser == 'earley':
+                self.options.ambiguity = 'resolve'
         else:
-            assert_config(
-                self.options.parser,
-                ("earley", "cyk"),
-                "%r doesn't support disambiguation. Use one of these parsers instead: %s",
-            )
+            assert_config(self.options.parser, ('earley', 'cyk'), "%r doesn't support disambiguation. Use one of these parsers instead: %s")
 
-        if self.options.priority == "auto":
-            self.options.priority = "normal"
+        if self.options.priority == 'auto':
+            self.options.priority = 'normal'
 
         if self.options.priority not in _VALID_PRIORITY_OPTIONS:
-            raise ConfigurationError(
-                "invalid priority option: %r. Must be one of %r"
-                % (self.options.priority, _VALID_PRIORITY_OPTIONS)
-            )
+            raise ConfigurationError("invalid priority option: %r. Must be one of %r" % (self.options.priority, _VALID_PRIORITY_OPTIONS))
         if self.options.ambiguity not in _VALID_AMBIGUITY_OPTIONS:
-            raise ConfigurationError(
-                "invalid ambiguity option: %r. Must be one of %r"
-                % (self.options.ambiguity, _VALID_AMBIGUITY_OPTIONS)
-            )
+            raise ConfigurationError("invalid ambiguity option: %r. Must be one of %r" % (self.options.ambiguity, _VALID_AMBIGUITY_OPTIONS))
 
         if self.options.parser is None:
-            terminals_to_keep = "*"
+            terminals_to_keep = '*'
         elif self.options.postlex is not None:
             terminals_to_keep = set(self.options.postlex.always_accept)
         else:
@@ -3612,9 +3111,7 @@ class Lark(Serialize):
 
         ##
 
-        self.terminals, self.rules, self.ignore_tokens = self.grammar.compile(
-            self.options.start, terminals_to_keep
-        )
+        self.terminals, self.rules, self.ignore_tokens = self.grammar.compile(self.options.start, terminals_to_keep)
 
         if self.options.edit_terminals:
             for t in self.terminals:
@@ -3624,7 +3121,7 @@ class Lark(Serialize):
 
         ##
 
-        if self.options.priority == "invert":
+        if self.options.priority == 'invert':
             for rule in self.rules:
                 if rule.options.priority is not None:
                     rule.options.priority = -rule.options.priority
@@ -3646,15 +3143,9 @@ class Lark(Serialize):
         ##
 
         self.lexer_conf = LexerConf(
-            self.terminals,
-            re_module,
-            self.ignore_tokens,
-            self.options.postlex,
-            self.options.lexer_callbacks,
-            self.options.g_regex_flags,
-            use_bytes=self.options.use_bytes,
-            strict=self.options.strict,
-        )
+                self.terminals, re_module, self.ignore_tokens, self.options.postlex,
+                self.options.lexer_callbacks, self.options.g_regex_flags, use_bytes=self.options.use_bytes, strict=self.options.strict
+            )
 
         if self.options.parser:
             self.parser = self._build_parser()
@@ -3662,11 +3153,11 @@ class Lark(Serialize):
             self.lexer = self._build_lexer()
 
         if cache_fn:
-            logger.debug("Saving grammar to cache: %s", cache_fn)
+            logger.debug('Saving grammar to cache: %s', cache_fn)
             try:
-                with FS.open(cache_fn, "wb") as f:
+                with FS.open(cache_fn, 'wb') as f:
                     assert cache_sha256 is not None
-                    f.write(cache_sha256.encode("utf8") + b"\n")
+                    f.write(cache_sha256.encode('utf8') + b'\n')
                     pickle.dump(used_files, f)
                     self.save(f, _LOAD_ALLOWED_OPTIONS)
             except IOError as e:
@@ -3675,13 +3166,12 @@ class Lark(Serialize):
     if __doc__:
         __doc__ += "\n\n" + LarkOptions.OPTIONS_DOC
 
-    __serialize_fields__ = "parser", "rules", "options"
+    __serialize_fields__ = 'parser', 'rules', 'options'
 
-    def _build_lexer(self, dont_ignore: bool = False) -> BasicLexer:
+    def _build_lexer(self, dont_ignore: bool=False) -> BasicLexer:
         lexer_conf = self.lexer_conf
         if dont_ignore:
             from copy import copy
-
             lexer_conf = copy(lexer_conf)
             lexer_conf.ignore = ()
         return BasicLexer(lexer_conf)
@@ -3690,20 +3180,16 @@ class Lark(Serialize):
         self._callbacks = {}
         ##
 
-        if self.options.ambiguity != "forest":
+        if self.options.ambiguity != 'forest':
             self._parse_tree_builder = ParseTreeBuilder(
-                self.rules,
-                self.options.tree_class or Tree,
-                self.options.propagate_positions,
-                self.options.parser != "lalr" and self.options.ambiguity == "explicit",
-                self.options.maybe_placeholders,
-            )
-            self._callbacks = self._parse_tree_builder.create_callback(
-                self.options.transformer
-            )
-        self._callbacks.update(
-            _get_lexer_callbacks(self.options.transformer, self.terminals)
-        )
+                    self.rules,
+                    self.options.tree_class or Tree,
+                    self.options.propagate_positions,
+                    self.options.parser != 'lalr' and self.options.ambiguity == 'explicit',
+                    self.options.maybe_placeholders
+                )
+            self._callbacks = self._parse_tree_builder.create_callback(self.options.transformer)
+        self._callbacks.update(_get_lexer_callbacks(self.options.transformer, self.terminals))
 
     def _build_parser(self) -> "ParsingFrontend":
         self._prepare_callbacks()
@@ -3714,35 +3200,26 @@ class Lark(Serialize):
             self.options.lexer,
             self.lexer_conf,
             parser_conf,
-            options=self.options,
+            options=self.options
         )
 
     def save(self, f, exclude_options: Collection[str] = ()) -> None:
-        # --
-        if self.options.parser != "lalr":
-            raise NotImplementedError(
-                "Lark.save() is only implemented for the LALR(1) parser."
-            )
+        #--
+        if self.options.parser != 'lalr':
+            raise NotImplementedError("Lark.save() is only implemented for the LALR(1) parser.")
         data, m = self.memo_serialize([TerminalDef, Rule])
         if exclude_options:
-            data["options"] = {
-                n: v for n, v in data["options"].items() if n not in exclude_options
-            }
-        pickle.dump({"data": data, "memo": m}, f, protocol=pickle.HIGHEST_PROTOCOL)
+            data["options"] = {n: v for n, v in data["options"].items() if n not in exclude_options}
+        pickle.dump({'data': data, 'memo': m}, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     @classmethod
     def load(cls: Type[_T], f) -> _T:
-        # --
+        #--
         inst = cls.__new__(cls)
         return inst._load(f)
 
-    def _deserialize_lexer_conf(
-        self,
-        data: Dict[str, Any],
-        memo: Dict[int, Union[TerminalDef, Rule]],
-        options: LarkOptions,
-    ) -> LexerConf:
-        lexer_conf = LexerConf.deserialize(data["lexer_conf"], memo)
+    def _deserialize_lexer_conf(self, data: Dict[str, Any], memo: Dict[int, Union[TerminalDef, Rule]], options: LarkOptions) -> LexerConf:
+        lexer_conf = LexerConf.deserialize(data['lexer_conf'], memo)
         lexer_conf.callbacks = options.lexer_callbacks or {}
         lexer_conf.re_module = regex if options.regex else re
         lexer_conf.use_bytes = options.use_bytes
@@ -3756,83 +3233,66 @@ class Lark(Serialize):
             d = f
         else:
             d = pickle.load(f)
-        memo_json = d["memo"]
-        data = d["data"]
+        memo_json = d['memo']
+        data = d['data']
 
         assert memo_json
-        memo = SerializeMemoizer.deserialize(
-            memo_json, {"Rule": Rule, "TerminalDef": TerminalDef}, {}
-        )
-        options = dict(data["options"])
+        memo = SerializeMemoizer.deserialize(memo_json, {'Rule': Rule, 'TerminalDef': TerminalDef}, {})
+        options = dict(data['options'])
         if (set(kwargs) - _LOAD_ALLOWED_OPTIONS) & set(LarkOptions._defaults):
-            raise ConfigurationError(
-                "Some options are not allowed when loading a Parser: {}".format(
-                    set(kwargs) - _LOAD_ALLOWED_OPTIONS
-                )
-            )
+            raise ConfigurationError("Some options are not allowed when loading a Parser: {}"
+                             .format(set(kwargs) - _LOAD_ALLOWED_OPTIONS))
         options.update(kwargs)
         self.options = LarkOptions.deserialize(options, memo)
-        self.rules = [Rule.deserialize(r, memo) for r in data["rules"]]
-        self.source_path = "<deserialized>"
+        self.rules = [Rule.deserialize(r, memo) for r in data['rules']]
+        self.source_path = '<deserialized>'
         _validate_frontend_args(self.options.parser, self.options.lexer)
-        self.lexer_conf = self._deserialize_lexer_conf(
-            data["parser"], memo, self.options
-        )
+        self.lexer_conf = self._deserialize_lexer_conf(data['parser'], memo, self.options)
         self.terminals = self.lexer_conf.terminals
         self._prepare_callbacks()
         self._terminals_dict = {t.name: t for t in self.terminals}
         self.parser = _deserialize_parsing_frontend(
-            data["parser"],
+            data['parser'],
             memo,
             self.lexer_conf,
             self._callbacks,
             self.options,  ##
+
         )
         return self
 
     @classmethod
     def _load_from_dict(cls, data, memo, **kwargs):
         inst = cls.__new__(cls)
-        return inst._load({"data": data, "memo": memo}, **kwargs)
+        return inst._load({'data': data, 'memo': memo}, **kwargs)
 
     @classmethod
-    def open(
-        cls: Type[_T], grammar_filename: str, rel_to: Optional[str] = None, **options
-    ) -> _T:
-        # --
+    def open(cls: Type[_T], grammar_filename: str, rel_to: Optional[str]=None, **options) -> _T:
+        #--
         if rel_to:
             basepath = os.path.dirname(rel_to)
             grammar_filename = os.path.join(basepath, grammar_filename)
-        with open(grammar_filename, encoding="utf8") as f:
+        with open(grammar_filename, encoding='utf8') as f:
             return cls(f, **options)
 
     @classmethod
-    def open_from_package(
-        cls: Type[_T],
-        package: str,
-        grammar_path: str,
-        search_paths: "Sequence[str]" = [""],
-        **options,
-    ) -> _T:
-        # --
+    def open_from_package(cls: Type[_T], package: str, grammar_path: str, search_paths: 'Sequence[str]'=[""], **options) -> _T:
+        #--
         package_loader = FromPackageLoader(package, search_paths)
         full_path, text = package_loader(None, grammar_path)
-        options.setdefault("source_path", full_path)
-        options.setdefault("import_paths", [])
-        options["import_paths"].append(package_loader)
+        options.setdefault('source_path', full_path)
+        options.setdefault('import_paths', [])
+        options['import_paths'].append(package_loader)
         return cls(text, **options)
 
     def __repr__(self):
-        return "Lark(open(%r), parser=%r, lexer=%r, ...)" % (
-            self.source_path,
-            self.options.parser,
-            self.options.lexer,
-        )
+        return 'Lark(open(%r), parser=%r, lexer=%r, ...)' % (self.source_path, self.options.parser, self.options.lexer)
 
-    def lex(self, text: str, dont_ignore: bool = False) -> Iterator[Token]:
-        # --
+
+    def lex(self, text: str, dont_ignore: bool=False) -> Iterator[Token]:
+        #--
         lexer: Lexer
-        if not hasattr(self, "lexer") or dont_ignore:
+        if not hasattr(self, 'lexer') or dont_ignore:
             lexer = self._build_lexer(dont_ignore)
         else:
             lexer = self.lexer
@@ -3843,28 +3303,22 @@ class Lark(Serialize):
         return stream
 
     def get_terminal(self, name: str) -> TerminalDef:
-        # --
+        #--
         return self._terminals_dict[name]
 
-    def parse_interactive(
-        self, text: Optional[str] = None, start: Optional[str] = None
-    ) -> "InteractiveParser":
-        # --
+    def parse_interactive(self, text: Optional[str]=None, start: Optional[str]=None) -> 'InteractiveParser':
+        #--
         return self.parser.parse_interactive(text, start=start)
 
-    def parse(
-        self,
-        text: str,
-        start: Optional[str] = None,
-        on_error: "Optional[Callable[[UnexpectedInput], bool]]" = None,
-    ) -> "ParseTree":
-        # --
+    def parse(self, text: str, start: Optional[str]=None, on_error: 'Optional[Callable[[UnexpectedInput], bool]]'=None) -> 'ParseTree':
+        #--
         return self.parser.parse(text, start=start, on_error=on_error)
+
+
 
 
 class DedentError(LarkError):
     pass
-
 
 class Indenter(PostLex, ABC):
     paren_level: int
@@ -3881,9 +3335,9 @@ class Indenter(PostLex, ABC):
 
         yield token
 
-        indent_str = token.rsplit("\n", 1)[1]  ##
+        indent_str = token.rsplit('\n', 1)[1] ##
 
-        indent = indent_str.count(" ") + indent_str.count("\t") * self.tab_len
+        indent = indent_str.count(' ') + indent_str.count('\t') * self.tab_len
 
         if indent > self.indent_level[-1]:
             self.indent_level.append(indent)
@@ -3894,10 +3348,7 @@ class Indenter(PostLex, ABC):
                 yield Token.new_borrow_pos(self.DEDENT_type, indent_str, token)
 
             if indent != self.indent_level[-1]:
-                raise DedentError(
-                    "Unexpected dedent to column %s. Expected dedent to %s"
-                    % (indent, self.indent_level[-1])
-                )
+                raise DedentError('Unexpected dedent to column %s. Expected dedent to %s' % (indent, self.indent_level[-1]))
 
     def _process(self, stream):
         for token in stream:
@@ -3914,7 +3365,7 @@ class Indenter(PostLex, ABC):
 
         while len(self.indent_level) > 1:
             self.indent_level.pop()
-            yield Token(self.DEDENT_type, "")
+            yield Token(self.DEDENT_type, '')
 
         assert self.indent_level == [0], self.indent_level
 
@@ -3961,9038 +3412,22 @@ class Indenter(PostLex, ABC):
 
 
 class PythonIndenter(Indenter):
-    NL_type = "_NEWLINE"
-    OPEN_PAREN_types = ["LPAR", "LSQB", "LBRACE"]
-    CLOSE_PAREN_types = ["RPAR", "RSQB", "RBRACE"]
-    INDENT_type = "_INDENT"
-    DEDENT_type = "_DEDENT"
+    NL_type = '_NEWLINE'
+    OPEN_PAREN_types = ['LPAR', 'LSQB', 'LBRACE']
+    CLOSE_PAREN_types = ['RPAR', 'RSQB', 'RBRACE']
+    INDENT_type = '_INDENT'
+    DEDENT_type = '_DEDENT'
     tab_len = 8
 
 
 import pickle, zlib, base64
-
-DATA = {
-    "parser": {
-        "lexer_conf": {
-            "terminals": [
-                {"@": 0},
-                {"@": 1},
-                {"@": 2},
-                {"@": 3},
-                {"@": 4},
-                {"@": 5},
-                {"@": 6},
-                {"@": 7},
-                {"@": 8},
-                {"@": 9},
-                {"@": 10},
-                {"@": 11},
-                {"@": 12},
-                {"@": 13},
-                {"@": 14},
-                {"@": 15},
-                {"@": 16},
-                {"@": 17},
-                {"@": 18},
-                {"@": 19},
-                {"@": 20},
-                {"@": 21},
-                {"@": 22},
-                {"@": 23},
-                {"@": 24},
-                {"@": 25},
-                {"@": 26},
-                {"@": 27},
-                {"@": 28},
-                {"@": 29},
-                {"@": 30},
-                {"@": 31},
-                {"@": 32},
-                {"@": 33},
-                {"@": 34},
-                {"@": 35},
-                {"@": 36},
-                {"@": 37},
-                {"@": 38},
-                {"@": 39},
-                {"@": 40},
-                {"@": 41},
-                {"@": 42},
-                {"@": 43},
-                {"@": 44},
-                {"@": 45},
-                {"@": 46},
-                {"@": 47},
-                {"@": 48},
-                {"@": 49},
-                {"@": 50},
-            ],
-            "ignore": ["__IGNORE_0", "__IGNORE_1", "COMMENT"],
-            "g_regex_flags": 0,
-            "use_bytes": False,
-            "lexer_type": "contextual",
-            "__type__": "LexerConf",
-        },
-        "parser_conf": {
-            "rules": [
-                {"@": 51},
-                {"@": 52},
-                {"@": 53},
-                {"@": 54},
-                {"@": 55},
-                {"@": 56},
-                {"@": 57},
-                {"@": 58},
-                {"@": 59},
-                {"@": 60},
-                {"@": 61},
-                {"@": 62},
-                {"@": 63},
-                {"@": 64},
-                {"@": 65},
-                {"@": 66},
-                {"@": 67},
-                {"@": 68},
-                {"@": 69},
-                {"@": 70},
-                {"@": 71},
-                {"@": 72},
-                {"@": 73},
-                {"@": 74},
-                {"@": 75},
-                {"@": 76},
-                {"@": 77},
-                {"@": 78},
-                {"@": 79},
-                {"@": 80},
-                {"@": 81},
-                {"@": 82},
-                {"@": 83},
-                {"@": 84},
-                {"@": 85},
-                {"@": 86},
-                {"@": 87},
-                {"@": 88},
-                {"@": 89},
-                {"@": 90},
-                {"@": 91},
-                {"@": 92},
-                {"@": 93},
-                {"@": 94},
-                {"@": 95},
-                {"@": 96},
-                {"@": 97},
-                {"@": 98},
-                {"@": 99},
-                {"@": 100},
-                {"@": 101},
-                {"@": 102},
-                {"@": 103},
-                {"@": 104},
-                {"@": 105},
-                {"@": 106},
-                {"@": 107},
-                {"@": 108},
-                {"@": 109},
-                {"@": 110},
-                {"@": 111},
-                {"@": 112},
-                {"@": 113},
-                {"@": 114},
-                {"@": 115},
-                {"@": 116},
-                {"@": 117},
-                {"@": 118},
-                {"@": 119},
-                {"@": 120},
-                {"@": 121},
-                {"@": 122},
-                {"@": 123},
-                {"@": 124},
-                {"@": 125},
-                {"@": 126},
-                {"@": 127},
-                {"@": 128},
-                {"@": 129},
-                {"@": 130},
-                {"@": 131},
-                {"@": 132},
-                {"@": 133},
-                {"@": 134},
-                {"@": 135},
-                {"@": 136},
-                {"@": 137},
-                {"@": 138},
-                {"@": 139},
-                {"@": 140},
-                {"@": 141},
-                {"@": 142},
-                {"@": 143},
-                {"@": 144},
-                {"@": 145},
-                {"@": 146},
-                {"@": 147},
-                {"@": 148},
-                {"@": 149},
-                {"@": 150},
-                {"@": 151},
-                {"@": 152},
-                {"@": 153},
-                {"@": 154},
-                {"@": 155},
-                {"@": 156},
-                {"@": 157},
-                {"@": 158},
-                {"@": 159},
-                {"@": 160},
-                {"@": 161},
-                {"@": 162},
-                {"@": 163},
-                {"@": 164},
-                {"@": 165},
-                {"@": 166},
-                {"@": 167},
-                {"@": 168},
-                {"@": 169},
-                {"@": 170},
-                {"@": 171},
-                {"@": 172},
-                {"@": 173},
-                {"@": 174},
-                {"@": 175},
-                {"@": 176},
-                {"@": 177},
-                {"@": 178},
-                {"@": 179},
-                {"@": 180},
-                {"@": 181},
-                {"@": 182},
-                {"@": 183},
-                {"@": 184},
-                {"@": 185},
-                {"@": 186},
-                {"@": 187},
-                {"@": 188},
-                {"@": 189},
-                {"@": 190},
-                {"@": 191},
-                {"@": 192},
-                {"@": 193},
-                {"@": 194},
-                {"@": 195},
-                {"@": 196},
-                {"@": 197},
-                {"@": 198},
-                {"@": 199},
-                {"@": 200},
-                {"@": 201},
-                {"@": 202},
-                {"@": 203},
-                {"@": 204},
-            ],
-            "start": ["start"],
-            "parser_type": "lalr",
-            "__type__": "ParserConf",
-        },
-        "parser": {
-            "tokens": {
-                0: "LSQB",
-                1: "LPAR",
-                2: "MATCH",
-                3: "__ANON_8",
-                4: "WHILE",
-                5: "_NL",
-                6: "STRUCT",
-                7: "FOR",
-                8: "__ANON_3",
-                9: "STAR",
-                10: "MORETHAN",
-                11: "IF",
-                12: "FALSE",
-                13: "RBRACE",
-                14: "INT",
-                15: "__ANON_4",
-                16: "PRINT",
-                17: "__ANON_7",
-                18: "TRUE",
-                19: "SLASH",
-                20: "__ANON_6",
-                21: "LET",
-                22: "__ANON_5",
-                23: "BANG",
-                24: "PLUS",
-                25: "FN",
-                26: "ENUM",
-                27: "LESSTHAN",
-                28: "RETURN",
-                29: "PERCENT",
-                30: "IDENTIFIER",
-                31: "STRING",
-                32: "MINUS",
-                33: "$END",
-                34: "type_annotation",
-                35: "enum_literal_tuple",
-                36: "expression",
-                37: "term",
-                38: "enum_literal_simple",
-                39: "bool_literal",
-                40: "variable",
-                41: "equality",
-                42: "int_literal",
-                43: "array_literal",
-                44: "indexing",
-                45: "logical",
-                46: "factor",
-                47: "unary_op",
-                48: "string_literal",
-                49: "comparison",
-                50: "atom",
-                51: "function_call",
-                52: "LBRACE",
-                53: "__ANON_1",
-                54: "RSQB",
-                55: "RPAR",
-                56: "COMMA",
-                57: "EQUAL",
-                58: "CASE",
-                59: "__array_elements_star_8",
-                60: "function_param",
-                61: "ELIF",
-                62: "ELSE",
-                63: "struct_init_members",
-                64: "struct_init_member",
-                65: "function_args",
-                66: "__ANON_2",
-                67: "__ANON_0",
-                68: "__else_if_ladder_plus_1",
-                69: "else_if_stmt",
-                70: "else_if_ladder",
-                71: "else_block",
-                72: "enum_pattern_tuple",
-                73: "enum_pattern",
-                74: "wildcard_pattern",
-                75: "array_pattern",
-                76: "UNDERSCORE",
-                77: "match_pattern",
-                78: "__struct_members_plus_3",
-                79: "struct_member",
-                80: "struct_members",
-                81: "array_pattern_element",
-                82: "if_stmt",
-                83: "for_stmt",
-                84: "struct_stmt",
-                85: "struct_access",
-                86: "index_assignment",
-                87: "assignment",
-                88: "__statement_list_plus_0",
-                89: "variable_declaration",
-                90: "statement",
-                91: "match_stmt",
-                92: "enum_stmt",
-                93: "for_stmt_int",
-                94: "print_stmt",
-                95: "return_stmt",
-                96: "statement_list",
-                97: "struct_assignment",
-                98: "function_definition",
-                99: "if_chain",
-                100: "statement_block",
-                101: "while_stmt",
-                102: "array_element",
-                103: "array_elements",
-                104: "__struct_init_members_star_7",
-                105: "__function_params_star_5",
-                106: "__function_args_star_6",
-                107: "function_params",
-                108: "enum_members",
-                109: "__enum_members_plus_4",
-                110: "enum_member_bare",
-                111: "enum_member_tuple",
-                112: "__case_ladder_plus_2",
-                113: "case_stmt",
-                114: "case_ladder",
-                115: "DOT",
-                116: "__array_pattern_star_9",
-                117: "start",
-                118: "COLON",
-                119: "IN",
-            },
-            "states": {
-                0: {
-                    0: (0, 7),
-                    1: (0, 23),
-                    2: (1, {"@": 152}),
-                    3: (1, {"@": 152}),
-                    4: (1, {"@": 152}),
-                    5: (1, {"@": 152}),
-                    6: (1, {"@": 152}),
-                    7: (1, {"@": 152}),
-                    8: (1, {"@": 152}),
-                    9: (1, {"@": 152}),
-                    10: (1, {"@": 152}),
-                    11: (1, {"@": 152}),
-                    12: (1, {"@": 152}),
-                    13: (1, {"@": 152}),
-                    14: (1, {"@": 152}),
-                    15: (1, {"@": 152}),
-                    16: (1, {"@": 152}),
-                    17: (1, {"@": 152}),
-                    18: (1, {"@": 152}),
-                    19: (1, {"@": 152}),
-                    20: (1, {"@": 152}),
-                    21: (1, {"@": 152}),
-                    22: (1, {"@": 152}),
-                    23: (1, {"@": 152}),
-                    24: (1, {"@": 152}),
-                    25: (1, {"@": 152}),
-                    26: (1, {"@": 152}),
-                    27: (1, {"@": 152}),
-                    28: (1, {"@": 152}),
-                    29: (1, {"@": 152}),
-                    30: (1, {"@": 152}),
-                    31: (1, {"@": 152}),
-                    32: (1, {"@": 152}),
-                    33: (1, {"@": 152}),
-                },
-                1: {30: (0, 276), 34: (0, 211)},
-                2: {13: (0, 121)},
-                3: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    36: (0, 67),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                4: {
-                    27: (1, {"@": 131}),
-                    52: (1, {"@": 131}),
-                    8: (1, {"@": 131}),
-                    10: (1, {"@": 131}),
-                    20: (1, {"@": 131}),
-                    22: (1, {"@": 131}),
-                    3: (1, {"@": 131}),
-                    53: (1, {"@": 131}),
-                    24: (1, {"@": 131}),
-                    32: (1, {"@": 131}),
-                    15: (1, {"@": 131}),
-                    17: (1, {"@": 131}),
-                    54: (1, {"@": 131}),
-                    2: (1, {"@": 131}),
-                    4: (1, {"@": 131}),
-                    33: (1, {"@": 131}),
-                    5: (1, {"@": 131}),
-                    6: (1, {"@": 131}),
-                    7: (1, {"@": 131}),
-                    1: (1, {"@": 131}),
-                    11: (1, {"@": 131}),
-                    12: (1, {"@": 131}),
-                    13: (1, {"@": 131}),
-                    14: (1, {"@": 131}),
-                    16: (1, {"@": 131}),
-                    18: (1, {"@": 131}),
-                    21: (1, {"@": 131}),
-                    23: (1, {"@": 131}),
-                    25: (1, {"@": 131}),
-                    26: (1, {"@": 131}),
-                    28: (1, {"@": 131}),
-                    30: (1, {"@": 131}),
-                    31: (1, {"@": 131}),
-                    0: (1, {"@": 131}),
-                    55: (1, {"@": 131}),
-                    56: (1, {"@": 131}),
-                },
-                5: {55: (0, 128)},
-                6: {57: (0, 83)},
-                7: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    36: (0, 226),
-                    1: (0, 40),
-                },
-                8: {5: (1, {"@": 184}), 58: (1, {"@": 184}), 13: (1, {"@": 184})},
-                9: {
-                    18: (1, {"@": 57}),
-                    21: (1, {"@": 57}),
-                    23: (1, {"@": 57}),
-                    2: (1, {"@": 57}),
-                    4: (1, {"@": 57}),
-                    24: (1, {"@": 57}),
-                    5: (1, {"@": 57}),
-                    6: (1, {"@": 57}),
-                    25: (1, {"@": 57}),
-                    7: (1, {"@": 57}),
-                    26: (1, {"@": 57}),
-                    27: (1, {"@": 57}),
-                    28: (1, {"@": 57}),
-                    30: (1, {"@": 57}),
-                    1: (1, {"@": 57}),
-                    0: (1, {"@": 57}),
-                    31: (1, {"@": 57}),
-                    11: (1, {"@": 57}),
-                    12: (1, {"@": 57}),
-                    13: (1, {"@": 57}),
-                    14: (1, {"@": 57}),
-                    32: (1, {"@": 57}),
-                    16: (1, {"@": 57}),
-                    33: (1, {"@": 57}),
-                },
-                10: {52: (0, 153)},
-                11: {5: (1, {"@": 85}), 58: (1, {"@": 85}), 13: (1, {"@": 85})},
-                12: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    36: (0, 238),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                13: {
-                    27: (1, {"@": 135}),
-                    52: (1, {"@": 135}),
-                    8: (1, {"@": 135}),
-                    19: (1, {"@": 135}),
-                    29: (1, {"@": 135}),
-                    9: (1, {"@": 135}),
-                    10: (1, {"@": 135}),
-                    20: (1, {"@": 135}),
-                    22: (1, {"@": 135}),
-                    3: (1, {"@": 135}),
-                    53: (1, {"@": 135}),
-                    24: (1, {"@": 135}),
-                    32: (1, {"@": 135}),
-                    15: (1, {"@": 135}),
-                    17: (1, {"@": 135}),
-                    54: (1, {"@": 135}),
-                    2: (1, {"@": 135}),
-                    4: (1, {"@": 135}),
-                    33: (1, {"@": 135}),
-                    5: (1, {"@": 135}),
-                    6: (1, {"@": 135}),
-                    7: (1, {"@": 135}),
-                    1: (1, {"@": 135}),
-                    11: (1, {"@": 135}),
-                    12: (1, {"@": 135}),
-                    13: (1, {"@": 135}),
-                    14: (1, {"@": 135}),
-                    16: (1, {"@": 135}),
-                    18: (1, {"@": 135}),
-                    21: (1, {"@": 135}),
-                    23: (1, {"@": 135}),
-                    25: (1, {"@": 135}),
-                    26: (1, {"@": 135}),
-                    28: (1, {"@": 135}),
-                    30: (1, {"@": 135}),
-                    31: (1, {"@": 135}),
-                    0: (1, {"@": 135}),
-                    55: (1, {"@": 135}),
-                    56: (1, {"@": 135}),
-                },
-                14: {55: (0, 167)},
-                15: {
-                    18: (1, {"@": 67}),
-                    21: (1, {"@": 67}),
-                    23: (1, {"@": 67}),
-                    2: (1, {"@": 67}),
-                    4: (1, {"@": 67}),
-                    24: (1, {"@": 67}),
-                    5: (1, {"@": 67}),
-                    6: (1, {"@": 67}),
-                    25: (1, {"@": 67}),
-                    7: (1, {"@": 67}),
-                    26: (1, {"@": 67}),
-                    27: (1, {"@": 67}),
-                    28: (1, {"@": 67}),
-                    30: (1, {"@": 67}),
-                    1: (1, {"@": 67}),
-                    0: (1, {"@": 67}),
-                    31: (1, {"@": 67}),
-                    11: (1, {"@": 67}),
-                    12: (1, {"@": 67}),
-                    13: (1, {"@": 67}),
-                    14: (1, {"@": 67}),
-                    32: (1, {"@": 67}),
-                    16: (1, {"@": 67}),
-                    33: (1, {"@": 67}),
-                },
-                16: {
-                    52: (1, {"@": 156}),
-                    19: (1, {"@": 156}),
-                    20: (1, {"@": 156}),
-                    22: (1, {"@": 156}),
-                    3: (1, {"@": 156}),
-                    53: (1, {"@": 156}),
-                    24: (1, {"@": 156}),
-                    27: (1, {"@": 156}),
-                    8: (1, {"@": 156}),
-                    29: (1, {"@": 156}),
-                    9: (1, {"@": 156}),
-                    10: (1, {"@": 156}),
-                    32: (1, {"@": 156}),
-                    15: (1, {"@": 156}),
-                    0: (1, {"@": 156}),
-                    17: (1, {"@": 156}),
-                    54: (1, {"@": 156}),
-                    2: (1, {"@": 156}),
-                    4: (1, {"@": 156}),
-                    33: (1, {"@": 156}),
-                    5: (1, {"@": 156}),
-                    6: (1, {"@": 156}),
-                    7: (1, {"@": 156}),
-                    1: (1, {"@": 156}),
-                    11: (1, {"@": 156}),
-                    12: (1, {"@": 156}),
-                    13: (1, {"@": 156}),
-                    14: (1, {"@": 156}),
-                    16: (1, {"@": 156}),
-                    18: (1, {"@": 156}),
-                    21: (1, {"@": 156}),
-                    23: (1, {"@": 156}),
-                    25: (1, {"@": 156}),
-                    26: (1, {"@": 156}),
-                    28: (1, {"@": 156}),
-                    30: (1, {"@": 156}),
-                    31: (1, {"@": 156}),
-                    56: (1, {"@": 156}),
-                    55: (1, {"@": 156}),
-                },
-                17: {59: (0, 187), 56: (0, 136), 54: (1, {"@": 168})},
-                18: {60: (0, 222), 30: (0, 253)},
-                19: {
-                    18: (1, {"@": 59}),
-                    21: (1, {"@": 59}),
-                    23: (1, {"@": 59}),
-                    2: (1, {"@": 59}),
-                    4: (1, {"@": 59}),
-                    24: (1, {"@": 59}),
-                    5: (1, {"@": 59}),
-                    6: (1, {"@": 59}),
-                    25: (1, {"@": 59}),
-                    7: (1, {"@": 59}),
-                    26: (1, {"@": 59}),
-                    27: (1, {"@": 59}),
-                    28: (1, {"@": 59}),
-                    30: (1, {"@": 59}),
-                    1: (1, {"@": 59}),
-                    0: (1, {"@": 59}),
-                    31: (1, {"@": 59}),
-                    11: (1, {"@": 59}),
-                    12: (1, {"@": 59}),
-                    13: (1, {"@": 59}),
-                    14: (1, {"@": 59}),
-                    32: (1, {"@": 59}),
-                    16: (1, {"@": 59}),
-                    33: (1, {"@": 59}),
-                },
-                20: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    36: (0, 164),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                21: {
-                    18: (1, {"@": 180}),
-                    61: (1, {"@": 180}),
-                    21: (1, {"@": 180}),
-                    23: (1, {"@": 180}),
-                    2: (1, {"@": 180}),
-                    4: (1, {"@": 180}),
-                    33: (1, {"@": 180}),
-                    24: (1, {"@": 180}),
-                    5: (1, {"@": 180}),
-                    6: (1, {"@": 180}),
-                    25: (1, {"@": 180}),
-                    7: (1, {"@": 180}),
-                    26: (1, {"@": 180}),
-                    27: (1, {"@": 180}),
-                    28: (1, {"@": 180}),
-                    62: (1, {"@": 180}),
-                    30: (1, {"@": 180}),
-                    1: (1, {"@": 180}),
-                    0: (1, {"@": 180}),
-                    31: (1, {"@": 180}),
-                    11: (1, {"@": 180}),
-                    12: (1, {"@": 180}),
-                    13: (1, {"@": 180}),
-                    14: (1, {"@": 180}),
-                    32: (1, {"@": 180}),
-                    16: (1, {"@": 180}),
-                },
-                22: {10: (0, 28)},
-                23: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    63: (0, 14),
-                    37: (0, 219),
-                    38: (0, 82),
-                    30: (0, 55),
-                    39: (0, 188),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    64: (0, 102),
-                    47: (0, 149),
-                    36: (0, 112),
-                    48: (0, 132),
-                    65: (0, 137),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    55: (0, 103),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                24: {1: (0, 116)},
-                25: {
-                    55: (1, {"@": 93}),
-                    54: (1, {"@": 93}),
-                    56: (1, {"@": 93}),
-                    52: (1, {"@": 93}),
-                },
-                26: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 147),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                27: {54: (0, 32)},
-                28: {0: (0, 78)},
-                29: {66: (0, 1)},
-                30: {55: (1, {"@": 92}), 52: (1, {"@": 92})},
-                31: {
-                    52: (1, {"@": 166}),
-                    19: (1, {"@": 166}),
-                    20: (1, {"@": 166}),
-                    22: (1, {"@": 166}),
-                    3: (1, {"@": 166}),
-                    53: (1, {"@": 166}),
-                    24: (1, {"@": 166}),
-                    27: (1, {"@": 166}),
-                    8: (1, {"@": 166}),
-                    29: (1, {"@": 166}),
-                    9: (1, {"@": 166}),
-                    10: (1, {"@": 166}),
-                    32: (1, {"@": 166}),
-                    15: (1, {"@": 166}),
-                    0: (1, {"@": 166}),
-                    17: (1, {"@": 166}),
-                    54: (1, {"@": 166}),
-                    2: (1, {"@": 166}),
-                    4: (1, {"@": 166}),
-                    33: (1, {"@": 166}),
-                    5: (1, {"@": 166}),
-                    6: (1, {"@": 166}),
-                    7: (1, {"@": 166}),
-                    1: (1, {"@": 166}),
-                    11: (1, {"@": 166}),
-                    12: (1, {"@": 166}),
-                    13: (1, {"@": 166}),
-                    14: (1, {"@": 166}),
-                    16: (1, {"@": 166}),
-                    18: (1, {"@": 166}),
-                    21: (1, {"@": 166}),
-                    23: (1, {"@": 166}),
-                    25: (1, {"@": 166}),
-                    26: (1, {"@": 166}),
-                    28: (1, {"@": 166}),
-                    30: (1, {"@": 166}),
-                    31: (1, {"@": 166}),
-                    56: (1, {"@": 166}),
-                    55: (1, {"@": 166}),
-                },
-                32: {
-                    52: (1, {"@": 165}),
-                    19: (1, {"@": 165}),
-                    20: (1, {"@": 165}),
-                    22: (1, {"@": 165}),
-                    3: (1, {"@": 165}),
-                    53: (1, {"@": 165}),
-                    24: (1, {"@": 165}),
-                    27: (1, {"@": 165}),
-                    8: (1, {"@": 165}),
-                    29: (1, {"@": 165}),
-                    9: (1, {"@": 165}),
-                    10: (1, {"@": 165}),
-                    32: (1, {"@": 165}),
-                    15: (1, {"@": 165}),
-                    0: (1, {"@": 165}),
-                    17: (1, {"@": 165}),
-                    54: (1, {"@": 165}),
-                    2: (1, {"@": 165}),
-                    4: (1, {"@": 165}),
-                    33: (1, {"@": 165}),
-                    5: (1, {"@": 165}),
-                    6: (1, {"@": 165}),
-                    7: (1, {"@": 165}),
-                    1: (1, {"@": 165}),
-                    11: (1, {"@": 165}),
-                    12: (1, {"@": 165}),
-                    13: (1, {"@": 165}),
-                    14: (1, {"@": 165}),
-                    16: (1, {"@": 165}),
-                    18: (1, {"@": 165}),
-                    21: (1, {"@": 165}),
-                    23: (1, {"@": 165}),
-                    25: (1, {"@": 165}),
-                    26: (1, {"@": 165}),
-                    28: (1, {"@": 165}),
-                    30: (1, {"@": 165}),
-                    31: (1, {"@": 165}),
-                    56: (1, {"@": 165}),
-                    55: (1, {"@": 165}),
-                },
-                33: {13: (0, 38)},
-                34: {56: (1, {"@": 200}), 55: (1, {"@": 200})},
-                35: {67: (0, 198)},
-                36: {54: (1, {"@": 169}), 56: (1, {"@": 169})},
-                37: {30: (0, 227), 64: (0, 76)},
-                38: {
-                    18: (1, {"@": 102}),
-                    21: (1, {"@": 102}),
-                    23: (1, {"@": 102}),
-                    2: (1, {"@": 102}),
-                    4: (1, {"@": 102}),
-                    24: (1, {"@": 102}),
-                    5: (1, {"@": 102}),
-                    6: (1, {"@": 102}),
-                    25: (1, {"@": 102}),
-                    7: (1, {"@": 102}),
-                    26: (1, {"@": 102}),
-                    27: (1, {"@": 102}),
-                    28: (1, {"@": 102}),
-                    30: (1, {"@": 102}),
-                    1: (1, {"@": 102}),
-                    0: (1, {"@": 102}),
-                    31: (1, {"@": 102}),
-                    11: (1, {"@": 102}),
-                    12: (1, {"@": 102}),
-                    13: (1, {"@": 102}),
-                    14: (1, {"@": 102}),
-                    32: (1, {"@": 102}),
-                    16: (1, {"@": 102}),
-                    33: (1, {"@": 102}),
-                },
-                39: {
-                    18: (1, {"@": 79}),
-                    61: (1, {"@": 79}),
-                    21: (1, {"@": 79}),
-                    23: (1, {"@": 79}),
-                    2: (1, {"@": 79}),
-                    4: (1, {"@": 79}),
-                    24: (1, {"@": 79}),
-                    5: (1, {"@": 79}),
-                    6: (1, {"@": 79}),
-                    25: (1, {"@": 79}),
-                    7: (1, {"@": 79}),
-                    16: (1, {"@": 79}),
-                    26: (1, {"@": 79}),
-                    27: (1, {"@": 79}),
-                    28: (1, {"@": 79}),
-                    62: (1, {"@": 79}),
-                    30: (1, {"@": 79}),
-                    1: (1, {"@": 79}),
-                    31: (1, {"@": 79}),
-                    11: (1, {"@": 79}),
-                    12: (1, {"@": 79}),
-                    13: (1, {"@": 79}),
-                    14: (1, {"@": 79}),
-                    32: (1, {"@": 79}),
-                    0: (1, {"@": 79}),
-                    33: (1, {"@": 79}),
-                },
-                40: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    36: (0, 234),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                41: {52: (0, 75)},
-                42: {13: (0, 124)},
-                43: {30: (0, 45)},
-                44: {
-                    62: (0, 181),
-                    68: (0, 192),
-                    61: (0, 60),
-                    69: (0, 156),
-                    70: (0, 223),
-                    71: (0, 270),
-                    18: (1, {"@": 78}),
-                    21: (1, {"@": 78}),
-                    23: (1, {"@": 78}),
-                    2: (1, {"@": 78}),
-                    4: (1, {"@": 78}),
-                    24: (1, {"@": 78}),
-                    5: (1, {"@": 78}),
-                    6: (1, {"@": 78}),
-                    25: (1, {"@": 78}),
-                    7: (1, {"@": 78}),
-                    26: (1, {"@": 78}),
-                    27: (1, {"@": 78}),
-                    28: (1, {"@": 78}),
-                    30: (1, {"@": 78}),
-                    1: (1, {"@": 78}),
-                    0: (1, {"@": 78}),
-                    31: (1, {"@": 78}),
-                    11: (1, {"@": 78}),
-                    12: (1, {"@": 78}),
-                    13: (1, {"@": 78}),
-                    14: (1, {"@": 78}),
-                    32: (1, {"@": 78}),
-                    16: (1, {"@": 78}),
-                    33: (1, {"@": 78}),
-                },
-                45: {52: (0, 138)},
-                46: {
-                    72: (0, 159),
-                    18: (0, 16),
-                    30: (0, 35),
-                    0: (0, 117),
-                    73: (0, 65),
-                    74: (0, 84),
-                    75: (0, 255),
-                    12: (0, 232),
-                    39: (0, 262),
-                    76: (0, 25),
-                    77: (0, 91),
-                },
-                47: {
-                    18: (1, {"@": 100}),
-                    21: (1, {"@": 100}),
-                    23: (1, {"@": 100}),
-                    2: (1, {"@": 100}),
-                    4: (1, {"@": 100}),
-                    57: (1, {"@": 100}),
-                    24: (1, {"@": 100}),
-                    5: (1, {"@": 100}),
-                    6: (1, {"@": 100}),
-                    25: (1, {"@": 100}),
-                    7: (1, {"@": 100}),
-                    16: (1, {"@": 100}),
-                    26: (1, {"@": 100}),
-                    27: (1, {"@": 100}),
-                    28: (1, {"@": 100}),
-                    30: (1, {"@": 100}),
-                    1: (1, {"@": 100}),
-                    31: (1, {"@": 100}),
-                    11: (1, {"@": 100}),
-                    12: (1, {"@": 100}),
-                    13: (1, {"@": 100}),
-                    14: (1, {"@": 100}),
-                    32: (1, {"@": 100}),
-                    0: (1, {"@": 100}),
-                    33: (1, {"@": 100}),
-                },
-                48: {
-                    78: (0, 57),
-                    79: (0, 254),
-                    5: (0, 174),
-                    30: (0, 214),
-                    80: (0, 261),
-                },
-                49: {
-                    18: (1, {"@": 95}),
-                    21: (1, {"@": 95}),
-                    23: (1, {"@": 95}),
-                    2: (1, {"@": 95}),
-                    4: (1, {"@": 95}),
-                    24: (1, {"@": 95}),
-                    5: (1, {"@": 95}),
-                    6: (1, {"@": 95}),
-                    25: (1, {"@": 95}),
-                    7: (1, {"@": 95}),
-                    26: (1, {"@": 95}),
-                    27: (1, {"@": 95}),
-                    28: (1, {"@": 95}),
-                    30: (1, {"@": 95}),
-                    1: (1, {"@": 95}),
-                    0: (1, {"@": 95}),
-                    31: (1, {"@": 95}),
-                    11: (1, {"@": 95}),
-                    12: (1, {"@": 95}),
-                    13: (1, {"@": 95}),
-                    14: (1, {"@": 95}),
-                    32: (1, {"@": 95}),
-                    16: (1, {"@": 95}),
-                    33: (1, {"@": 95}),
-                },
-                50: {34: (0, 22), 30: (0, 276)},
-                51: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    36: (0, 66),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                52: {13: (0, 248)},
-                53: {
-                    18: (1, {"@": 72}),
-                    21: (1, {"@": 72}),
-                    23: (1, {"@": 72}),
-                    2: (1, {"@": 72}),
-                    4: (1, {"@": 72}),
-                    24: (1, {"@": 72}),
-                    5: (1, {"@": 72}),
-                    6: (1, {"@": 72}),
-                    25: (1, {"@": 72}),
-                    7: (1, {"@": 72}),
-                    26: (1, {"@": 72}),
-                    27: (1, {"@": 72}),
-                    28: (1, {"@": 72}),
-                    30: (1, {"@": 72}),
-                    1: (1, {"@": 72}),
-                    0: (1, {"@": 72}),
-                    31: (1, {"@": 72}),
-                    11: (1, {"@": 72}),
-                    12: (1, {"@": 72}),
-                    13: (1, {"@": 72}),
-                    14: (1, {"@": 72}),
-                    32: (1, {"@": 72}),
-                    16: (1, {"@": 72}),
-                    33: (1, {"@": 72}),
-                },
-                54: {
-                    32: (0, 163),
-                    24: (0, 64),
-                    27: (1, {"@": 128}),
-                    52: (1, {"@": 128}),
-                    8: (1, {"@": 128}),
-                    10: (1, {"@": 128}),
-                    20: (1, {"@": 128}),
-                    22: (1, {"@": 128}),
-                    3: (1, {"@": 128}),
-                    53: (1, {"@": 128}),
-                    15: (1, {"@": 128}),
-                    17: (1, {"@": 128}),
-                    54: (1, {"@": 128}),
-                    2: (1, {"@": 128}),
-                    4: (1, {"@": 128}),
-                    33: (1, {"@": 128}),
-                    5: (1, {"@": 128}),
-                    6: (1, {"@": 128}),
-                    7: (1, {"@": 128}),
-                    1: (1, {"@": 128}),
-                    11: (1, {"@": 128}),
-                    12: (1, {"@": 128}),
-                    13: (1, {"@": 128}),
-                    14: (1, {"@": 128}),
-                    16: (1, {"@": 128}),
-                    18: (1, {"@": 128}),
-                    21: (1, {"@": 128}),
-                    23: (1, {"@": 128}),
-                    25: (1, {"@": 128}),
-                    26: (1, {"@": 128}),
-                    28: (1, {"@": 128}),
-                    30: (1, {"@": 128}),
-                    31: (1, {"@": 128}),
-                    0: (1, {"@": 128}),
-                    55: (1, {"@": 128}),
-                    56: (1, {"@": 128}),
-                },
-                55: {
-                    57: (0, 72),
-                    67: (0, 204),
-                    19: (1, {"@": 162}),
-                    20: (1, {"@": 162}),
-                    22: (1, {"@": 162}),
-                    3: (1, {"@": 162}),
-                    24: (1, {"@": 162}),
-                    56: (1, {"@": 162}),
-                    27: (1, {"@": 162}),
-                    8: (1, {"@": 162}),
-                    29: (1, {"@": 162}),
-                    1: (1, {"@": 162}),
-                    9: (1, {"@": 162}),
-                    10: (1, {"@": 162}),
-                    55: (1, {"@": 162}),
-                    32: (1, {"@": 162}),
-                    15: (1, {"@": 162}),
-                    0: (1, {"@": 162}),
-                    17: (1, {"@": 162}),
-                },
-                56: {
-                    1: (0, 23),
-                    52: (1, {"@": 152}),
-                    19: (1, {"@": 152}),
-                    20: (1, {"@": 152}),
-                    22: (1, {"@": 152}),
-                    3: (1, {"@": 152}),
-                    53: (1, {"@": 152}),
-                    24: (1, {"@": 152}),
-                    27: (1, {"@": 152}),
-                    8: (1, {"@": 152}),
-                    29: (1, {"@": 152}),
-                    9: (1, {"@": 152}),
-                    10: (1, {"@": 152}),
-                    32: (1, {"@": 152}),
-                    15: (1, {"@": 152}),
-                    0: (1, {"@": 152}),
-                    17: (1, {"@": 152}),
-                    54: (1, {"@": 152}),
-                    2: (1, {"@": 152}),
-                    4: (1, {"@": 152}),
-                    33: (1, {"@": 152}),
-                    5: (1, {"@": 152}),
-                    6: (1, {"@": 152}),
-                    7: (1, {"@": 152}),
-                    11: (1, {"@": 152}),
-                    12: (1, {"@": 152}),
-                    13: (1, {"@": 152}),
-                    14: (1, {"@": 152}),
-                    16: (1, {"@": 152}),
-                    18: (1, {"@": 152}),
-                    21: (1, {"@": 152}),
-                    23: (1, {"@": 152}),
-                    25: (1, {"@": 152}),
-                    26: (1, {"@": 152}),
-                    28: (1, {"@": 152}),
-                    30: (1, {"@": 152}),
-                    31: (1, {"@": 152}),
-                    56: (1, {"@": 152}),
-                    55: (1, {"@": 152}),
-                },
-                57: {5: (0, 264), 30: (0, 214), 79: (0, 122), 13: (1, {"@": 98})},
-                58: {5: (1, {"@": 193}), 30: (1, {"@": 193}), 13: (1, {"@": 193})},
-                59: {
-                    76: (0, 25),
-                    74: (0, 263),
-                    14: (0, 172),
-                    81: (0, 259),
-                    42: (0, 115),
-                },
-                60: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    36: (0, 41),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                61: {
-                    82: (0, 44),
-                    35: (0, 118),
-                    83: (0, 94),
-                    38: (0, 82),
-                    36: (0, 126),
-                    7: (0, 80),
-                    42: (0, 99),
-                    27: (0, 50),
-                    41: (0, 179),
-                    84: (0, 129),
-                    85: (0, 146),
-                    28: (0, 212),
-                    30: (0, 202),
-                    21: (0, 193),
-                    43: (0, 274),
-                    44: (0, 256),
-                    86: (0, 266),
-                    37: (0, 219),
-                    87: (0, 63),
-                    46: (0, 54),
-                    16: (0, 131),
-                    88: (0, 119),
-                    89: (0, 169),
-                    45: (0, 239),
-                    40: (0, 0),
-                    25: (0, 191),
-                    26: (0, 43),
-                    90: (0, 101),
-                    91: (0, 70),
-                    24: (0, 110),
-                    92: (0, 186),
-                    93: (0, 15),
-                    50: (0, 125),
-                    6: (0, 170),
-                    47: (0, 149),
-                    49: (0, 252),
-                    94: (0, 166),
-                    51: (0, 199),
-                    1: (0, 40),
-                    2: (0, 277),
-                    95: (0, 286),
-                    39: (0, 188),
-                    32: (0, 144),
-                    96: (0, 220),
-                    14: (0, 172),
-                    5: (0, 162),
-                    48: (0, 132),
-                    97: (0, 245),
-                    98: (0, 275),
-                    0: (0, 231),
-                    31: (0, 100),
-                    11: (0, 97),
-                    99: (0, 9),
-                    18: (0, 16),
-                    12: (0, 232),
-                    100: (0, 2),
-                    4: (0, 12),
-                    23: (0, 278),
-                    101: (0, 19),
-                },
-                62: {13: (0, 249)},
-                63: {
-                    18: (1, {"@": 56}),
-                    21: (1, {"@": 56}),
-                    23: (1, {"@": 56}),
-                    2: (1, {"@": 56}),
-                    4: (1, {"@": 56}),
-                    24: (1, {"@": 56}),
-                    5: (1, {"@": 56}),
-                    6: (1, {"@": 56}),
-                    25: (1, {"@": 56}),
-                    7: (1, {"@": 56}),
-                    26: (1, {"@": 56}),
-                    27: (1, {"@": 56}),
-                    28: (1, {"@": 56}),
-                    30: (1, {"@": 56}),
-                    1: (1, {"@": 56}),
-                    0: (1, {"@": 56}),
-                    31: (1, {"@": 56}),
-                    11: (1, {"@": 56}),
-                    12: (1, {"@": 56}),
-                    13: (1, {"@": 56}),
-                    14: (1, {"@": 56}),
-                    32: (1, {"@": 56}),
-                    16: (1, {"@": 56}),
-                    33: (1, {"@": 56}),
-                },
-                64: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    37: (0, 240),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                65: {55: (1, {"@": 87}), 52: (1, {"@": 87})},
-                66: {56: (1, {"@": 197}), 55: (1, {"@": 197})},
-                67: {53: (0, 73), 52: (0, 218)},
-                68: {5: (1, {"@": 190}), 30: (1, {"@": 190}), 13: (1, {"@": 190})},
-                69: {
-                    18: (1, {"@": 81}),
-                    61: (1, {"@": 81}),
-                    21: (1, {"@": 81}),
-                    23: (1, {"@": 81}),
-                    2: (1, {"@": 81}),
-                    4: (1, {"@": 81}),
-                    33: (1, {"@": 81}),
-                    24: (1, {"@": 81}),
-                    5: (1, {"@": 81}),
-                    6: (1, {"@": 81}),
-                    25: (1, {"@": 81}),
-                    7: (1, {"@": 81}),
-                    26: (1, {"@": 81}),
-                    27: (1, {"@": 81}),
-                    28: (1, {"@": 81}),
-                    62: (1, {"@": 81}),
-                    30: (1, {"@": 81}),
-                    1: (1, {"@": 81}),
-                    0: (1, {"@": 81}),
-                    31: (1, {"@": 81}),
-                    11: (1, {"@": 81}),
-                    12: (1, {"@": 81}),
-                    13: (1, {"@": 81}),
-                    14: (1, {"@": 81}),
-                    32: (1, {"@": 81}),
-                    16: (1, {"@": 81}),
-                },
-                70: {
-                    18: (1, {"@": 58}),
-                    21: (1, {"@": 58}),
-                    23: (1, {"@": 58}),
-                    2: (1, {"@": 58}),
-                    4: (1, {"@": 58}),
-                    24: (1, {"@": 58}),
-                    5: (1, {"@": 58}),
-                    6: (1, {"@": 58}),
-                    25: (1, {"@": 58}),
-                    7: (1, {"@": 58}),
-                    26: (1, {"@": 58}),
-                    27: (1, {"@": 58}),
-                    28: (1, {"@": 58}),
-                    30: (1, {"@": 58}),
-                    1: (1, {"@": 58}),
-                    0: (1, {"@": 58}),
-                    31: (1, {"@": 58}),
-                    11: (1, {"@": 58}),
-                    12: (1, {"@": 58}),
-                    13: (1, {"@": 58}),
-                    14: (1, {"@": 58}),
-                    32: (1, {"@": 58}),
-                    16: (1, {"@": 58}),
-                    33: (1, {"@": 58}),
-                },
-                71: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    45: (0, 148),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                72: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    36: (0, 86),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                73: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    36: (0, 241),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                74: {55: (0, 268)},
-                75: {
-                    82: (0, 44),
-                    35: (0, 118),
-                    83: (0, 94),
-                    38: (0, 82),
-                    36: (0, 126),
-                    7: (0, 80),
-                    42: (0, 99),
-                    27: (0, 50),
-                    41: (0, 179),
-                    84: (0, 129),
-                    85: (0, 146),
-                    28: (0, 212),
-                    30: (0, 202),
-                    21: (0, 193),
-                    43: (0, 274),
-                    44: (0, 256),
-                    86: (0, 266),
-                    37: (0, 219),
-                    87: (0, 63),
-                    46: (0, 54),
-                    16: (0, 131),
-                    88: (0, 119),
-                    89: (0, 169),
-                    45: (0, 239),
-                    40: (0, 0),
-                    25: (0, 191),
-                    26: (0, 43),
-                    90: (0, 101),
-                    91: (0, 70),
-                    24: (0, 110),
-                    92: (0, 186),
-                    93: (0, 15),
-                    50: (0, 125),
-                    6: (0, 170),
-                    47: (0, 149),
-                    49: (0, 252),
-                    94: (0, 166),
-                    100: (0, 237),
-                    51: (0, 199),
-                    1: (0, 40),
-                    2: (0, 277),
-                    95: (0, 286),
-                    39: (0, 188),
-                    32: (0, 144),
-                    96: (0, 220),
-                    14: (0, 172),
-                    5: (0, 162),
-                    48: (0, 132),
-                    97: (0, 245),
-                    98: (0, 275),
-                    0: (0, 231),
-                    31: (0, 100),
-                    11: (0, 97),
-                    99: (0, 9),
-                    18: (0, 16),
-                    12: (0, 232),
-                    4: (0, 12),
-                    23: (0, 278),
-                    101: (0, 19),
-                },
-                76: {56: (1, {"@": 199}), 55: (1, {"@": 199})},
-                77: {
-                    18: (1, {"@": 74}),
-                    21: (1, {"@": 74}),
-                    23: (1, {"@": 74}),
-                    2: (1, {"@": 74}),
-                    4: (1, {"@": 74}),
-                    24: (1, {"@": 74}),
-                    5: (1, {"@": 74}),
-                    6: (1, {"@": 74}),
-                    25: (1, {"@": 74}),
-                    7: (1, {"@": 74}),
-                    26: (1, {"@": 74}),
-                    27: (1, {"@": 74}),
-                    28: (1, {"@": 74}),
-                    30: (1, {"@": 74}),
-                    1: (1, {"@": 74}),
-                    0: (1, {"@": 74}),
-                    31: (1, {"@": 74}),
-                    11: (1, {"@": 74}),
-                    12: (1, {"@": 74}),
-                    13: (1, {"@": 74}),
-                    14: (1, {"@": 74}),
-                    32: (1, {"@": 74}),
-                    16: (1, {"@": 74}),
-                    33: (1, {"@": 74}),
-                },
-                78: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    102: (0, 17),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    36: (0, 36),
-                    54: (0, 139),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    103: (0, 271),
-                    1: (0, 40),
-                },
-                79: {30: (0, 276), 34: (0, 251)},
-                80: {30: (0, 260)},
-                81: {54: (1, {"@": 202}), 56: (1, {"@": 202})},
-                82: {
-                    52: (1, {"@": 149}),
-                    19: (1, {"@": 149}),
-                    20: (1, {"@": 149}),
-                    22: (1, {"@": 149}),
-                    3: (1, {"@": 149}),
-                    53: (1, {"@": 149}),
-                    24: (1, {"@": 149}),
-                    27: (1, {"@": 149}),
-                    8: (1, {"@": 149}),
-                    29: (1, {"@": 149}),
-                    9: (1, {"@": 149}),
-                    10: (1, {"@": 149}),
-                    32: (1, {"@": 149}),
-                    15: (1, {"@": 149}),
-                    0: (1, {"@": 149}),
-                    17: (1, {"@": 149}),
-                    54: (1, {"@": 149}),
-                    2: (1, {"@": 149}),
-                    4: (1, {"@": 149}),
-                    33: (1, {"@": 149}),
-                    5: (1, {"@": 149}),
-                    6: (1, {"@": 149}),
-                    7: (1, {"@": 149}),
-                    1: (1, {"@": 149}),
-                    11: (1, {"@": 149}),
-                    12: (1, {"@": 149}),
-                    13: (1, {"@": 149}),
-                    14: (1, {"@": 149}),
-                    16: (1, {"@": 149}),
-                    18: (1, {"@": 149}),
-                    21: (1, {"@": 149}),
-                    23: (1, {"@": 149}),
-                    25: (1, {"@": 149}),
-                    26: (1, {"@": 149}),
-                    28: (1, {"@": 149}),
-                    30: (1, {"@": 149}),
-                    31: (1, {"@": 149}),
-                    56: (1, {"@": 149}),
-                    55: (1, {"@": 149}),
-                },
-                83: {
-                    1: (0, 40),
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    36: (0, 53),
-                },
-                84: {55: (1, {"@": 89}), 52: (1, {"@": 89})},
-                85: {
-                    18: (1, {"@": 73}),
-                    21: (1, {"@": 73}),
-                    23: (1, {"@": 73}),
-                    2: (1, {"@": 73}),
-                    4: (1, {"@": 73}),
-                    24: (1, {"@": 73}),
-                    5: (1, {"@": 73}),
-                    6: (1, {"@": 73}),
-                    25: (1, {"@": 73}),
-                    7: (1, {"@": 73}),
-                    26: (1, {"@": 73}),
-                    27: (1, {"@": 73}),
-                    28: (1, {"@": 73}),
-                    30: (1, {"@": 73}),
-                    1: (1, {"@": 73}),
-                    0: (1, {"@": 73}),
-                    31: (1, {"@": 73}),
-                    11: (1, {"@": 73}),
-                    12: (1, {"@": 73}),
-                    13: (1, {"@": 73}),
-                    14: (1, {"@": 73}),
-                    32: (1, {"@": 73}),
-                    16: (1, {"@": 73}),
-                    33: (1, {"@": 73}),
-                },
-                86: {56: (1, {"@": 155}), 55: (1, {"@": 155})},
-                87: {
-                    1: (0, 206),
-                    52: (1, {"@": 160}),
-                    19: (1, {"@": 160}),
-                    20: (1, {"@": 160}),
-                    22: (1, {"@": 160}),
-                    3: (1, {"@": 160}),
-                    53: (1, {"@": 160}),
-                    24: (1, {"@": 160}),
-                    27: (1, {"@": 160}),
-                    8: (1, {"@": 160}),
-                    29: (1, {"@": 160}),
-                    9: (1, {"@": 160}),
-                    10: (1, {"@": 160}),
-                    32: (1, {"@": 160}),
-                    15: (1, {"@": 160}),
-                    0: (1, {"@": 160}),
-                    17: (1, {"@": 160}),
-                    54: (1, {"@": 160}),
-                    2: (1, {"@": 160}),
-                    4: (1, {"@": 160}),
-                    33: (1, {"@": 160}),
-                    5: (1, {"@": 160}),
-                    6: (1, {"@": 160}),
-                    7: (1, {"@": 160}),
-                    11: (1, {"@": 160}),
-                    12: (1, {"@": 160}),
-                    13: (1, {"@": 160}),
-                    14: (1, {"@": 160}),
-                    16: (1, {"@": 160}),
-                    18: (1, {"@": 160}),
-                    21: (1, {"@": 160}),
-                    23: (1, {"@": 160}),
-                    25: (1, {"@": 160}),
-                    26: (1, {"@": 160}),
-                    28: (1, {"@": 160}),
-                    30: (1, {"@": 160}),
-                    31: (1, {"@": 160}),
-                    56: (1, {"@": 160}),
-                    55: (1, {"@": 160}),
-                },
-                88: {
-                    18: (1, {"@": 70}),
-                    21: (1, {"@": 70}),
-                    23: (1, {"@": 70}),
-                    2: (1, {"@": 70}),
-                    4: (1, {"@": 70}),
-                    24: (1, {"@": 70}),
-                    5: (1, {"@": 70}),
-                    6: (1, {"@": 70}),
-                    25: (1, {"@": 70}),
-                    7: (1, {"@": 70}),
-                    26: (1, {"@": 70}),
-                    27: (1, {"@": 70}),
-                    28: (1, {"@": 70}),
-                    30: (1, {"@": 70}),
-                    1: (1, {"@": 70}),
-                    0: (1, {"@": 70}),
-                    31: (1, {"@": 70}),
-                    11: (1, {"@": 70}),
-                    12: (1, {"@": 70}),
-                    13: (1, {"@": 70}),
-                    14: (1, {"@": 70}),
-                    32: (1, {"@": 70}),
-                    16: (1, {"@": 70}),
-                    33: (1, {"@": 70}),
-                },
-                89: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    49: (0, 165),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                90: {5: (1, {"@": 192}), 30: (1, {"@": 192}), 13: (1, {"@": 192})},
-                91: {55: (0, 30)},
-                92: {54: (0, 217)},
-                93: {
-                    82: (0, 44),
-                    35: (0, 118),
-                    83: (0, 94),
-                    38: (0, 82),
-                    36: (0, 126),
-                    7: (0, 80),
-                    100: (0, 42),
-                    42: (0, 99),
-                    27: (0, 50),
-                    41: (0, 179),
-                    84: (0, 129),
-                    85: (0, 146),
-                    28: (0, 212),
-                    30: (0, 202),
-                    21: (0, 193),
-                    43: (0, 274),
-                    44: (0, 256),
-                    86: (0, 266),
-                    37: (0, 219),
-                    87: (0, 63),
-                    46: (0, 54),
-                    16: (0, 131),
-                    88: (0, 119),
-                    89: (0, 169),
-                    45: (0, 239),
-                    40: (0, 0),
-                    25: (0, 191),
-                    26: (0, 43),
-                    90: (0, 101),
-                    91: (0, 70),
-                    24: (0, 110),
-                    92: (0, 186),
-                    93: (0, 15),
-                    50: (0, 125),
-                    6: (0, 170),
-                    47: (0, 149),
-                    49: (0, 252),
-                    94: (0, 166),
-                    51: (0, 199),
-                    1: (0, 40),
-                    2: (0, 277),
-                    95: (0, 286),
-                    39: (0, 188),
-                    32: (0, 144),
-                    96: (0, 220),
-                    14: (0, 172),
-                    5: (0, 162),
-                    48: (0, 132),
-                    97: (0, 245),
-                    98: (0, 275),
-                    0: (0, 231),
-                    31: (0, 100),
-                    11: (0, 97),
-                    99: (0, 9),
-                    18: (0, 16),
-                    12: (0, 232),
-                    4: (0, 12),
-                    23: (0, 278),
-                    101: (0, 19),
-                },
-                94: {
-                    18: (1, {"@": 60}),
-                    21: (1, {"@": 60}),
-                    23: (1, {"@": 60}),
-                    2: (1, {"@": 60}),
-                    4: (1, {"@": 60}),
-                    24: (1, {"@": 60}),
-                    5: (1, {"@": 60}),
-                    6: (1, {"@": 60}),
-                    25: (1, {"@": 60}),
-                    7: (1, {"@": 60}),
-                    26: (1, {"@": 60}),
-                    27: (1, {"@": 60}),
-                    28: (1, {"@": 60}),
-                    30: (1, {"@": 60}),
-                    1: (1, {"@": 60}),
-                    0: (1, {"@": 60}),
-                    31: (1, {"@": 60}),
-                    11: (1, {"@": 60}),
-                    12: (1, {"@": 60}),
-                    13: (1, {"@": 60}),
-                    14: (1, {"@": 60}),
-                    32: (1, {"@": 60}),
-                    16: (1, {"@": 60}),
-                    33: (1, {"@": 60}),
-                },
-                95: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    36: (0, 92),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                96: {5: (1, {"@": 191}), 30: (1, {"@": 191}), 13: (1, {"@": 191})},
-                97: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    36: (0, 233),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                98: {
-                    18: (1, {"@": 75}),
-                    21: (1, {"@": 75}),
-                    23: (1, {"@": 75}),
-                    2: (1, {"@": 75}),
-                    4: (1, {"@": 75}),
-                    24: (1, {"@": 75}),
-                    5: (1, {"@": 75}),
-                    6: (1, {"@": 75}),
-                    25: (1, {"@": 75}),
-                    7: (1, {"@": 75}),
-                    26: (1, {"@": 75}),
-                    27: (1, {"@": 75}),
-                    28: (1, {"@": 75}),
-                    30: (1, {"@": 75}),
-                    1: (1, {"@": 75}),
-                    0: (1, {"@": 75}),
-                    31: (1, {"@": 75}),
-                    11: (1, {"@": 75}),
-                    12: (1, {"@": 75}),
-                    13: (1, {"@": 75}),
-                    14: (1, {"@": 75}),
-                    32: (1, {"@": 75}),
-                    16: (1, {"@": 75}),
-                    33: (1, {"@": 75}),
-                },
-                99: {
-                    52: (1, {"@": 146}),
-                    19: (1, {"@": 146}),
-                    20: (1, {"@": 146}),
-                    22: (1, {"@": 146}),
-                    3: (1, {"@": 146}),
-                    53: (1, {"@": 146}),
-                    24: (1, {"@": 146}),
-                    27: (1, {"@": 146}),
-                    8: (1, {"@": 146}),
-                    29: (1, {"@": 146}),
-                    9: (1, {"@": 146}),
-                    10: (1, {"@": 146}),
-                    32: (1, {"@": 146}),
-                    15: (1, {"@": 146}),
-                    0: (1, {"@": 146}),
-                    17: (1, {"@": 146}),
-                    54: (1, {"@": 146}),
-                    2: (1, {"@": 146}),
-                    4: (1, {"@": 146}),
-                    33: (1, {"@": 146}),
-                    5: (1, {"@": 146}),
-                    6: (1, {"@": 146}),
-                    7: (1, {"@": 146}),
-                    1: (1, {"@": 146}),
-                    11: (1, {"@": 146}),
-                    12: (1, {"@": 146}),
-                    13: (1, {"@": 146}),
-                    14: (1, {"@": 146}),
-                    16: (1, {"@": 146}),
-                    18: (1, {"@": 146}),
-                    21: (1, {"@": 146}),
-                    23: (1, {"@": 146}),
-                    25: (1, {"@": 146}),
-                    26: (1, {"@": 146}),
-                    28: (1, {"@": 146}),
-                    30: (1, {"@": 146}),
-                    31: (1, {"@": 146}),
-                    56: (1, {"@": 146}),
-                    55: (1, {"@": 146}),
-                },
-                100: {
-                    52: (1, {"@": 159}),
-                    19: (1, {"@": 159}),
-                    20: (1, {"@": 159}),
-                    22: (1, {"@": 159}),
-                    3: (1, {"@": 159}),
-                    53: (1, {"@": 159}),
-                    24: (1, {"@": 159}),
-                    27: (1, {"@": 159}),
-                    8: (1, {"@": 159}),
-                    29: (1, {"@": 159}),
-                    9: (1, {"@": 159}),
-                    10: (1, {"@": 159}),
-                    32: (1, {"@": 159}),
-                    15: (1, {"@": 159}),
-                    0: (1, {"@": 159}),
-                    17: (1, {"@": 159}),
-                    54: (1, {"@": 159}),
-                    2: (1, {"@": 159}),
-                    4: (1, {"@": 159}),
-                    33: (1, {"@": 159}),
-                    5: (1, {"@": 159}),
-                    6: (1, {"@": 159}),
-                    7: (1, {"@": 159}),
-                    1: (1, {"@": 159}),
-                    11: (1, {"@": 159}),
-                    12: (1, {"@": 159}),
-                    13: (1, {"@": 159}),
-                    14: (1, {"@": 159}),
-                    16: (1, {"@": 159}),
-                    18: (1, {"@": 159}),
-                    21: (1, {"@": 159}),
-                    23: (1, {"@": 159}),
-                    25: (1, {"@": 159}),
-                    26: (1, {"@": 159}),
-                    28: (1, {"@": 159}),
-                    30: (1, {"@": 159}),
-                    31: (1, {"@": 159}),
-                    56: (1, {"@": 159}),
-                    55: (1, {"@": 159}),
-                },
-                101: {
-                    2: (1, {"@": 175}),
-                    4: (1, {"@": 175}),
-                    5: (1, {"@": 175}),
-                    6: (1, {"@": 175}),
-                    7: (1, {"@": 175}),
-                    1: (1, {"@": 175}),
-                    11: (1, {"@": 175}),
-                    12: (1, {"@": 175}),
-                    13: (1, {"@": 175}),
-                    14: (1, {"@": 175}),
-                    16: (1, {"@": 175}),
-                    18: (1, {"@": 175}),
-                    21: (1, {"@": 175}),
-                    23: (1, {"@": 175}),
-                    24: (1, {"@": 175}),
-                    25: (1, {"@": 175}),
-                    26: (1, {"@": 175}),
-                    27: (1, {"@": 175}),
-                    28: (1, {"@": 175}),
-                    30: (1, {"@": 175}),
-                    31: (1, {"@": 175}),
-                    32: (1, {"@": 175}),
-                    0: (1, {"@": 175}),
-                    33: (1, {"@": 175}),
-                },
-                102: {104: (0, 230), 56: (0, 37), 55: (1, {"@": 154})},
-                103: {
-                    52: (1, {"@": 141}),
-                    19: (1, {"@": 141}),
-                    20: (1, {"@": 141}),
-                    22: (1, {"@": 141}),
-                    3: (1, {"@": 141}),
-                    53: (1, {"@": 141}),
-                    24: (1, {"@": 141}),
-                    27: (1, {"@": 141}),
-                    8: (1, {"@": 141}),
-                    29: (1, {"@": 141}),
-                    9: (1, {"@": 141}),
-                    10: (1, {"@": 141}),
-                    32: (1, {"@": 141}),
-                    15: (1, {"@": 141}),
-                    0: (1, {"@": 141}),
-                    17: (1, {"@": 141}),
-                    54: (1, {"@": 141}),
-                    2: (1, {"@": 141}),
-                    4: (1, {"@": 141}),
-                    33: (1, {"@": 141}),
-                    5: (1, {"@": 141}),
-                    6: (1, {"@": 141}),
-                    7: (1, {"@": 141}),
-                    1: (1, {"@": 141}),
-                    11: (1, {"@": 141}),
-                    12: (1, {"@": 141}),
-                    13: (1, {"@": 141}),
-                    14: (1, {"@": 141}),
-                    16: (1, {"@": 141}),
-                    18: (1, {"@": 141}),
-                    21: (1, {"@": 141}),
-                    23: (1, {"@": 141}),
-                    25: (1, {"@": 141}),
-                    26: (1, {"@": 141}),
-                    28: (1, {"@": 141}),
-                    30: (1, {"@": 141}),
-                    31: (1, {"@": 141}),
-                    56: (1, {"@": 141}),
-                    55: (1, {"@": 141}),
-                },
-                104: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    42: (0, 99),
-                    43: (0, 274),
-                    45: (0, 283),
-                    44: (0, 256),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                105: {56: (0, 208), 105: (0, 180), 55: (1, {"@": 109})},
-                106: {
-                    76: (0, 25),
-                    81: (0, 161),
-                    74: (0, 263),
-                    14: (0, 172),
-                    42: (0, 115),
-                },
-                107: {30: (0, 276), 34: (0, 120)},
-                108: {},
-                109: {66: (0, 135)},
-                110: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    40: (0, 56),
-                    0: (0, 231),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    31: (0, 100),
-                    32: (0, 144),
-                    24: (0, 110),
-                    14: (0, 172),
-                    42: (0, 99),
-                    50: (0, 125),
-                    18: (0, 16),
-                    43: (0, 274),
-                    44: (0, 256),
-                    12: (0, 232),
-                    47: (0, 150),
-                    48: (0, 132),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                111: {
-                    2: (1, {"@": 178}),
-                    4: (1, {"@": 178}),
-                    5: (1, {"@": 178}),
-                    6: (1, {"@": 178}),
-                    7: (1, {"@": 178}),
-                    1: (1, {"@": 178}),
-                    11: (1, {"@": 178}),
-                    12: (1, {"@": 178}),
-                    13: (1, {"@": 178}),
-                    14: (1, {"@": 178}),
-                    16: (1, {"@": 178}),
-                    18: (1, {"@": 178}),
-                    21: (1, {"@": 178}),
-                    23: (1, {"@": 178}),
-                    24: (1, {"@": 178}),
-                    25: (1, {"@": 178}),
-                    26: (1, {"@": 178}),
-                    27: (1, {"@": 178}),
-                    28: (1, {"@": 178}),
-                    30: (1, {"@": 178}),
-                    31: (1, {"@": 178}),
-                    32: (1, {"@": 178}),
-                    0: (1, {"@": 178}),
-                    33: (1, {"@": 178}),
-                },
-                112: {106: (0, 114), 56: (0, 51), 55: (1, {"@": 144})},
-                113: {
-                    82: (0, 44),
-                    35: (0, 118),
-                    83: (0, 94),
-                    38: (0, 82),
-                    36: (0, 126),
-                    7: (0, 80),
-                    42: (0, 99),
-                    27: (0, 50),
-                    41: (0, 179),
-                    84: (0, 129),
-                    85: (0, 146),
-                    28: (0, 212),
-                    30: (0, 202),
-                    21: (0, 193),
-                    43: (0, 274),
-                    44: (0, 256),
-                    86: (0, 266),
-                    37: (0, 219),
-                    87: (0, 63),
-                    46: (0, 54),
-                    16: (0, 131),
-                    88: (0, 119),
-                    89: (0, 169),
-                    45: (0, 239),
-                    40: (0, 0),
-                    25: (0, 191),
-                    26: (0, 43),
-                    90: (0, 101),
-                    91: (0, 70),
-                    24: (0, 110),
-                    92: (0, 186),
-                    93: (0, 15),
-                    50: (0, 125),
-                    6: (0, 170),
-                    47: (0, 149),
-                    49: (0, 252),
-                    94: (0, 166),
-                    51: (0, 199),
-                    1: (0, 40),
-                    2: (0, 277),
-                    95: (0, 286),
-                    39: (0, 188),
-                    32: (0, 144),
-                    96: (0, 220),
-                    14: (0, 172),
-                    5: (0, 162),
-                    48: (0, 132),
-                    97: (0, 245),
-                    98: (0, 275),
-                    0: (0, 231),
-                    31: (0, 100),
-                    11: (0, 97),
-                    99: (0, 9),
-                    18: (0, 16),
-                    12: (0, 232),
-                    100: (0, 177),
-                    4: (0, 12),
-                    23: (0, 278),
-                    101: (0, 19),
-                },
-                114: {56: (0, 221), 55: (1, {"@": 143})},
-                115: {54: (1, {"@": 173}), 56: (1, {"@": 173})},
-                116: {60: (0, 105), 30: (0, 253), 55: (0, 109), 107: (0, 160)},
-                117: {
-                    54: (0, 123),
-                    81: (0, 189),
-                    76: (0, 25),
-                    74: (0, 263),
-                    14: (0, 172),
-                    42: (0, 115),
-                },
-                118: {
-                    52: (1, {"@": 150}),
-                    19: (1, {"@": 150}),
-                    20: (1, {"@": 150}),
-                    22: (1, {"@": 150}),
-                    3: (1, {"@": 150}),
-                    53: (1, {"@": 150}),
-                    24: (1, {"@": 150}),
-                    27: (1, {"@": 150}),
-                    8: (1, {"@": 150}),
-                    29: (1, {"@": 150}),
-                    9: (1, {"@": 150}),
-                    10: (1, {"@": 150}),
-                    32: (1, {"@": 150}),
-                    15: (1, {"@": 150}),
-                    0: (1, {"@": 150}),
-                    17: (1, {"@": 150}),
-                    54: (1, {"@": 150}),
-                    2: (1, {"@": 150}),
-                    4: (1, {"@": 150}),
-                    33: (1, {"@": 150}),
-                    5: (1, {"@": 150}),
-                    6: (1, {"@": 150}),
-                    7: (1, {"@": 150}),
-                    1: (1, {"@": 150}),
-                    11: (1, {"@": 150}),
-                    12: (1, {"@": 150}),
-                    13: (1, {"@": 150}),
-                    14: (1, {"@": 150}),
-                    16: (1, {"@": 150}),
-                    18: (1, {"@": 150}),
-                    21: (1, {"@": 150}),
-                    23: (1, {"@": 150}),
-                    25: (1, {"@": 150}),
-                    26: (1, {"@": 150}),
-                    28: (1, {"@": 150}),
-                    30: (1, {"@": 150}),
-                    31: (1, {"@": 150}),
-                    56: (1, {"@": 150}),
-                    55: (1, {"@": 150}),
-                },
-                119: {
-                    82: (0, 44),
-                    35: (0, 118),
-                    83: (0, 94),
-                    5: (0, 111),
-                    38: (0, 82),
-                    36: (0, 126),
-                    7: (0, 80),
-                    42: (0, 99),
-                    27: (0, 50),
-                    41: (0, 179),
-                    84: (0, 129),
-                    85: (0, 146),
-                    90: (0, 215),
-                    28: (0, 212),
-                    30: (0, 202),
-                    21: (0, 193),
-                    43: (0, 274),
-                    44: (0, 256),
-                    86: (0, 266),
-                    37: (0, 219),
-                    87: (0, 63),
-                    46: (0, 54),
-                    16: (0, 131),
-                    89: (0, 169),
-                    45: (0, 239),
-                    40: (0, 0),
-                    25: (0, 191),
-                    26: (0, 43),
-                    91: (0, 70),
-                    24: (0, 110),
-                    92: (0, 186),
-                    93: (0, 15),
-                    50: (0, 125),
-                    6: (0, 170),
-                    47: (0, 149),
-                    49: (0, 252),
-                    94: (0, 166),
-                    51: (0, 199),
-                    1: (0, 40),
-                    2: (0, 277),
-                    95: (0, 286),
-                    39: (0, 188),
-                    32: (0, 144),
-                    14: (0, 172),
-                    48: (0, 132),
-                    97: (0, 245),
-                    98: (0, 275),
-                    0: (0, 231),
-                    31: (0, 100),
-                    11: (0, 97),
-                    99: (0, 9),
-                    18: (0, 16),
-                    12: (0, 232),
-                    4: (0, 12),
-                    23: (0, 278),
-                    101: (0, 19),
-                    13: (1, {"@": 52}),
-                    33: (1, {"@": 52}),
-                },
-                120: {5: (1, {"@": 99}), 30: (1, {"@": 99}), 13: (1, {"@": 99})},
-                121: {
-                    18: (1, {"@": 96}),
-                    21: (1, {"@": 96}),
-                    23: (1, {"@": 96}),
-                    2: (1, {"@": 96}),
-                    4: (1, {"@": 96}),
-                    24: (1, {"@": 96}),
-                    5: (1, {"@": 96}),
-                    6: (1, {"@": 96}),
-                    25: (1, {"@": 96}),
-                    7: (1, {"@": 96}),
-                    26: (1, {"@": 96}),
-                    27: (1, {"@": 96}),
-                    28: (1, {"@": 96}),
-                    30: (1, {"@": 96}),
-                    1: (1, {"@": 96}),
-                    0: (1, {"@": 96}),
-                    31: (1, {"@": 96}),
-                    11: (1, {"@": 96}),
-                    12: (1, {"@": 96}),
-                    13: (1, {"@": 96}),
-                    14: (1, {"@": 96}),
-                    32: (1, {"@": 96}),
-                    16: (1, {"@": 96}),
-                    33: (1, {"@": 96}),
-                },
-                122: {5: (1, {"@": 187}), 30: (1, {"@": 187}), 13: (1, {"@": 187})},
-                123: {55: (1, {"@": 172}), 52: (1, {"@": 172})},
-                124: {
-                    18: (1, {"@": 107}),
-                    21: (1, {"@": 107}),
-                    23: (1, {"@": 107}),
-                    2: (1, {"@": 107}),
-                    4: (1, {"@": 107}),
-                    24: (1, {"@": 107}),
-                    5: (1, {"@": 107}),
-                    6: (1, {"@": 107}),
-                    25: (1, {"@": 107}),
-                    7: (1, {"@": 107}),
-                    26: (1, {"@": 107}),
-                    27: (1, {"@": 107}),
-                    28: (1, {"@": 107}),
-                    30: (1, {"@": 107}),
-                    1: (1, {"@": 107}),
-                    0: (1, {"@": 107}),
-                    31: (1, {"@": 107}),
-                    11: (1, {"@": 107}),
-                    12: (1, {"@": 107}),
-                    13: (1, {"@": 107}),
-                    14: (1, {"@": 107}),
-                    32: (1, {"@": 107}),
-                    16: (1, {"@": 107}),
-                    33: (1, {"@": 107}),
-                },
-                125: {
-                    52: (1, {"@": 142}),
-                    19: (1, {"@": 142}),
-                    20: (1, {"@": 142}),
-                    22: (1, {"@": 142}),
-                    3: (1, {"@": 142}),
-                    53: (1, {"@": 142}),
-                    24: (1, {"@": 142}),
-                    27: (1, {"@": 142}),
-                    8: (1, {"@": 142}),
-                    29: (1, {"@": 142}),
-                    9: (1, {"@": 142}),
-                    10: (1, {"@": 142}),
-                    32: (1, {"@": 142}),
-                    15: (1, {"@": 142}),
-                    0: (1, {"@": 142}),
-                    17: (1, {"@": 142}),
-                    54: (1, {"@": 142}),
-                    2: (1, {"@": 142}),
-                    4: (1, {"@": 142}),
-                    33: (1, {"@": 142}),
-                    5: (1, {"@": 142}),
-                    6: (1, {"@": 142}),
-                    7: (1, {"@": 142}),
-                    1: (1, {"@": 142}),
-                    11: (1, {"@": 142}),
-                    12: (1, {"@": 142}),
-                    13: (1, {"@": 142}),
-                    14: (1, {"@": 142}),
-                    16: (1, {"@": 142}),
-                    18: (1, {"@": 142}),
-                    21: (1, {"@": 142}),
-                    23: (1, {"@": 142}),
-                    25: (1, {"@": 142}),
-                    26: (1, {"@": 142}),
-                    28: (1, {"@": 142}),
-                    30: (1, {"@": 142}),
-                    31: (1, {"@": 142}),
-                    56: (1, {"@": 142}),
-                    55: (1, {"@": 142}),
-                },
-                126: {
-                    18: (1, {"@": 54}),
-                    21: (1, {"@": 54}),
-                    23: (1, {"@": 54}),
-                    2: (1, {"@": 54}),
-                    4: (1, {"@": 54}),
-                    24: (1, {"@": 54}),
-                    5: (1, {"@": 54}),
-                    6: (1, {"@": 54}),
-                    25: (1, {"@": 54}),
-                    7: (1, {"@": 54}),
-                    26: (1, {"@": 54}),
-                    27: (1, {"@": 54}),
-                    28: (1, {"@": 54}),
-                    30: (1, {"@": 54}),
-                    1: (1, {"@": 54}),
-                    0: (1, {"@": 54}),
-                    31: (1, {"@": 54}),
-                    11: (1, {"@": 54}),
-                    12: (1, {"@": 54}),
-                    13: (1, {"@": 54}),
-                    14: (1, {"@": 54}),
-                    32: (1, {"@": 54}),
-                    16: (1, {"@": 54}),
-                    33: (1, {"@": 54}),
-                },
-                127: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    36: (0, 88),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                128: {5: (1, {"@": 105}), 30: (1, {"@": 105}), 13: (1, {"@": 105})},
-                129: {
-                    18: (1, {"@": 61}),
-                    21: (1, {"@": 61}),
-                    23: (1, {"@": 61}),
-                    2: (1, {"@": 61}),
-                    4: (1, {"@": 61}),
-                    24: (1, {"@": 61}),
-                    5: (1, {"@": 61}),
-                    6: (1, {"@": 61}),
-                    25: (1, {"@": 61}),
-                    7: (1, {"@": 61}),
-                    26: (1, {"@": 61}),
-                    27: (1, {"@": 61}),
-                    28: (1, {"@": 61}),
-                    30: (1, {"@": 61}),
-                    1: (1, {"@": 61}),
-                    0: (1, {"@": 61}),
-                    31: (1, {"@": 61}),
-                    11: (1, {"@": 61}),
-                    12: (1, {"@": 61}),
-                    13: (1, {"@": 61}),
-                    14: (1, {"@": 61}),
-                    32: (1, {"@": 61}),
-                    16: (1, {"@": 61}),
-                    33: (1, {"@": 61}),
-                },
-                130: {10: (0, 210)},
-                131: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    85: (0, 77),
-                    39: (0, 188),
-                    30: (0, 184),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    36: (0, 85),
-                    1: (0, 40),
-                },
-                132: {
-                    52: (1, {"@": 147}),
-                    19: (1, {"@": 147}),
-                    20: (1, {"@": 147}),
-                    22: (1, {"@": 147}),
-                    3: (1, {"@": 147}),
-                    53: (1, {"@": 147}),
-                    24: (1, {"@": 147}),
-                    27: (1, {"@": 147}),
-                    8: (1, {"@": 147}),
-                    29: (1, {"@": 147}),
-                    9: (1, {"@": 147}),
-                    10: (1, {"@": 147}),
-                    32: (1, {"@": 147}),
-                    15: (1, {"@": 147}),
-                    0: (1, {"@": 147}),
-                    17: (1, {"@": 147}),
-                    54: (1, {"@": 147}),
-                    2: (1, {"@": 147}),
-                    4: (1, {"@": 147}),
-                    33: (1, {"@": 147}),
-                    5: (1, {"@": 147}),
-                    6: (1, {"@": 147}),
-                    7: (1, {"@": 147}),
-                    1: (1, {"@": 147}),
-                    11: (1, {"@": 147}),
-                    12: (1, {"@": 147}),
-                    13: (1, {"@": 147}),
-                    14: (1, {"@": 147}),
-                    16: (1, {"@": 147}),
-                    18: (1, {"@": 147}),
-                    21: (1, {"@": 147}),
-                    23: (1, {"@": 147}),
-                    25: (1, {"@": 147}),
-                    26: (1, {"@": 147}),
-                    28: (1, {"@": 147}),
-                    30: (1, {"@": 147}),
-                    31: (1, {"@": 147}),
-                    56: (1, {"@": 147}),
-                    55: (1, {"@": 147}),
-                },
-                133: {
-                    18: (1, {"@": 71}),
-                    21: (1, {"@": 71}),
-                    23: (1, {"@": 71}),
-                    2: (1, {"@": 71}),
-                    4: (1, {"@": 71}),
-                    24: (1, {"@": 71}),
-                    5: (1, {"@": 71}),
-                    6: (1, {"@": 71}),
-                    25: (1, {"@": 71}),
-                    7: (1, {"@": 71}),
-                    26: (1, {"@": 71}),
-                    27: (1, {"@": 71}),
-                    28: (1, {"@": 71}),
-                    30: (1, {"@": 71}),
-                    1: (1, {"@": 71}),
-                    0: (1, {"@": 71}),
-                    31: (1, {"@": 71}),
-                    11: (1, {"@": 71}),
-                    12: (1, {"@": 71}),
-                    13: (1, {"@": 71}),
-                    14: (1, {"@": 71}),
-                    32: (1, {"@": 71}),
-                    16: (1, {"@": 71}),
-                    33: (1, {"@": 71}),
-                },
-                134: {
-                    72: (0, 159),
-                    18: (0, 16),
-                    30: (0, 35),
-                    0: (0, 117),
-                    73: (0, 65),
-                    74: (0, 84),
-                    75: (0, 255),
-                    12: (0, 232),
-                    39: (0, 262),
-                    76: (0, 25),
-                    77: (0, 200),
-                },
-                135: {30: (0, 276), 34: (0, 195)},
-                136: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    36: (0, 36),
-                    50: (0, 125),
-                    18: (0, 16),
-                    102: (0, 242),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                137: {55: (0, 145)},
-                138: {
-                    108: (0, 33),
-                    109: (0, 207),
-                    30: (0, 183),
-                    110: (0, 272),
-                    111: (0, 68),
-                    5: (0, 96),
-                },
-                139: {
-                    52: (1, {"@": 164}),
-                    19: (1, {"@": 164}),
-                    20: (1, {"@": 164}),
-                    22: (1, {"@": 164}),
-                    3: (1, {"@": 164}),
-                    53: (1, {"@": 164}),
-                    24: (1, {"@": 164}),
-                    27: (1, {"@": 164}),
-                    8: (1, {"@": 164}),
-                    29: (1, {"@": 164}),
-                    9: (1, {"@": 164}),
-                    10: (1, {"@": 164}),
-                    32: (1, {"@": 164}),
-                    15: (1, {"@": 164}),
-                    0: (1, {"@": 164}),
-                    17: (1, {"@": 164}),
-                    54: (1, {"@": 164}),
-                    2: (1, {"@": 164}),
-                    4: (1, {"@": 164}),
-                    33: (1, {"@": 164}),
-                    5: (1, {"@": 164}),
-                    6: (1, {"@": 164}),
-                    7: (1, {"@": 164}),
-                    1: (1, {"@": 164}),
-                    11: (1, {"@": 164}),
-                    12: (1, {"@": 164}),
-                    13: (1, {"@": 164}),
-                    14: (1, {"@": 164}),
-                    16: (1, {"@": 164}),
-                    18: (1, {"@": 164}),
-                    21: (1, {"@": 164}),
-                    23: (1, {"@": 164}),
-                    25: (1, {"@": 164}),
-                    26: (1, {"@": 164}),
-                    28: (1, {"@": 164}),
-                    30: (1, {"@": 164}),
-                    31: (1, {"@": 164}),
-                    56: (1, {"@": 164}),
-                    55: (1, {"@": 164}),
-                },
-                140: {55: (1, {"@": 171}), 52: (1, {"@": 171})},
-                141: {55: (1, {"@": 170}), 52: (1, {"@": 170})},
-                142: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    41: (0, 265),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                143: {
-                    27: (1, {"@": 127}),
-                    52: (1, {"@": 127}),
-                    8: (1, {"@": 127}),
-                    10: (1, {"@": 127}),
-                    20: (1, {"@": 127}),
-                    22: (1, {"@": 127}),
-                    3: (1, {"@": 127}),
-                    53: (1, {"@": 127}),
-                    15: (1, {"@": 127}),
-                    17: (1, {"@": 127}),
-                    54: (1, {"@": 127}),
-                    2: (1, {"@": 127}),
-                    4: (1, {"@": 127}),
-                    33: (1, {"@": 127}),
-                    5: (1, {"@": 127}),
-                    6: (1, {"@": 127}),
-                    7: (1, {"@": 127}),
-                    1: (1, {"@": 127}),
-                    11: (1, {"@": 127}),
-                    12: (1, {"@": 127}),
-                    13: (1, {"@": 127}),
-                    14: (1, {"@": 127}),
-                    16: (1, {"@": 127}),
-                    18: (1, {"@": 127}),
-                    21: (1, {"@": 127}),
-                    23: (1, {"@": 127}),
-                    24: (1, {"@": 127}),
-                    25: (1, {"@": 127}),
-                    26: (1, {"@": 127}),
-                    28: (1, {"@": 127}),
-                    30: (1, {"@": 127}),
-                    31: (1, {"@": 127}),
-                    32: (1, {"@": 127}),
-                    0: (1, {"@": 127}),
-                    55: (1, {"@": 127}),
-                    56: (1, {"@": 127}),
-                },
-                144: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    40: (0, 56),
-                    0: (0, 231),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    31: (0, 100),
-                    32: (0, 144),
-                    24: (0, 110),
-                    14: (0, 172),
-                    42: (0, 99),
-                    50: (0, 125),
-                    18: (0, 16),
-                    43: (0, 274),
-                    44: (0, 256),
-                    12: (0, 232),
-                    47: (0, 279),
-                    48: (0, 132),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                145: {
-                    52: (1, {"@": 139}),
-                    19: (1, {"@": 139}),
-                    20: (1, {"@": 139}),
-                    22: (1, {"@": 139}),
-                    3: (1, {"@": 139}),
-                    53: (1, {"@": 139}),
-                    24: (1, {"@": 139}),
-                    27: (1, {"@": 139}),
-                    8: (1, {"@": 139}),
-                    29: (1, {"@": 139}),
-                    9: (1, {"@": 139}),
-                    10: (1, {"@": 139}),
-                    32: (1, {"@": 139}),
-                    15: (1, {"@": 139}),
-                    0: (1, {"@": 139}),
-                    17: (1, {"@": 139}),
-                    54: (1, {"@": 139}),
-                    2: (1, {"@": 139}),
-                    4: (1, {"@": 139}),
-                    33: (1, {"@": 139}),
-                    5: (1, {"@": 139}),
-                    6: (1, {"@": 139}),
-                    7: (1, {"@": 139}),
-                    1: (1, {"@": 139}),
-                    11: (1, {"@": 139}),
-                    12: (1, {"@": 139}),
-                    13: (1, {"@": 139}),
-                    14: (1, {"@": 139}),
-                    16: (1, {"@": 139}),
-                    18: (1, {"@": 139}),
-                    21: (1, {"@": 139}),
-                    23: (1, {"@": 139}),
-                    25: (1, {"@": 139}),
-                    26: (1, {"@": 139}),
-                    28: (1, {"@": 139}),
-                    30: (1, {"@": 139}),
-                    31: (1, {"@": 139}),
-                    56: (1, {"@": 139}),
-                    55: (1, {"@": 139}),
-                },
-                146: {
-                    57: (0, 20),
-                    18: (1, {"@": 68}),
-                    21: (1, {"@": 68}),
-                    23: (1, {"@": 68}),
-                    2: (1, {"@": 68}),
-                    4: (1, {"@": 68}),
-                    24: (1, {"@": 68}),
-                    5: (1, {"@": 68}),
-                    6: (1, {"@": 68}),
-                    25: (1, {"@": 68}),
-                    7: (1, {"@": 68}),
-                    26: (1, {"@": 68}),
-                    27: (1, {"@": 68}),
-                    28: (1, {"@": 68}),
-                    30: (1, {"@": 68}),
-                    1: (1, {"@": 68}),
-                    0: (1, {"@": 68}),
-                    31: (1, {"@": 68}),
-                    11: (1, {"@": 68}),
-                    12: (1, {"@": 68}),
-                    13: (1, {"@": 68}),
-                    14: (1, {"@": 68}),
-                    32: (1, {"@": 68}),
-                    16: (1, {"@": 68}),
-                    33: (1, {"@": 68}),
-                },
-                147: {
-                    52: (1, {"@": 124}),
-                    8: (1, {"@": 124}),
-                    20: (1, {"@": 124}),
-                    22: (1, {"@": 124}),
-                    15: (1, {"@": 124}),
-                    53: (1, {"@": 124}),
-                    54: (1, {"@": 124}),
-                    18: (1, {"@": 124}),
-                    21: (1, {"@": 124}),
-                    23: (1, {"@": 124}),
-                    2: (1, {"@": 124}),
-                    4: (1, {"@": 124}),
-                    33: (1, {"@": 124}),
-                    24: (1, {"@": 124}),
-                    5: (1, {"@": 124}),
-                    6: (1, {"@": 124}),
-                    25: (1, {"@": 124}),
-                    7: (1, {"@": 124}),
-                    26: (1, {"@": 124}),
-                    27: (1, {"@": 124}),
-                    28: (1, {"@": 124}),
-                    30: (1, {"@": 124}),
-                    1: (1, {"@": 124}),
-                    0: (1, {"@": 124}),
-                    31: (1, {"@": 124}),
-                    11: (1, {"@": 124}),
-                    12: (1, {"@": 124}),
-                    13: (1, {"@": 124}),
-                    14: (1, {"@": 124}),
-                    32: (1, {"@": 124}),
-                    16: (1, {"@": 124}),
-                    55: (1, {"@": 124}),
-                    56: (1, {"@": 124}),
-                },
-                148: {
-                    52: (1, {"@": 119}),
-                    8: (1, {"@": 119}),
-                    15: (1, {"@": 119}),
-                    53: (1, {"@": 119}),
-                    54: (1, {"@": 119}),
-                    18: (1, {"@": 119}),
-                    21: (1, {"@": 119}),
-                    23: (1, {"@": 119}),
-                    2: (1, {"@": 119}),
-                    4: (1, {"@": 119}),
-                    33: (1, {"@": 119}),
-                    24: (1, {"@": 119}),
-                    5: (1, {"@": 119}),
-                    6: (1, {"@": 119}),
-                    25: (1, {"@": 119}),
-                    7: (1, {"@": 119}),
-                    16: (1, {"@": 119}),
-                    26: (1, {"@": 119}),
-                    27: (1, {"@": 119}),
-                    28: (1, {"@": 119}),
-                    30: (1, {"@": 119}),
-                    1: (1, {"@": 119}),
-                    31: (1, {"@": 119}),
-                    11: (1, {"@": 119}),
-                    12: (1, {"@": 119}),
-                    13: (1, {"@": 119}),
-                    14: (1, {"@": 119}),
-                    32: (1, {"@": 119}),
-                    0: (1, {"@": 119}),
-                    56: (1, {"@": 119}),
-                    55: (1, {"@": 119}),
-                },
-                149: {
-                    19: (0, 246),
-                    9: (0, 157),
-                    29: (0, 282),
-                    27: (1, {"@": 129}),
-                    52: (1, {"@": 129}),
-                    8: (1, {"@": 129}),
-                    10: (1, {"@": 129}),
-                    20: (1, {"@": 129}),
-                    22: (1, {"@": 129}),
-                    3: (1, {"@": 129}),
-                    53: (1, {"@": 129}),
-                    24: (1, {"@": 129}),
-                    32: (1, {"@": 129}),
-                    15: (1, {"@": 129}),
-                    17: (1, {"@": 129}),
-                    54: (1, {"@": 129}),
-                    2: (1, {"@": 129}),
-                    4: (1, {"@": 129}),
-                    33: (1, {"@": 129}),
-                    5: (1, {"@": 129}),
-                    6: (1, {"@": 129}),
-                    7: (1, {"@": 129}),
-                    1: (1, {"@": 129}),
-                    11: (1, {"@": 129}),
-                    12: (1, {"@": 129}),
-                    13: (1, {"@": 129}),
-                    14: (1, {"@": 129}),
-                    16: (1, {"@": 129}),
-                    18: (1, {"@": 129}),
-                    21: (1, {"@": 129}),
-                    23: (1, {"@": 129}),
-                    25: (1, {"@": 129}),
-                    26: (1, {"@": 129}),
-                    28: (1, {"@": 129}),
-                    30: (1, {"@": 129}),
-                    31: (1, {"@": 129}),
-                    0: (1, {"@": 129}),
-                    55: (1, {"@": 129}),
-                    56: (1, {"@": 129}),
-                },
-                150: {
-                    27: (1, {"@": 133}),
-                    52: (1, {"@": 133}),
-                    8: (1, {"@": 133}),
-                    19: (1, {"@": 133}),
-                    29: (1, {"@": 133}),
-                    9: (1, {"@": 133}),
-                    10: (1, {"@": 133}),
-                    20: (1, {"@": 133}),
-                    22: (1, {"@": 133}),
-                    3: (1, {"@": 133}),
-                    53: (1, {"@": 133}),
-                    24: (1, {"@": 133}),
-                    32: (1, {"@": 133}),
-                    15: (1, {"@": 133}),
-                    17: (1, {"@": 133}),
-                    54: (1, {"@": 133}),
-                    2: (1, {"@": 133}),
-                    4: (1, {"@": 133}),
-                    33: (1, {"@": 133}),
-                    5: (1, {"@": 133}),
-                    6: (1, {"@": 133}),
-                    7: (1, {"@": 133}),
-                    1: (1, {"@": 133}),
-                    11: (1, {"@": 133}),
-                    12: (1, {"@": 133}),
-                    13: (1, {"@": 133}),
-                    14: (1, {"@": 133}),
-                    16: (1, {"@": 133}),
-                    18: (1, {"@": 133}),
-                    21: (1, {"@": 133}),
-                    23: (1, {"@": 133}),
-                    25: (1, {"@": 133}),
-                    26: (1, {"@": 133}),
-                    28: (1, {"@": 133}),
-                    30: (1, {"@": 133}),
-                    31: (1, {"@": 133}),
-                    0: (1, {"@": 133}),
-                    55: (1, {"@": 133}),
-                    56: (1, {"@": 133}),
-                },
-                151: {56: (1, {"@": 198}), 55: (1, {"@": 198})},
-                152: {
-                    27: (1, {"@": 132}),
-                    52: (1, {"@": 132}),
-                    8: (1, {"@": 132}),
-                    10: (1, {"@": 132}),
-                    20: (1, {"@": 132}),
-                    22: (1, {"@": 132}),
-                    3: (1, {"@": 132}),
-                    53: (1, {"@": 132}),
-                    24: (1, {"@": 132}),
-                    32: (1, {"@": 132}),
-                    15: (1, {"@": 132}),
-                    17: (1, {"@": 132}),
-                    54: (1, {"@": 132}),
-                    2: (1, {"@": 132}),
-                    4: (1, {"@": 132}),
-                    33: (1, {"@": 132}),
-                    5: (1, {"@": 132}),
-                    6: (1, {"@": 132}),
-                    7: (1, {"@": 132}),
-                    1: (1, {"@": 132}),
-                    11: (1, {"@": 132}),
-                    12: (1, {"@": 132}),
-                    13: (1, {"@": 132}),
-                    14: (1, {"@": 132}),
-                    16: (1, {"@": 132}),
-                    18: (1, {"@": 132}),
-                    21: (1, {"@": 132}),
-                    23: (1, {"@": 132}),
-                    25: (1, {"@": 132}),
-                    26: (1, {"@": 132}),
-                    28: (1, {"@": 132}),
-                    30: (1, {"@": 132}),
-                    31: (1, {"@": 132}),
-                    0: (1, {"@": 132}),
-                    55: (1, {"@": 132}),
-                    56: (1, {"@": 132}),
-                },
-                153: {
-                    112: (0, 154),
-                    113: (0, 175),
-                    114: (0, 52),
-                    58: (0, 134),
-                    5: (0, 281),
-                },
-                154: {5: (0, 8), 113: (0, 243), 58: (0, 134), 13: (1, {"@": 84})},
-                155: {13: (0, 11)},
-                156: {
-                    18: (1, {"@": 179}),
-                    61: (1, {"@": 179}),
-                    21: (1, {"@": 179}),
-                    23: (1, {"@": 179}),
-                    2: (1, {"@": 179}),
-                    4: (1, {"@": 179}),
-                    33: (1, {"@": 179}),
-                    24: (1, {"@": 179}),
-                    5: (1, {"@": 179}),
-                    6: (1, {"@": 179}),
-                    25: (1, {"@": 179}),
-                    7: (1, {"@": 179}),
-                    26: (1, {"@": 179}),
-                    27: (1, {"@": 179}),
-                    28: (1, {"@": 179}),
-                    62: (1, {"@": 179}),
-                    30: (1, {"@": 179}),
-                    1: (1, {"@": 179}),
-                    0: (1, {"@": 179}),
-                    31: (1, {"@": 179}),
-                    11: (1, {"@": 179}),
-                    12: (1, {"@": 179}),
-                    13: (1, {"@": 179}),
-                    14: (1, {"@": 179}),
-                    32: (1, {"@": 179}),
-                    16: (1, {"@": 179}),
-                },
-                157: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    47: (0, 149),
-                    48: (0, 132),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    46: (0, 205),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                158: {
-                    2: (1, {"@": 82}),
-                    4: (1, {"@": 82}),
-                    33: (1, {"@": 82}),
-                    5: (1, {"@": 82}),
-                    6: (1, {"@": 82}),
-                    7: (1, {"@": 82}),
-                    1: (1, {"@": 82}),
-                    11: (1, {"@": 82}),
-                    12: (1, {"@": 82}),
-                    13: (1, {"@": 82}),
-                    14: (1, {"@": 82}),
-                    16: (1, {"@": 82}),
-                    18: (1, {"@": 82}),
-                    21: (1, {"@": 82}),
-                    23: (1, {"@": 82}),
-                    24: (1, {"@": 82}),
-                    25: (1, {"@": 82}),
-                    26: (1, {"@": 82}),
-                    27: (1, {"@": 82}),
-                    28: (1, {"@": 82}),
-                    30: (1, {"@": 82}),
-                    31: (1, {"@": 82}),
-                    32: (1, {"@": 82}),
-                    0: (1, {"@": 82}),
-                },
-                159: {55: (1, {"@": 88}), 52: (1, {"@": 88})},
-                160: {55: (0, 29)},
-                161: {54: (1, {"@": 203}), 56: (1, {"@": 203})},
-                162: {
-                    2: (1, {"@": 176}),
-                    4: (1, {"@": 176}),
-                    5: (1, {"@": 176}),
-                    6: (1, {"@": 176}),
-                    7: (1, {"@": 176}),
-                    1: (1, {"@": 176}),
-                    11: (1, {"@": 176}),
-                    12: (1, {"@": 176}),
-                    13: (1, {"@": 176}),
-                    14: (1, {"@": 176}),
-                    16: (1, {"@": 176}),
-                    18: (1, {"@": 176}),
-                    21: (1, {"@": 176}),
-                    23: (1, {"@": 176}),
-                    24: (1, {"@": 176}),
-                    25: (1, {"@": 176}),
-                    26: (1, {"@": 176}),
-                    27: (1, {"@": 176}),
-                    28: (1, {"@": 176}),
-                    30: (1, {"@": 176}),
-                    31: (1, {"@": 176}),
-                    32: (1, {"@": 176}),
-                    0: (1, {"@": 176}),
-                    33: (1, {"@": 176}),
-                },
-                163: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    37: (0, 143),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                164: {
-                    18: (1, {"@": 101}),
-                    21: (1, {"@": 101}),
-                    23: (1, {"@": 101}),
-                    2: (1, {"@": 101}),
-                    4: (1, {"@": 101}),
-                    24: (1, {"@": 101}),
-                    5: (1, {"@": 101}),
-                    6: (1, {"@": 101}),
-                    25: (1, {"@": 101}),
-                    7: (1, {"@": 101}),
-                    26: (1, {"@": 101}),
-                    27: (1, {"@": 101}),
-                    28: (1, {"@": 101}),
-                    30: (1, {"@": 101}),
-                    1: (1, {"@": 101}),
-                    0: (1, {"@": 101}),
-                    31: (1, {"@": 101}),
-                    11: (1, {"@": 101}),
-                    12: (1, {"@": 101}),
-                    13: (1, {"@": 101}),
-                    14: (1, {"@": 101}),
-                    32: (1, {"@": 101}),
-                    16: (1, {"@": 101}),
-                    33: (1, {"@": 101}),
-                },
-                165: {
-                    52: (1, {"@": 121}),
-                    8: (1, {"@": 121}),
-                    20: (1, {"@": 121}),
-                    22: (1, {"@": 121}),
-                    15: (1, {"@": 121}),
-                    53: (1, {"@": 121}),
-                    54: (1, {"@": 121}),
-                    18: (1, {"@": 121}),
-                    21: (1, {"@": 121}),
-                    23: (1, {"@": 121}),
-                    2: (1, {"@": 121}),
-                    4: (1, {"@": 121}),
-                    33: (1, {"@": 121}),
-                    24: (1, {"@": 121}),
-                    5: (1, {"@": 121}),
-                    6: (1, {"@": 121}),
-                    25: (1, {"@": 121}),
-                    7: (1, {"@": 121}),
-                    26: (1, {"@": 121}),
-                    27: (1, {"@": 121}),
-                    28: (1, {"@": 121}),
-                    30: (1, {"@": 121}),
-                    1: (1, {"@": 121}),
-                    0: (1, {"@": 121}),
-                    31: (1, {"@": 121}),
-                    11: (1, {"@": 121}),
-                    12: (1, {"@": 121}),
-                    13: (1, {"@": 121}),
-                    14: (1, {"@": 121}),
-                    32: (1, {"@": 121}),
-                    16: (1, {"@": 121}),
-                    55: (1, {"@": 121}),
-                    56: (1, {"@": 121}),
-                },
-                166: {
-                    18: (1, {"@": 63}),
-                    21: (1, {"@": 63}),
-                    23: (1, {"@": 63}),
-                    2: (1, {"@": 63}),
-                    4: (1, {"@": 63}),
-                    24: (1, {"@": 63}),
-                    5: (1, {"@": 63}),
-                    6: (1, {"@": 63}),
-                    25: (1, {"@": 63}),
-                    7: (1, {"@": 63}),
-                    26: (1, {"@": 63}),
-                    27: (1, {"@": 63}),
-                    28: (1, {"@": 63}),
-                    30: (1, {"@": 63}),
-                    1: (1, {"@": 63}),
-                    0: (1, {"@": 63}),
-                    31: (1, {"@": 63}),
-                    11: (1, {"@": 63}),
-                    12: (1, {"@": 63}),
-                    13: (1, {"@": 63}),
-                    14: (1, {"@": 63}),
-                    32: (1, {"@": 63}),
-                    16: (1, {"@": 63}),
-                    33: (1, {"@": 63}),
-                },
-                167: {
-                    52: (1, {"@": 140}),
-                    19: (1, {"@": 140}),
-                    20: (1, {"@": 140}),
-                    22: (1, {"@": 140}),
-                    3: (1, {"@": 140}),
-                    53: (1, {"@": 140}),
-                    24: (1, {"@": 140}),
-                    27: (1, {"@": 140}),
-                    8: (1, {"@": 140}),
-                    29: (1, {"@": 140}),
-                    9: (1, {"@": 140}),
-                    10: (1, {"@": 140}),
-                    32: (1, {"@": 140}),
-                    15: (1, {"@": 140}),
-                    0: (1, {"@": 140}),
-                    17: (1, {"@": 140}),
-                    54: (1, {"@": 140}),
-                    2: (1, {"@": 140}),
-                    4: (1, {"@": 140}),
-                    33: (1, {"@": 140}),
-                    5: (1, {"@": 140}),
-                    6: (1, {"@": 140}),
-                    7: (1, {"@": 140}),
-                    1: (1, {"@": 140}),
-                    11: (1, {"@": 140}),
-                    12: (1, {"@": 140}),
-                    13: (1, {"@": 140}),
-                    14: (1, {"@": 140}),
-                    16: (1, {"@": 140}),
-                    18: (1, {"@": 140}),
-                    21: (1, {"@": 140}),
-                    23: (1, {"@": 140}),
-                    25: (1, {"@": 140}),
-                    26: (1, {"@": 140}),
-                    28: (1, {"@": 140}),
-                    30: (1, {"@": 140}),
-                    31: (1, {"@": 140}),
-                    56: (1, {"@": 140}),
-                    55: (1, {"@": 140}),
-                },
-                168: {
-                    52: (1, {"@": 163}),
-                    19: (1, {"@": 163}),
-                    20: (1, {"@": 163}),
-                    22: (1, {"@": 163}),
-                    3: (1, {"@": 163}),
-                    53: (1, {"@": 163}),
-                    24: (1, {"@": 163}),
-                    27: (1, {"@": 163}),
-                    8: (1, {"@": 163}),
-                    29: (1, {"@": 163}),
-                    9: (1, {"@": 163}),
-                    10: (1, {"@": 163}),
-                    32: (1, {"@": 163}),
-                    15: (1, {"@": 163}),
-                    0: (1, {"@": 163}),
-                    17: (1, {"@": 163}),
-                    54: (1, {"@": 163}),
-                    2: (1, {"@": 163}),
-                    4: (1, {"@": 163}),
-                    33: (1, {"@": 163}),
-                    5: (1, {"@": 163}),
-                    6: (1, {"@": 163}),
-                    7: (1, {"@": 163}),
-                    1: (1, {"@": 163}),
-                    11: (1, {"@": 163}),
-                    12: (1, {"@": 163}),
-                    13: (1, {"@": 163}),
-                    14: (1, {"@": 163}),
-                    16: (1, {"@": 163}),
-                    18: (1, {"@": 163}),
-                    21: (1, {"@": 163}),
-                    23: (1, {"@": 163}),
-                    25: (1, {"@": 163}),
-                    26: (1, {"@": 163}),
-                    28: (1, {"@": 163}),
-                    30: (1, {"@": 163}),
-                    31: (1, {"@": 163}),
-                    56: (1, {"@": 163}),
-                    55: (1, {"@": 163}),
-                },
-                169: {
-                    18: (1, {"@": 55}),
-                    21: (1, {"@": 55}),
-                    23: (1, {"@": 55}),
-                    2: (1, {"@": 55}),
-                    4: (1, {"@": 55}),
-                    24: (1, {"@": 55}),
-                    5: (1, {"@": 55}),
-                    6: (1, {"@": 55}),
-                    25: (1, {"@": 55}),
-                    7: (1, {"@": 55}),
-                    26: (1, {"@": 55}),
-                    27: (1, {"@": 55}),
-                    28: (1, {"@": 55}),
-                    30: (1, {"@": 55}),
-                    1: (1, {"@": 55}),
-                    0: (1, {"@": 55}),
-                    31: (1, {"@": 55}),
-                    11: (1, {"@": 55}),
-                    12: (1, {"@": 55}),
-                    13: (1, {"@": 55}),
-                    14: (1, {"@": 55}),
-                    32: (1, {"@": 55}),
-                    16: (1, {"@": 55}),
-                    33: (1, {"@": 55}),
-                },
-                170: {30: (0, 285)},
-                171: {
-                    67: (0, 204),
-                    52: (1, {"@": 162}),
-                    19: (1, {"@": 162}),
-                    20: (1, {"@": 162}),
-                    22: (1, {"@": 162}),
-                    3: (1, {"@": 162}),
-                    53: (1, {"@": 162}),
-                    24: (1, {"@": 162}),
-                    27: (1, {"@": 162}),
-                    8: (1, {"@": 162}),
-                    29: (1, {"@": 162}),
-                    1: (1, {"@": 162}),
-                    9: (1, {"@": 162}),
-                    10: (1, {"@": 162}),
-                    32: (1, {"@": 162}),
-                    15: (1, {"@": 162}),
-                    0: (1, {"@": 162}),
-                    17: (1, {"@": 162}),
-                    54: (1, {"@": 162}),
-                    2: (1, {"@": 162}),
-                    4: (1, {"@": 162}),
-                    33: (1, {"@": 162}),
-                    5: (1, {"@": 162}),
-                    6: (1, {"@": 162}),
-                    7: (1, {"@": 162}),
-                    11: (1, {"@": 162}),
-                    12: (1, {"@": 162}),
-                    13: (1, {"@": 162}),
-                    14: (1, {"@": 162}),
-                    16: (1, {"@": 162}),
-                    18: (1, {"@": 162}),
-                    21: (1, {"@": 162}),
-                    23: (1, {"@": 162}),
-                    25: (1, {"@": 162}),
-                    26: (1, {"@": 162}),
-                    28: (1, {"@": 162}),
-                    30: (1, {"@": 162}),
-                    31: (1, {"@": 162}),
-                    56: (1, {"@": 162}),
-                    55: (1, {"@": 162}),
-                },
-                172: {
-                    52: (1, {"@": 158}),
-                    19: (1, {"@": 158}),
-                    20: (1, {"@": 158}),
-                    22: (1, {"@": 158}),
-                    3: (1, {"@": 158}),
-                    53: (1, {"@": 158}),
-                    24: (1, {"@": 158}),
-                    27: (1, {"@": 158}),
-                    8: (1, {"@": 158}),
-                    29: (1, {"@": 158}),
-                    9: (1, {"@": 158}),
-                    10: (1, {"@": 158}),
-                    32: (1, {"@": 158}),
-                    15: (1, {"@": 158}),
-                    0: (1, {"@": 158}),
-                    17: (1, {"@": 158}),
-                    54: (1, {"@": 158}),
-                    2: (1, {"@": 158}),
-                    4: (1, {"@": 158}),
-                    33: (1, {"@": 158}),
-                    5: (1, {"@": 158}),
-                    6: (1, {"@": 158}),
-                    7: (1, {"@": 158}),
-                    1: (1, {"@": 158}),
-                    11: (1, {"@": 158}),
-                    12: (1, {"@": 158}),
-                    13: (1, {"@": 158}),
-                    14: (1, {"@": 158}),
-                    16: (1, {"@": 158}),
-                    18: (1, {"@": 158}),
-                    21: (1, {"@": 158}),
-                    23: (1, {"@": 158}),
-                    25: (1, {"@": 158}),
-                    26: (1, {"@": 158}),
-                    28: (1, {"@": 158}),
-                    30: (1, {"@": 158}),
-                    31: (1, {"@": 158}),
-                    56: (1, {"@": 158}),
-                    55: (1, {"@": 158}),
-                },
-                173: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    41: (0, 280),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                174: {5: (1, {"@": 186}), 30: (1, {"@": 186}), 13: (1, {"@": 186})},
-                175: {5: (1, {"@": 181}), 58: (1, {"@": 181}), 13: (1, {"@": 181})},
-                176: {
-                    52: (1, {"@": 123}),
-                    8: (1, {"@": 123}),
-                    20: (1, {"@": 123}),
-                    22: (1, {"@": 123}),
-                    15: (1, {"@": 123}),
-                    53: (1, {"@": 123}),
-                    54: (1, {"@": 123}),
-                    18: (1, {"@": 123}),
-                    21: (1, {"@": 123}),
-                    23: (1, {"@": 123}),
-                    2: (1, {"@": 123}),
-                    4: (1, {"@": 123}),
-                    33: (1, {"@": 123}),
-                    24: (1, {"@": 123}),
-                    5: (1, {"@": 123}),
-                    6: (1, {"@": 123}),
-                    25: (1, {"@": 123}),
-                    7: (1, {"@": 123}),
-                    26: (1, {"@": 123}),
-                    27: (1, {"@": 123}),
-                    28: (1, {"@": 123}),
-                    30: (1, {"@": 123}),
-                    1: (1, {"@": 123}),
-                    0: (1, {"@": 123}),
-                    31: (1, {"@": 123}),
-                    11: (1, {"@": 123}),
-                    12: (1, {"@": 123}),
-                    13: (1, {"@": 123}),
-                    14: (1, {"@": 123}),
-                    32: (1, {"@": 123}),
-                    16: (1, {"@": 123}),
-                    55: (1, {"@": 123}),
-                    56: (1, {"@": 123}),
-                },
-                177: {13: (0, 258)},
-                178: {
-                    18: (1, {"@": 97}),
-                    21: (1, {"@": 97}),
-                    23: (1, {"@": 97}),
-                    2: (1, {"@": 97}),
-                    4: (1, {"@": 97}),
-                    24: (1, {"@": 97}),
-                    5: (1, {"@": 97}),
-                    6: (1, {"@": 97}),
-                    25: (1, {"@": 97}),
-                    7: (1, {"@": 97}),
-                    26: (1, {"@": 97}),
-                    27: (1, {"@": 97}),
-                    28: (1, {"@": 97}),
-                    30: (1, {"@": 97}),
-                    1: (1, {"@": 97}),
-                    0: (1, {"@": 97}),
-                    31: (1, {"@": 97}),
-                    11: (1, {"@": 97}),
-                    12: (1, {"@": 97}),
-                    13: (1, {"@": 97}),
-                    14: (1, {"@": 97}),
-                    32: (1, {"@": 97}),
-                    16: (1, {"@": 97}),
-                    33: (1, {"@": 97}),
-                },
-                179: {
-                    52: (1, {"@": 114}),
-                    53: (1, {"@": 114}),
-                    54: (1, {"@": 114}),
-                    2: (1, {"@": 114}),
-                    4: (1, {"@": 114}),
-                    33: (1, {"@": 114}),
-                    5: (1, {"@": 114}),
-                    6: (1, {"@": 114}),
-                    7: (1, {"@": 114}),
-                    1: (1, {"@": 114}),
-                    11: (1, {"@": 114}),
-                    12: (1, {"@": 114}),
-                    13: (1, {"@": 114}),
-                    14: (1, {"@": 114}),
-                    16: (1, {"@": 114}),
-                    18: (1, {"@": 114}),
-                    21: (1, {"@": 114}),
-                    23: (1, {"@": 114}),
-                    24: (1, {"@": 114}),
-                    25: (1, {"@": 114}),
-                    26: (1, {"@": 114}),
-                    27: (1, {"@": 114}),
-                    28: (1, {"@": 114}),
-                    30: (1, {"@": 114}),
-                    31: (1, {"@": 114}),
-                    32: (1, {"@": 114}),
-                    0: (1, {"@": 114}),
-                    56: (1, {"@": 114}),
-                    55: (1, {"@": 114}),
-                },
-                180: {56: (0, 18), 55: (1, {"@": 108})},
-                181: {52: (0, 250)},
-                182: {57: (0, 127)},
-                183: {
-                    1: (0, 185),
-                    5: (1, {"@": 104}),
-                    30: (1, {"@": 104}),
-                    13: (1, {"@": 104}),
-                },
-                184: {
-                    67: (0, 204),
-                    115: (0, 273),
-                    2: (1, {"@": 162}),
-                    3: (1, {"@": 162}),
-                    4: (1, {"@": 162}),
-                    33: (1, {"@": 162}),
-                    5: (1, {"@": 162}),
-                    6: (1, {"@": 162}),
-                    7: (1, {"@": 162}),
-                    8: (1, {"@": 162}),
-                    1: (1, {"@": 162}),
-                    9: (1, {"@": 162}),
-                    10: (1, {"@": 162}),
-                    11: (1, {"@": 162}),
-                    12: (1, {"@": 162}),
-                    13: (1, {"@": 162}),
-                    14: (1, {"@": 162}),
-                    15: (1, {"@": 162}),
-                    16: (1, {"@": 162}),
-                    17: (1, {"@": 162}),
-                    18: (1, {"@": 162}),
-                    19: (1, {"@": 162}),
-                    20: (1, {"@": 162}),
-                    21: (1, {"@": 162}),
-                    22: (1, {"@": 162}),
-                    23: (1, {"@": 162}),
-                    24: (1, {"@": 162}),
-                    25: (1, {"@": 162}),
-                    26: (1, {"@": 162}),
-                    27: (1, {"@": 162}),
-                    28: (1, {"@": 162}),
-                    29: (1, {"@": 162}),
-                    30: (1, {"@": 162}),
-                    31: (1, {"@": 162}),
-                    32: (1, {"@": 162}),
-                    0: (1, {"@": 162}),
-                },
-                185: {34: (0, 5), 30: (0, 276)},
-                186: {
-                    18: (1, {"@": 62}),
-                    21: (1, {"@": 62}),
-                    23: (1, {"@": 62}),
-                    2: (1, {"@": 62}),
-                    4: (1, {"@": 62}),
-                    24: (1, {"@": 62}),
-                    5: (1, {"@": 62}),
-                    6: (1, {"@": 62}),
-                    25: (1, {"@": 62}),
-                    7: (1, {"@": 62}),
-                    26: (1, {"@": 62}),
-                    27: (1, {"@": 62}),
-                    28: (1, {"@": 62}),
-                    30: (1, {"@": 62}),
-                    1: (1, {"@": 62}),
-                    0: (1, {"@": 62}),
-                    31: (1, {"@": 62}),
-                    11: (1, {"@": 62}),
-                    12: (1, {"@": 62}),
-                    13: (1, {"@": 62}),
-                    14: (1, {"@": 62}),
-                    32: (1, {"@": 62}),
-                    16: (1, {"@": 62}),
-                    33: (1, {"@": 62}),
-                },
-                187: {56: (0, 267), 54: (1, {"@": 167})},
-                188: {
-                    52: (1, {"@": 145}),
-                    19: (1, {"@": 145}),
-                    20: (1, {"@": 145}),
-                    22: (1, {"@": 145}),
-                    3: (1, {"@": 145}),
-                    53: (1, {"@": 145}),
-                    24: (1, {"@": 145}),
-                    27: (1, {"@": 145}),
-                    8: (1, {"@": 145}),
-                    29: (1, {"@": 145}),
-                    9: (1, {"@": 145}),
-                    10: (1, {"@": 145}),
-                    32: (1, {"@": 145}),
-                    15: (1, {"@": 145}),
-                    0: (1, {"@": 145}),
-                    17: (1, {"@": 145}),
-                    54: (1, {"@": 145}),
-                    2: (1, {"@": 145}),
-                    4: (1, {"@": 145}),
-                    33: (1, {"@": 145}),
-                    5: (1, {"@": 145}),
-                    6: (1, {"@": 145}),
-                    7: (1, {"@": 145}),
-                    1: (1, {"@": 145}),
-                    11: (1, {"@": 145}),
-                    12: (1, {"@": 145}),
-                    13: (1, {"@": 145}),
-                    14: (1, {"@": 145}),
-                    16: (1, {"@": 145}),
-                    18: (1, {"@": 145}),
-                    21: (1, {"@": 145}),
-                    23: (1, {"@": 145}),
-                    25: (1, {"@": 145}),
-                    26: (1, {"@": 145}),
-                    28: (1, {"@": 145}),
-                    30: (1, {"@": 145}),
-                    31: (1, {"@": 145}),
-                    56: (1, {"@": 145}),
-                    55: (1, {"@": 145}),
-                },
-                189: {116: (0, 269), 56: (0, 106), 54: (0, 140)},
-                190: {
-                    82: (0, 44),
-                    35: (0, 118),
-                    83: (0, 94),
-                    38: (0, 82),
-                    36: (0, 126),
-                    7: (0, 80),
-                    42: (0, 99),
-                    27: (0, 50),
-                    41: (0, 179),
-                    84: (0, 129),
-                    85: (0, 146),
-                    28: (0, 212),
-                    30: (0, 202),
-                    96: (0, 228),
-                    21: (0, 193),
-                    43: (0, 274),
-                    44: (0, 256),
-                    86: (0, 266),
-                    37: (0, 219),
-                    87: (0, 63),
-                    46: (0, 54),
-                    16: (0, 131),
-                    88: (0, 119),
-                    89: (0, 169),
-                    45: (0, 239),
-                    40: (0, 0),
-                    25: (0, 191),
-                    26: (0, 43),
-                    90: (0, 101),
-                    91: (0, 70),
-                    24: (0, 110),
-                    92: (0, 186),
-                    93: (0, 15),
-                    50: (0, 125),
-                    6: (0, 170),
-                    47: (0, 149),
-                    49: (0, 252),
-                    94: (0, 166),
-                    51: (0, 199),
-                    1: (0, 40),
-                    2: (0, 277),
-                    95: (0, 286),
-                    39: (0, 188),
-                    32: (0, 144),
-                    14: (0, 172),
-                    5: (0, 162),
-                    48: (0, 132),
-                    97: (0, 245),
-                    98: (0, 275),
-                    0: (0, 231),
-                    31: (0, 100),
-                    117: (0, 108),
-                    11: (0, 97),
-                    99: (0, 9),
-                    18: (0, 16),
-                    12: (0, 232),
-                    4: (0, 12),
-                    23: (0, 278),
-                    101: (0, 19),
-                },
-                191: {30: (0, 24)},
-                192: {
-                    69: (0, 21),
-                    61: (0, 60),
-                    2: (1, {"@": 80}),
-                    4: (1, {"@": 80}),
-                    33: (1, {"@": 80}),
-                    5: (1, {"@": 80}),
-                    6: (1, {"@": 80}),
-                    7: (1, {"@": 80}),
-                    62: (1, {"@": 80}),
-                    1: (1, {"@": 80}),
-                    11: (1, {"@": 80}),
-                    12: (1, {"@": 80}),
-                    13: (1, {"@": 80}),
-                    14: (1, {"@": 80}),
-                    16: (1, {"@": 80}),
-                    18: (1, {"@": 80}),
-                    21: (1, {"@": 80}),
-                    23: (1, {"@": 80}),
-                    24: (1, {"@": 80}),
-                    25: (1, {"@": 80}),
-                    26: (1, {"@": 80}),
-                    27: (1, {"@": 80}),
-                    28: (1, {"@": 80}),
-                    30: (1, {"@": 80}),
-                    31: (1, {"@": 80}),
-                    32: (1, {"@": 80}),
-                    0: (1, {"@": 80}),
-                },
-                193: {30: (0, 182)},
-                194: {13: (0, 39)},
-                195: {52: (0, 93)},
-                196: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    0: (0, 231),
-                    49: (0, 216),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                197: {5: (1, {"@": 194}), 30: (1, {"@": 194}), 13: (1, {"@": 194})},
-                198: {30: (0, 225)},
-                199: {
-                    0: (0, 95),
-                    27: (1, {"@": 138}),
-                    52: (1, {"@": 138}),
-                    8: (1, {"@": 138}),
-                    19: (1, {"@": 138}),
-                    29: (1, {"@": 138}),
-                    9: (1, {"@": 138}),
-                    10: (1, {"@": 138}),
-                    20: (1, {"@": 138}),
-                    22: (1, {"@": 138}),
-                    3: (1, {"@": 138}),
-                    53: (1, {"@": 138}),
-                    24: (1, {"@": 138}),
-                    32: (1, {"@": 138}),
-                    15: (1, {"@": 138}),
-                    17: (1, {"@": 138}),
-                    54: (1, {"@": 138}),
-                    2: (1, {"@": 138}),
-                    4: (1, {"@": 138}),
-                    33: (1, {"@": 138}),
-                    5: (1, {"@": 138}),
-                    6: (1, {"@": 138}),
-                    7: (1, {"@": 138}),
-                    1: (1, {"@": 138}),
-                    11: (1, {"@": 138}),
-                    12: (1, {"@": 138}),
-                    13: (1, {"@": 138}),
-                    14: (1, {"@": 138}),
-                    16: (1, {"@": 138}),
-                    18: (1, {"@": 138}),
-                    21: (1, {"@": 138}),
-                    23: (1, {"@": 138}),
-                    25: (1, {"@": 138}),
-                    26: (1, {"@": 138}),
-                    28: (1, {"@": 138}),
-                    30: (1, {"@": 138}),
-                    31: (1, {"@": 138}),
-                    55: (1, {"@": 138}),
-                    56: (1, {"@": 138}),
-                },
-                200: {52: (0, 209)},
-                201: {
-                    82: (0, 44),
-                    35: (0, 118),
-                    83: (0, 94),
-                    38: (0, 82),
-                    36: (0, 126),
-                    7: (0, 80),
-                    42: (0, 99),
-                    27: (0, 50),
-                    41: (0, 179),
-                    84: (0, 129),
-                    85: (0, 146),
-                    28: (0, 212),
-                    30: (0, 202),
-                    21: (0, 193),
-                    43: (0, 274),
-                    100: (0, 62),
-                    44: (0, 256),
-                    86: (0, 266),
-                    37: (0, 219),
-                    87: (0, 63),
-                    46: (0, 54),
-                    16: (0, 131),
-                    88: (0, 119),
-                    89: (0, 169),
-                    45: (0, 239),
-                    40: (0, 0),
-                    25: (0, 191),
-                    26: (0, 43),
-                    90: (0, 101),
-                    91: (0, 70),
-                    24: (0, 110),
-                    92: (0, 186),
-                    93: (0, 15),
-                    50: (0, 125),
-                    6: (0, 170),
-                    47: (0, 149),
-                    49: (0, 252),
-                    94: (0, 166),
-                    51: (0, 199),
-                    1: (0, 40),
-                    2: (0, 277),
-                    95: (0, 286),
-                    39: (0, 188),
-                    32: (0, 144),
-                    96: (0, 220),
-                    14: (0, 172),
-                    5: (0, 162),
-                    48: (0, 132),
-                    97: (0, 245),
-                    98: (0, 275),
-                    0: (0, 231),
-                    31: (0, 100),
-                    11: (0, 97),
-                    99: (0, 9),
-                    18: (0, 16),
-                    12: (0, 232),
-                    4: (0, 12),
-                    23: (0, 278),
-                    101: (0, 19),
-                },
-                202: {
-                    57: (0, 235),
-                    115: (0, 273),
-                    67: (0, 204),
-                    2: (1, {"@": 162}),
-                    3: (1, {"@": 162}),
-                    4: (1, {"@": 162}),
-                    5: (1, {"@": 162}),
-                    6: (1, {"@": 162}),
-                    7: (1, {"@": 162}),
-                    8: (1, {"@": 162}),
-                    1: (1, {"@": 162}),
-                    9: (1, {"@": 162}),
-                    10: (1, {"@": 162}),
-                    11: (1, {"@": 162}),
-                    12: (1, {"@": 162}),
-                    13: (1, {"@": 162}),
-                    14: (1, {"@": 162}),
-                    15: (1, {"@": 162}),
-                    16: (1, {"@": 162}),
-                    17: (1, {"@": 162}),
-                    18: (1, {"@": 162}),
-                    19: (1, {"@": 162}),
-                    20: (1, {"@": 162}),
-                    21: (1, {"@": 162}),
-                    22: (1, {"@": 162}),
-                    23: (1, {"@": 162}),
-                    24: (1, {"@": 162}),
-                    25: (1, {"@": 162}),
-                    26: (1, {"@": 162}),
-                    27: (1, {"@": 162}),
-                    28: (1, {"@": 162}),
-                    29: (1, {"@": 162}),
-                    30: (1, {"@": 162}),
-                    31: (1, {"@": 162}),
-                    32: (1, {"@": 162}),
-                    0: (1, {"@": 162}),
-                    33: (1, {"@": 162}),
-                },
-                203: {
-                    18: (1, {"@": 113}),
-                    21: (1, {"@": 113}),
-                    23: (1, {"@": 113}),
-                    2: (1, {"@": 113}),
-                    4: (1, {"@": 113}),
-                    24: (1, {"@": 113}),
-                    5: (1, {"@": 113}),
-                    6: (1, {"@": 113}),
-                    25: (1, {"@": 113}),
-                    7: (1, {"@": 113}),
-                    26: (1, {"@": 113}),
-                    27: (1, {"@": 113}),
-                    28: (1, {"@": 113}),
-                    30: (1, {"@": 113}),
-                    1: (1, {"@": 113}),
-                    0: (1, {"@": 113}),
-                    31: (1, {"@": 113}),
-                    11: (1, {"@": 113}),
-                    12: (1, {"@": 113}),
-                    13: (1, {"@": 113}),
-                    14: (1, {"@": 113}),
-                    32: (1, {"@": 113}),
-                    16: (1, {"@": 113}),
-                    33: (1, {"@": 113}),
-                },
-                204: {30: (0, 87)},
-                205: {
-                    27: (1, {"@": 130}),
-                    52: (1, {"@": 130}),
-                    8: (1, {"@": 130}),
-                    10: (1, {"@": 130}),
-                    20: (1, {"@": 130}),
-                    22: (1, {"@": 130}),
-                    3: (1, {"@": 130}),
-                    53: (1, {"@": 130}),
-                    24: (1, {"@": 130}),
-                    32: (1, {"@": 130}),
-                    15: (1, {"@": 130}),
-                    17: (1, {"@": 130}),
-                    54: (1, {"@": 130}),
-                    2: (1, {"@": 130}),
-                    4: (1, {"@": 130}),
-                    33: (1, {"@": 130}),
-                    5: (1, {"@": 130}),
-                    6: (1, {"@": 130}),
-                    7: (1, {"@": 130}),
-                    1: (1, {"@": 130}),
-                    11: (1, {"@": 130}),
-                    12: (1, {"@": 130}),
-                    13: (1, {"@": 130}),
-                    14: (1, {"@": 130}),
-                    16: (1, {"@": 130}),
-                    18: (1, {"@": 130}),
-                    21: (1, {"@": 130}),
-                    23: (1, {"@": 130}),
-                    25: (1, {"@": 130}),
-                    26: (1, {"@": 130}),
-                    28: (1, {"@": 130}),
-                    30: (1, {"@": 130}),
-                    31: (1, {"@": 130}),
-                    0: (1, {"@": 130}),
-                    55: (1, {"@": 130}),
-                    56: (1, {"@": 130}),
-                },
-                206: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    36: (0, 74),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                207: {
-                    30: (0, 183),
-                    5: (0, 197),
-                    111: (0, 58),
-                    110: (0, 90),
-                    13: (1, {"@": 103}),
-                },
-                208: {30: (0, 253), 60: (0, 224)},
-                209: {
-                    82: (0, 44),
-                    35: (0, 118),
-                    83: (0, 94),
-                    38: (0, 82),
-                    36: (0, 126),
-                    7: (0, 80),
-                    42: (0, 99),
-                    27: (0, 50),
-                    41: (0, 179),
-                    84: (0, 129),
-                    85: (0, 146),
-                    100: (0, 155),
-                    28: (0, 212),
-                    30: (0, 202),
-                    21: (0, 193),
-                    43: (0, 274),
-                    44: (0, 256),
-                    86: (0, 266),
-                    37: (0, 219),
-                    87: (0, 63),
-                    46: (0, 54),
-                    16: (0, 131),
-                    88: (0, 119),
-                    89: (0, 169),
-                    45: (0, 239),
-                    40: (0, 0),
-                    25: (0, 191),
-                    26: (0, 43),
-                    90: (0, 101),
-                    91: (0, 70),
-                    24: (0, 110),
-                    92: (0, 186),
-                    93: (0, 15),
-                    50: (0, 125),
-                    6: (0, 170),
-                    47: (0, 149),
-                    49: (0, 252),
-                    94: (0, 166),
-                    51: (0, 199),
-                    1: (0, 40),
-                    2: (0, 277),
-                    95: (0, 286),
-                    39: (0, 188),
-                    32: (0, 144),
-                    96: (0, 220),
-                    14: (0, 172),
-                    5: (0, 162),
-                    48: (0, 132),
-                    97: (0, 245),
-                    98: (0, 275),
-                    0: (0, 231),
-                    31: (0, 100),
-                    11: (0, 97),
-                    99: (0, 9),
-                    18: (0, 16),
-                    12: (0, 232),
-                    4: (0, 12),
-                    23: (0, 278),
-                    101: (0, 19),
-                },
-                210: {
-                    52: (1, {"@": 111}),
-                    10: (1, {"@": 111}),
-                    56: (1, {"@": 111}),
-                    55: (1, {"@": 111}),
-                    5: (1, {"@": 111}),
-                    30: (1, {"@": 111}),
-                    13: (1, {"@": 111}),
-                },
-                211: {52: (0, 201)},
-                212: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    36: (0, 203),
-                    1: (0, 40),
-                },
-                213: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    0: (0, 231),
-                    31: (0, 100),
-                    49: (0, 176),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                214: {118: (0, 107)},
-                215: {
-                    2: (1, {"@": 177}),
-                    4: (1, {"@": 177}),
-                    5: (1, {"@": 177}),
-                    6: (1, {"@": 177}),
-                    7: (1, {"@": 177}),
-                    1: (1, {"@": 177}),
-                    11: (1, {"@": 177}),
-                    12: (1, {"@": 177}),
-                    13: (1, {"@": 177}),
-                    14: (1, {"@": 177}),
-                    16: (1, {"@": 177}),
-                    18: (1, {"@": 177}),
-                    21: (1, {"@": 177}),
-                    23: (1, {"@": 177}),
-                    24: (1, {"@": 177}),
-                    25: (1, {"@": 177}),
-                    26: (1, {"@": 177}),
-                    27: (1, {"@": 177}),
-                    28: (1, {"@": 177}),
-                    30: (1, {"@": 177}),
-                    31: (1, {"@": 177}),
-                    32: (1, {"@": 177}),
-                    0: (1, {"@": 177}),
-                    33: (1, {"@": 177}),
-                },
-                216: {
-                    52: (1, {"@": 122}),
-                    8: (1, {"@": 122}),
-                    20: (1, {"@": 122}),
-                    22: (1, {"@": 122}),
-                    15: (1, {"@": 122}),
-                    53: (1, {"@": 122}),
-                    54: (1, {"@": 122}),
-                    18: (1, {"@": 122}),
-                    21: (1, {"@": 122}),
-                    23: (1, {"@": 122}),
-                    2: (1, {"@": 122}),
-                    4: (1, {"@": 122}),
-                    33: (1, {"@": 122}),
-                    24: (1, {"@": 122}),
-                    5: (1, {"@": 122}),
-                    6: (1, {"@": 122}),
-                    25: (1, {"@": 122}),
-                    7: (1, {"@": 122}),
-                    26: (1, {"@": 122}),
-                    27: (1, {"@": 122}),
-                    28: (1, {"@": 122}),
-                    30: (1, {"@": 122}),
-                    1: (1, {"@": 122}),
-                    0: (1, {"@": 122}),
-                    31: (1, {"@": 122}),
-                    11: (1, {"@": 122}),
-                    12: (1, {"@": 122}),
-                    13: (1, {"@": 122}),
-                    14: (1, {"@": 122}),
-                    32: (1, {"@": 122}),
-                    16: (1, {"@": 122}),
-                    55: (1, {"@": 122}),
-                    56: (1, {"@": 122}),
-                },
-                217: {
-                    27: (1, {"@": 137}),
-                    52: (1, {"@": 137}),
-                    8: (1, {"@": 137}),
-                    19: (1, {"@": 137}),
-                    29: (1, {"@": 137}),
-                    9: (1, {"@": 137}),
-                    10: (1, {"@": 137}),
-                    20: (1, {"@": 137}),
-                    22: (1, {"@": 137}),
-                    3: (1, {"@": 137}),
-                    53: (1, {"@": 137}),
-                    24: (1, {"@": 137}),
-                    32: (1, {"@": 137}),
-                    15: (1, {"@": 137}),
-                    17: (1, {"@": 137}),
-                    54: (1, {"@": 137}),
-                    2: (1, {"@": 137}),
-                    4: (1, {"@": 137}),
-                    33: (1, {"@": 137}),
-                    5: (1, {"@": 137}),
-                    6: (1, {"@": 137}),
-                    7: (1, {"@": 137}),
-                    1: (1, {"@": 137}),
-                    11: (1, {"@": 137}),
-                    12: (1, {"@": 137}),
-                    13: (1, {"@": 137}),
-                    14: (1, {"@": 137}),
-                    16: (1, {"@": 137}),
-                    18: (1, {"@": 137}),
-                    21: (1, {"@": 137}),
-                    23: (1, {"@": 137}),
-                    25: (1, {"@": 137}),
-                    26: (1, {"@": 137}),
-                    28: (1, {"@": 137}),
-                    30: (1, {"@": 137}),
-                    31: (1, {"@": 137}),
-                    0: (1, {"@": 137}),
-                    55: (1, {"@": 137}),
-                    56: (1, {"@": 137}),
-                },
-                218: {
-                    82: (0, 44),
-                    35: (0, 118),
-                    83: (0, 94),
-                    38: (0, 82),
-                    36: (0, 126),
-                    7: (0, 80),
-                    42: (0, 99),
-                    27: (0, 50),
-                    41: (0, 179),
-                    84: (0, 129),
-                    85: (0, 146),
-                    28: (0, 212),
-                    30: (0, 202),
-                    21: (0, 193),
-                    43: (0, 274),
-                    44: (0, 256),
-                    86: (0, 266),
-                    37: (0, 219),
-                    87: (0, 63),
-                    46: (0, 54),
-                    100: (0, 244),
-                    16: (0, 131),
-                    88: (0, 119),
-                    89: (0, 169),
-                    45: (0, 239),
-                    40: (0, 0),
-                    25: (0, 191),
-                    26: (0, 43),
-                    90: (0, 101),
-                    91: (0, 70),
-                    24: (0, 110),
-                    92: (0, 186),
-                    93: (0, 15),
-                    50: (0, 125),
-                    6: (0, 170),
-                    47: (0, 149),
-                    49: (0, 252),
-                    94: (0, 166),
-                    51: (0, 199),
-                    1: (0, 40),
-                    2: (0, 277),
-                    95: (0, 286),
-                    39: (0, 188),
-                    32: (0, 144),
-                    96: (0, 220),
-                    14: (0, 172),
-                    5: (0, 162),
-                    48: (0, 132),
-                    97: (0, 245),
-                    98: (0, 275),
-                    0: (0, 231),
-                    31: (0, 100),
-                    11: (0, 97),
-                    99: (0, 9),
-                    18: (0, 16),
-                    12: (0, 232),
-                    4: (0, 12),
-                    23: (0, 278),
-                    101: (0, 19),
-                },
-                219: {
-                    3: (0, 26),
-                    10: (0, 89),
-                    27: (0, 196),
-                    17: (0, 213),
-                    52: (1, {"@": 125}),
-                    8: (1, {"@": 125}),
-                    20: (1, {"@": 125}),
-                    22: (1, {"@": 125}),
-                    15: (1, {"@": 125}),
-                    53: (1, {"@": 125}),
-                    54: (1, {"@": 125}),
-                    18: (1, {"@": 125}),
-                    21: (1, {"@": 125}),
-                    23: (1, {"@": 125}),
-                    2: (1, {"@": 125}),
-                    4: (1, {"@": 125}),
-                    33: (1, {"@": 125}),
-                    24: (1, {"@": 125}),
-                    5: (1, {"@": 125}),
-                    6: (1, {"@": 125}),
-                    25: (1, {"@": 125}),
-                    7: (1, {"@": 125}),
-                    26: (1, {"@": 125}),
-                    28: (1, {"@": 125}),
-                    30: (1, {"@": 125}),
-                    1: (1, {"@": 125}),
-                    0: (1, {"@": 125}),
-                    31: (1, {"@": 125}),
-                    11: (1, {"@": 125}),
-                    12: (1, {"@": 125}),
-                    13: (1, {"@": 125}),
-                    14: (1, {"@": 125}),
-                    32: (1, {"@": 125}),
-                    16: (1, {"@": 125}),
-                    55: (1, {"@": 125}),
-                    56: (1, {"@": 125}),
-                },
-                220: {13: (1, {"@": 53})},
-                221: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    36: (0, 151),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                222: {56: (1, {"@": 196}), 55: (1, {"@": 196})},
-                223: {
-                    62: (0, 181),
-                    71: (0, 98),
-                    18: (1, {"@": 76}),
-                    21: (1, {"@": 76}),
-                    23: (1, {"@": 76}),
-                    2: (1, {"@": 76}),
-                    4: (1, {"@": 76}),
-                    24: (1, {"@": 76}),
-                    5: (1, {"@": 76}),
-                    6: (1, {"@": 76}),
-                    25: (1, {"@": 76}),
-                    7: (1, {"@": 76}),
-                    26: (1, {"@": 76}),
-                    27: (1, {"@": 76}),
-                    28: (1, {"@": 76}),
-                    30: (1, {"@": 76}),
-                    1: (1, {"@": 76}),
-                    0: (1, {"@": 76}),
-                    31: (1, {"@": 76}),
-                    11: (1, {"@": 76}),
-                    12: (1, {"@": 76}),
-                    13: (1, {"@": 76}),
-                    14: (1, {"@": 76}),
-                    32: (1, {"@": 76}),
-                    16: (1, {"@": 76}),
-                    33: (1, {"@": 76}),
-                },
-                224: {56: (1, {"@": 195}), 55: (1, {"@": 195})},
-                225: {1: (0, 46), 55: (1, {"@": 91}), 52: (1, {"@": 91})},
-                226: {54: (0, 6)},
-                227: {57: (0, 72)},
-                228: {33: (1, {"@": 51})},
-                229: {13: (0, 158)},
-                230: {56: (0, 284), 55: (1, {"@": 153})},
-                231: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    102: (0, 17),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    103: (0, 27),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    54: (0, 31),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    36: (0, 36),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                232: {
-                    52: (1, {"@": 157}),
-                    19: (1, {"@": 157}),
-                    20: (1, {"@": 157}),
-                    22: (1, {"@": 157}),
-                    3: (1, {"@": 157}),
-                    53: (1, {"@": 157}),
-                    24: (1, {"@": 157}),
-                    27: (1, {"@": 157}),
-                    8: (1, {"@": 157}),
-                    29: (1, {"@": 157}),
-                    9: (1, {"@": 157}),
-                    10: (1, {"@": 157}),
-                    32: (1, {"@": 157}),
-                    15: (1, {"@": 157}),
-                    0: (1, {"@": 157}),
-                    17: (1, {"@": 157}),
-                    54: (1, {"@": 157}),
-                    2: (1, {"@": 157}),
-                    4: (1, {"@": 157}),
-                    33: (1, {"@": 157}),
-                    5: (1, {"@": 157}),
-                    6: (1, {"@": 157}),
-                    7: (1, {"@": 157}),
-                    1: (1, {"@": 157}),
-                    11: (1, {"@": 157}),
-                    12: (1, {"@": 157}),
-                    13: (1, {"@": 157}),
-                    14: (1, {"@": 157}),
-                    16: (1, {"@": 157}),
-                    18: (1, {"@": 157}),
-                    21: (1, {"@": 157}),
-                    23: (1, {"@": 157}),
-                    25: (1, {"@": 157}),
-                    26: (1, {"@": 157}),
-                    28: (1, {"@": 157}),
-                    30: (1, {"@": 157}),
-                    31: (1, {"@": 157}),
-                    56: (1, {"@": 157}),
-                    55: (1, {"@": 157}),
-                },
-                233: {52: (0, 257)},
-                234: {55: (0, 236)},
-                235: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    36: (0, 133),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                236: {
-                    52: (1, {"@": 151}),
-                    19: (1, {"@": 151}),
-                    20: (1, {"@": 151}),
-                    22: (1, {"@": 151}),
-                    3: (1, {"@": 151}),
-                    53: (1, {"@": 151}),
-                    24: (1, {"@": 151}),
-                    27: (1, {"@": 151}),
-                    8: (1, {"@": 151}),
-                    29: (1, {"@": 151}),
-                    9: (1, {"@": 151}),
-                    10: (1, {"@": 151}),
-                    32: (1, {"@": 151}),
-                    15: (1, {"@": 151}),
-                    0: (1, {"@": 151}),
-                    17: (1, {"@": 151}),
-                    54: (1, {"@": 151}),
-                    2: (1, {"@": 151}),
-                    4: (1, {"@": 151}),
-                    33: (1, {"@": 151}),
-                    5: (1, {"@": 151}),
-                    6: (1, {"@": 151}),
-                    7: (1, {"@": 151}),
-                    1: (1, {"@": 151}),
-                    11: (1, {"@": 151}),
-                    12: (1, {"@": 151}),
-                    13: (1, {"@": 151}),
-                    14: (1, {"@": 151}),
-                    16: (1, {"@": 151}),
-                    18: (1, {"@": 151}),
-                    21: (1, {"@": 151}),
-                    23: (1, {"@": 151}),
-                    25: (1, {"@": 151}),
-                    26: (1, {"@": 151}),
-                    28: (1, {"@": 151}),
-                    30: (1, {"@": 151}),
-                    31: (1, {"@": 151}),
-                    56: (1, {"@": 151}),
-                    55: (1, {"@": 151}),
-                },
-                237: {13: (0, 69)},
-                238: {52: (0, 113)},
-                239: {
-                    15: (0, 142),
-                    8: (0, 173),
-                    52: (1, {"@": 117}),
-                    53: (1, {"@": 117}),
-                    54: (1, {"@": 117}),
-                    18: (1, {"@": 117}),
-                    21: (1, {"@": 117}),
-                    23: (1, {"@": 117}),
-                    2: (1, {"@": 117}),
-                    4: (1, {"@": 117}),
-                    33: (1, {"@": 117}),
-                    24: (1, {"@": 117}),
-                    5: (1, {"@": 117}),
-                    6: (1, {"@": 117}),
-                    25: (1, {"@": 117}),
-                    7: (1, {"@": 117}),
-                    26: (1, {"@": 117}),
-                    27: (1, {"@": 117}),
-                    28: (1, {"@": 117}),
-                    30: (1, {"@": 117}),
-                    1: (1, {"@": 117}),
-                    0: (1, {"@": 117}),
-                    31: (1, {"@": 117}),
-                    11: (1, {"@": 117}),
-                    12: (1, {"@": 117}),
-                    13: (1, {"@": 117}),
-                    14: (1, {"@": 117}),
-                    32: (1, {"@": 117}),
-                    16: (1, {"@": 117}),
-                    56: (1, {"@": 117}),
-                    55: (1, {"@": 117}),
-                },
-                240: {
-                    27: (1, {"@": 126}),
-                    52: (1, {"@": 126}),
-                    8: (1, {"@": 126}),
-                    10: (1, {"@": 126}),
-                    20: (1, {"@": 126}),
-                    22: (1, {"@": 126}),
-                    3: (1, {"@": 126}),
-                    53: (1, {"@": 126}),
-                    15: (1, {"@": 126}),
-                    17: (1, {"@": 126}),
-                    54: (1, {"@": 126}),
-                    2: (1, {"@": 126}),
-                    4: (1, {"@": 126}),
-                    33: (1, {"@": 126}),
-                    5: (1, {"@": 126}),
-                    6: (1, {"@": 126}),
-                    7: (1, {"@": 126}),
-                    1: (1, {"@": 126}),
-                    11: (1, {"@": 126}),
-                    12: (1, {"@": 126}),
-                    13: (1, {"@": 126}),
-                    14: (1, {"@": 126}),
-                    16: (1, {"@": 126}),
-                    18: (1, {"@": 126}),
-                    21: (1, {"@": 126}),
-                    23: (1, {"@": 126}),
-                    24: (1, {"@": 126}),
-                    25: (1, {"@": 126}),
-                    26: (1, {"@": 126}),
-                    28: (1, {"@": 126}),
-                    30: (1, {"@": 126}),
-                    31: (1, {"@": 126}),
-                    32: (1, {"@": 126}),
-                    0: (1, {"@": 126}),
-                    55: (1, {"@": 126}),
-                    56: (1, {"@": 126}),
-                },
-                241: {52: (0, 61)},
-                242: {54: (1, {"@": 201}), 56: (1, {"@": 201})},
-                243: {5: (1, {"@": 183}), 58: (1, {"@": 183}), 13: (1, {"@": 183})},
-                244: {13: (0, 49)},
-                245: {
-                    18: (1, {"@": 69}),
-                    21: (1, {"@": 69}),
-                    23: (1, {"@": 69}),
-                    2: (1, {"@": 69}),
-                    4: (1, {"@": 69}),
-                    24: (1, {"@": 69}),
-                    5: (1, {"@": 69}),
-                    6: (1, {"@": 69}),
-                    25: (1, {"@": 69}),
-                    7: (1, {"@": 69}),
-                    26: (1, {"@": 69}),
-                    27: (1, {"@": 69}),
-                    28: (1, {"@": 69}),
-                    30: (1, {"@": 69}),
-                    1: (1, {"@": 69}),
-                    0: (1, {"@": 69}),
-                    31: (1, {"@": 69}),
-                    11: (1, {"@": 69}),
-                    12: (1, {"@": 69}),
-                    13: (1, {"@": 69}),
-                    14: (1, {"@": 69}),
-                    32: (1, {"@": 69}),
-                    16: (1, {"@": 69}),
-                    33: (1, {"@": 69}),
-                },
-                246: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    46: (0, 4),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    47: (0, 149),
-                    48: (0, 132),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                247: {30: (0, 276), 34: (0, 130)},
-                248: {
-                    18: (1, {"@": 83}),
-                    21: (1, {"@": 83}),
-                    23: (1, {"@": 83}),
-                    2: (1, {"@": 83}),
-                    4: (1, {"@": 83}),
-                    24: (1, {"@": 83}),
-                    5: (1, {"@": 83}),
-                    6: (1, {"@": 83}),
-                    25: (1, {"@": 83}),
-                    7: (1, {"@": 83}),
-                    26: (1, {"@": 83}),
-                    27: (1, {"@": 83}),
-                    28: (1, {"@": 83}),
-                    30: (1, {"@": 83}),
-                    1: (1, {"@": 83}),
-                    0: (1, {"@": 83}),
-                    31: (1, {"@": 83}),
-                    11: (1, {"@": 83}),
-                    12: (1, {"@": 83}),
-                    13: (1, {"@": 83}),
-                    14: (1, {"@": 83}),
-                    32: (1, {"@": 83}),
-                    16: (1, {"@": 83}),
-                    33: (1, {"@": 83}),
-                },
-                249: {
-                    18: (1, {"@": 106}),
-                    21: (1, {"@": 106}),
-                    23: (1, {"@": 106}),
-                    2: (1, {"@": 106}),
-                    4: (1, {"@": 106}),
-                    24: (1, {"@": 106}),
-                    5: (1, {"@": 106}),
-                    6: (1, {"@": 106}),
-                    25: (1, {"@": 106}),
-                    7: (1, {"@": 106}),
-                    26: (1, {"@": 106}),
-                    27: (1, {"@": 106}),
-                    28: (1, {"@": 106}),
-                    30: (1, {"@": 106}),
-                    1: (1, {"@": 106}),
-                    0: (1, {"@": 106}),
-                    31: (1, {"@": 106}),
-                    11: (1, {"@": 106}),
-                    12: (1, {"@": 106}),
-                    13: (1, {"@": 106}),
-                    14: (1, {"@": 106}),
-                    32: (1, {"@": 106}),
-                    16: (1, {"@": 106}),
-                    33: (1, {"@": 106}),
-                },
-                250: {
-                    82: (0, 44),
-                    35: (0, 118),
-                    83: (0, 94),
-                    38: (0, 82),
-                    36: (0, 126),
-                    7: (0, 80),
-                    42: (0, 99),
-                    27: (0, 50),
-                    41: (0, 179),
-                    84: (0, 129),
-                    85: (0, 146),
-                    28: (0, 212),
-                    30: (0, 202),
-                    21: (0, 193),
-                    43: (0, 274),
-                    44: (0, 256),
-                    86: (0, 266),
-                    37: (0, 219),
-                    87: (0, 63),
-                    46: (0, 54),
-                    16: (0, 131),
-                    88: (0, 119),
-                    89: (0, 169),
-                    45: (0, 239),
-                    40: (0, 0),
-                    25: (0, 191),
-                    26: (0, 43),
-                    90: (0, 101),
-                    91: (0, 70),
-                    24: (0, 110),
-                    92: (0, 186),
-                    93: (0, 15),
-                    50: (0, 125),
-                    6: (0, 170),
-                    47: (0, 149),
-                    49: (0, 252),
-                    94: (0, 166),
-                    51: (0, 199),
-                    1: (0, 40),
-                    2: (0, 277),
-                    95: (0, 286),
-                    39: (0, 188),
-                    32: (0, 144),
-                    96: (0, 220),
-                    14: (0, 172),
-                    5: (0, 162),
-                    100: (0, 229),
-                    48: (0, 132),
-                    97: (0, 245),
-                    98: (0, 275),
-                    0: (0, 231),
-                    31: (0, 100),
-                    11: (0, 97),
-                    99: (0, 9),
-                    18: (0, 16),
-                    12: (0, 232),
-                    4: (0, 12),
-                    23: (0, 278),
-                    101: (0, 19),
-                },
-                251: {56: (1, {"@": 110}), 55: (1, {"@": 110})},
-                252: {
-                    20: (0, 71),
-                    22: (0, 104),
-                    52: (1, {"@": 120}),
-                    8: (1, {"@": 120}),
-                    15: (1, {"@": 120}),
-                    53: (1, {"@": 120}),
-                    54: (1, {"@": 120}),
-                    18: (1, {"@": 120}),
-                    21: (1, {"@": 120}),
-                    23: (1, {"@": 120}),
-                    2: (1, {"@": 120}),
-                    4: (1, {"@": 120}),
-                    33: (1, {"@": 120}),
-                    24: (1, {"@": 120}),
-                    5: (1, {"@": 120}),
-                    6: (1, {"@": 120}),
-                    25: (1, {"@": 120}),
-                    7: (1, {"@": 120}),
-                    16: (1, {"@": 120}),
-                    26: (1, {"@": 120}),
-                    27: (1, {"@": 120}),
-                    28: (1, {"@": 120}),
-                    30: (1, {"@": 120}),
-                    1: (1, {"@": 120}),
-                    31: (1, {"@": 120}),
-                    11: (1, {"@": 120}),
-                    12: (1, {"@": 120}),
-                    13: (1, {"@": 120}),
-                    14: (1, {"@": 120}),
-                    32: (1, {"@": 120}),
-                    0: (1, {"@": 120}),
-                    56: (1, {"@": 120}),
-                    55: (1, {"@": 120}),
-                },
-                253: {118: (0, 79)},
-                254: {5: (1, {"@": 185}), 30: (1, {"@": 185}), 13: (1, {"@": 185})},
-                255: {55: (1, {"@": 90}), 52: (1, {"@": 90})},
-                256: {
-                    27: (1, {"@": 136}),
-                    52: (1, {"@": 136}),
-                    8: (1, {"@": 136}),
-                    19: (1, {"@": 136}),
-                    29: (1, {"@": 136}),
-                    9: (1, {"@": 136}),
-                    10: (1, {"@": 136}),
-                    20: (1, {"@": 136}),
-                    22: (1, {"@": 136}),
-                    3: (1, {"@": 136}),
-                    53: (1, {"@": 136}),
-                    24: (1, {"@": 136}),
-                    32: (1, {"@": 136}),
-                    15: (1, {"@": 136}),
-                    17: (1, {"@": 136}),
-                    54: (1, {"@": 136}),
-                    2: (1, {"@": 136}),
-                    4: (1, {"@": 136}),
-                    33: (1, {"@": 136}),
-                    5: (1, {"@": 136}),
-                    6: (1, {"@": 136}),
-                    7: (1, {"@": 136}),
-                    1: (1, {"@": 136}),
-                    11: (1, {"@": 136}),
-                    12: (1, {"@": 136}),
-                    13: (1, {"@": 136}),
-                    14: (1, {"@": 136}),
-                    16: (1, {"@": 136}),
-                    18: (1, {"@": 136}),
-                    21: (1, {"@": 136}),
-                    23: (1, {"@": 136}),
-                    25: (1, {"@": 136}),
-                    26: (1, {"@": 136}),
-                    28: (1, {"@": 136}),
-                    30: (1, {"@": 136}),
-                    31: (1, {"@": 136}),
-                    0: (1, {"@": 136}),
-                    55: (1, {"@": 136}),
-                    56: (1, {"@": 136}),
-                },
-                257: {
-                    82: (0, 44),
-                    35: (0, 118),
-                    83: (0, 94),
-                    38: (0, 82),
-                    36: (0, 126),
-                    7: (0, 80),
-                    42: (0, 99),
-                    27: (0, 50),
-                    41: (0, 179),
-                    84: (0, 129),
-                    85: (0, 146),
-                    28: (0, 212),
-                    30: (0, 202),
-                    21: (0, 193),
-                    43: (0, 274),
-                    44: (0, 256),
-                    86: (0, 266),
-                    37: (0, 219),
-                    87: (0, 63),
-                    46: (0, 54),
-                    16: (0, 131),
-                    88: (0, 119),
-                    89: (0, 169),
-                    45: (0, 239),
-                    40: (0, 0),
-                    25: (0, 191),
-                    26: (0, 43),
-                    90: (0, 101),
-                    91: (0, 70),
-                    24: (0, 110),
-                    92: (0, 186),
-                    93: (0, 15),
-                    50: (0, 125),
-                    6: (0, 170),
-                    47: (0, 149),
-                    49: (0, 252),
-                    94: (0, 166),
-                    51: (0, 199),
-                    1: (0, 40),
-                    2: (0, 277),
-                    95: (0, 286),
-                    39: (0, 188),
-                    32: (0, 144),
-                    96: (0, 220),
-                    14: (0, 172),
-                    5: (0, 162),
-                    48: (0, 132),
-                    97: (0, 245),
-                    98: (0, 275),
-                    0: (0, 231),
-                    31: (0, 100),
-                    100: (0, 194),
-                    11: (0, 97),
-                    99: (0, 9),
-                    18: (0, 16),
-                    12: (0, 232),
-                    4: (0, 12),
-                    23: (0, 278),
-                    101: (0, 19),
-                },
-                258: {
-                    18: (1, {"@": 94}),
-                    21: (1, {"@": 94}),
-                    23: (1, {"@": 94}),
-                    2: (1, {"@": 94}),
-                    4: (1, {"@": 94}),
-                    24: (1, {"@": 94}),
-                    5: (1, {"@": 94}),
-                    6: (1, {"@": 94}),
-                    25: (1, {"@": 94}),
-                    7: (1, {"@": 94}),
-                    26: (1, {"@": 94}),
-                    27: (1, {"@": 94}),
-                    28: (1, {"@": 94}),
-                    30: (1, {"@": 94}),
-                    1: (1, {"@": 94}),
-                    0: (1, {"@": 94}),
-                    31: (1, {"@": 94}),
-                    11: (1, {"@": 94}),
-                    12: (1, {"@": 94}),
-                    13: (1, {"@": 94}),
-                    14: (1, {"@": 94}),
-                    32: (1, {"@": 94}),
-                    16: (1, {"@": 94}),
-                    33: (1, {"@": 94}),
-                },
-                259: {54: (1, {"@": 204}), 56: (1, {"@": 204})},
-                260: {119: (0, 3)},
-                261: {13: (0, 178)},
-                262: {55: (1, {"@": 86}), 52: (1, {"@": 86})},
-                263: {54: (1, {"@": 174}), 56: (1, {"@": 174})},
-                264: {5: (1, {"@": 188}), 30: (1, {"@": 188}), 13: (1, {"@": 188})},
-                265: {
-                    52: (1, {"@": 116}),
-                    53: (1, {"@": 116}),
-                    54: (1, {"@": 116}),
-                    18: (1, {"@": 116}),
-                    21: (1, {"@": 116}),
-                    23: (1, {"@": 116}),
-                    2: (1, {"@": 116}),
-                    4: (1, {"@": 116}),
-                    33: (1, {"@": 116}),
-                    24: (1, {"@": 116}),
-                    5: (1, {"@": 116}),
-                    6: (1, {"@": 116}),
-                    25: (1, {"@": 116}),
-                    7: (1, {"@": 116}),
-                    26: (1, {"@": 116}),
-                    27: (1, {"@": 116}),
-                    28: (1, {"@": 116}),
-                    30: (1, {"@": 116}),
-                    1: (1, {"@": 116}),
-                    0: (1, {"@": 116}),
-                    31: (1, {"@": 116}),
-                    11: (1, {"@": 116}),
-                    12: (1, {"@": 116}),
-                    13: (1, {"@": 116}),
-                    14: (1, {"@": 116}),
-                    32: (1, {"@": 116}),
-                    16: (1, {"@": 116}),
-                    56: (1, {"@": 116}),
-                    55: (1, {"@": 116}),
-                },
-                266: {
-                    18: (1, {"@": 64}),
-                    21: (1, {"@": 64}),
-                    23: (1, {"@": 64}),
-                    2: (1, {"@": 64}),
-                    4: (1, {"@": 64}),
-                    24: (1, {"@": 64}),
-                    5: (1, {"@": 64}),
-                    6: (1, {"@": 64}),
-                    25: (1, {"@": 64}),
-                    7: (1, {"@": 64}),
-                    26: (1, {"@": 64}),
-                    27: (1, {"@": 64}),
-                    28: (1, {"@": 64}),
-                    30: (1, {"@": 64}),
-                    1: (1, {"@": 64}),
-                    0: (1, {"@": 64}),
-                    31: (1, {"@": 64}),
-                    11: (1, {"@": 64}),
-                    12: (1, {"@": 64}),
-                    13: (1, {"@": 64}),
-                    14: (1, {"@": 64}),
-                    32: (1, {"@": 64}),
-                    16: (1, {"@": 64}),
-                    33: (1, {"@": 64}),
-                },
-                267: {
-                    27: (0, 50),
-                    102: (0, 81),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    36: (0, 36),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                268: {
-                    52: (1, {"@": 161}),
-                    19: (1, {"@": 161}),
-                    20: (1, {"@": 161}),
-                    22: (1, {"@": 161}),
-                    3: (1, {"@": 161}),
-                    53: (1, {"@": 161}),
-                    24: (1, {"@": 161}),
-                    27: (1, {"@": 161}),
-                    8: (1, {"@": 161}),
-                    29: (1, {"@": 161}),
-                    9: (1, {"@": 161}),
-                    10: (1, {"@": 161}),
-                    32: (1, {"@": 161}),
-                    15: (1, {"@": 161}),
-                    0: (1, {"@": 161}),
-                    17: (1, {"@": 161}),
-                    54: (1, {"@": 161}),
-                    2: (1, {"@": 161}),
-                    4: (1, {"@": 161}),
-                    33: (1, {"@": 161}),
-                    5: (1, {"@": 161}),
-                    6: (1, {"@": 161}),
-                    7: (1, {"@": 161}),
-                    1: (1, {"@": 161}),
-                    11: (1, {"@": 161}),
-                    12: (1, {"@": 161}),
-                    13: (1, {"@": 161}),
-                    14: (1, {"@": 161}),
-                    16: (1, {"@": 161}),
-                    18: (1, {"@": 161}),
-                    21: (1, {"@": 161}),
-                    23: (1, {"@": 161}),
-                    25: (1, {"@": 161}),
-                    26: (1, {"@": 161}),
-                    28: (1, {"@": 161}),
-                    30: (1, {"@": 161}),
-                    31: (1, {"@": 161}),
-                    56: (1, {"@": 161}),
-                    55: (1, {"@": 161}),
-                },
-                269: {56: (0, 59), 54: (0, 141)},
-                270: {
-                    18: (1, {"@": 77}),
-                    21: (1, {"@": 77}),
-                    23: (1, {"@": 77}),
-                    2: (1, {"@": 77}),
-                    4: (1, {"@": 77}),
-                    24: (1, {"@": 77}),
-                    5: (1, {"@": 77}),
-                    6: (1, {"@": 77}),
-                    25: (1, {"@": 77}),
-                    7: (1, {"@": 77}),
-                    26: (1, {"@": 77}),
-                    27: (1, {"@": 77}),
-                    28: (1, {"@": 77}),
-                    30: (1, {"@": 77}),
-                    1: (1, {"@": 77}),
-                    0: (1, {"@": 77}),
-                    31: (1, {"@": 77}),
-                    11: (1, {"@": 77}),
-                    12: (1, {"@": 77}),
-                    13: (1, {"@": 77}),
-                    14: (1, {"@": 77}),
-                    32: (1, {"@": 77}),
-                    16: (1, {"@": 77}),
-                    33: (1, {"@": 77}),
-                },
-                271: {54: (0, 168)},
-                272: {5: (1, {"@": 189}), 30: (1, {"@": 189}), 13: (1, {"@": 189})},
-                273: {30: (0, 47)},
-                274: {
-                    52: (1, {"@": 148}),
-                    19: (1, {"@": 148}),
-                    20: (1, {"@": 148}),
-                    22: (1, {"@": 148}),
-                    3: (1, {"@": 148}),
-                    53: (1, {"@": 148}),
-                    24: (1, {"@": 148}),
-                    27: (1, {"@": 148}),
-                    8: (1, {"@": 148}),
-                    29: (1, {"@": 148}),
-                    9: (1, {"@": 148}),
-                    10: (1, {"@": 148}),
-                    32: (1, {"@": 148}),
-                    15: (1, {"@": 148}),
-                    0: (1, {"@": 148}),
-                    17: (1, {"@": 148}),
-                    54: (1, {"@": 148}),
-                    2: (1, {"@": 148}),
-                    4: (1, {"@": 148}),
-                    33: (1, {"@": 148}),
-                    5: (1, {"@": 148}),
-                    6: (1, {"@": 148}),
-                    7: (1, {"@": 148}),
-                    1: (1, {"@": 148}),
-                    11: (1, {"@": 148}),
-                    12: (1, {"@": 148}),
-                    13: (1, {"@": 148}),
-                    14: (1, {"@": 148}),
-                    16: (1, {"@": 148}),
-                    18: (1, {"@": 148}),
-                    21: (1, {"@": 148}),
-                    23: (1, {"@": 148}),
-                    25: (1, {"@": 148}),
-                    26: (1, {"@": 148}),
-                    28: (1, {"@": 148}),
-                    30: (1, {"@": 148}),
-                    31: (1, {"@": 148}),
-                    56: (1, {"@": 148}),
-                    55: (1, {"@": 148}),
-                },
-                275: {
-                    18: (1, {"@": 65}),
-                    21: (1, {"@": 65}),
-                    23: (1, {"@": 65}),
-                    2: (1, {"@": 65}),
-                    4: (1, {"@": 65}),
-                    24: (1, {"@": 65}),
-                    5: (1, {"@": 65}),
-                    6: (1, {"@": 65}),
-                    25: (1, {"@": 65}),
-                    7: (1, {"@": 65}),
-                    26: (1, {"@": 65}),
-                    27: (1, {"@": 65}),
-                    28: (1, {"@": 65}),
-                    30: (1, {"@": 65}),
-                    1: (1, {"@": 65}),
-                    0: (1, {"@": 65}),
-                    31: (1, {"@": 65}),
-                    11: (1, {"@": 65}),
-                    12: (1, {"@": 65}),
-                    13: (1, {"@": 65}),
-                    14: (1, {"@": 65}),
-                    32: (1, {"@": 65}),
-                    16: (1, {"@": 65}),
-                    33: (1, {"@": 65}),
-                },
-                276: {
-                    27: (0, 247),
-                    52: (1, {"@": 112}),
-                    10: (1, {"@": 112}),
-                    56: (1, {"@": 112}),
-                    55: (1, {"@": 112}),
-                    5: (1, {"@": 112}),
-                    30: (1, {"@": 112}),
-                    13: (1, {"@": 112}),
-                },
-                277: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    37: (0, 219),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    41: (0, 179),
-                    42: (0, 99),
-                    43: (0, 274),
-                    44: (0, 256),
-                    45: (0, 239),
-                    46: (0, 54),
-                    47: (0, 149),
-                    48: (0, 132),
-                    49: (0, 252),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    36: (0, 10),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                278: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    40: (0, 56),
-                    0: (0, 231),
-                    38: (0, 82),
-                    47: (0, 13),
-                    39: (0, 188),
-                    30: (0, 171),
-                    31: (0, 100),
-                    32: (0, 144),
-                    24: (0, 110),
-                    14: (0, 172),
-                    42: (0, 99),
-                    50: (0, 125),
-                    18: (0, 16),
-                    43: (0, 274),
-                    44: (0, 256),
-                    12: (0, 232),
-                    48: (0, 132),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                279: {
-                    27: (1, {"@": 134}),
-                    52: (1, {"@": 134}),
-                    8: (1, {"@": 134}),
-                    19: (1, {"@": 134}),
-                    29: (1, {"@": 134}),
-                    9: (1, {"@": 134}),
-                    10: (1, {"@": 134}),
-                    20: (1, {"@": 134}),
-                    22: (1, {"@": 134}),
-                    3: (1, {"@": 134}),
-                    53: (1, {"@": 134}),
-                    24: (1, {"@": 134}),
-                    32: (1, {"@": 134}),
-                    15: (1, {"@": 134}),
-                    17: (1, {"@": 134}),
-                    54: (1, {"@": 134}),
-                    2: (1, {"@": 134}),
-                    4: (1, {"@": 134}),
-                    33: (1, {"@": 134}),
-                    5: (1, {"@": 134}),
-                    6: (1, {"@": 134}),
-                    7: (1, {"@": 134}),
-                    1: (1, {"@": 134}),
-                    11: (1, {"@": 134}),
-                    12: (1, {"@": 134}),
-                    13: (1, {"@": 134}),
-                    14: (1, {"@": 134}),
-                    16: (1, {"@": 134}),
-                    18: (1, {"@": 134}),
-                    21: (1, {"@": 134}),
-                    23: (1, {"@": 134}),
-                    25: (1, {"@": 134}),
-                    26: (1, {"@": 134}),
-                    28: (1, {"@": 134}),
-                    30: (1, {"@": 134}),
-                    31: (1, {"@": 134}),
-                    0: (1, {"@": 134}),
-                    55: (1, {"@": 134}),
-                    56: (1, {"@": 134}),
-                },
-                280: {
-                    52: (1, {"@": 115}),
-                    53: (1, {"@": 115}),
-                    54: (1, {"@": 115}),
-                    18: (1, {"@": 115}),
-                    21: (1, {"@": 115}),
-                    23: (1, {"@": 115}),
-                    2: (1, {"@": 115}),
-                    4: (1, {"@": 115}),
-                    33: (1, {"@": 115}),
-                    24: (1, {"@": 115}),
-                    5: (1, {"@": 115}),
-                    6: (1, {"@": 115}),
-                    25: (1, {"@": 115}),
-                    7: (1, {"@": 115}),
-                    26: (1, {"@": 115}),
-                    27: (1, {"@": 115}),
-                    28: (1, {"@": 115}),
-                    30: (1, {"@": 115}),
-                    1: (1, {"@": 115}),
-                    0: (1, {"@": 115}),
-                    31: (1, {"@": 115}),
-                    11: (1, {"@": 115}),
-                    12: (1, {"@": 115}),
-                    13: (1, {"@": 115}),
-                    14: (1, {"@": 115}),
-                    32: (1, {"@": 115}),
-                    16: (1, {"@": 115}),
-                    56: (1, {"@": 115}),
-                    55: (1, {"@": 115}),
-                },
-                281: {5: (1, {"@": 182}), 58: (1, {"@": 182}), 13: (1, {"@": 182})},
-                282: {
-                    27: (0, 50),
-                    35: (0, 118),
-                    38: (0, 82),
-                    39: (0, 188),
-                    30: (0, 171),
-                    32: (0, 144),
-                    40: (0, 56),
-                    14: (0, 172),
-                    42: (0, 99),
-                    46: (0, 152),
-                    43: (0, 274),
-                    44: (0, 256),
-                    47: (0, 149),
-                    48: (0, 132),
-                    0: (0, 231),
-                    31: (0, 100),
-                    24: (0, 110),
-                    50: (0, 125),
-                    18: (0, 16),
-                    12: (0, 232),
-                    51: (0, 199),
-                    23: (0, 278),
-                    1: (0, 40),
-                },
-                283: {
-                    52: (1, {"@": 118}),
-                    8: (1, {"@": 118}),
-                    15: (1, {"@": 118}),
-                    53: (1, {"@": 118}),
-                    54: (1, {"@": 118}),
-                    18: (1, {"@": 118}),
-                    21: (1, {"@": 118}),
-                    23: (1, {"@": 118}),
-                    2: (1, {"@": 118}),
-                    4: (1, {"@": 118}),
-                    33: (1, {"@": 118}),
-                    24: (1, {"@": 118}),
-                    5: (1, {"@": 118}),
-                    6: (1, {"@": 118}),
-                    25: (1, {"@": 118}),
-                    7: (1, {"@": 118}),
-                    16: (1, {"@": 118}),
-                    26: (1, {"@": 118}),
-                    27: (1, {"@": 118}),
-                    28: (1, {"@": 118}),
-                    30: (1, {"@": 118}),
-                    1: (1, {"@": 118}),
-                    31: (1, {"@": 118}),
-                    11: (1, {"@": 118}),
-                    12: (1, {"@": 118}),
-                    13: (1, {"@": 118}),
-                    14: (1, {"@": 118}),
-                    32: (1, {"@": 118}),
-                    0: (1, {"@": 118}),
-                    56: (1, {"@": 118}),
-                    55: (1, {"@": 118}),
-                },
-                284: {30: (0, 227), 64: (0, 34)},
-                285: {52: (0, 48)},
-                286: {
-                    18: (1, {"@": 66}),
-                    21: (1, {"@": 66}),
-                    23: (1, {"@": 66}),
-                    2: (1, {"@": 66}),
-                    4: (1, {"@": 66}),
-                    24: (1, {"@": 66}),
-                    5: (1, {"@": 66}),
-                    6: (1, {"@": 66}),
-                    25: (1, {"@": 66}),
-                    7: (1, {"@": 66}),
-                    26: (1, {"@": 66}),
-                    27: (1, {"@": 66}),
-                    28: (1, {"@": 66}),
-                    30: (1, {"@": 66}),
-                    1: (1, {"@": 66}),
-                    0: (1, {"@": 66}),
-                    31: (1, {"@": 66}),
-                    11: (1, {"@": 66}),
-                    12: (1, {"@": 66}),
-                    13: (1, {"@": 66}),
-                    14: (1, {"@": 66}),
-                    32: (1, {"@": 66}),
-                    16: (1, {"@": 66}),
-                    33: (1, {"@": 66}),
-                },
-            },
-            "start_states": {"start": 190},
-            "end_states": {"start": 108},
-        },
-        "__type__": "ParsingFrontend",
-    },
-    "rules": [
-        {"@": 51},
-        {"@": 52},
-        {"@": 53},
-        {"@": 54},
-        {"@": 55},
-        {"@": 56},
-        {"@": 57},
-        {"@": 58},
-        {"@": 59},
-        {"@": 60},
-        {"@": 61},
-        {"@": 62},
-        {"@": 63},
-        {"@": 64},
-        {"@": 65},
-        {"@": 66},
-        {"@": 67},
-        {"@": 68},
-        {"@": 69},
-        {"@": 70},
-        {"@": 71},
-        {"@": 72},
-        {"@": 73},
-        {"@": 74},
-        {"@": 75},
-        {"@": 76},
-        {"@": 77},
-        {"@": 78},
-        {"@": 79},
-        {"@": 80},
-        {"@": 81},
-        {"@": 82},
-        {"@": 83},
-        {"@": 84},
-        {"@": 85},
-        {"@": 86},
-        {"@": 87},
-        {"@": 88},
-        {"@": 89},
-        {"@": 90},
-        {"@": 91},
-        {"@": 92},
-        {"@": 93},
-        {"@": 94},
-        {"@": 95},
-        {"@": 96},
-        {"@": 97},
-        {"@": 98},
-        {"@": 99},
-        {"@": 100},
-        {"@": 101},
-        {"@": 102},
-        {"@": 103},
-        {"@": 104},
-        {"@": 105},
-        {"@": 106},
-        {"@": 107},
-        {"@": 108},
-        {"@": 109},
-        {"@": 110},
-        {"@": 111},
-        {"@": 112},
-        {"@": 113},
-        {"@": 114},
-        {"@": 115},
-        {"@": 116},
-        {"@": 117},
-        {"@": 118},
-        {"@": 119},
-        {"@": 120},
-        {"@": 121},
-        {"@": 122},
-        {"@": 123},
-        {"@": 124},
-        {"@": 125},
-        {"@": 126},
-        {"@": 127},
-        {"@": 128},
-        {"@": 129},
-        {"@": 130},
-        {"@": 131},
-        {"@": 132},
-        {"@": 133},
-        {"@": 134},
-        {"@": 135},
-        {"@": 136},
-        {"@": 137},
-        {"@": 138},
-        {"@": 139},
-        {"@": 140},
-        {"@": 141},
-        {"@": 142},
-        {"@": 143},
-        {"@": 144},
-        {"@": 145},
-        {"@": 146},
-        {"@": 147},
-        {"@": 148},
-        {"@": 149},
-        {"@": 150},
-        {"@": 151},
-        {"@": 152},
-        {"@": 153},
-        {"@": 154},
-        {"@": 155},
-        {"@": 156},
-        {"@": 157},
-        {"@": 158},
-        {"@": 159},
-        {"@": 160},
-        {"@": 161},
-        {"@": 162},
-        {"@": 163},
-        {"@": 164},
-        {"@": 165},
-        {"@": 166},
-        {"@": 167},
-        {"@": 168},
-        {"@": 169},
-        {"@": 170},
-        {"@": 171},
-        {"@": 172},
-        {"@": 173},
-        {"@": 174},
-        {"@": 175},
-        {"@": 176},
-        {"@": 177},
-        {"@": 178},
-        {"@": 179},
-        {"@": 180},
-        {"@": 181},
-        {"@": 182},
-        {"@": 183},
-        {"@": 184},
-        {"@": 185},
-        {"@": 186},
-        {"@": 187},
-        {"@": 188},
-        {"@": 189},
-        {"@": 190},
-        {"@": 191},
-        {"@": 192},
-        {"@": 193},
-        {"@": 194},
-        {"@": 195},
-        {"@": 196},
-        {"@": 197},
-        {"@": 198},
-        {"@": 199},
-        {"@": 200},
-        {"@": 201},
-        {"@": 202},
-        {"@": 203},
-        {"@": 204},
-    ],
-    "options": {
-        "debug": False,
-        "strict": False,
-        "keep_all_tokens": False,
-        "tree_class": None,
-        "cache": False,
-        "postlex": None,
-        "parser": "lalr",
-        "lexer": "contextual",
-        "transformer": None,
-        "start": ["start"],
-        "priority": "normal",
-        "ambiguity": "auto",
-        "regex": False,
-        "propagate_positions": False,
-        "lexer_callbacks": {},
-        "maybe_placeholders": False,
-        "edit_terminals": None,
-        "g_regex_flags": 0,
-        "use_bytes": False,
-        "ordered_sets": True,
-        "import_paths": [],
-        "source_path": None,
-        "_plugins": {},
-    },
-    "__type__": "Lark",
-}
-MEMO = {
-    0: {
-        "name": "INT",
-        "pattern": {
-            "value": "(?:[0-9])+",
-            "flags": [],
-            "raw": None,
-            "_width": [1, 18446744073709551616],
-            "__type__": "PatternRE",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    1: {
-        "name": "IDENTIFIER",
-        "pattern": {
-            "value": "(?:(?:[A-Z]|[a-z])|_)(?:(?:(?:[A-Z]|[a-z])|[0-9]|_))*",
-            "flags": [],
-            "raw": None,
-            "_width": [1, 18446744073709551616],
-            "__type__": "PatternRE",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    2: {
-        "name": "_NL",
-        "pattern": {
-            "value": "(?:(?:\r)?\n)+",
-            "flags": [],
-            "raw": None,
-            "_width": [1, 18446744073709551616],
-            "__type__": "PatternRE",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    3: {
-        "name": "__IGNORE_0",
-        "pattern": {"value": " ", "flags": [], "raw": '" "', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    4: {
-        "name": "__IGNORE_1",
-        "pattern": {
-            "value": "\t",
-            "flags": [],
-            "raw": '"\\t"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    5: {
-        "name": "COMMENT",
-        "pattern": {
-            "value": "//(?:[^\n])*",
-            "flags": [],
-            "raw": None,
-            "_width": [2, 18446744073709551616],
-            "__type__": "PatternRE",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    6: {
-        "name": "TRUE",
-        "pattern": {
-            "value": "true",
-            "flags": [],
-            "raw": '"true"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    7: {
-        "name": "FALSE",
-        "pattern": {
-            "value": "false",
-            "flags": [],
-            "raw": '"false"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    8: {
-        "name": "STRING",
-        "pattern": {
-            "value": '".*?"',
-            "flags": [],
-            "raw": None,
-            "_width": [2, 18446744073709551616],
-            "__type__": "PatternRE",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    9: {
-        "name": "LET",
-        "pattern": {
-            "value": "let",
-            "flags": [],
-            "raw": '"let"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    10: {
-        "name": "EQUAL",
-        "pattern": {"value": "=", "flags": [], "raw": '"="', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    11: {
-        "name": "LSQB",
-        "pattern": {"value": "[", "flags": [], "raw": '"["', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    12: {
-        "name": "RSQB",
-        "pattern": {"value": "]", "flags": [], "raw": '"]"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    13: {
-        "name": "PRINT",
-        "pattern": {
-            "value": "print",
-            "flags": [],
-            "raw": '"print"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    14: {
-        "name": "IF",
-        "pattern": {
-            "value": "if",
-            "flags": [],
-            "raw": '"if"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    15: {
-        "name": "LBRACE",
-        "pattern": {"value": "{", "flags": [], "raw": '"{"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    16: {
-        "name": "RBRACE",
-        "pattern": {"value": "}", "flags": [], "raw": '"}"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    17: {
-        "name": "ELIF",
-        "pattern": {
-            "value": "elif",
-            "flags": [],
-            "raw": '"elif"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    18: {
-        "name": "ELSE",
-        "pattern": {
-            "value": "else",
-            "flags": [],
-            "raw": '"else"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    19: {
-        "name": "MATCH",
-        "pattern": {
-            "value": "match",
-            "flags": [],
-            "raw": '"match"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    20: {
-        "name": "CASE",
-        "pattern": {
-            "value": "case",
-            "flags": [],
-            "raw": '"case"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    21: {
-        "name": "__ANON_0",
-        "pattern": {
-            "value": "::",
-            "flags": [],
-            "raw": '"::"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    22: {
-        "name": "LPAR",
-        "pattern": {"value": "(", "flags": [], "raw": '"("', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    23: {
-        "name": "RPAR",
-        "pattern": {"value": ")", "flags": [], "raw": '")"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    24: {
-        "name": "UNDERSCORE",
-        "pattern": {"value": "_", "flags": [], "raw": '"_"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    25: {
-        "name": "WHILE",
-        "pattern": {
-            "value": "while",
-            "flags": [],
-            "raw": '"while"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    26: {
-        "name": "FOR",
-        "pattern": {
-            "value": "for",
-            "flags": [],
-            "raw": '"for"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    27: {
-        "name": "IN",
-        "pattern": {
-            "value": "in",
-            "flags": [],
-            "raw": '"in"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    28: {
-        "name": "__ANON_1",
-        "pattern": {
-            "value": "..",
-            "flags": [],
-            "raw": '".."',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    29: {
-        "name": "STRUCT",
-        "pattern": {
-            "value": "struct",
-            "flags": [],
-            "raw": '"struct"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    30: {
-        "name": "COLON",
-        "pattern": {"value": ":", "flags": [], "raw": '":"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    31: {
-        "name": "DOT",
-        "pattern": {"value": ".", "flags": [], "raw": '"."', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    32: {
-        "name": "ENUM",
-        "pattern": {
-            "value": "enum",
-            "flags": [],
-            "raw": '"enum"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    33: {
-        "name": "FN",
-        "pattern": {
-            "value": "fn",
-            "flags": [],
-            "raw": '"fn"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    34: {
-        "name": "__ANON_2",
-        "pattern": {
-            "value": "->",
-            "flags": [],
-            "raw": '"->"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    35: {
-        "name": "COMMA",
-        "pattern": {"value": ",", "flags": [], "raw": '","', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    36: {
-        "name": "LESSTHAN",
-        "pattern": {"value": "<", "flags": [], "raw": '"<"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    37: {
-        "name": "MORETHAN",
-        "pattern": {"value": ">", "flags": [], "raw": '">"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    38: {
-        "name": "RETURN",
-        "pattern": {
-            "value": "return",
-            "flags": [],
-            "raw": '"return"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    39: {
-        "name": "__ANON_3",
-        "pattern": {
-            "value": "==",
-            "flags": [],
-            "raw": '"=="',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    40: {
-        "name": "__ANON_4",
-        "pattern": {
-            "value": "!=",
-            "flags": [],
-            "raw": '"!="',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    41: {
-        "name": "__ANON_5",
-        "pattern": {
-            "value": "&&",
-            "flags": [],
-            "raw": '"&&"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    42: {
-        "name": "__ANON_6",
-        "pattern": {
-            "value": "||",
-            "flags": [],
-            "raw": '"||"',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    43: {
-        "name": "__ANON_7",
-        "pattern": {
-            "value": "<=",
-            "flags": [],
-            "raw": '"<="',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    44: {
-        "name": "__ANON_8",
-        "pattern": {
-            "value": ">=",
-            "flags": [],
-            "raw": '">="',
-            "__type__": "PatternStr",
-        },
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    45: {
-        "name": "PLUS",
-        "pattern": {"value": "+", "flags": [], "raw": '"+"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    46: {
-        "name": "MINUS",
-        "pattern": {"value": "-", "flags": [], "raw": '"-"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    47: {
-        "name": "STAR",
-        "pattern": {"value": "*", "flags": [], "raw": '"*"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    48: {
-        "name": "SLASH",
-        "pattern": {"value": "/", "flags": [], "raw": '"/"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    49: {
-        "name": "PERCENT",
-        "pattern": {"value": "%", "flags": [], "raw": '"%"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    50: {
-        "name": "BANG",
-        "pattern": {"value": "!", "flags": [], "raw": '"!"', "__type__": "PatternStr"},
-        "priority": 0,
-        "__type__": "TerminalDef",
-    },
-    51: {
-        "origin": {"name": Token("RULE", "start"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "statement_list", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    52: {
-        "origin": {"name": Token("RULE", "statement_list"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "__statement_list_plus_0", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    53: {
-        "origin": {"name": Token("RULE", "statement_block"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "statement_list", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    54: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "expression", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    55: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "variable_declaration", "__type__": "NonTerminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    56: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "assignment", "__type__": "NonTerminal"}],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    57: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "if_chain", "__type__": "NonTerminal"}],
-        "order": 3,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    58: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "match_stmt", "__type__": "NonTerminal"}],
-        "order": 4,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    59: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "while_stmt", "__type__": "NonTerminal"}],
-        "order": 5,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    60: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "for_stmt", "__type__": "NonTerminal"}],
-        "order": 6,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    61: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "struct_stmt", "__type__": "NonTerminal"}],
-        "order": 7,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    62: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "enum_stmt", "__type__": "NonTerminal"}],
-        "order": 8,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    63: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "print_stmt", "__type__": "NonTerminal"}],
-        "order": 9,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    64: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "index_assignment", "__type__": "NonTerminal"}],
-        "order": 10,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    65: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "function_definition", "__type__": "NonTerminal"}],
-        "order": 11,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    66: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "return_stmt", "__type__": "NonTerminal"}],
-        "order": 12,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    67: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "for_stmt_int", "__type__": "NonTerminal"}],
-        "order": 13,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    68: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "struct_access", "__type__": "NonTerminal"}],
-        "order": 14,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    69: {
-        "origin": {"name": Token("RULE", "statement"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "struct_assignment", "__type__": "NonTerminal"}],
-        "order": 15,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    70: {
-        "origin": {
-            "name": Token("RULE", "variable_declaration"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [
-            {"name": "LET", "filter_out": True, "__type__": "Terminal"},
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "EQUAL", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    71: {
-        "origin": {"name": Token("RULE", "assignment"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "EQUAL", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    72: {
-        "origin": {
-            "name": Token("RULE", "index_assignment"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [
-            {"name": "variable", "__type__": "NonTerminal"},
-            {"name": "LSQB", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-            {"name": "RSQB", "filter_out": True, "__type__": "Terminal"},
-            {"name": "EQUAL", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    73: {
-        "origin": {"name": Token("RULE", "print_stmt"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "PRINT", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    74: {
-        "origin": {"name": Token("RULE", "print_stmt"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "PRINT", "filter_out": True, "__type__": "Terminal"},
-            {"name": "struct_access", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    75: {
-        "origin": {"name": Token("RULE", "if_chain"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "if_stmt", "__type__": "NonTerminal"},
-            {"name": "else_if_ladder", "__type__": "NonTerminal"},
-            {"name": "else_block", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    76: {
-        "origin": {"name": Token("RULE", "if_chain"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "if_stmt", "__type__": "NonTerminal"},
-            {"name": "else_if_ladder", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (False, False, True),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    77: {
-        "origin": {"name": Token("RULE", "if_chain"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "if_stmt", "__type__": "NonTerminal"},
-            {"name": "else_block", "__type__": "NonTerminal"},
-        ],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (False, True, False),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    78: {
-        "origin": {"name": Token("RULE", "if_chain"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "if_stmt", "__type__": "NonTerminal"}],
-        "order": 3,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (False, True, True),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    79: {
-        "origin": {"name": Token("RULE", "if_stmt"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "IF", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-            {"name": "LBRACE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "statement_block", "__type__": "NonTerminal"},
-            {"name": "RBRACE", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    80: {
-        "origin": {"name": Token("RULE", "else_if_ladder"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "__else_if_ladder_plus_1", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    81: {
-        "origin": {"name": Token("RULE", "else_if_stmt"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "ELIF", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-            {"name": "LBRACE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "statement_block", "__type__": "NonTerminal"},
-            {"name": "RBRACE", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    82: {
-        "origin": {"name": Token("RULE", "else_block"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "ELSE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "LBRACE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "statement_block", "__type__": "NonTerminal"},
-            {"name": "RBRACE", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    83: {
-        "origin": {"name": Token("RULE", "match_stmt"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "MATCH", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-            {"name": "LBRACE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "case_ladder", "__type__": "NonTerminal"},
-            {"name": "RBRACE", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    84: {
-        "origin": {"name": Token("RULE", "case_ladder"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "__case_ladder_plus_2", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    85: {
-        "origin": {"name": Token("RULE", "case_stmt"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "CASE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "match_pattern", "__type__": "NonTerminal"},
-            {"name": "LBRACE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "statement_block", "__type__": "NonTerminal"},
-            {"name": "RBRACE", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    86: {
-        "origin": {"name": Token("RULE", "match_pattern"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "bool_literal", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    87: {
-        "origin": {"name": Token("RULE", "match_pattern"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "enum_pattern", "__type__": "NonTerminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    88: {
-        "origin": {"name": Token("RULE", "match_pattern"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "enum_pattern_tuple", "__type__": "NonTerminal"}],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    89: {
-        "origin": {"name": Token("RULE", "match_pattern"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "wildcard_pattern", "__type__": "NonTerminal"}],
-        "order": 3,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    90: {
-        "origin": {"name": Token("RULE", "match_pattern"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "array_pattern", "__type__": "NonTerminal"}],
-        "order": 4,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    91: {
-        "origin": {"name": Token("RULE", "enum_pattern"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "__ANON_0", "filter_out": True, "__type__": "Terminal"},
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    92: {
-        "origin": {
-            "name": Token("RULE", "enum_pattern_tuple"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "__ANON_0", "filter_out": True, "__type__": "Terminal"},
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "LPAR", "filter_out": True, "__type__": "Terminal"},
-            {"name": "match_pattern", "__type__": "NonTerminal"},
-            {"name": "RPAR", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    93: {
-        "origin": {
-            "name": Token("RULE", "wildcard_pattern"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [
-            {"name": "UNDERSCORE", "filter_out": True, "__type__": "Terminal"}
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    94: {
-        "origin": {"name": Token("RULE", "while_stmt"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "WHILE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-            {"name": "LBRACE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "statement_block", "__type__": "NonTerminal"},
-            {"name": "RBRACE", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    95: {
-        "origin": {"name": Token("RULE", "for_stmt"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "FOR", "filter_out": True, "__type__": "Terminal"},
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "IN", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-            {"name": "LBRACE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "statement_block", "__type__": "NonTerminal"},
-            {"name": "RBRACE", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    96: {
-        "origin": {"name": Token("RULE", "for_stmt_int"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "FOR", "filter_out": True, "__type__": "Terminal"},
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "IN", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-            {"name": "__ANON_1", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-            {"name": "LBRACE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "statement_block", "__type__": "NonTerminal"},
-            {"name": "RBRACE", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    97: {
-        "origin": {"name": Token("RULE", "struct_stmt"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "STRUCT", "filter_out": True, "__type__": "Terminal"},
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "LBRACE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "struct_members", "__type__": "NonTerminal"},
-            {"name": "RBRACE", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    98: {
-        "origin": {"name": Token("RULE", "struct_members"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "__struct_members_plus_3", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    99: {
-        "origin": {"name": Token("RULE", "struct_member"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "COLON", "filter_out": True, "__type__": "Terminal"},
-            {"name": "type_annotation", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    100: {
-        "origin": {"name": Token("RULE", "struct_access"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "DOT", "filter_out": True, "__type__": "Terminal"},
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    101: {
-        "origin": {
-            "name": Token("RULE", "struct_assignment"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [
-            {"name": "struct_access", "__type__": "NonTerminal"},
-            {"name": "EQUAL", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    102: {
-        "origin": {"name": Token("RULE", "enum_stmt"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "ENUM", "filter_out": True, "__type__": "Terminal"},
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "LBRACE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "enum_members", "__type__": "NonTerminal"},
-            {"name": "RBRACE", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    103: {
-        "origin": {"name": Token("RULE", "enum_members"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "__enum_members_plus_4", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    104: {
-        "origin": {
-            "name": Token("RULE", "enum_member_bare"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"}
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    105: {
-        "origin": {
-            "name": Token("RULE", "enum_member_tuple"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "LPAR", "filter_out": True, "__type__": "Terminal"},
-            {"name": "type_annotation", "__type__": "NonTerminal"},
-            {"name": "RPAR", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    106: {
-        "origin": {
-            "name": Token("RULE", "function_definition"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [
-            {"name": "FN", "filter_out": True, "__type__": "Terminal"},
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "LPAR", "filter_out": True, "__type__": "Terminal"},
-            {"name": "function_params", "__type__": "NonTerminal"},
-            {"name": "RPAR", "filter_out": True, "__type__": "Terminal"},
-            {"name": "__ANON_2", "filter_out": True, "__type__": "Terminal"},
-            {"name": "type_annotation", "__type__": "NonTerminal"},
-            {"name": "LBRACE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "statement_block", "__type__": "NonTerminal"},
-            {"name": "RBRACE", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    107: {
-        "origin": {
-            "name": Token("RULE", "function_definition"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [
-            {"name": "FN", "filter_out": True, "__type__": "Terminal"},
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "LPAR", "filter_out": True, "__type__": "Terminal"},
-            {"name": "RPAR", "filter_out": True, "__type__": "Terminal"},
-            {"name": "__ANON_2", "filter_out": True, "__type__": "Terminal"},
-            {"name": "type_annotation", "__type__": "NonTerminal"},
-            {"name": "LBRACE", "filter_out": True, "__type__": "Terminal"},
-            {"name": "statement_block", "__type__": "NonTerminal"},
-            {"name": "RBRACE", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (
-                False,
-                False,
-                False,
-                True,
-                False,
-                False,
-                False,
-                False,
-                False,
-                False,
-            ),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    108: {
-        "origin": {"name": Token("RULE", "function_params"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "function_param", "__type__": "NonTerminal"},
-            {"name": "__function_params_star_5", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    109: {
-        "origin": {"name": Token("RULE", "function_params"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "function_param", "__type__": "NonTerminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    110: {
-        "origin": {"name": Token("RULE", "function_param"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "COLON", "filter_out": True, "__type__": "Terminal"},
-            {"name": "type_annotation", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    111: {
-        "origin": {"name": Token("RULE", "type_annotation"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "LESSTHAN", "filter_out": True, "__type__": "Terminal"},
-            {"name": "type_annotation", "__type__": "NonTerminal"},
-            {"name": "MORETHAN", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    112: {
-        "origin": {"name": Token("RULE", "type_annotation"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"}
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (False, True),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    113: {
-        "origin": {"name": Token("RULE", "return_stmt"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "RETURN", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    114: {
-        "origin": {"name": Token("RULE", "expression"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "equality", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    115: {
-        "origin": {"name": Token("RULE", "equality"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "logical", "__type__": "NonTerminal"},
-            {"name": "__ANON_3", "filter_out": False, "__type__": "Terminal"},
-            {"name": "equality", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    116: {
-        "origin": {"name": Token("RULE", "equality"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "logical", "__type__": "NonTerminal"},
-            {"name": "__ANON_4", "filter_out": False, "__type__": "Terminal"},
-            {"name": "equality", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    117: {
-        "origin": {"name": Token("RULE", "equality"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "logical", "__type__": "NonTerminal"}],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    118: {
-        "origin": {"name": Token("RULE", "logical"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "comparison", "__type__": "NonTerminal"},
-            {"name": "__ANON_5", "filter_out": False, "__type__": "Terminal"},
-            {"name": "logical", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    119: {
-        "origin": {"name": Token("RULE", "logical"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "comparison", "__type__": "NonTerminal"},
-            {"name": "__ANON_6", "filter_out": False, "__type__": "Terminal"},
-            {"name": "logical", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    120: {
-        "origin": {"name": Token("RULE", "logical"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "comparison", "__type__": "NonTerminal"}],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    121: {
-        "origin": {"name": Token("RULE", "comparison"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "term", "__type__": "NonTerminal"},
-            {"name": "MORETHAN", "filter_out": False, "__type__": "Terminal"},
-            {"name": "comparison", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    122: {
-        "origin": {"name": Token("RULE", "comparison"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "term", "__type__": "NonTerminal"},
-            {"name": "LESSTHAN", "filter_out": False, "__type__": "Terminal"},
-            {"name": "comparison", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    123: {
-        "origin": {"name": Token("RULE", "comparison"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "term", "__type__": "NonTerminal"},
-            {"name": "__ANON_7", "filter_out": False, "__type__": "Terminal"},
-            {"name": "comparison", "__type__": "NonTerminal"},
-        ],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    124: {
-        "origin": {"name": Token("RULE", "comparison"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "term", "__type__": "NonTerminal"},
-            {"name": "__ANON_8", "filter_out": False, "__type__": "Terminal"},
-            {"name": "comparison", "__type__": "NonTerminal"},
-        ],
-        "order": 3,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    125: {
-        "origin": {"name": Token("RULE", "comparison"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "term", "__type__": "NonTerminal"}],
-        "order": 4,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    126: {
-        "origin": {"name": Token("RULE", "term"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "factor", "__type__": "NonTerminal"},
-            {"name": "PLUS", "filter_out": False, "__type__": "Terminal"},
-            {"name": "term", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    127: {
-        "origin": {"name": Token("RULE", "term"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "factor", "__type__": "NonTerminal"},
-            {"name": "MINUS", "filter_out": False, "__type__": "Terminal"},
-            {"name": "term", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    128: {
-        "origin": {"name": Token("RULE", "term"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "factor", "__type__": "NonTerminal"}],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    129: {
-        "origin": {"name": Token("RULE", "factor"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "unary_op", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    130: {
-        "origin": {"name": Token("RULE", "factor"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "unary_op", "__type__": "NonTerminal"},
-            {"name": "STAR", "filter_out": False, "__type__": "Terminal"},
-            {"name": "factor", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    131: {
-        "origin": {"name": Token("RULE", "factor"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "unary_op", "__type__": "NonTerminal"},
-            {"name": "SLASH", "filter_out": False, "__type__": "Terminal"},
-            {"name": "factor", "__type__": "NonTerminal"},
-        ],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    132: {
-        "origin": {"name": Token("RULE", "factor"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "unary_op", "__type__": "NonTerminal"},
-            {"name": "PERCENT", "filter_out": False, "__type__": "Terminal"},
-            {"name": "factor", "__type__": "NonTerminal"},
-        ],
-        "order": 3,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    133: {
-        "origin": {"name": Token("RULE", "unary_op"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "PLUS", "filter_out": False, "__type__": "Terminal"},
-            {"name": "unary_op", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    134: {
-        "origin": {"name": Token("RULE", "unary_op"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "MINUS", "filter_out": False, "__type__": "Terminal"},
-            {"name": "unary_op", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    135: {
-        "origin": {"name": Token("RULE", "unary_op"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "BANG", "filter_out": False, "__type__": "Terminal"},
-            {"name": "unary_op", "__type__": "NonTerminal"},
-        ],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    136: {
-        "origin": {"name": Token("RULE", "unary_op"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "indexing", "__type__": "NonTerminal"}],
-        "order": 3,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": True,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    137: {
-        "origin": {"name": Token("RULE", "indexing"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "function_call", "__type__": "NonTerminal"},
-            {"name": "LSQB", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-            {"name": "RSQB", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    138: {
-        "origin": {"name": Token("RULE", "indexing"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "function_call", "__type__": "NonTerminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    139: {
-        "origin": {"name": Token("RULE", "function_call"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "variable", "__type__": "NonTerminal"},
-            {"name": "LPAR", "filter_out": True, "__type__": "Terminal"},
-            {"name": "function_args", "__type__": "NonTerminal"},
-            {"name": "RPAR", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    140: {
-        "origin": {"name": Token("RULE", "function_call"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "variable", "__type__": "NonTerminal"},
-            {"name": "LPAR", "filter_out": True, "__type__": "Terminal"},
-            {"name": "struct_init_members", "__type__": "NonTerminal"},
-            {"name": "RPAR", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    141: {
-        "origin": {"name": Token("RULE", "function_call"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "variable", "__type__": "NonTerminal"},
-            {"name": "LPAR", "filter_out": True, "__type__": "Terminal"},
-            {"name": "RPAR", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (False, False, True, False),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    142: {
-        "origin": {"name": Token("RULE", "function_call"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "atom", "__type__": "NonTerminal"}],
-        "order": 3,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    143: {
-        "origin": {"name": Token("RULE", "function_args"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "expression", "__type__": "NonTerminal"},
-            {"name": "__function_args_star_6", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    144: {
-        "origin": {"name": Token("RULE", "function_args"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "expression", "__type__": "NonTerminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    145: {
-        "origin": {"name": Token("RULE", "atom"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "bool_literal", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    146: {
-        "origin": {"name": Token("RULE", "atom"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "int_literal", "__type__": "NonTerminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    147: {
-        "origin": {"name": Token("RULE", "atom"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "string_literal", "__type__": "NonTerminal"}],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    148: {
-        "origin": {"name": Token("RULE", "atom"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "array_literal", "__type__": "NonTerminal"}],
-        "order": 3,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    149: {
-        "origin": {"name": Token("RULE", "atom"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "enum_literal_simple", "__type__": "NonTerminal"}],
-        "order": 4,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    150: {
-        "origin": {"name": Token("RULE", "atom"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "enum_literal_tuple", "__type__": "NonTerminal"}],
-        "order": 5,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    151: {
-        "origin": {"name": Token("RULE", "atom"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "LPAR", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-            {"name": "RPAR", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 6,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    152: {
-        "origin": {"name": Token("RULE", "atom"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "variable", "__type__": "NonTerminal"}],
-        "order": 7,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": True,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    153: {
-        "origin": {
-            "name": Token("RULE", "struct_init_members"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [
-            {"name": "struct_init_member", "__type__": "NonTerminal"},
-            {"name": "__struct_init_members_star_7", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    154: {
-        "origin": {
-            "name": Token("RULE", "struct_init_members"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [{"name": "struct_init_member", "__type__": "NonTerminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    155: {
-        "origin": {
-            "name": Token("RULE", "struct_init_member"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "EQUAL", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    156: {
-        "origin": {"name": Token("RULE", "bool_literal"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "TRUE", "filter_out": False, "__type__": "Terminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    157: {
-        "origin": {"name": Token("RULE", "bool_literal"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "FALSE", "filter_out": False, "__type__": "Terminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    158: {
-        "origin": {"name": Token("RULE", "int_literal"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "INT", "filter_out": False, "__type__": "Terminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    159: {
-        "origin": {"name": Token("RULE", "string_literal"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "STRING", "filter_out": False, "__type__": "Terminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    160: {
-        "origin": {
-            "name": Token("RULE", "enum_literal_simple"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "__ANON_0", "filter_out": True, "__type__": "Terminal"},
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    161: {
-        "origin": {
-            "name": Token("RULE", "enum_literal_tuple"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "__ANON_0", "filter_out": True, "__type__": "Terminal"},
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"},
-            {"name": "LPAR", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-            {"name": "RPAR", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    162: {
-        "origin": {"name": Token("RULE", "variable"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "IDENTIFIER", "filter_out": False, "__type__": "Terminal"}
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    163: {
-        "origin": {"name": Token("RULE", "array_literal"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "LESSTHAN", "filter_out": True, "__type__": "Terminal"},
-            {"name": "type_annotation", "__type__": "NonTerminal"},
-            {"name": "MORETHAN", "filter_out": True, "__type__": "Terminal"},
-            {"name": "LSQB", "filter_out": True, "__type__": "Terminal"},
-            {"name": "array_elements", "__type__": "NonTerminal"},
-            {"name": "RSQB", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    164: {
-        "origin": {"name": Token("RULE", "array_literal"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "LESSTHAN", "filter_out": True, "__type__": "Terminal"},
-            {"name": "type_annotation", "__type__": "NonTerminal"},
-            {"name": "MORETHAN", "filter_out": True, "__type__": "Terminal"},
-            {"name": "LSQB", "filter_out": True, "__type__": "Terminal"},
-            {"name": "RSQB", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (False, False, False, False, True, False),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    165: {
-        "origin": {"name": Token("RULE", "array_literal"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "LSQB", "filter_out": True, "__type__": "Terminal"},
-            {"name": "array_elements", "__type__": "NonTerminal"},
-            {"name": "RSQB", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (True, False, False, False),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    166: {
-        "origin": {"name": Token("RULE", "array_literal"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "LSQB", "filter_out": True, "__type__": "Terminal"},
-            {"name": "RSQB", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 3,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (True, False, True, False),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    167: {
-        "origin": {"name": Token("RULE", "array_elements"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "array_element", "__type__": "NonTerminal"},
-            {"name": "__array_elements_star_8", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    168: {
-        "origin": {"name": Token("RULE", "array_elements"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "array_element", "__type__": "NonTerminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    169: {
-        "origin": {"name": Token("RULE", "array_element"), "__type__": "NonTerminal"},
-        "expansion": [{"name": "expression", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    170: {
-        "origin": {"name": Token("RULE", "array_pattern"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "LSQB", "filter_out": True, "__type__": "Terminal"},
-            {"name": "array_pattern_element", "__type__": "NonTerminal"},
-            {"name": "__array_pattern_star_9", "__type__": "NonTerminal"},
-            {"name": "RSQB", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    171: {
-        "origin": {"name": Token("RULE", "array_pattern"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "LSQB", "filter_out": True, "__type__": "Terminal"},
-            {"name": "array_pattern_element", "__type__": "NonTerminal"},
-            {"name": "RSQB", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    172: {
-        "origin": {"name": Token("RULE", "array_pattern"), "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "LSQB", "filter_out": True, "__type__": "Terminal"},
-            {"name": "RSQB", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    173: {
-        "origin": {
-            "name": Token("RULE", "array_pattern_element"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [{"name": "int_literal", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    174: {
-        "origin": {
-            "name": Token("RULE", "array_pattern_element"),
-            "__type__": "NonTerminal",
-        },
-        "expansion": [{"name": "wildcard_pattern", "__type__": "NonTerminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    175: {
-        "origin": {"name": "__statement_list_plus_0", "__type__": "NonTerminal"},
-        "expansion": [{"name": "statement", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    176: {
-        "origin": {"name": "__statement_list_plus_0", "__type__": "NonTerminal"},
-        "expansion": [{"name": "_NL", "filter_out": True, "__type__": "Terminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    177: {
-        "origin": {"name": "__statement_list_plus_0", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__statement_list_plus_0", "__type__": "NonTerminal"},
-            {"name": "statement", "__type__": "NonTerminal"},
-        ],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    178: {
-        "origin": {"name": "__statement_list_plus_0", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__statement_list_plus_0", "__type__": "NonTerminal"},
-            {"name": "_NL", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 3,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    179: {
-        "origin": {"name": "__else_if_ladder_plus_1", "__type__": "NonTerminal"},
-        "expansion": [{"name": "else_if_stmt", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    180: {
-        "origin": {"name": "__else_if_ladder_plus_1", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__else_if_ladder_plus_1", "__type__": "NonTerminal"},
-            {"name": "else_if_stmt", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    181: {
-        "origin": {"name": "__case_ladder_plus_2", "__type__": "NonTerminal"},
-        "expansion": [{"name": "case_stmt", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    182: {
-        "origin": {"name": "__case_ladder_plus_2", "__type__": "NonTerminal"},
-        "expansion": [{"name": "_NL", "filter_out": True, "__type__": "Terminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    183: {
-        "origin": {"name": "__case_ladder_plus_2", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__case_ladder_plus_2", "__type__": "NonTerminal"},
-            {"name": "case_stmt", "__type__": "NonTerminal"},
-        ],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    184: {
-        "origin": {"name": "__case_ladder_plus_2", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__case_ladder_plus_2", "__type__": "NonTerminal"},
-            {"name": "_NL", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 3,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    185: {
-        "origin": {"name": "__struct_members_plus_3", "__type__": "NonTerminal"},
-        "expansion": [{"name": "struct_member", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    186: {
-        "origin": {"name": "__struct_members_plus_3", "__type__": "NonTerminal"},
-        "expansion": [{"name": "_NL", "filter_out": True, "__type__": "Terminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    187: {
-        "origin": {"name": "__struct_members_plus_3", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__struct_members_plus_3", "__type__": "NonTerminal"},
-            {"name": "struct_member", "__type__": "NonTerminal"},
-        ],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    188: {
-        "origin": {"name": "__struct_members_plus_3", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__struct_members_plus_3", "__type__": "NonTerminal"},
-            {"name": "_NL", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 3,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    189: {
-        "origin": {"name": "__enum_members_plus_4", "__type__": "NonTerminal"},
-        "expansion": [{"name": "enum_member_bare", "__type__": "NonTerminal"}],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    190: {
-        "origin": {"name": "__enum_members_plus_4", "__type__": "NonTerminal"},
-        "expansion": [{"name": "enum_member_tuple", "__type__": "NonTerminal"}],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    191: {
-        "origin": {"name": "__enum_members_plus_4", "__type__": "NonTerminal"},
-        "expansion": [{"name": "_NL", "filter_out": True, "__type__": "Terminal"}],
-        "order": 2,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    192: {
-        "origin": {"name": "__enum_members_plus_4", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__enum_members_plus_4", "__type__": "NonTerminal"},
-            {"name": "enum_member_bare", "__type__": "NonTerminal"},
-        ],
-        "order": 3,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    193: {
-        "origin": {"name": "__enum_members_plus_4", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__enum_members_plus_4", "__type__": "NonTerminal"},
-            {"name": "enum_member_tuple", "__type__": "NonTerminal"},
-        ],
-        "order": 4,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    194: {
-        "origin": {"name": "__enum_members_plus_4", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__enum_members_plus_4", "__type__": "NonTerminal"},
-            {"name": "_NL", "filter_out": True, "__type__": "Terminal"},
-        ],
-        "order": 5,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    195: {
-        "origin": {"name": "__function_params_star_5", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "COMMA", "filter_out": True, "__type__": "Terminal"},
-            {"name": "function_param", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    196: {
-        "origin": {"name": "__function_params_star_5", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__function_params_star_5", "__type__": "NonTerminal"},
-            {"name": "COMMA", "filter_out": True, "__type__": "Terminal"},
-            {"name": "function_param", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    197: {
-        "origin": {"name": "__function_args_star_6", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "COMMA", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    198: {
-        "origin": {"name": "__function_args_star_6", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__function_args_star_6", "__type__": "NonTerminal"},
-            {"name": "COMMA", "filter_out": True, "__type__": "Terminal"},
-            {"name": "expression", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    199: {
-        "origin": {"name": "__struct_init_members_star_7", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "COMMA", "filter_out": True, "__type__": "Terminal"},
-            {"name": "struct_init_member", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    200: {
-        "origin": {"name": "__struct_init_members_star_7", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__struct_init_members_star_7", "__type__": "NonTerminal"},
-            {"name": "COMMA", "filter_out": True, "__type__": "Terminal"},
-            {"name": "struct_init_member", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    201: {
-        "origin": {"name": "__array_elements_star_8", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "COMMA", "filter_out": True, "__type__": "Terminal"},
-            {"name": "array_element", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    202: {
-        "origin": {"name": "__array_elements_star_8", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__array_elements_star_8", "__type__": "NonTerminal"},
-            {"name": "COMMA", "filter_out": True, "__type__": "Terminal"},
-            {"name": "array_element", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    203: {
-        "origin": {"name": "__array_pattern_star_9", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "COMMA", "filter_out": True, "__type__": "Terminal"},
-            {"name": "array_pattern_element", "__type__": "NonTerminal"},
-        ],
-        "order": 0,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-    204: {
-        "origin": {"name": "__array_pattern_star_9", "__type__": "NonTerminal"},
-        "expansion": [
-            {"name": "__array_pattern_star_9", "__type__": "NonTerminal"},
-            {"name": "COMMA", "filter_out": True, "__type__": "Terminal"},
-            {"name": "array_pattern_element", "__type__": "NonTerminal"},
-        ],
-        "order": 1,
-        "alias": None,
-        "options": {
-            "keep_all_tokens": False,
-            "expand1": False,
-            "priority": None,
-            "template_source": None,
-            "empty_indices": (),
-            "__type__": "RuleOptions",
-        },
-        "__type__": "Rule",
-    },
-}
+DATA = (
+{'parser': {'lexer_conf': {'terminals': [{'@': 0}, {'@': 1}, {'@': 2}, {'@': 3}, {'@': 4}, {'@': 5}, {'@': 6}, {'@': 7}, {'@': 8}, {'@': 9}, {'@': 10}, {'@': 11}, {'@': 12}, {'@': 13}, {'@': 14}, {'@': 15}, {'@': 16}, {'@': 17}, {'@': 18}, {'@': 19}, {'@': 20}, {'@': 21}, {'@': 22}, {'@': 23}, {'@': 24}, {'@': 25}, {'@': 26}, {'@': 27}, {'@': 28}, {'@': 29}, {'@': 30}, {'@': 31}, {'@': 32}, {'@': 33}, {'@': 34}, {'@': 35}, {'@': 36}, {'@': 37}, {'@': 38}, {'@': 39}, {'@': 40}, {'@': 41}, {'@': 42}, {'@': 43}, {'@': 44}, {'@': 45}, {'@': 46}, {'@': 47}, {'@': 48}, {'@': 49}, {'@': 50}], 'ignore': ['__IGNORE_0', '__IGNORE_1', 'COMMENT'], 'g_regex_flags': 0, 'use_bytes': False, 'lexer_type': 'contextual', '__type__': 'LexerConf'}, 'parser_conf': {'rules': [{'@': 51}, {'@': 52}, {'@': 53}, {'@': 54}, {'@': 55}, {'@': 56}, {'@': 57}, {'@': 58}, {'@': 59}, {'@': 60}, {'@': 61}, {'@': 62}, {'@': 63}, {'@': 64}, {'@': 65}, {'@': 66}, {'@': 67}, {'@': 68}, {'@': 69}, {'@': 70}, {'@': 71}, {'@': 72}, {'@': 73}, {'@': 74}, {'@': 75}, {'@': 76}, {'@': 77}, {'@': 78}, {'@': 79}, {'@': 80}, {'@': 81}, {'@': 82}, {'@': 83}, {'@': 84}, {'@': 85}, {'@': 86}, {'@': 87}, {'@': 88}, {'@': 89}, {'@': 90}, {'@': 91}, {'@': 92}, {'@': 93}, {'@': 94}, {'@': 95}, {'@': 96}, {'@': 97}, {'@': 98}, {'@': 99}, {'@': 100}, {'@': 101}, {'@': 102}, {'@': 103}, {'@': 104}, {'@': 105}, {'@': 106}, {'@': 107}, {'@': 108}, {'@': 109}, {'@': 110}, {'@': 111}, {'@': 112}, {'@': 113}, {'@': 114}, {'@': 115}, {'@': 116}, {'@': 117}, {'@': 118}, {'@': 119}, {'@': 120}, {'@': 121}, {'@': 122}, {'@': 123}, {'@': 124}, {'@': 125}, {'@': 126}, {'@': 127}, {'@': 128}, {'@': 129}, {'@': 130}, {'@': 131}, {'@': 132}, {'@': 133}, {'@': 134}, {'@': 135}, {'@': 136}, {'@': 137}, {'@': 138}, {'@': 139}, {'@': 140}, {'@': 141}, {'@': 142}, {'@': 143}, {'@': 144}, {'@': 145}, {'@': 146}, {'@': 147}, {'@': 148}, {'@': 149}, {'@': 150}, {'@': 151}, {'@': 152}, {'@': 153}, {'@': 154}, {'@': 155}, {'@': 156}, {'@': 157}, {'@': 158}, {'@': 159}, {'@': 160}, {'@': 161}, {'@': 162}, {'@': 163}, {'@': 164}, {'@': 165}, {'@': 166}, {'@': 167}, {'@': 168}, {'@': 169}, {'@': 170}, {'@': 171}, {'@': 172}, {'@': 173}, {'@': 174}, {'@': 175}, {'@': 176}, {'@': 177}, {'@': 178}, {'@': 179}, {'@': 180}, {'@': 181}, {'@': 182}, {'@': 183}, {'@': 184}, {'@': 185}, {'@': 186}, {'@': 187}, {'@': 188}, {'@': 189}, {'@': 190}, {'@': 191}, {'@': 192}, {'@': 193}, {'@': 194}, {'@': 195}, {'@': 196}, {'@': 197}, {'@': 198}, {'@': 199}, {'@': 200}, {'@': 201}, {'@': 202}, {'@': 203}, {'@': 204}], 'start': ['start'], 'parser_type': 'lalr', '__type__': 'ParserConf'}, 'parser': {'tokens': {0: 'LPAR', 1: '__ANON_6', 2: '__ANON_7', 3: 'COMMA', 4: 'LESSTHAN', 5: '__ANON_3', 6: 'PERCENT', 7: 'SLASH', 8: 'PLUS', 9: 'STAR', 10: '__ANON_5', 11: 'LSQB', 12: '__ANON_8', 13: 'MINUS', 14: '__ANON_4', 15: 'RPAR', 16: 'MORETHAN', 17: 'LBRACE', 18: 'RSQB', 19: 'FALSE', 20: 'IF', 21: 'STRUCT', 22: 'FOR', 23: 'RBRACE', 24: 'TRUE', 25: '_NL', 26: 'ENUM', 27: 'INT', 28: 'MATCH', 29: 'RETURN', 30: 'PRINT', 31: 'WHILE', 32: 'IDENTIFIER', 33: 'BANG', 34: '__ANON_1', 35: 'STRING', 36: 'FN', 37: 'LET', 38: '$END', 39: 'DOT', 40: 'EQUAL', 41: '__ANON_0', 42: 'ELSE', 43: 'else_block', 44: 'match_pattern', 45: 'enum_pattern_tuple', 46: 'UNDERSCORE', 47: 'bool_literal', 48: 'array_pattern', 49: 'wildcard_pattern', 50: 'enum_pattern', 51: 'logical', 52: 'unary_op', 53: 'enum_literal_simple', 54: 'factor', 55: 'int_literal', 56: 'term', 57: 'struct_init_members', 58: 'struct_init_member', 59: 'function_call', 60: 'string_literal', 61: 'comparison', 62: 'variable', 63: 'atom', 64: 'array_literal', 65: 'enum_literal_tuple', 66: 'expression', 67: 'equality', 68: 'function_args', 69: 'indexing', 70: 'if_stmt', 71: 'print_stmt', 72: 'enum_stmt', 73: 'statement', 74: 'struct_stmt', 75: 'return_stmt', 76: 'for_stmt_int', 77: '__statement_list_plus_0', 78: 'while_stmt', 79: 'struct_assignment', 80: 'index_assignment', 81: 'struct_access', 82: 'match_stmt', 83: 'if_chain', 84: 'function_definition', 85: 'assignment', 86: 'variable_declaration', 87: 'statement_block', 88: 'for_stmt', 89: 'statement_list', 90: 'array_pattern_element', 91: '__function_args_star_6', 92: 'enum_member_bare', 93: 'enum_member_tuple', 94: 'struct_member', 95: '__struct_init_members_star_7', 96: '__enum_members_plus_4', 97: 'enum_members', 98: 'array_element', 99: '__function_params_star_5', 100: 'array_elements', 101: 'CASE', 102: 'function_param', 103: 'type_annotation', 104: '__ANON_2', 105: 'struct_members', 106: '__struct_members_plus_3', 107: '__array_elements_star_8', 108: 'ELIF', 109: '__case_ladder_plus_2', 110: 'case_stmt', 111: 'case_ladder', 112: 'COLON', 113: 'else_if_stmt', 114: 'else_if_ladder', 115: '__else_if_ladder_plus_1', 116: 'start', 117: '__array_pattern_star_9', 118: 'IN', 119: 'function_params'}, 'states': {0: {0: (0, 7), 1: (1, {'@': 152}), 2: (1, {'@': 152}), 3: (1, {'@': 152}), 4: (1, {'@': 152}), 5: (1, {'@': 152}), 6: (1, {'@': 152}), 7: (1, {'@': 152}), 8: (1, {'@': 152}), 9: (1, {'@': 152}), 10: (1, {'@': 152}), 11: (1, {'@': 152}), 12: (1, {'@': 152}), 13: (1, {'@': 152}), 14: (1, {'@': 152}), 15: (1, {'@': 152}), 16: (1, {'@': 152}), 17: (1, {'@': 152}), 18: (1, {'@': 152}), 19: (1, {'@': 152}), 20: (1, {'@': 152}), 21: (1, {'@': 152}), 22: (1, {'@': 152}), 23: (1, {'@': 152}), 24: (1, {'@': 152}), 25: (1, {'@': 152}), 26: (1, {'@': 152}), 27: (1, {'@': 152}), 28: (1, {'@': 152}), 29: (1, {'@': 152}), 30: (1, {'@': 152}), 31: (1, {'@': 152}), 32: (1, {'@': 152}), 33: (1, {'@': 152}), 34: (1, {'@': 152}), 35: (1, {'@': 152}), 36: (1, {'@': 152}), 37: (1, {'@': 152}), 38: (1, {'@': 152})}, 1: {23: (0, 134)}, 2: {39: (0, 250), 40: (0, 171), 41: (0, 6), 1: (1, {'@': 162}), 19: (1, {'@': 162}), 20: (1, {'@': 162}), 8: (1, {'@': 162}), 9: (1, {'@': 162}), 21: (1, {'@': 162}), 22: (1, {'@': 162}), 23: (1, {'@': 162}), 13: (1, {'@': 162}), 16: (1, {'@': 162}), 24: (1, {'@': 162}), 2: (1, {'@': 162}), 25: (1, {'@': 162}), 4: (1, {'@': 162}), 26: (1, {'@': 162}), 27: (1, {'@': 162}), 5: (1, {'@': 162}), 6: (1, {'@': 162}), 28: (1, {'@': 162}), 29: (1, {'@': 162}), 7: (1, {'@': 162}), 30: (1, {'@': 162}), 0: (1, {'@': 162}), 31: (1, {'@': 162}), 32: (1, {'@': 162}), 33: (1, {'@': 162}), 10: (1, {'@': 162}), 11: (1, {'@': 162}), 12: (1, {'@': 162}), 35: (1, {'@': 162}), 14: (1, {'@': 162}), 36: (1, {'@': 162}), 37: (1, {'@': 162}), 38: (1, {'@': 162})}, 3: {42: (0, 63), 43: (0, 281), 25: (1, {'@': 76}), 19: (1, {'@': 76}), 26: (1, {'@': 76}), 27: (1, {'@': 76}), 4: (1, {'@': 76}), 28: (1, {'@': 76}), 29: (1, {'@': 76}), 20: (1, {'@': 76}), 30: (1, {'@': 76}), 8: (1, {'@': 76}), 0: (1, {'@': 76}), 31: (1, {'@': 76}), 32: (1, {'@': 76}), 33: (1, {'@': 76}), 11: (1, {'@': 76}), 21: (1, {'@': 76}), 22: (1, {'@': 76}), 23: (1, {'@': 76}), 13: (1, {'@': 76}), 35: (1, {'@': 76}), 36: (1, {'@': 76}), 24: (1, {'@': 76}), 37: (1, {'@': 76}), 38: (1, {'@': 76})}, 4: {15: (1, {'@': 172}), 17: (1, {'@': 172})}, 5: {44: (0, 124), 45: (0, 54), 46: (0, 76), 11: (0, 11), 32: (0, 260), 47: (0, 252), 48: (0, 118), 24: (0, 67), 19: (0, 95), 49: (0, 80), 50: (0, 27)}, 6: {32: (0, 110)}, 7: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 57: (0, 18), 47: (0, 286), 58: (0, 31), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 227), 66: (0, 14), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 68: (0, 26), 24: (0, 67), 0: (0, 248), 15: (0, 35), 69: (0, 150)}, 8: {66: (0, 13), 51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 9: {32: (0, 2), 51: (0, 116), 54: (0, 62), 70: (0, 166), 55: (0, 207), 71: (0, 270), 72: (0, 48), 28: (0, 16), 59: (0, 120), 60: (0, 94), 73: (0, 257), 56: (0, 78), 61: (0, 130), 74: (0, 101), 75: (0, 179), 76: (0, 160), 62: (0, 168), 77: (0, 206), 63: (0, 42), 52: (0, 279), 78: (0, 28), 66: (0, 138), 22: (0, 154), 33: (0, 33), 67: (0, 125), 79: (0, 147), 80: (0, 106), 0: (0, 248), 11: (0, 198), 30: (0, 239), 36: (0, 222), 20: (0, 71), 53: (0, 212), 27: (0, 283), 81: (0, 274), 35: (0, 87), 19: (0, 95), 82: (0, 225), 83: (0, 173), 47: (0, 286), 26: (0, 156), 64: (0, 181), 65: (0, 192), 84: (0, 17), 25: (0, 258), 85: (0, 182), 29: (0, 36), 31: (0, 119), 13: (0, 231), 4: (0, 170), 86: (0, 72), 8: (0, 113), 87: (0, 243), 88: (0, 285), 37: (0, 109), 24: (0, 67), 89: (0, 200), 21: (0, 193), 69: (0, 150)}, 10: {1: (1, {'@': 165}), 2: (1, {'@': 165}), 3: (1, {'@': 165}), 4: (1, {'@': 165}), 5: (1, {'@': 165}), 6: (1, {'@': 165}), 7: (1, {'@': 165}), 8: (1, {'@': 165}), 9: (1, {'@': 165}), 10: (1, {'@': 165}), 11: (1, {'@': 165}), 12: (1, {'@': 165}), 13: (1, {'@': 165}), 14: (1, {'@': 165}), 15: (1, {'@': 165}), 16: (1, {'@': 165}), 19: (1, {'@': 165}), 20: (1, {'@': 165}), 21: (1, {'@': 165}), 22: (1, {'@': 165}), 23: (1, {'@': 165}), 24: (1, {'@': 165}), 25: (1, {'@': 165}), 26: (1, {'@': 165}), 27: (1, {'@': 165}), 28: (1, {'@': 165}), 29: (1, {'@': 165}), 30: (1, {'@': 165}), 0: (1, {'@': 165}), 31: (1, {'@': 165}), 32: (1, {'@': 165}), 33: (1, {'@': 165}), 35: (1, {'@': 165}), 36: (1, {'@': 165}), 37: (1, {'@': 165}), 17: (1, {'@': 165}), 18: (1, {'@': 165}), 34: (1, {'@': 165}), 38: (1, {'@': 165})}, 11: {90: (0, 230), 55: (0, 216), 27: (0, 283), 46: (0, 76), 18: (0, 4), 49: (0, 223)}, 12: {23: (1, {'@': 194}), 25: (1, {'@': 194}), 32: (1, {'@': 194})}, 13: {3: (1, {'@': 198}), 15: (1, {'@': 198})}, 14: {3: (0, 203), 91: (0, 53), 15: (1, {'@': 144})}, 15: {17: (0, 9)}, 16: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 66: (0, 58), 0: (0, 248), 69: (0, 150)}, 17: {25: (1, {'@': 65}), 19: (1, {'@': 65}), 26: (1, {'@': 65}), 27: (1, {'@': 65}), 4: (1, {'@': 65}), 28: (1, {'@': 65}), 29: (1, {'@': 65}), 20: (1, {'@': 65}), 30: (1, {'@': 65}), 8: (1, {'@': 65}), 0: (1, {'@': 65}), 31: (1, {'@': 65}), 32: (1, {'@': 65}), 33: (1, {'@': 65}), 11: (1, {'@': 65}), 21: (1, {'@': 65}), 22: (1, {'@': 65}), 23: (1, {'@': 65}), 13: (1, {'@': 65}), 35: (1, {'@': 65}), 36: (1, {'@': 65}), 24: (1, {'@': 65}), 37: (1, {'@': 65}), 38: (1, {'@': 65})}, 18: {15: (0, 256)}, 19: {32: (0, 29), 92: (0, 56), 25: (0, 12), 93: (0, 111), 23: (1, {'@': 103})}, 20: {32: (0, 2), 51: (0, 116), 54: (0, 62), 87: (0, 105), 70: (0, 166), 55: (0, 207), 71: (0, 270), 72: (0, 48), 28: (0, 16), 59: (0, 120), 60: (0, 94), 73: (0, 257), 56: (0, 78), 61: (0, 130), 74: (0, 101), 75: (0, 179), 76: (0, 160), 62: (0, 168), 77: (0, 206), 63: (0, 42), 52: (0, 279), 78: (0, 28), 66: (0, 138), 22: (0, 154), 33: (0, 33), 67: (0, 125), 79: (0, 147), 80: (0, 106), 0: (0, 248), 11: (0, 198), 30: (0, 239), 36: (0, 222), 20: (0, 71), 53: (0, 212), 27: (0, 283), 81: (0, 274), 35: (0, 87), 19: (0, 95), 82: (0, 225), 83: (0, 173), 47: (0, 286), 26: (0, 156), 64: (0, 181), 65: (0, 192), 84: (0, 17), 25: (0, 258), 85: (0, 182), 29: (0, 36), 31: (0, 119), 13: (0, 231), 4: (0, 170), 86: (0, 72), 8: (0, 113), 88: (0, 285), 37: (0, 109), 24: (0, 67), 89: (0, 200), 21: (0, 193), 69: (0, 150)}, 21: {23: (0, 161)}, 22: {3: (1, {'@': 204}), 18: (1, {'@': 204})}, 23: {19: (1, {'@': 177}), 20: (1, {'@': 177}), 8: (1, {'@': 177}), 21: (1, {'@': 177}), 22: (1, {'@': 177}), 23: (1, {'@': 177}), 13: (1, {'@': 177}), 24: (1, {'@': 177}), 25: (1, {'@': 177}), 26: (1, {'@': 177}), 27: (1, {'@': 177}), 4: (1, {'@': 177}), 28: (1, {'@': 177}), 29: (1, {'@': 177}), 30: (1, {'@': 177}), 0: (1, {'@': 177}), 31: (1, {'@': 177}), 32: (1, {'@': 177}), 33: (1, {'@': 177}), 11: (1, {'@': 177}), 35: (1, {'@': 177}), 36: (1, {'@': 177}), 37: (1, {'@': 177}), 38: (1, {'@': 177})}, 24: {94: (0, 204), 32: (0, 143), 25: (0, 228), 23: (1, {'@': 98})}, 25: {1: (1, {'@': 127}), 2: (1, {'@': 127}), 10: (1, {'@': 127}), 3: (1, {'@': 127}), 4: (1, {'@': 127}), 12: (1, {'@': 127}), 5: (1, {'@': 127}), 14: (1, {'@': 127}), 15: (1, {'@': 127}), 16: (1, {'@': 127}), 25: (1, {'@': 127}), 19: (1, {'@': 127}), 26: (1, {'@': 127}), 27: (1, {'@': 127}), 28: (1, {'@': 127}), 29: (1, {'@': 127}), 20: (1, {'@': 127}), 30: (1, {'@': 127}), 8: (1, {'@': 127}), 0: (1, {'@': 127}), 31: (1, {'@': 127}), 36: (1, {'@': 127}), 32: (1, {'@': 127}), 33: (1, {'@': 127}), 11: (1, {'@': 127}), 21: (1, {'@': 127}), 22: (1, {'@': 127}), 23: (1, {'@': 127}), 13: (1, {'@': 127}), 35: (1, {'@': 127}), 24: (1, {'@': 127}), 37: (1, {'@': 127}), 17: (1, {'@': 127}), 38: (1, {'@': 127}), 18: (1, {'@': 127}), 34: (1, {'@': 127})}, 26: {15: (0, 61)}, 27: {15: (1, {'@': 87}), 17: (1, {'@': 87})}, 28: {25: (1, {'@': 59}), 19: (1, {'@': 59}), 26: (1, {'@': 59}), 27: (1, {'@': 59}), 4: (1, {'@': 59}), 28: (1, {'@': 59}), 29: (1, {'@': 59}), 20: (1, {'@': 59}), 30: (1, {'@': 59}), 8: (1, {'@': 59}), 0: (1, {'@': 59}), 31: (1, {'@': 59}), 32: (1, {'@': 59}), 33: (1, {'@': 59}), 11: (1, {'@': 59}), 21: (1, {'@': 59}), 22: (1, {'@': 59}), 23: (1, {'@': 59}), 13: (1, {'@': 59}), 35: (1, {'@': 59}), 36: (1, {'@': 59}), 24: (1, {'@': 59}), 37: (1, {'@': 59}), 38: (1, {'@': 59})}, 29: {0: (0, 139), 23: (1, {'@': 104}), 25: (1, {'@': 104}), 32: (1, {'@': 104})}, 30: {17: (0, 32)}, 31: {95: (0, 262), 3: (0, 157), 15: (1, {'@': 154})}, 32: {96: (0, 19), 92: (0, 82), 32: (0, 29), 25: (0, 75), 93: (0, 89), 97: (0, 93)}, 33: {32: (0, 121), 53: (0, 212), 27: (0, 283), 35: (0, 87), 62: (0, 0), 55: (0, 207), 19: (0, 95), 13: (0, 231), 47: (0, 286), 4: (0, 170), 33: (0, 33), 8: (0, 113), 59: (0, 120), 11: (0, 198), 63: (0, 42), 60: (0, 94), 24: (0, 67), 52: (0, 49), 0: (0, 248), 64: (0, 181), 65: (0, 192), 69: (0, 150)}, 34: {23: (1, {'@': 185}), 25: (1, {'@': 185}), 32: (1, {'@': 185})}, 35: {1: (1, {'@': 141}), 2: (1, {'@': 141}), 3: (1, {'@': 141}), 4: (1, {'@': 141}), 5: (1, {'@': 141}), 6: (1, {'@': 141}), 7: (1, {'@': 141}), 8: (1, {'@': 141}), 9: (1, {'@': 141}), 10: (1, {'@': 141}), 11: (1, {'@': 141}), 12: (1, {'@': 141}), 13: (1, {'@': 141}), 14: (1, {'@': 141}), 15: (1, {'@': 141}), 16: (1, {'@': 141}), 19: (1, {'@': 141}), 20: (1, {'@': 141}), 21: (1, {'@': 141}), 22: (1, {'@': 141}), 23: (1, {'@': 141}), 24: (1, {'@': 141}), 25: (1, {'@': 141}), 26: (1, {'@': 141}), 27: (1, {'@': 141}), 28: (1, {'@': 141}), 29: (1, {'@': 141}), 30: (1, {'@': 141}), 0: (1, {'@': 141}), 31: (1, {'@': 141}), 32: (1, {'@': 141}), 33: (1, {'@': 141}), 35: (1, {'@': 141}), 36: (1, {'@': 141}), 37: (1, {'@': 141}), 17: (1, {'@': 141}), 18: (1, {'@': 141}), 34: (1, {'@': 141}), 38: (1, {'@': 141})}, 36: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 66: (0, 264), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 37: {25: (1, {'@': 70}), 19: (1, {'@': 70}), 26: (1, {'@': 70}), 27: (1, {'@': 70}), 4: (1, {'@': 70}), 28: (1, {'@': 70}), 29: (1, {'@': 70}), 20: (1, {'@': 70}), 30: (1, {'@': 70}), 8: (1, {'@': 70}), 0: (1, {'@': 70}), 31: (1, {'@': 70}), 32: (1, {'@': 70}), 33: (1, {'@': 70}), 11: (1, {'@': 70}), 21: (1, {'@': 70}), 22: (1, {'@': 70}), 23: (1, {'@': 70}), 13: (1, {'@': 70}), 35: (1, {'@': 70}), 36: (1, {'@': 70}), 24: (1, {'@': 70}), 37: (1, {'@': 70}), 38: (1, {'@': 70})}, 38: {3: (1, {'@': 202}), 18: (1, {'@': 202})}, 39: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 66: (0, 50), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 40: {3: (1, {'@': 197}), 15: (1, {'@': 197})}, 41: {25: (1, {'@': 95}), 19: (1, {'@': 95}), 26: (1, {'@': 95}), 27: (1, {'@': 95}), 4: (1, {'@': 95}), 28: (1, {'@': 95}), 29: (1, {'@': 95}), 20: (1, {'@': 95}), 30: (1, {'@': 95}), 8: (1, {'@': 95}), 0: (1, {'@': 95}), 31: (1, {'@': 95}), 32: (1, {'@': 95}), 33: (1, {'@': 95}), 11: (1, {'@': 95}), 21: (1, {'@': 95}), 22: (1, {'@': 95}), 23: (1, {'@': 95}), 13: (1, {'@': 95}), 35: (1, {'@': 95}), 36: (1, {'@': 95}), 24: (1, {'@': 95}), 37: (1, {'@': 95}), 38: (1, {'@': 95})}, 42: {1: (1, {'@': 142}), 2: (1, {'@': 142}), 3: (1, {'@': 142}), 4: (1, {'@': 142}), 5: (1, {'@': 142}), 6: (1, {'@': 142}), 7: (1, {'@': 142}), 8: (1, {'@': 142}), 9: (1, {'@': 142}), 10: (1, {'@': 142}), 11: (1, {'@': 142}), 12: (1, {'@': 142}), 13: (1, {'@': 142}), 14: (1, {'@': 142}), 15: (1, {'@': 142}), 16: (1, {'@': 142}), 19: (1, {'@': 142}), 20: (1, {'@': 142}), 21: (1, {'@': 142}), 22: (1, {'@': 142}), 23: (1, {'@': 142}), 24: (1, {'@': 142}), 25: (1, {'@': 142}), 26: (1, {'@': 142}), 27: (1, {'@': 142}), 28: (1, {'@': 142}), 29: (1, {'@': 142}), 30: (1, {'@': 142}), 0: (1, {'@': 142}), 31: (1, {'@': 142}), 32: (1, {'@': 142}), 33: (1, {'@': 142}), 35: (1, {'@': 142}), 36: (1, {'@': 142}), 37: (1, {'@': 142}), 17: (1, {'@': 142}), 18: (1, {'@': 142}), 34: (1, {'@': 142}), 38: (1, {'@': 142})}, 43: {52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 8: (0, 113), 11: (0, 198), 61: (0, 183), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 44: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 98: (0, 92), 66: (0, 195), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 45: {99: (0, 122), 3: (0, 51), 15: (1, {'@': 109})}, 46: {51: (0, 116), 98: (0, 96), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 66: (0, 195), 47: (0, 286), 59: (0, 120), 60: (0, 94), 100: (0, 169), 61: (0, 130), 18: (0, 190), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 47: {23: (1, {'@': 183}), 25: (1, {'@': 183}), 101: (1, {'@': 183})}, 48: {25: (1, {'@': 62}), 19: (1, {'@': 62}), 26: (1, {'@': 62}), 27: (1, {'@': 62}), 4: (1, {'@': 62}), 28: (1, {'@': 62}), 29: (1, {'@': 62}), 20: (1, {'@': 62}), 30: (1, {'@': 62}), 8: (1, {'@': 62}), 0: (1, {'@': 62}), 31: (1, {'@': 62}), 32: (1, {'@': 62}), 33: (1, {'@': 62}), 11: (1, {'@': 62}), 21: (1, {'@': 62}), 22: (1, {'@': 62}), 23: (1, {'@': 62}), 13: (1, {'@': 62}), 35: (1, {'@': 62}), 36: (1, {'@': 62}), 24: (1, {'@': 62}), 37: (1, {'@': 62}), 38: (1, {'@': 62})}, 49: {1: (1, {'@': 135}), 2: (1, {'@': 135}), 10: (1, {'@': 135}), 3: (1, {'@': 135}), 4: (1, {'@': 135}), 12: (1, {'@': 135}), 6: (1, {'@': 135}), 5: (1, {'@': 135}), 13: (1, {'@': 135}), 7: (1, {'@': 135}), 8: (1, {'@': 135}), 14: (1, {'@': 135}), 15: (1, {'@': 135}), 16: (1, {'@': 135}), 9: (1, {'@': 135}), 19: (1, {'@': 135}), 20: (1, {'@': 135}), 21: (1, {'@': 135}), 22: (1, {'@': 135}), 23: (1, {'@': 135}), 24: (1, {'@': 135}), 25: (1, {'@': 135}), 26: (1, {'@': 135}), 27: (1, {'@': 135}), 28: (1, {'@': 135}), 29: (1, {'@': 135}), 30: (1, {'@': 135}), 0: (1, {'@': 135}), 31: (1, {'@': 135}), 32: (1, {'@': 135}), 33: (1, {'@': 135}), 11: (1, {'@': 135}), 35: (1, {'@': 135}), 36: (1, {'@': 135}), 37: (1, {'@': 135}), 17: (1, {'@': 135}), 38: (1, {'@': 135}), 18: (1, {'@': 135}), 34: (1, {'@': 135})}, 50: {15: (0, 149)}, 51: {32: (0, 153), 102: (0, 191)}, 52: {25: (1, {'@': 100}), 19: (1, {'@': 100}), 26: (1, {'@': 100}), 27: (1, {'@': 100}), 4: (1, {'@': 100}), 28: (1, {'@': 100}), 29: (1, {'@': 100}), 20: (1, {'@': 100}), 30: (1, {'@': 100}), 8: (1, {'@': 100}), 0: (1, {'@': 100}), 31: (1, {'@': 100}), 32: (1, {'@': 100}), 33: (1, {'@': 100}), 11: (1, {'@': 100}), 21: (1, {'@': 100}), 22: (1, {'@': 100}), 23: (1, {'@': 100}), 13: (1, {'@': 100}), 40: (1, {'@': 100}), 35: (1, {'@': 100}), 36: (1, {'@': 100}), 24: (1, {'@': 100}), 37: (1, {'@': 100}), 38: (1, {'@': 100})}, 53: {3: (0, 8), 15: (1, {'@': 143})}, 54: {15: (1, {'@': 88}), 17: (1, {'@': 88})}, 55: {32: (0, 202), 103: (0, 196)}, 56: {23: (1, {'@': 192}), 25: (1, {'@': 192}), 32: (1, {'@': 192})}, 57: {23: (0, 269)}, 58: {17: (0, 131)}, 59: {52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 51: (0, 132), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 60: {18: (0, 10)}, 61: {1: (1, {'@': 139}), 2: (1, {'@': 139}), 3: (1, {'@': 139}), 4: (1, {'@': 139}), 5: (1, {'@': 139}), 6: (1, {'@': 139}), 7: (1, {'@': 139}), 8: (1, {'@': 139}), 9: (1, {'@': 139}), 10: (1, {'@': 139}), 11: (1, {'@': 139}), 12: (1, {'@': 139}), 13: (1, {'@': 139}), 14: (1, {'@': 139}), 15: (1, {'@': 139}), 16: (1, {'@': 139}), 19: (1, {'@': 139}), 20: (1, {'@': 139}), 21: (1, {'@': 139}), 22: (1, {'@': 139}), 23: (1, {'@': 139}), 24: (1, {'@': 139}), 25: (1, {'@': 139}), 26: (1, {'@': 139}), 27: (1, {'@': 139}), 28: (1, {'@': 139}), 29: (1, {'@': 139}), 30: (1, {'@': 139}), 0: (1, {'@': 139}), 31: (1, {'@': 139}), 32: (1, {'@': 139}), 33: (1, {'@': 139}), 35: (1, {'@': 139}), 36: (1, {'@': 139}), 37: (1, {'@': 139}), 17: (1, {'@': 139}), 18: (1, {'@': 139}), 34: (1, {'@': 139}), 38: (1, {'@': 139})}, 62: {13: (0, 81), 8: (0, 213), 1: (1, {'@': 128}), 2: (1, {'@': 128}), 10: (1, {'@': 128}), 3: (1, {'@': 128}), 4: (1, {'@': 128}), 12: (1, {'@': 128}), 5: (1, {'@': 128}), 14: (1, {'@': 128}), 15: (1, {'@': 128}), 16: (1, {'@': 128}), 25: (1, {'@': 128}), 19: (1, {'@': 128}), 26: (1, {'@': 128}), 27: (1, {'@': 128}), 28: (1, {'@': 128}), 29: (1, {'@': 128}), 20: (1, {'@': 128}), 30: (1, {'@': 128}), 0: (1, {'@': 128}), 31: (1, {'@': 128}), 36: (1, {'@': 128}), 32: (1, {'@': 128}), 33: (1, {'@': 128}), 11: (1, {'@': 128}), 21: (1, {'@': 128}), 22: (1, {'@': 128}), 23: (1, {'@': 128}), 35: (1, {'@': 128}), 24: (1, {'@': 128}), 37: (1, {'@': 128}), 17: (1, {'@': 128}), 38: (1, {'@': 128}), 18: (1, {'@': 128}), 34: (1, {'@': 128})}, 63: {17: (0, 242)}, 64: {23: (1, {'@': 105}), 25: (1, {'@': 105}), 32: (1, {'@': 105})}, 65: {104: (0, 133)}, 66: {61: (0, 226), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 67: {15: (1, {'@': 156}), 1: (1, {'@': 156}), 2: (1, {'@': 156}), 3: (1, {'@': 156}), 4: (1, {'@': 156}), 5: (1, {'@': 156}), 6: (1, {'@': 156}), 7: (1, {'@': 156}), 8: (1, {'@': 156}), 9: (1, {'@': 156}), 10: (1, {'@': 156}), 11: (1, {'@': 156}), 12: (1, {'@': 156}), 13: (1, {'@': 156}), 14: (1, {'@': 156}), 16: (1, {'@': 156}), 19: (1, {'@': 156}), 20: (1, {'@': 156}), 21: (1, {'@': 156}), 22: (1, {'@': 156}), 23: (1, {'@': 156}), 24: (1, {'@': 156}), 25: (1, {'@': 156}), 26: (1, {'@': 156}), 27: (1, {'@': 156}), 28: (1, {'@': 156}), 29: (1, {'@': 156}), 30: (1, {'@': 156}), 0: (1, {'@': 156}), 31: (1, {'@': 156}), 32: (1, {'@': 156}), 33: (1, {'@': 156}), 35: (1, {'@': 156}), 36: (1, {'@': 156}), 37: (1, {'@': 156}), 17: (1, {'@': 156}), 18: (1, {'@': 156}), 34: (1, {'@': 156}), 38: (1, {'@': 156})}, 68: {32: (0, 202), 103: (0, 99)}, 69: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 67: (0, 90), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 70: {23: (0, 127)}, 71: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 66: (0, 128), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 72: {25: (1, {'@': 55}), 19: (1, {'@': 55}), 26: (1, {'@': 55}), 27: (1, {'@': 55}), 4: (1, {'@': 55}), 28: (1, {'@': 55}), 29: (1, {'@': 55}), 20: (1, {'@': 55}), 30: (1, {'@': 55}), 8: (1, {'@': 55}), 0: (1, {'@': 55}), 31: (1, {'@': 55}), 32: (1, {'@': 55}), 33: (1, {'@': 55}), 11: (1, {'@': 55}), 21: (1, {'@': 55}), 22: (1, {'@': 55}), 23: (1, {'@': 55}), 13: (1, {'@': 55}), 35: (1, {'@': 55}), 36: (1, {'@': 55}), 24: (1, {'@': 55}), 37: (1, {'@': 55}), 38: (1, {'@': 55})}, 73: {25: (1, {'@': 74}), 19: (1, {'@': 74}), 26: (1, {'@': 74}), 27: (1, {'@': 74}), 4: (1, {'@': 74}), 28: (1, {'@': 74}), 29: (1, {'@': 74}), 20: (1, {'@': 74}), 30: (1, {'@': 74}), 8: (1, {'@': 74}), 0: (1, {'@': 74}), 31: (1, {'@': 74}), 32: (1, {'@': 74}), 33: (1, {'@': 74}), 11: (1, {'@': 74}), 21: (1, {'@': 74}), 22: (1, {'@': 74}), 23: (1, {'@': 74}), 13: (1, {'@': 74}), 35: (1, {'@': 74}), 36: (1, {'@': 74}), 24: (1, {'@': 74}), 37: (1, {'@': 74}), 38: (1, {'@': 74})}, 74: {32: (0, 2), 51: (0, 116), 54: (0, 62), 70: (0, 166), 55: (0, 207), 71: (0, 270), 72: (0, 48), 28: (0, 16), 59: (0, 120), 60: (0, 94), 73: (0, 257), 56: (0, 78), 61: (0, 130), 74: (0, 101), 75: (0, 179), 76: (0, 160), 62: (0, 168), 77: (0, 206), 63: (0, 42), 52: (0, 279), 78: (0, 28), 66: (0, 138), 22: (0, 154), 87: (0, 282), 33: (0, 33), 67: (0, 125), 79: (0, 147), 80: (0, 106), 0: (0, 248), 11: (0, 198), 30: (0, 239), 36: (0, 222), 20: (0, 71), 53: (0, 212), 27: (0, 283), 81: (0, 274), 35: (0, 87), 19: (0, 95), 82: (0, 225), 83: (0, 173), 47: (0, 286), 26: (0, 156), 64: (0, 181), 65: (0, 192), 84: (0, 17), 25: (0, 258), 85: (0, 182), 29: (0, 36), 31: (0, 119), 13: (0, 231), 4: (0, 170), 86: (0, 72), 8: (0, 113), 88: (0, 285), 37: (0, 109), 24: (0, 67), 89: (0, 200), 21: (0, 193), 69: (0, 150)}, 75: {23: (1, {'@': 191}), 25: (1, {'@': 191}), 32: (1, {'@': 191})}, 76: {15: (1, {'@': 93}), 3: (1, {'@': 93}), 18: (1, {'@': 93}), 17: (1, {'@': 93})}, 77: {3: (1, {'@': 199}), 15: (1, {'@': 199})}, 78: {16: (0, 163), 12: (0, 66), 4: (0, 43), 2: (0, 102), 1: (1, {'@': 125}), 10: (1, {'@': 125}), 14: (1, {'@': 125}), 15: (1, {'@': 125}), 3: (1, {'@': 125}), 5: (1, {'@': 125}), 25: (1, {'@': 125}), 19: (1, {'@': 125}), 26: (1, {'@': 125}), 27: (1, {'@': 125}), 28: (1, {'@': 125}), 29: (1, {'@': 125}), 20: (1, {'@': 125}), 30: (1, {'@': 125}), 8: (1, {'@': 125}), 0: (1, {'@': 125}), 31: (1, {'@': 125}), 32: (1, {'@': 125}), 33: (1, {'@': 125}), 11: (1, {'@': 125}), 21: (1, {'@': 125}), 22: (1, {'@': 125}), 23: (1, {'@': 125}), 13: (1, {'@': 125}), 35: (1, {'@': 125}), 36: (1, {'@': 125}), 24: (1, {'@': 125}), 37: (1, {'@': 125}), 17: (1, {'@': 125}), 38: (1, {'@': 125}), 18: (1, {'@': 125}), 34: (1, {'@': 125})}, 79: {0: (0, 247)}, 80: {15: (1, {'@': 89}), 17: (1, {'@': 89})}, 81: {52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 47: (0, 286), 59: (0, 120), 60: (0, 94), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 56: (0, 25), 13: (0, 231), 4: (0, 170), 33: (0, 33), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 82: {23: (1, {'@': 189}), 25: (1, {'@': 189}), 32: (1, {'@': 189})}, 83: {32: (0, 2), 87: (0, 1), 51: (0, 116), 54: (0, 62), 70: (0, 166), 55: (0, 207), 71: (0, 270), 72: (0, 48), 28: (0, 16), 59: (0, 120), 60: (0, 94), 73: (0, 257), 56: (0, 78), 61: (0, 130), 74: (0, 101), 75: (0, 179), 76: (0, 160), 62: (0, 168), 77: (0, 206), 63: (0, 42), 52: (0, 279), 78: (0, 28), 66: (0, 138), 22: (0, 154), 33: (0, 33), 67: (0, 125), 79: (0, 147), 80: (0, 106), 0: (0, 248), 11: (0, 198), 30: (0, 239), 36: (0, 222), 20: (0, 71), 53: (0, 212), 27: (0, 283), 81: (0, 274), 35: (0, 87), 19: (0, 95), 82: (0, 225), 83: (0, 173), 47: (0, 286), 26: (0, 156), 64: (0, 181), 65: (0, 192), 84: (0, 17), 25: (0, 258), 85: (0, 182), 29: (0, 36), 31: (0, 119), 13: (0, 231), 4: (0, 170), 86: (0, 72), 8: (0, 113), 88: (0, 285), 37: (0, 109), 24: (0, 67), 89: (0, 200), 21: (0, 193), 69: (0, 150)}, 84: {1: (1, {'@': 166}), 2: (1, {'@': 166}), 3: (1, {'@': 166}), 4: (1, {'@': 166}), 5: (1, {'@': 166}), 6: (1, {'@': 166}), 7: (1, {'@': 166}), 8: (1, {'@': 166}), 9: (1, {'@': 166}), 10: (1, {'@': 166}), 11: (1, {'@': 166}), 12: (1, {'@': 166}), 13: (1, {'@': 166}), 14: (1, {'@': 166}), 15: (1, {'@': 166}), 16: (1, {'@': 166}), 19: (1, {'@': 166}), 20: (1, {'@': 166}), 21: (1, {'@': 166}), 22: (1, {'@': 166}), 23: (1, {'@': 166}), 24: (1, {'@': 166}), 25: (1, {'@': 166}), 26: (1, {'@': 166}), 27: (1, {'@': 166}), 28: (1, {'@': 166}), 29: (1, {'@': 166}), 30: (1, {'@': 166}), 0: (1, {'@': 166}), 31: (1, {'@': 166}), 32: (1, {'@': 166}), 33: (1, {'@': 166}), 35: (1, {'@': 166}), 36: (1, {'@': 166}), 37: (1, {'@': 166}), 17: (1, {'@': 166}), 18: (1, {'@': 166}), 34: (1, {'@': 166}), 38: (1, {'@': 166})}, 85: {1: (1, {'@': 121}), 10: (1, {'@': 121}), 14: (1, {'@': 121}), 15: (1, {'@': 121}), 3: (1, {'@': 121}), 5: (1, {'@': 121}), 25: (1, {'@': 121}), 19: (1, {'@': 121}), 26: (1, {'@': 121}), 27: (1, {'@': 121}), 4: (1, {'@': 121}), 28: (1, {'@': 121}), 29: (1, {'@': 121}), 20: (1, {'@': 121}), 30: (1, {'@': 121}), 8: (1, {'@': 121}), 0: (1, {'@': 121}), 31: (1, {'@': 121}), 32: (1, {'@': 121}), 33: (1, {'@': 121}), 11: (1, {'@': 121}), 21: (1, {'@': 121}), 22: (1, {'@': 121}), 23: (1, {'@': 121}), 13: (1, {'@': 121}), 35: (1, {'@': 121}), 36: (1, {'@': 121}), 24: (1, {'@': 121}), 37: (1, {'@': 121}), 17: (1, {'@': 121}), 38: (1, {'@': 121}), 18: (1, {'@': 121}), 34: (1, {'@': 121})}, 86: {1: (1, {'@': 137}), 2: (1, {'@': 137}), 10: (1, {'@': 137}), 3: (1, {'@': 137}), 4: (1, {'@': 137}), 12: (1, {'@': 137}), 6: (1, {'@': 137}), 5: (1, {'@': 137}), 13: (1, {'@': 137}), 7: (1, {'@': 137}), 8: (1, {'@': 137}), 14: (1, {'@': 137}), 15: (1, {'@': 137}), 16: (1, {'@': 137}), 9: (1, {'@': 137}), 19: (1, {'@': 137}), 20: (1, {'@': 137}), 21: (1, {'@': 137}), 22: (1, {'@': 137}), 23: (1, {'@': 137}), 24: (1, {'@': 137}), 25: (1, {'@': 137}), 26: (1, {'@': 137}), 27: (1, {'@': 137}), 28: (1, {'@': 137}), 29: (1, {'@': 137}), 30: (1, {'@': 137}), 0: (1, {'@': 137}), 31: (1, {'@': 137}), 32: (1, {'@': 137}), 33: (1, {'@': 137}), 11: (1, {'@': 137}), 35: (1, {'@': 137}), 36: (1, {'@': 137}), 37: (1, {'@': 137}), 17: (1, {'@': 137}), 18: (1, {'@': 137}), 34: (1, {'@': 137}), 38: (1, {'@': 137})}, 87: {1: (1, {'@': 159}), 2: (1, {'@': 159}), 3: (1, {'@': 159}), 4: (1, {'@': 159}), 5: (1, {'@': 159}), 6: (1, {'@': 159}), 7: (1, {'@': 159}), 8: (1, {'@': 159}), 9: (1, {'@': 159}), 10: (1, {'@': 159}), 11: (1, {'@': 159}), 12: (1, {'@': 159}), 13: (1, {'@': 159}), 14: (1, {'@': 159}), 15: (1, {'@': 159}), 16: (1, {'@': 159}), 19: (1, {'@': 159}), 20: (1, {'@': 159}), 21: (1, {'@': 159}), 22: (1, {'@': 159}), 23: (1, {'@': 159}), 24: (1, {'@': 159}), 25: (1, {'@': 159}), 26: (1, {'@': 159}), 27: (1, {'@': 159}), 28: (1, {'@': 159}), 29: (1, {'@': 159}), 30: (1, {'@': 159}), 0: (1, {'@': 159}), 31: (1, {'@': 159}), 32: (1, {'@': 159}), 33: (1, {'@': 159}), 35: (1, {'@': 159}), 36: (1, {'@': 159}), 37: (1, {'@': 159}), 17: (1, {'@': 159}), 18: (1, {'@': 159}), 34: (1, {'@': 159}), 38: (1, {'@': 159})}, 88: {105: (0, 21), 94: (0, 34), 106: (0, 24), 32: (0, 143), 25: (0, 184)}, 89: {23: (1, {'@': 190}), 25: (1, {'@': 190}), 32: (1, {'@': 190})}, 90: {3: (1, {'@': 116}), 15: (1, {'@': 116}), 25: (1, {'@': 116}), 19: (1, {'@': 116}), 26: (1, {'@': 116}), 27: (1, {'@': 116}), 4: (1, {'@': 116}), 28: (1, {'@': 116}), 29: (1, {'@': 116}), 20: (1, {'@': 116}), 30: (1, {'@': 116}), 8: (1, {'@': 116}), 0: (1, {'@': 116}), 31: (1, {'@': 116}), 32: (1, {'@': 116}), 33: (1, {'@': 116}), 11: (1, {'@': 116}), 21: (1, {'@': 116}), 22: (1, {'@': 116}), 23: (1, {'@': 116}), 13: (1, {'@': 116}), 35: (1, {'@': 116}), 36: (1, {'@': 116}), 24: (1, {'@': 116}), 37: (1, {'@': 116}), 17: (1, {'@': 116}), 38: (1, {'@': 116}), 18: (1, {'@': 116}), 34: (1, {'@': 116})}, 91: {1: (1, {'@': 151}), 2: (1, {'@': 151}), 3: (1, {'@': 151}), 4: (1, {'@': 151}), 5: (1, {'@': 151}), 6: (1, {'@': 151}), 7: (1, {'@': 151}), 8: (1, {'@': 151}), 9: (1, {'@': 151}), 10: (1, {'@': 151}), 11: (1, {'@': 151}), 12: (1, {'@': 151}), 13: (1, {'@': 151}), 14: (1, {'@': 151}), 15: (1, {'@': 151}), 16: (1, {'@': 151}), 19: (1, {'@': 151}), 20: (1, {'@': 151}), 21: (1, {'@': 151}), 22: (1, {'@': 151}), 23: (1, {'@': 151}), 24: (1, {'@': 151}), 25: (1, {'@': 151}), 26: (1, {'@': 151}), 27: (1, {'@': 151}), 28: (1, {'@': 151}), 29: (1, {'@': 151}), 30: (1, {'@': 151}), 0: (1, {'@': 151}), 31: (1, {'@': 151}), 32: (1, {'@': 151}), 33: (1, {'@': 151}), 35: (1, {'@': 151}), 36: (1, {'@': 151}), 37: (1, {'@': 151}), 17: (1, {'@': 151}), 18: (1, {'@': 151}), 34: (1, {'@': 151}), 38: (1, {'@': 151})}, 92: {3: (1, {'@': 201}), 18: (1, {'@': 201})}, 93: {23: (0, 266)}, 94: {1: (1, {'@': 147}), 2: (1, {'@': 147}), 3: (1, {'@': 147}), 4: (1, {'@': 147}), 5: (1, {'@': 147}), 6: (1, {'@': 147}), 7: (1, {'@': 147}), 8: (1, {'@': 147}), 9: (1, {'@': 147}), 10: (1, {'@': 147}), 11: (1, {'@': 147}), 12: (1, {'@': 147}), 13: (1, {'@': 147}), 14: (1, {'@': 147}), 15: (1, {'@': 147}), 16: (1, {'@': 147}), 19: (1, {'@': 147}), 20: (1, {'@': 147}), 21: (1, {'@': 147}), 22: (1, {'@': 147}), 23: (1, {'@': 147}), 24: (1, {'@': 147}), 25: (1, {'@': 147}), 26: (1, {'@': 147}), 27: (1, {'@': 147}), 28: (1, {'@': 147}), 29: (1, {'@': 147}), 30: (1, {'@': 147}), 0: (1, {'@': 147}), 31: (1, {'@': 147}), 32: (1, {'@': 147}), 33: (1, {'@': 147}), 35: (1, {'@': 147}), 36: (1, {'@': 147}), 37: (1, {'@': 147}), 17: (1, {'@': 147}), 18: (1, {'@': 147}), 34: (1, {'@': 147}), 38: (1, {'@': 147})}, 95: {15: (1, {'@': 157}), 1: (1, {'@': 157}), 2: (1, {'@': 157}), 3: (1, {'@': 157}), 4: (1, {'@': 157}), 5: (1, {'@': 157}), 6: (1, {'@': 157}), 7: (1, {'@': 157}), 8: (1, {'@': 157}), 9: (1, {'@': 157}), 10: (1, {'@': 157}), 11: (1, {'@': 157}), 12: (1, {'@': 157}), 13: (1, {'@': 157}), 14: (1, {'@': 157}), 16: (1, {'@': 157}), 19: (1, {'@': 157}), 20: (1, {'@': 157}), 21: (1, {'@': 157}), 22: (1, {'@': 157}), 23: (1, {'@': 157}), 24: (1, {'@': 157}), 25: (1, {'@': 157}), 26: (1, {'@': 157}), 27: (1, {'@': 157}), 28: (1, {'@': 157}), 29: (1, {'@': 157}), 30: (1, {'@': 157}), 0: (1, {'@': 157}), 31: (1, {'@': 157}), 32: (1, {'@': 157}), 33: (1, {'@': 157}), 35: (1, {'@': 157}), 36: (1, {'@': 157}), 37: (1, {'@': 157}), 17: (1, {'@': 157}), 18: (1, {'@': 157}), 34: (1, {'@': 157}), 38: (1, {'@': 157})}, 96: {3: (0, 44), 107: (0, 284), 18: (1, {'@': 168})}, 97: {32: (0, 2), 51: (0, 116), 54: (0, 62), 70: (0, 166), 55: (0, 207), 71: (0, 270), 72: (0, 48), 28: (0, 16), 59: (0, 120), 60: (0, 94), 73: (0, 257), 56: (0, 78), 61: (0, 130), 74: (0, 101), 75: (0, 179), 76: (0, 160), 62: (0, 168), 77: (0, 206), 63: (0, 42), 52: (0, 279), 78: (0, 28), 66: (0, 138), 22: (0, 154), 33: (0, 33), 67: (0, 125), 87: (0, 57), 79: (0, 147), 80: (0, 106), 0: (0, 248), 11: (0, 198), 30: (0, 239), 36: (0, 222), 20: (0, 71), 53: (0, 212), 27: (0, 283), 81: (0, 274), 35: (0, 87), 19: (0, 95), 82: (0, 225), 83: (0, 173), 47: (0, 286), 26: (0, 156), 64: (0, 181), 65: (0, 192), 84: (0, 17), 25: (0, 258), 85: (0, 182), 29: (0, 36), 31: (0, 119), 13: (0, 231), 4: (0, 170), 86: (0, 72), 8: (0, 113), 88: (0, 285), 37: (0, 109), 24: (0, 67), 89: (0, 200), 21: (0, 193), 69: (0, 150)}, 98: {52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 209), 55: (0, 207), 19: (0, 95), 47: (0, 286), 59: (0, 120), 60: (0, 94), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 99: {17: (0, 97)}, 100: {15: (0, 64)}, 101: {25: (1, {'@': 61}), 19: (1, {'@': 61}), 26: (1, {'@': 61}), 27: (1, {'@': 61}), 4: (1, {'@': 61}), 28: (1, {'@': 61}), 29: (1, {'@': 61}), 20: (1, {'@': 61}), 30: (1, {'@': 61}), 8: (1, {'@': 61}), 0: (1, {'@': 61}), 31: (1, {'@': 61}), 32: (1, {'@': 61}), 33: (1, {'@': 61}), 11: (1, {'@': 61}), 21: (1, {'@': 61}), 22: (1, {'@': 61}), 23: (1, {'@': 61}), 13: (1, {'@': 61}), 35: (1, {'@': 61}), 36: (1, {'@': 61}), 24: (1, {'@': 61}), 37: (1, {'@': 61}), 38: (1, {'@': 61})}, 102: {52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 8: (0, 113), 11: (0, 198), 61: (0, 186), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 103: {34: (0, 215), 17: (0, 241)}, 104: {15: (1, {'@': 170}), 17: (1, {'@': 170})}, 105: {23: (0, 126)}, 106: {25: (1, {'@': 64}), 19: (1, {'@': 64}), 26: (1, {'@': 64}), 27: (1, {'@': 64}), 4: (1, {'@': 64}), 28: (1, {'@': 64}), 29: (1, {'@': 64}), 20: (1, {'@': 64}), 30: (1, {'@': 64}), 8: (1, {'@': 64}), 0: (1, {'@': 64}), 31: (1, {'@': 64}), 32: (1, {'@': 64}), 33: (1, {'@': 64}), 11: (1, {'@': 64}), 21: (1, {'@': 64}), 22: (1, {'@': 64}), 23: (1, {'@': 64}), 13: (1, {'@': 64}), 35: (1, {'@': 64}), 36: (1, {'@': 64}), 24: (1, {'@': 64}), 37: (1, {'@': 64}), 38: (1, {'@': 64})}, 107: {1: (1, {'@': 133}), 2: (1, {'@': 133}), 10: (1, {'@': 133}), 3: (1, {'@': 133}), 4: (1, {'@': 133}), 12: (1, {'@': 133}), 6: (1, {'@': 133}), 5: (1, {'@': 133}), 13: (1, {'@': 133}), 7: (1, {'@': 133}), 8: (1, {'@': 133}), 14: (1, {'@': 133}), 15: (1, {'@': 133}), 16: (1, {'@': 133}), 9: (1, {'@': 133}), 19: (1, {'@': 133}), 20: (1, {'@': 133}), 21: (1, {'@': 133}), 22: (1, {'@': 133}), 23: (1, {'@': 133}), 24: (1, {'@': 133}), 25: (1, {'@': 133}), 26: (1, {'@': 133}), 27: (1, {'@': 133}), 28: (1, {'@': 133}), 29: (1, {'@': 133}), 30: (1, {'@': 133}), 0: (1, {'@': 133}), 31: (1, {'@': 133}), 32: (1, {'@': 133}), 33: (1, {'@': 133}), 11: (1, {'@': 133}), 35: (1, {'@': 133}), 36: (1, {'@': 133}), 37: (1, {'@': 133}), 17: (1, {'@': 133}), 38: (1, {'@': 133}), 18: (1, {'@': 133}), 34: (1, {'@': 133})}, 108: {25: (1, {'@': 101}), 19: (1, {'@': 101}), 26: (1, {'@': 101}), 27: (1, {'@': 101}), 4: (1, {'@': 101}), 28: (1, {'@': 101}), 29: (1, {'@': 101}), 20: (1, {'@': 101}), 30: (1, {'@': 101}), 8: (1, {'@': 101}), 0: (1, {'@': 101}), 31: (1, {'@': 101}), 32: (1, {'@': 101}), 33: (1, {'@': 101}), 11: (1, {'@': 101}), 21: (1, {'@': 101}), 22: (1, {'@': 101}), 23: (1, {'@': 101}), 13: (1, {'@': 101}), 35: (1, {'@': 101}), 36: (1, {'@': 101}), 24: (1, {'@': 101}), 37: (1, {'@': 101}), 38: (1, {'@': 101})}, 109: {32: (0, 261)}, 110: {0: (0, 39), 1: (1, {'@': 160}), 2: (1, {'@': 160}), 3: (1, {'@': 160}), 4: (1, {'@': 160}), 5: (1, {'@': 160}), 6: (1, {'@': 160}), 7: (1, {'@': 160}), 8: (1, {'@': 160}), 9: (1, {'@': 160}), 10: (1, {'@': 160}), 11: (1, {'@': 160}), 12: (1, {'@': 160}), 13: (1, {'@': 160}), 14: (1, {'@': 160}), 15: (1, {'@': 160}), 16: (1, {'@': 160}), 19: (1, {'@': 160}), 20: (1, {'@': 160}), 21: (1, {'@': 160}), 22: (1, {'@': 160}), 23: (1, {'@': 160}), 24: (1, {'@': 160}), 25: (1, {'@': 160}), 26: (1, {'@': 160}), 27: (1, {'@': 160}), 28: (1, {'@': 160}), 29: (1, {'@': 160}), 30: (1, {'@': 160}), 31: (1, {'@': 160}), 32: (1, {'@': 160}), 33: (1, {'@': 160}), 35: (1, {'@': 160}), 36: (1, {'@': 160}), 37: (1, {'@': 160}), 17: (1, {'@': 160}), 18: (1, {'@': 160}), 34: (1, {'@': 160}), 38: (1, {'@': 160})}, 111: {23: (1, {'@': 193}), 25: (1, {'@': 193}), 32: (1, {'@': 193})}, 112: {18: (0, 104), 3: (0, 142)}, 113: {32: (0, 121), 53: (0, 212), 27: (0, 283), 35: (0, 87), 62: (0, 0), 55: (0, 207), 19: (0, 95), 13: (0, 231), 47: (0, 286), 4: (0, 170), 33: (0, 33), 8: (0, 113), 59: (0, 120), 11: (0, 198), 63: (0, 42), 60: (0, 94), 24: (0, 67), 52: (0, 107), 0: (0, 248), 64: (0, 181), 65: (0, 192), 69: (0, 150)}, 114: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 66: (0, 37), 0: (0, 248), 69: (0, 150)}, 115: {32: (0, 2), 51: (0, 116), 54: (0, 62), 70: (0, 166), 55: (0, 207), 71: (0, 270), 72: (0, 48), 28: (0, 16), 59: (0, 120), 60: (0, 94), 73: (0, 257), 56: (0, 78), 61: (0, 130), 74: (0, 101), 75: (0, 179), 76: (0, 160), 62: (0, 168), 77: (0, 206), 63: (0, 42), 52: (0, 279), 78: (0, 28), 66: (0, 138), 22: (0, 154), 87: (0, 70), 33: (0, 33), 67: (0, 125), 79: (0, 147), 80: (0, 106), 0: (0, 248), 11: (0, 198), 30: (0, 239), 36: (0, 222), 20: (0, 71), 53: (0, 212), 27: (0, 283), 81: (0, 274), 35: (0, 87), 19: (0, 95), 82: (0, 225), 83: (0, 173), 47: (0, 286), 26: (0, 156), 64: (0, 181), 65: (0, 192), 84: (0, 17), 25: (0, 258), 85: (0, 182), 29: (0, 36), 31: (0, 119), 13: (0, 231), 4: (0, 170), 86: (0, 72), 8: (0, 113), 88: (0, 285), 37: (0, 109), 24: (0, 67), 89: (0, 200), 21: (0, 193), 69: (0, 150)}, 116: {5: (0, 275), 14: (0, 69), 3: (1, {'@': 117}), 15: (1, {'@': 117}), 25: (1, {'@': 117}), 19: (1, {'@': 117}), 26: (1, {'@': 117}), 27: (1, {'@': 117}), 4: (1, {'@': 117}), 28: (1, {'@': 117}), 29: (1, {'@': 117}), 20: (1, {'@': 117}), 30: (1, {'@': 117}), 8: (1, {'@': 117}), 0: (1, {'@': 117}), 31: (1, {'@': 117}), 32: (1, {'@': 117}), 33: (1, {'@': 117}), 11: (1, {'@': 117}), 21: (1, {'@': 117}), 22: (1, {'@': 117}), 23: (1, {'@': 117}), 13: (1, {'@': 117}), 35: (1, {'@': 117}), 36: (1, {'@': 117}), 24: (1, {'@': 117}), 37: (1, {'@': 117}), 17: (1, {'@': 117}), 38: (1, {'@': 117}), 18: (1, {'@': 117}), 34: (1, {'@': 117})}, 117: {1: (1, {'@': 126}), 2: (1, {'@': 126}), 10: (1, {'@': 126}), 3: (1, {'@': 126}), 4: (1, {'@': 126}), 12: (1, {'@': 126}), 5: (1, {'@': 126}), 14: (1, {'@': 126}), 15: (1, {'@': 126}), 16: (1, {'@': 126}), 25: (1, {'@': 126}), 19: (1, {'@': 126}), 26: (1, {'@': 126}), 27: (1, {'@': 126}), 28: (1, {'@': 126}), 29: (1, {'@': 126}), 20: (1, {'@': 126}), 30: (1, {'@': 126}), 8: (1, {'@': 126}), 0: (1, {'@': 126}), 31: (1, {'@': 126}), 36: (1, {'@': 126}), 32: (1, {'@': 126}), 33: (1, {'@': 126}), 11: (1, {'@': 126}), 21: (1, {'@': 126}), 22: (1, {'@': 126}), 23: (1, {'@': 126}), 13: (1, {'@': 126}), 35: (1, {'@': 126}), 24: (1, {'@': 126}), 37: (1, {'@': 126}), 17: (1, {'@': 126}), 38: (1, {'@': 126}), 18: (1, {'@': 126}), 34: (1, {'@': 126})}, 118: {15: (1, {'@': 90}), 17: (1, {'@': 90})}, 119: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 66: (0, 177), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 120: {11: (0, 271), 1: (1, {'@': 138}), 2: (1, {'@': 138}), 10: (1, {'@': 138}), 3: (1, {'@': 138}), 4: (1, {'@': 138}), 12: (1, {'@': 138}), 6: (1, {'@': 138}), 5: (1, {'@': 138}), 13: (1, {'@': 138}), 7: (1, {'@': 138}), 8: (1, {'@': 138}), 14: (1, {'@': 138}), 15: (1, {'@': 138}), 16: (1, {'@': 138}), 9: (1, {'@': 138}), 19: (1, {'@': 138}), 20: (1, {'@': 138}), 21: (1, {'@': 138}), 22: (1, {'@': 138}), 23: (1, {'@': 138}), 24: (1, {'@': 138}), 25: (1, {'@': 138}), 26: (1, {'@': 138}), 27: (1, {'@': 138}), 28: (1, {'@': 138}), 29: (1, {'@': 138}), 30: (1, {'@': 138}), 0: (1, {'@': 138}), 31: (1, {'@': 138}), 32: (1, {'@': 138}), 33: (1, {'@': 138}), 35: (1, {'@': 138}), 36: (1, {'@': 138}), 37: (1, {'@': 138}), 17: (1, {'@': 138}), 18: (1, {'@': 138}), 34: (1, {'@': 138}), 38: (1, {'@': 138})}, 121: {41: (0, 6), 1: (1, {'@': 162}), 2: (1, {'@': 162}), 3: (1, {'@': 162}), 4: (1, {'@': 162}), 5: (1, {'@': 162}), 6: (1, {'@': 162}), 7: (1, {'@': 162}), 8: (1, {'@': 162}), 0: (1, {'@': 162}), 9: (1, {'@': 162}), 10: (1, {'@': 162}), 11: (1, {'@': 162}), 12: (1, {'@': 162}), 13: (1, {'@': 162}), 14: (1, {'@': 162}), 15: (1, {'@': 162}), 16: (1, {'@': 162}), 17: (1, {'@': 162}), 18: (1, {'@': 162}), 19: (1, {'@': 162}), 20: (1, {'@': 162}), 21: (1, {'@': 162}), 22: (1, {'@': 162}), 23: (1, {'@': 162}), 24: (1, {'@': 162}), 25: (1, {'@': 162}), 26: (1, {'@': 162}), 27: (1, {'@': 162}), 28: (1, {'@': 162}), 29: (1, {'@': 162}), 30: (1, {'@': 162}), 31: (1, {'@': 162}), 32: (1, {'@': 162}), 33: (1, {'@': 162}), 34: (1, {'@': 162}), 35: (1, {'@': 162}), 36: (1, {'@': 162}), 37: (1, {'@': 162}), 38: (1, {'@': 162})}, 122: {3: (0, 236), 15: (1, {'@': 108})}, 123: {52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 51: (0, 255), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 124: {15: (0, 194)}, 125: {3: (1, {'@': 114}), 15: (1, {'@': 114}), 25: (1, {'@': 114}), 19: (1, {'@': 114}), 26: (1, {'@': 114}), 27: (1, {'@': 114}), 4: (1, {'@': 114}), 28: (1, {'@': 114}), 29: (1, {'@': 114}), 20: (1, {'@': 114}), 30: (1, {'@': 114}), 8: (1, {'@': 114}), 0: (1, {'@': 114}), 31: (1, {'@': 114}), 32: (1, {'@': 114}), 33: (1, {'@': 114}), 11: (1, {'@': 114}), 21: (1, {'@': 114}), 22: (1, {'@': 114}), 23: (1, {'@': 114}), 13: (1, {'@': 114}), 35: (1, {'@': 114}), 36: (1, {'@': 114}), 24: (1, {'@': 114}), 37: (1, {'@': 114}), 17: (1, {'@': 114}), 38: (1, {'@': 114}), 18: (1, {'@': 114}), 34: (1, {'@': 114})}, 126: {25: (1, {'@': 79}), 42: (1, {'@': 79}), 19: (1, {'@': 79}), 26: (1, {'@': 79}), 27: (1, {'@': 79}), 4: (1, {'@': 79}), 28: (1, {'@': 79}), 37: (1, {'@': 79}), 29: (1, {'@': 79}), 20: (1, {'@': 79}), 30: (1, {'@': 79}), 8: (1, {'@': 79}), 0: (1, {'@': 79}), 31: (1, {'@': 79}), 32: (1, {'@': 79}), 33: (1, {'@': 79}), 11: (1, {'@': 79}), 21: (1, {'@': 79}), 22: (1, {'@': 79}), 23: (1, {'@': 79}), 13: (1, {'@': 79}), 35: (1, {'@': 79}), 36: (1, {'@': 79}), 24: (1, {'@': 79}), 108: (1, {'@': 79}), 38: (1, {'@': 79})}, 127: {25: (1, {'@': 96}), 19: (1, {'@': 96}), 26: (1, {'@': 96}), 27: (1, {'@': 96}), 4: (1, {'@': 96}), 28: (1, {'@': 96}), 29: (1, {'@': 96}), 20: (1, {'@': 96}), 30: (1, {'@': 96}), 8: (1, {'@': 96}), 0: (1, {'@': 96}), 31: (1, {'@': 96}), 32: (1, {'@': 96}), 33: (1, {'@': 96}), 11: (1, {'@': 96}), 21: (1, {'@': 96}), 22: (1, {'@': 96}), 23: (1, {'@': 96}), 13: (1, {'@': 96}), 35: (1, {'@': 96}), 36: (1, {'@': 96}), 24: (1, {'@': 96}), 37: (1, {'@': 96}), 38: (1, {'@': 96})}, 128: {17: (0, 20)}, 129: {23: (0, 259)}, 130: {1: (0, 59), 10: (0, 123), 3: (1, {'@': 120}), 5: (1, {'@': 120}), 14: (1, {'@': 120}), 15: (1, {'@': 120}), 25: (1, {'@': 120}), 19: (1, {'@': 120}), 26: (1, {'@': 120}), 27: (1, {'@': 120}), 4: (1, {'@': 120}), 28: (1, {'@': 120}), 29: (1, {'@': 120}), 20: (1, {'@': 120}), 30: (1, {'@': 120}), 8: (1, {'@': 120}), 0: (1, {'@': 120}), 31: (1, {'@': 120}), 32: (1, {'@': 120}), 33: (1, {'@': 120}), 11: (1, {'@': 120}), 21: (1, {'@': 120}), 22: (1, {'@': 120}), 23: (1, {'@': 120}), 13: (1, {'@': 120}), 35: (1, {'@': 120}), 36: (1, {'@': 120}), 24: (1, {'@': 120}), 37: (1, {'@': 120}), 17: (1, {'@': 120}), 38: (1, {'@': 120}), 18: (1, {'@': 120}), 34: (1, {'@': 120})}, 131: {109: (0, 210), 110: (0, 152), 101: (0, 201), 111: (0, 145), 25: (0, 146)}, 132: {3: (1, {'@': 119}), 5: (1, {'@': 119}), 14: (1, {'@': 119}), 15: (1, {'@': 119}), 25: (1, {'@': 119}), 19: (1, {'@': 119}), 26: (1, {'@': 119}), 27: (1, {'@': 119}), 4: (1, {'@': 119}), 28: (1, {'@': 119}), 29: (1, {'@': 119}), 20: (1, {'@': 119}), 30: (1, {'@': 119}), 8: (1, {'@': 119}), 0: (1, {'@': 119}), 31: (1, {'@': 119}), 32: (1, {'@': 119}), 33: (1, {'@': 119}), 11: (1, {'@': 119}), 21: (1, {'@': 119}), 22: (1, {'@': 119}), 23: (1, {'@': 119}), 13: (1, {'@': 119}), 35: (1, {'@': 119}), 36: (1, {'@': 119}), 24: (1, {'@': 119}), 37: (1, {'@': 119}), 17: (1, {'@': 119}), 38: (1, {'@': 119}), 18: (1, {'@': 119}), 34: (1, {'@': 119})}, 133: {32: (0, 202), 103: (0, 15)}, 134: {23: (1, {'@': 85}), 25: (1, {'@': 85}), 101: (1, {'@': 85})}, 135: {38: (1, {'@': 51})}, 136: {1: (1, {'@': 134}), 2: (1, {'@': 134}), 10: (1, {'@': 134}), 3: (1, {'@': 134}), 4: (1, {'@': 134}), 12: (1, {'@': 134}), 6: (1, {'@': 134}), 5: (1, {'@': 134}), 13: (1, {'@': 134}), 7: (1, {'@': 134}), 8: (1, {'@': 134}), 14: (1, {'@': 134}), 15: (1, {'@': 134}), 16: (1, {'@': 134}), 9: (1, {'@': 134}), 19: (1, {'@': 134}), 20: (1, {'@': 134}), 21: (1, {'@': 134}), 22: (1, {'@': 134}), 23: (1, {'@': 134}), 24: (1, {'@': 134}), 25: (1, {'@': 134}), 26: (1, {'@': 134}), 27: (1, {'@': 134}), 28: (1, {'@': 134}), 29: (1, {'@': 134}), 30: (1, {'@': 134}), 0: (1, {'@': 134}), 31: (1, {'@': 134}), 32: (1, {'@': 134}), 33: (1, {'@': 134}), 11: (1, {'@': 134}), 35: (1, {'@': 134}), 36: (1, {'@': 134}), 37: (1, {'@': 134}), 17: (1, {'@': 134}), 38: (1, {'@': 134}), 18: (1, {'@': 134}), 34: (1, {'@': 134})}, 137: {16: (1, {'@': 111}), 17: (1, {'@': 111}), 15: (1, {'@': 111}), 25: (1, {'@': 111}), 23: (1, {'@': 111}), 32: (1, {'@': 111}), 3: (1, {'@': 111})}, 138: {25: (1, {'@': 54}), 19: (1, {'@': 54}), 26: (1, {'@': 54}), 27: (1, {'@': 54}), 4: (1, {'@': 54}), 28: (1, {'@': 54}), 29: (1, {'@': 54}), 20: (1, {'@': 54}), 30: (1, {'@': 54}), 8: (1, {'@': 54}), 0: (1, {'@': 54}), 31: (1, {'@': 54}), 32: (1, {'@': 54}), 33: (1, {'@': 54}), 11: (1, {'@': 54}), 21: (1, {'@': 54}), 22: (1, {'@': 54}), 23: (1, {'@': 54}), 13: (1, {'@': 54}), 35: (1, {'@': 54}), 36: (1, {'@': 54}), 24: (1, {'@': 54}), 37: (1, {'@': 54}), 38: (1, {'@': 54})}, 139: {32: (0, 202), 103: (0, 100)}, 140: {25: (1, {'@': 106}), 19: (1, {'@': 106}), 26: (1, {'@': 106}), 27: (1, {'@': 106}), 4: (1, {'@': 106}), 28: (1, {'@': 106}), 29: (1, {'@': 106}), 20: (1, {'@': 106}), 30: (1, {'@': 106}), 8: (1, {'@': 106}), 0: (1, {'@': 106}), 31: (1, {'@': 106}), 32: (1, {'@': 106}), 33: (1, {'@': 106}), 11: (1, {'@': 106}), 21: (1, {'@': 106}), 22: (1, {'@': 106}), 23: (1, {'@': 106}), 13: (1, {'@': 106}), 35: (1, {'@': 106}), 36: (1, {'@': 106}), 24: (1, {'@': 106}), 37: (1, {'@': 106}), 38: (1, {'@': 106})}, 141: {40: (0, 277)}, 142: {55: (0, 216), 46: (0, 76), 27: (0, 283), 90: (0, 22), 49: (0, 223)}, 143: {112: (0, 246)}, 144: {25: (1, {'@': 77}), 19: (1, {'@': 77}), 26: (1, {'@': 77}), 27: (1, {'@': 77}), 4: (1, {'@': 77}), 28: (1, {'@': 77}), 29: (1, {'@': 77}), 20: (1, {'@': 77}), 30: (1, {'@': 77}), 8: (1, {'@': 77}), 0: (1, {'@': 77}), 31: (1, {'@': 77}), 32: (1, {'@': 77}), 33: (1, {'@': 77}), 11: (1, {'@': 77}), 21: (1, {'@': 77}), 22: (1, {'@': 77}), 23: (1, {'@': 77}), 13: (1, {'@': 77}), 35: (1, {'@': 77}), 36: (1, {'@': 77}), 24: (1, {'@': 77}), 37: (1, {'@': 77}), 38: (1, {'@': 77})}, 145: {23: (0, 249)}, 146: {23: (1, {'@': 182}), 25: (1, {'@': 182}), 101: (1, {'@': 182})}, 147: {25: (1, {'@': 69}), 19: (1, {'@': 69}), 26: (1, {'@': 69}), 27: (1, {'@': 69}), 4: (1, {'@': 69}), 28: (1, {'@': 69}), 29: (1, {'@': 69}), 20: (1, {'@': 69}), 30: (1, {'@': 69}), 8: (1, {'@': 69}), 0: (1, {'@': 69}), 31: (1, {'@': 69}), 32: (1, {'@': 69}), 33: (1, {'@': 69}), 11: (1, {'@': 69}), 21: (1, {'@': 69}), 22: (1, {'@': 69}), 23: (1, {'@': 69}), 13: (1, {'@': 69}), 35: (1, {'@': 69}), 36: (1, {'@': 69}), 24: (1, {'@': 69}), 37: (1, {'@': 69}), 38: (1, {'@': 69})}, 148: {23: (0, 159)}, 149: {1: (1, {'@': 161}), 2: (1, {'@': 161}), 3: (1, {'@': 161}), 4: (1, {'@': 161}), 5: (1, {'@': 161}), 6: (1, {'@': 161}), 7: (1, {'@': 161}), 8: (1, {'@': 161}), 9: (1, {'@': 161}), 10: (1, {'@': 161}), 11: (1, {'@': 161}), 12: (1, {'@': 161}), 13: (1, {'@': 161}), 14: (1, {'@': 161}), 15: (1, {'@': 161}), 16: (1, {'@': 161}), 19: (1, {'@': 161}), 20: (1, {'@': 161}), 21: (1, {'@': 161}), 22: (1, {'@': 161}), 23: (1, {'@': 161}), 24: (1, {'@': 161}), 25: (1, {'@': 161}), 26: (1, {'@': 161}), 27: (1, {'@': 161}), 28: (1, {'@': 161}), 29: (1, {'@': 161}), 30: (1, {'@': 161}), 0: (1, {'@': 161}), 31: (1, {'@': 161}), 32: (1, {'@': 161}), 33: (1, {'@': 161}), 35: (1, {'@': 161}), 36: (1, {'@': 161}), 37: (1, {'@': 161}), 17: (1, {'@': 161}), 18: (1, {'@': 161}), 34: (1, {'@': 161}), 38: (1, {'@': 161})}, 150: {1: (1, {'@': 136}), 2: (1, {'@': 136}), 10: (1, {'@': 136}), 3: (1, {'@': 136}), 4: (1, {'@': 136}), 12: (1, {'@': 136}), 6: (1, {'@': 136}), 5: (1, {'@': 136}), 13: (1, {'@': 136}), 7: (1, {'@': 136}), 8: (1, {'@': 136}), 14: (1, {'@': 136}), 15: (1, {'@': 136}), 16: (1, {'@': 136}), 9: (1, {'@': 136}), 19: (1, {'@': 136}), 20: (1, {'@': 136}), 21: (1, {'@': 136}), 22: (1, {'@': 136}), 23: (1, {'@': 136}), 24: (1, {'@': 136}), 25: (1, {'@': 136}), 26: (1, {'@': 136}), 27: (1, {'@': 136}), 28: (1, {'@': 136}), 29: (1, {'@': 136}), 30: (1, {'@': 136}), 0: (1, {'@': 136}), 31: (1, {'@': 136}), 32: (1, {'@': 136}), 33: (1, {'@': 136}), 11: (1, {'@': 136}), 35: (1, {'@': 136}), 36: (1, {'@': 136}), 37: (1, {'@': 136}), 17: (1, {'@': 136}), 38: (1, {'@': 136}), 18: (1, {'@': 136}), 34: (1, {'@': 136})}, 151: {52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 55: (0, 207), 19: (0, 95), 47: (0, 286), 59: (0, 120), 60: (0, 94), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 8: (0, 113), 11: (0, 198), 54: (0, 234), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 152: {23: (1, {'@': 181}), 25: (1, {'@': 181}), 101: (1, {'@': 181})}, 153: {112: (0, 273)}, 154: {32: (0, 244)}, 155: {25: (1, {'@': 71}), 19: (1, {'@': 71}), 26: (1, {'@': 71}), 27: (1, {'@': 71}), 4: (1, {'@': 71}), 28: (1, {'@': 71}), 29: (1, {'@': 71}), 20: (1, {'@': 71}), 30: (1, {'@': 71}), 8: (1, {'@': 71}), 0: (1, {'@': 71}), 31: (1, {'@': 71}), 32: (1, {'@': 71}), 33: (1, {'@': 71}), 11: (1, {'@': 71}), 21: (1, {'@': 71}), 22: (1, {'@': 71}), 23: (1, {'@': 71}), 13: (1, {'@': 71}), 35: (1, {'@': 71}), 36: (1, {'@': 71}), 24: (1, {'@': 71}), 37: (1, {'@': 71}), 38: (1, {'@': 71})}, 156: {32: (0, 30)}, 157: {32: (0, 221), 58: (0, 77)}, 158: {32: (0, 2), 51: (0, 116), 54: (0, 62), 70: (0, 166), 55: (0, 207), 71: (0, 270), 72: (0, 48), 28: (0, 16), 59: (0, 120), 60: (0, 94), 73: (0, 257), 56: (0, 78), 61: (0, 130), 74: (0, 101), 75: (0, 179), 76: (0, 160), 62: (0, 168), 77: (0, 206), 63: (0, 42), 52: (0, 279), 78: (0, 28), 66: (0, 138), 22: (0, 154), 33: (0, 33), 67: (0, 125), 79: (0, 147), 80: (0, 106), 0: (0, 248), 11: (0, 198), 30: (0, 239), 36: (0, 222), 20: (0, 71), 53: (0, 212), 27: (0, 283), 81: (0, 274), 35: (0, 87), 19: (0, 95), 82: (0, 225), 83: (0, 173), 47: (0, 286), 26: (0, 156), 87: (0, 148), 64: (0, 181), 65: (0, 192), 84: (0, 17), 25: (0, 258), 85: (0, 182), 29: (0, 36), 31: (0, 119), 13: (0, 231), 4: (0, 170), 86: (0, 72), 8: (0, 113), 88: (0, 285), 37: (0, 109), 24: (0, 67), 89: (0, 200), 21: (0, 193), 69: (0, 150)}, 159: {25: (1, {'@': 81}), 42: (1, {'@': 81}), 19: (1, {'@': 81}), 26: (1, {'@': 81}), 27: (1, {'@': 81}), 4: (1, {'@': 81}), 28: (1, {'@': 81}), 37: (1, {'@': 81}), 29: (1, {'@': 81}), 20: (1, {'@': 81}), 30: (1, {'@': 81}), 8: (1, {'@': 81}), 0: (1, {'@': 81}), 31: (1, {'@': 81}), 32: (1, {'@': 81}), 33: (1, {'@': 81}), 11: (1, {'@': 81}), 21: (1, {'@': 81}), 22: (1, {'@': 81}), 23: (1, {'@': 81}), 13: (1, {'@': 81}), 35: (1, {'@': 81}), 36: (1, {'@': 81}), 24: (1, {'@': 81}), 108: (1, {'@': 81}), 38: (1, {'@': 81})}, 160: {25: (1, {'@': 67}), 19: (1, {'@': 67}), 26: (1, {'@': 67}), 27: (1, {'@': 67}), 4: (1, {'@': 67}), 28: (1, {'@': 67}), 29: (1, {'@': 67}), 20: (1, {'@': 67}), 30: (1, {'@': 67}), 8: (1, {'@': 67}), 0: (1, {'@': 67}), 31: (1, {'@': 67}), 32: (1, {'@': 67}), 33: (1, {'@': 67}), 11: (1, {'@': 67}), 21: (1, {'@': 67}), 22: (1, {'@': 67}), 23: (1, {'@': 67}), 13: (1, {'@': 67}), 35: (1, {'@': 67}), 36: (1, {'@': 67}), 24: (1, {'@': 67}), 37: (1, {'@': 67}), 38: (1, {'@': 67})}, 161: {25: (1, {'@': 97}), 19: (1, {'@': 97}), 26: (1, {'@': 97}), 27: (1, {'@': 97}), 4: (1, {'@': 97}), 28: (1, {'@': 97}), 29: (1, {'@': 97}), 20: (1, {'@': 97}), 30: (1, {'@': 97}), 8: (1, {'@': 97}), 0: (1, {'@': 97}), 31: (1, {'@': 97}), 32: (1, {'@': 97}), 33: (1, {'@': 97}), 11: (1, {'@': 97}), 21: (1, {'@': 97}), 22: (1, {'@': 97}), 23: (1, {'@': 97}), 13: (1, {'@': 97}), 35: (1, {'@': 97}), 36: (1, {'@': 97}), 24: (1, {'@': 97}), 37: (1, {'@': 97}), 38: (1, {'@': 97})}, 162: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 66: (0, 187), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 163: {52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 62: (0, 0), 63: (0, 42), 64: (0, 181), 61: (0, 85), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 164: {18: (0, 86)}, 165: {90: (0, 237), 55: (0, 216), 46: (0, 76), 27: (0, 283), 49: (0, 223)}, 166: {113: (0, 185), 114: (0, 3), 115: (0, 253), 42: (0, 63), 108: (0, 232), 43: (0, 144), 25: (1, {'@': 78}), 19: (1, {'@': 78}), 26: (1, {'@': 78}), 27: (1, {'@': 78}), 4: (1, {'@': 78}), 28: (1, {'@': 78}), 29: (1, {'@': 78}), 20: (1, {'@': 78}), 30: (1, {'@': 78}), 8: (1, {'@': 78}), 0: (1, {'@': 78}), 31: (1, {'@': 78}), 32: (1, {'@': 78}), 33: (1, {'@': 78}), 11: (1, {'@': 78}), 21: (1, {'@': 78}), 22: (1, {'@': 78}), 23: (1, {'@': 78}), 13: (1, {'@': 78}), 35: (1, {'@': 78}), 36: (1, {'@': 78}), 24: (1, {'@': 78}), 37: (1, {'@': 78}), 38: (1, {'@': 78})}, 167: {3: (1, {'@': 200}), 15: (1, {'@': 200})}, 168: {0: (0, 7), 11: (0, 162), 1: (1, {'@': 152}), 19: (1, {'@': 152}), 20: (1, {'@': 152}), 8: (1, {'@': 152}), 9: (1, {'@': 152}), 21: (1, {'@': 152}), 22: (1, {'@': 152}), 23: (1, {'@': 152}), 13: (1, {'@': 152}), 16: (1, {'@': 152}), 24: (1, {'@': 152}), 2: (1, {'@': 152}), 25: (1, {'@': 152}), 4: (1, {'@': 152}), 26: (1, {'@': 152}), 27: (1, {'@': 152}), 5: (1, {'@': 152}), 6: (1, {'@': 152}), 28: (1, {'@': 152}), 29: (1, {'@': 152}), 7: (1, {'@': 152}), 30: (1, {'@': 152}), 31: (1, {'@': 152}), 32: (1, {'@': 152}), 33: (1, {'@': 152}), 10: (1, {'@': 152}), 12: (1, {'@': 152}), 35: (1, {'@': 152}), 14: (1, {'@': 152}), 36: (1, {'@': 152}), 37: (1, {'@': 152}), 38: (1, {'@': 152})}, 169: {18: (0, 219)}, 170: {32: (0, 202), 103: (0, 240)}, 171: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 66: (0, 155), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 172: {3: (1, {'@': 155}), 15: (1, {'@': 155})}, 173: {25: (1, {'@': 57}), 19: (1, {'@': 57}), 26: (1, {'@': 57}), 27: (1, {'@': 57}), 4: (1, {'@': 57}), 28: (1, {'@': 57}), 29: (1, {'@': 57}), 20: (1, {'@': 57}), 30: (1, {'@': 57}), 8: (1, {'@': 57}), 0: (1, {'@': 57}), 31: (1, {'@': 57}), 32: (1, {'@': 57}), 33: (1, {'@': 57}), 11: (1, {'@': 57}), 21: (1, {'@': 57}), 22: (1, {'@': 57}), 23: (1, {'@': 57}), 13: (1, {'@': 57}), 35: (1, {'@': 57}), 36: (1, {'@': 57}), 24: (1, {'@': 57}), 37: (1, {'@': 57}), 38: (1, {'@': 57})}, 174: {25: (1, {'@': 180}), 42: (1, {'@': 180}), 19: (1, {'@': 180}), 26: (1, {'@': 180}), 27: (1, {'@': 180}), 4: (1, {'@': 180}), 28: (1, {'@': 180}), 37: (1, {'@': 180}), 29: (1, {'@': 180}), 20: (1, {'@': 180}), 30: (1, {'@': 180}), 8: (1, {'@': 180}), 0: (1, {'@': 180}), 31: (1, {'@': 180}), 32: (1, {'@': 180}), 33: (1, {'@': 180}), 11: (1, {'@': 180}), 21: (1, {'@': 180}), 22: (1, {'@': 180}), 23: (1, {'@': 180}), 13: (1, {'@': 180}), 35: (1, {'@': 180}), 36: (1, {'@': 180}), 24: (1, {'@': 180}), 108: (1, {'@': 180}), 38: (1, {'@': 180})}, 175: {23: (1, {'@': 99}), 25: (1, {'@': 99}), 32: (1, {'@': 99})}, 176: {0: (0, 5), 15: (1, {'@': 91}), 17: (1, {'@': 91})}, 177: {17: (0, 74)}, 178: {25: (1, {'@': 72}), 19: (1, {'@': 72}), 26: (1, {'@': 72}), 27: (1, {'@': 72}), 4: (1, {'@': 72}), 28: (1, {'@': 72}), 29: (1, {'@': 72}), 20: (1, {'@': 72}), 30: (1, {'@': 72}), 8: (1, {'@': 72}), 0: (1, {'@': 72}), 31: (1, {'@': 72}), 32: (1, {'@': 72}), 33: (1, {'@': 72}), 11: (1, {'@': 72}), 21: (1, {'@': 72}), 22: (1, {'@': 72}), 23: (1, {'@': 72}), 13: (1, {'@': 72}), 35: (1, {'@': 72}), 36: (1, {'@': 72}), 24: (1, {'@': 72}), 37: (1, {'@': 72}), 38: (1, {'@': 72})}, 179: {25: (1, {'@': 66}), 19: (1, {'@': 66}), 26: (1, {'@': 66}), 27: (1, {'@': 66}), 4: (1, {'@': 66}), 28: (1, {'@': 66}), 29: (1, {'@': 66}), 20: (1, {'@': 66}), 30: (1, {'@': 66}), 8: (1, {'@': 66}), 0: (1, {'@': 66}), 31: (1, {'@': 66}), 32: (1, {'@': 66}), 33: (1, {'@': 66}), 11: (1, {'@': 66}), 21: (1, {'@': 66}), 22: (1, {'@': 66}), 23: (1, {'@': 66}), 13: (1, {'@': 66}), 35: (1, {'@': 66}), 36: (1, {'@': 66}), 24: (1, {'@': 66}), 37: (1, {'@': 66}), 38: (1, {'@': 66})}, 180: {3: (1, {'@': 110}), 15: (1, {'@': 110})}, 181: {1: (1, {'@': 148}), 2: (1, {'@': 148}), 3: (1, {'@': 148}), 4: (1, {'@': 148}), 5: (1, {'@': 148}), 6: (1, {'@': 148}), 7: (1, {'@': 148}), 8: (1, {'@': 148}), 9: (1, {'@': 148}), 10: (1, {'@': 148}), 11: (1, {'@': 148}), 12: (1, {'@': 148}), 13: (1, {'@': 148}), 14: (1, {'@': 148}), 15: (1, {'@': 148}), 16: (1, {'@': 148}), 19: (1, {'@': 148}), 20: (1, {'@': 148}), 21: (1, {'@': 148}), 22: (1, {'@': 148}), 23: (1, {'@': 148}), 24: (1, {'@': 148}), 25: (1, {'@': 148}), 26: (1, {'@': 148}), 27: (1, {'@': 148}), 28: (1, {'@': 148}), 29: (1, {'@': 148}), 30: (1, {'@': 148}), 0: (1, {'@': 148}), 31: (1, {'@': 148}), 32: (1, {'@': 148}), 33: (1, {'@': 148}), 35: (1, {'@': 148}), 36: (1, {'@': 148}), 37: (1, {'@': 148}), 17: (1, {'@': 148}), 18: (1, {'@': 148}), 34: (1, {'@': 148}), 38: (1, {'@': 148})}, 182: {25: (1, {'@': 56}), 19: (1, {'@': 56}), 26: (1, {'@': 56}), 27: (1, {'@': 56}), 4: (1, {'@': 56}), 28: (1, {'@': 56}), 29: (1, {'@': 56}), 20: (1, {'@': 56}), 30: (1, {'@': 56}), 8: (1, {'@': 56}), 0: (1, {'@': 56}), 31: (1, {'@': 56}), 32: (1, {'@': 56}), 33: (1, {'@': 56}), 11: (1, {'@': 56}), 21: (1, {'@': 56}), 22: (1, {'@': 56}), 23: (1, {'@': 56}), 13: (1, {'@': 56}), 35: (1, {'@': 56}), 36: (1, {'@': 56}), 24: (1, {'@': 56}), 37: (1, {'@': 56}), 38: (1, {'@': 56})}, 183: {1: (1, {'@': 122}), 10: (1, {'@': 122}), 14: (1, {'@': 122}), 15: (1, {'@': 122}), 3: (1, {'@': 122}), 5: (1, {'@': 122}), 25: (1, {'@': 122}), 19: (1, {'@': 122}), 26: (1, {'@': 122}), 27: (1, {'@': 122}), 4: (1, {'@': 122}), 28: (1, {'@': 122}), 29: (1, {'@': 122}), 20: (1, {'@': 122}), 30: (1, {'@': 122}), 8: (1, {'@': 122}), 0: (1, {'@': 122}), 31: (1, {'@': 122}), 32: (1, {'@': 122}), 33: (1, {'@': 122}), 11: (1, {'@': 122}), 21: (1, {'@': 122}), 22: (1, {'@': 122}), 23: (1, {'@': 122}), 13: (1, {'@': 122}), 35: (1, {'@': 122}), 36: (1, {'@': 122}), 24: (1, {'@': 122}), 37: (1, {'@': 122}), 17: (1, {'@': 122}), 38: (1, {'@': 122}), 18: (1, {'@': 122}), 34: (1, {'@': 122})}, 184: {23: (1, {'@': 186}), 25: (1, {'@': 186}), 32: (1, {'@': 186})}, 185: {25: (1, {'@': 179}), 42: (1, {'@': 179}), 19: (1, {'@': 179}), 26: (1, {'@': 179}), 27: (1, {'@': 179}), 4: (1, {'@': 179}), 28: (1, {'@': 179}), 37: (1, {'@': 179}), 29: (1, {'@': 179}), 20: (1, {'@': 179}), 30: (1, {'@': 179}), 8: (1, {'@': 179}), 0: (1, {'@': 179}), 31: (1, {'@': 179}), 32: (1, {'@': 179}), 33: (1, {'@': 179}), 11: (1, {'@': 179}), 21: (1, {'@': 179}), 22: (1, {'@': 179}), 23: (1, {'@': 179}), 13: (1, {'@': 179}), 35: (1, {'@': 179}), 36: (1, {'@': 179}), 24: (1, {'@': 179}), 108: (1, {'@': 179}), 38: (1, {'@': 179})}, 186: {1: (1, {'@': 123}), 10: (1, {'@': 123}), 14: (1, {'@': 123}), 15: (1, {'@': 123}), 3: (1, {'@': 123}), 5: (1, {'@': 123}), 25: (1, {'@': 123}), 19: (1, {'@': 123}), 26: (1, {'@': 123}), 27: (1, {'@': 123}), 4: (1, {'@': 123}), 28: (1, {'@': 123}), 29: (1, {'@': 123}), 20: (1, {'@': 123}), 30: (1, {'@': 123}), 8: (1, {'@': 123}), 0: (1, {'@': 123}), 31: (1, {'@': 123}), 32: (1, {'@': 123}), 33: (1, {'@': 123}), 11: (1, {'@': 123}), 21: (1, {'@': 123}), 22: (1, {'@': 123}), 23: (1, {'@': 123}), 13: (1, {'@': 123}), 35: (1, {'@': 123}), 36: (1, {'@': 123}), 24: (1, {'@': 123}), 37: (1, {'@': 123}), 17: (1, {'@': 123}), 38: (1, {'@': 123}), 18: (1, {'@': 123}), 34: (1, {'@': 123})}, 187: {18: (0, 141)}, 188: {23: (0, 41)}, 189: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 66: (0, 195), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 98: (0, 38), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 190: {1: (1, {'@': 164}), 2: (1, {'@': 164}), 3: (1, {'@': 164}), 4: (1, {'@': 164}), 5: (1, {'@': 164}), 6: (1, {'@': 164}), 7: (1, {'@': 164}), 8: (1, {'@': 164}), 9: (1, {'@': 164}), 10: (1, {'@': 164}), 11: (1, {'@': 164}), 12: (1, {'@': 164}), 13: (1, {'@': 164}), 14: (1, {'@': 164}), 15: (1, {'@': 164}), 16: (1, {'@': 164}), 19: (1, {'@': 164}), 20: (1, {'@': 164}), 21: (1, {'@': 164}), 22: (1, {'@': 164}), 23: (1, {'@': 164}), 24: (1, {'@': 164}), 25: (1, {'@': 164}), 26: (1, {'@': 164}), 27: (1, {'@': 164}), 28: (1, {'@': 164}), 29: (1, {'@': 164}), 30: (1, {'@': 164}), 0: (1, {'@': 164}), 31: (1, {'@': 164}), 32: (1, {'@': 164}), 33: (1, {'@': 164}), 35: (1, {'@': 164}), 36: (1, {'@': 164}), 37: (1, {'@': 164}), 17: (1, {'@': 164}), 18: (1, {'@': 164}), 34: (1, {'@': 164}), 38: (1, {'@': 164})}, 191: {3: (1, {'@': 195}), 15: (1, {'@': 195})}, 192: {1: (1, {'@': 150}), 2: (1, {'@': 150}), 3: (1, {'@': 150}), 4: (1, {'@': 150}), 5: (1, {'@': 150}), 6: (1, {'@': 150}), 7: (1, {'@': 150}), 8: (1, {'@': 150}), 9: (1, {'@': 150}), 10: (1, {'@': 150}), 11: (1, {'@': 150}), 12: (1, {'@': 150}), 13: (1, {'@': 150}), 14: (1, {'@': 150}), 15: (1, {'@': 150}), 16: (1, {'@': 150}), 19: (1, {'@': 150}), 20: (1, {'@': 150}), 21: (1, {'@': 150}), 22: (1, {'@': 150}), 23: (1, {'@': 150}), 24: (1, {'@': 150}), 25: (1, {'@': 150}), 26: (1, {'@': 150}), 27: (1, {'@': 150}), 28: (1, {'@': 150}), 29: (1, {'@': 150}), 30: (1, {'@': 150}), 0: (1, {'@': 150}), 31: (1, {'@': 150}), 32: (1, {'@': 150}), 33: (1, {'@': 150}), 35: (1, {'@': 150}), 36: (1, {'@': 150}), 37: (1, {'@': 150}), 17: (1, {'@': 150}), 18: (1, {'@': 150}), 34: (1, {'@': 150}), 38: (1, {'@': 150})}, 193: {32: (0, 280)}, 194: {15: (1, {'@': 92}), 17: (1, {'@': 92})}, 195: {3: (1, {'@': 169}), 18: (1, {'@': 169})}, 196: {16: (0, 137)}, 197: {58: (0, 167), 32: (0, 221)}, 198: {51: (0, 116), 98: (0, 96), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 66: (0, 195), 47: (0, 286), 59: (0, 120), 60: (0, 94), 18: (0, 84), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 100: (0, 60), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 199: {3: (1, {'@': 115}), 15: (1, {'@': 115}), 25: (1, {'@': 115}), 19: (1, {'@': 115}), 26: (1, {'@': 115}), 27: (1, {'@': 115}), 4: (1, {'@': 115}), 28: (1, {'@': 115}), 29: (1, {'@': 115}), 20: (1, {'@': 115}), 30: (1, {'@': 115}), 8: (1, {'@': 115}), 0: (1, {'@': 115}), 31: (1, {'@': 115}), 32: (1, {'@': 115}), 33: (1, {'@': 115}), 11: (1, {'@': 115}), 21: (1, {'@': 115}), 22: (1, {'@': 115}), 23: (1, {'@': 115}), 13: (1, {'@': 115}), 35: (1, {'@': 115}), 36: (1, {'@': 115}), 24: (1, {'@': 115}), 37: (1, {'@': 115}), 17: (1, {'@': 115}), 38: (1, {'@': 115}), 18: (1, {'@': 115}), 34: (1, {'@': 115})}, 200: {23: (1, {'@': 53})}, 201: {45: (0, 54), 46: (0, 76), 11: (0, 11), 32: (0, 260), 47: (0, 252), 48: (0, 118), 24: (0, 67), 44: (0, 229), 19: (0, 95), 49: (0, 80), 50: (0, 27)}, 202: {4: (0, 55), 16: (1, {'@': 112}), 17: (1, {'@': 112}), 15: (1, {'@': 112}), 25: (1, {'@': 112}), 23: (1, {'@': 112}), 32: (1, {'@': 112}), 3: (1, {'@': 112})}, 203: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 66: (0, 40), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 204: {23: (1, {'@': 187}), 25: (1, {'@': 187}), 32: (1, {'@': 187})}, 205: {17: (0, 115)}, 206: {32: (0, 2), 51: (0, 116), 54: (0, 62), 70: (0, 166), 55: (0, 207), 71: (0, 270), 72: (0, 48), 28: (0, 16), 59: (0, 120), 60: (0, 94), 56: (0, 78), 61: (0, 130), 74: (0, 101), 76: (0, 160), 75: (0, 179), 62: (0, 168), 63: (0, 42), 52: (0, 279), 78: (0, 28), 66: (0, 138), 22: (0, 154), 33: (0, 33), 67: (0, 125), 79: (0, 147), 80: (0, 106), 0: (0, 248), 11: (0, 198), 30: (0, 239), 36: (0, 222), 20: (0, 71), 53: (0, 212), 27: (0, 283), 81: (0, 274), 35: (0, 87), 19: (0, 95), 82: (0, 225), 25: (0, 272), 83: (0, 173), 47: (0, 286), 26: (0, 156), 73: (0, 23), 64: (0, 181), 65: (0, 192), 84: (0, 17), 85: (0, 182), 29: (0, 36), 31: (0, 119), 13: (0, 231), 4: (0, 170), 86: (0, 72), 8: (0, 113), 88: (0, 285), 37: (0, 109), 24: (0, 67), 21: (0, 193), 69: (0, 150), 23: (1, {'@': 52}), 38: (1, {'@': 52})}, 207: {1: (1, {'@': 146}), 2: (1, {'@': 146}), 3: (1, {'@': 146}), 4: (1, {'@': 146}), 5: (1, {'@': 146}), 6: (1, {'@': 146}), 7: (1, {'@': 146}), 8: (1, {'@': 146}), 9: (1, {'@': 146}), 10: (1, {'@': 146}), 11: (1, {'@': 146}), 12: (1, {'@': 146}), 13: (1, {'@': 146}), 14: (1, {'@': 146}), 15: (1, {'@': 146}), 16: (1, {'@': 146}), 19: (1, {'@': 146}), 20: (1, {'@': 146}), 21: (1, {'@': 146}), 22: (1, {'@': 146}), 23: (1, {'@': 146}), 24: (1, {'@': 146}), 25: (1, {'@': 146}), 26: (1, {'@': 146}), 27: (1, {'@': 146}), 28: (1, {'@': 146}), 29: (1, {'@': 146}), 30: (1, {'@': 146}), 0: (1, {'@': 146}), 31: (1, {'@': 146}), 32: (1, {'@': 146}), 33: (1, {'@': 146}), 35: (1, {'@': 146}), 36: (1, {'@': 146}), 37: (1, {'@': 146}), 17: (1, {'@': 146}), 18: (1, {'@': 146}), 34: (1, {'@': 146}), 38: (1, {'@': 146})}, 208: {15: (1, {'@': 171}), 17: (1, {'@': 171})}, 209: {1: (1, {'@': 131}), 2: (1, {'@': 131}), 10: (1, {'@': 131}), 3: (1, {'@': 131}), 4: (1, {'@': 131}), 12: (1, {'@': 131}), 5: (1, {'@': 131}), 13: (1, {'@': 131}), 15: (1, {'@': 131}), 14: (1, {'@': 131}), 8: (1, {'@': 131}), 16: (1, {'@': 131}), 19: (1, {'@': 131}), 20: (1, {'@': 131}), 21: (1, {'@': 131}), 22: (1, {'@': 131}), 23: (1, {'@': 131}), 24: (1, {'@': 131}), 25: (1, {'@': 131}), 26: (1, {'@': 131}), 27: (1, {'@': 131}), 28: (1, {'@': 131}), 29: (1, {'@': 131}), 30: (1, {'@': 131}), 0: (1, {'@': 131}), 31: (1, {'@': 131}), 32: (1, {'@': 131}), 33: (1, {'@': 131}), 11: (1, {'@': 131}), 35: (1, {'@': 131}), 36: (1, {'@': 131}), 37: (1, {'@': 131}), 17: (1, {'@': 131}), 38: (1, {'@': 131}), 18: (1, {'@': 131}), 34: (1, {'@': 131})}, 210: {25: (0, 268), 101: (0, 201), 110: (0, 47), 23: (1, {'@': 84})}, 211: {32: (0, 176)}, 212: {1: (1, {'@': 149}), 2: (1, {'@': 149}), 3: (1, {'@': 149}), 4: (1, {'@': 149}), 5: (1, {'@': 149}), 6: (1, {'@': 149}), 7: (1, {'@': 149}), 8: (1, {'@': 149}), 9: (1, {'@': 149}), 10: (1, {'@': 149}), 11: (1, {'@': 149}), 12: (1, {'@': 149}), 13: (1, {'@': 149}), 14: (1, {'@': 149}), 15: (1, {'@': 149}), 16: (1, {'@': 149}), 19: (1, {'@': 149}), 20: (1, {'@': 149}), 21: (1, {'@': 149}), 22: (1, {'@': 149}), 23: (1, {'@': 149}), 24: (1, {'@': 149}), 25: (1, {'@': 149}), 26: (1, {'@': 149}), 27: (1, {'@': 149}), 28: (1, {'@': 149}), 29: (1, {'@': 149}), 30: (1, {'@': 149}), 0: (1, {'@': 149}), 31: (1, {'@': 149}), 32: (1, {'@': 149}), 33: (1, {'@': 149}), 35: (1, {'@': 149}), 36: (1, {'@': 149}), 37: (1, {'@': 149}), 17: (1, {'@': 149}), 18: (1, {'@': 149}), 34: (1, {'@': 149}), 38: (1, {'@': 149})}, 213: {52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 47: (0, 286), 59: (0, 120), 60: (0, 94), 56: (0, 117), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 214: {17: (0, 158)}, 215: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 66: (0, 205), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 216: {3: (1, {'@': 173}), 18: (1, {'@': 173})}, 217: {52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 55: (0, 207), 19: (0, 95), 47: (0, 286), 59: (0, 120), 60: (0, 94), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 8: (0, 113), 11: (0, 198), 24: (0, 67), 54: (0, 218), 0: (0, 248), 69: (0, 150)}, 218: {1: (1, {'@': 132}), 2: (1, {'@': 132}), 10: (1, {'@': 132}), 3: (1, {'@': 132}), 4: (1, {'@': 132}), 12: (1, {'@': 132}), 5: (1, {'@': 132}), 13: (1, {'@': 132}), 15: (1, {'@': 132}), 14: (1, {'@': 132}), 8: (1, {'@': 132}), 16: (1, {'@': 132}), 19: (1, {'@': 132}), 20: (1, {'@': 132}), 21: (1, {'@': 132}), 22: (1, {'@': 132}), 23: (1, {'@': 132}), 24: (1, {'@': 132}), 25: (1, {'@': 132}), 26: (1, {'@': 132}), 27: (1, {'@': 132}), 28: (1, {'@': 132}), 29: (1, {'@': 132}), 30: (1, {'@': 132}), 0: (1, {'@': 132}), 31: (1, {'@': 132}), 32: (1, {'@': 132}), 33: (1, {'@': 132}), 11: (1, {'@': 132}), 35: (1, {'@': 132}), 36: (1, {'@': 132}), 37: (1, {'@': 132}), 17: (1, {'@': 132}), 38: (1, {'@': 132}), 18: (1, {'@': 132}), 34: (1, {'@': 132})}, 219: {1: (1, {'@': 163}), 2: (1, {'@': 163}), 3: (1, {'@': 163}), 4: (1, {'@': 163}), 5: (1, {'@': 163}), 6: (1, {'@': 163}), 7: (1, {'@': 163}), 8: (1, {'@': 163}), 9: (1, {'@': 163}), 10: (1, {'@': 163}), 11: (1, {'@': 163}), 12: (1, {'@': 163}), 13: (1, {'@': 163}), 14: (1, {'@': 163}), 15: (1, {'@': 163}), 16: (1, {'@': 163}), 19: (1, {'@': 163}), 20: (1, {'@': 163}), 21: (1, {'@': 163}), 22: (1, {'@': 163}), 23: (1, {'@': 163}), 24: (1, {'@': 163}), 25: (1, {'@': 163}), 26: (1, {'@': 163}), 27: (1, {'@': 163}), 28: (1, {'@': 163}), 29: (1, {'@': 163}), 30: (1, {'@': 163}), 0: (1, {'@': 163}), 31: (1, {'@': 163}), 32: (1, {'@': 163}), 33: (1, {'@': 163}), 35: (1, {'@': 163}), 36: (1, {'@': 163}), 37: (1, {'@': 163}), 17: (1, {'@': 163}), 18: (1, {'@': 163}), 34: (1, {'@': 163}), 38: (1, {'@': 163})}, 220: {104: (0, 68)}, 221: {40: (0, 276)}, 222: {32: (0, 79)}, 223: {3: (1, {'@': 174}), 18: (1, {'@': 174})}, 224: {32: (0, 2), 51: (0, 116), 54: (0, 62), 70: (0, 166), 55: (0, 207), 71: (0, 270), 72: (0, 48), 28: (0, 16), 59: (0, 120), 60: (0, 94), 73: (0, 257), 56: (0, 78), 61: (0, 130), 74: (0, 101), 75: (0, 179), 76: (0, 160), 62: (0, 168), 116: (0, 238), 77: (0, 206), 63: (0, 42), 52: (0, 279), 78: (0, 28), 66: (0, 138), 22: (0, 154), 33: (0, 33), 67: (0, 125), 79: (0, 147), 89: (0, 135), 80: (0, 106), 0: (0, 248), 11: (0, 198), 30: (0, 239), 36: (0, 222), 20: (0, 71), 53: (0, 212), 27: (0, 283), 81: (0, 274), 35: (0, 87), 19: (0, 95), 82: (0, 225), 83: (0, 173), 47: (0, 286), 26: (0, 156), 64: (0, 181), 65: (0, 192), 84: (0, 17), 25: (0, 258), 85: (0, 182), 29: (0, 36), 31: (0, 119), 13: (0, 231), 4: (0, 170), 86: (0, 72), 8: (0, 113), 88: (0, 285), 37: (0, 109), 24: (0, 67), 21: (0, 193), 69: (0, 150)}, 225: {25: (1, {'@': 58}), 19: (1, {'@': 58}), 26: (1, {'@': 58}), 27: (1, {'@': 58}), 4: (1, {'@': 58}), 28: (1, {'@': 58}), 29: (1, {'@': 58}), 20: (1, {'@': 58}), 30: (1, {'@': 58}), 8: (1, {'@': 58}), 0: (1, {'@': 58}), 31: (1, {'@': 58}), 32: (1, {'@': 58}), 33: (1, {'@': 58}), 11: (1, {'@': 58}), 21: (1, {'@': 58}), 22: (1, {'@': 58}), 23: (1, {'@': 58}), 13: (1, {'@': 58}), 35: (1, {'@': 58}), 36: (1, {'@': 58}), 24: (1, {'@': 58}), 37: (1, {'@': 58}), 38: (1, {'@': 58})}, 226: {1: (1, {'@': 124}), 10: (1, {'@': 124}), 14: (1, {'@': 124}), 15: (1, {'@': 124}), 3: (1, {'@': 124}), 5: (1, {'@': 124}), 25: (1, {'@': 124}), 19: (1, {'@': 124}), 26: (1, {'@': 124}), 27: (1, {'@': 124}), 4: (1, {'@': 124}), 28: (1, {'@': 124}), 29: (1, {'@': 124}), 20: (1, {'@': 124}), 30: (1, {'@': 124}), 8: (1, {'@': 124}), 0: (1, {'@': 124}), 31: (1, {'@': 124}), 32: (1, {'@': 124}), 33: (1, {'@': 124}), 11: (1, {'@': 124}), 21: (1, {'@': 124}), 22: (1, {'@': 124}), 23: (1, {'@': 124}), 13: (1, {'@': 124}), 35: (1, {'@': 124}), 36: (1, {'@': 124}), 24: (1, {'@': 124}), 37: (1, {'@': 124}), 17: (1, {'@': 124}), 38: (1, {'@': 124}), 18: (1, {'@': 124}), 34: (1, {'@': 124})}, 227: {40: (0, 276), 41: (0, 6), 1: (1, {'@': 162}), 2: (1, {'@': 162}), 3: (1, {'@': 162}), 4: (1, {'@': 162}), 5: (1, {'@': 162}), 6: (1, {'@': 162}), 7: (1, {'@': 162}), 8: (1, {'@': 162}), 0: (1, {'@': 162}), 9: (1, {'@': 162}), 10: (1, {'@': 162}), 11: (1, {'@': 162}), 12: (1, {'@': 162}), 13: (1, {'@': 162}), 14: (1, {'@': 162}), 15: (1, {'@': 162}), 16: (1, {'@': 162})}, 228: {23: (1, {'@': 188}), 25: (1, {'@': 188}), 32: (1, {'@': 188})}, 229: {17: (0, 83)}, 230: {117: (0, 112), 18: (0, 208), 3: (0, 165)}, 231: {32: (0, 121), 53: (0, 212), 27: (0, 283), 35: (0, 87), 62: (0, 0), 55: (0, 207), 19: (0, 95), 13: (0, 231), 47: (0, 286), 4: (0, 170), 33: (0, 33), 8: (0, 113), 59: (0, 120), 11: (0, 198), 63: (0, 42), 60: (0, 94), 24: (0, 67), 52: (0, 136), 0: (0, 248), 64: (0, 181), 65: (0, 192), 69: (0, 150)}, 232: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 66: (0, 214), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 233: {25: (1, {'@': 94}), 19: (1, {'@': 94}), 26: (1, {'@': 94}), 27: (1, {'@': 94}), 4: (1, {'@': 94}), 28: (1, {'@': 94}), 29: (1, {'@': 94}), 20: (1, {'@': 94}), 30: (1, {'@': 94}), 8: (1, {'@': 94}), 0: (1, {'@': 94}), 31: (1, {'@': 94}), 32: (1, {'@': 94}), 33: (1, {'@': 94}), 11: (1, {'@': 94}), 21: (1, {'@': 94}), 22: (1, {'@': 94}), 23: (1, {'@': 94}), 13: (1, {'@': 94}), 35: (1, {'@': 94}), 36: (1, {'@': 94}), 24: (1, {'@': 94}), 37: (1, {'@': 94}), 38: (1, {'@': 94})}, 234: {1: (1, {'@': 130}), 2: (1, {'@': 130}), 10: (1, {'@': 130}), 3: (1, {'@': 130}), 4: (1, {'@': 130}), 12: (1, {'@': 130}), 5: (1, {'@': 130}), 13: (1, {'@': 130}), 15: (1, {'@': 130}), 14: (1, {'@': 130}), 8: (1, {'@': 130}), 16: (1, {'@': 130}), 19: (1, {'@': 130}), 20: (1, {'@': 130}), 21: (1, {'@': 130}), 22: (1, {'@': 130}), 23: (1, {'@': 130}), 24: (1, {'@': 130}), 25: (1, {'@': 130}), 26: (1, {'@': 130}), 27: (1, {'@': 130}), 28: (1, {'@': 130}), 29: (1, {'@': 130}), 30: (1, {'@': 130}), 0: (1, {'@': 130}), 31: (1, {'@': 130}), 32: (1, {'@': 130}), 33: (1, {'@': 130}), 11: (1, {'@': 130}), 35: (1, {'@': 130}), 36: (1, {'@': 130}), 37: (1, {'@': 130}), 17: (1, {'@': 130}), 38: (1, {'@': 130}), 18: (1, {'@': 130}), 34: (1, {'@': 130})}, 235: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 66: (0, 103), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 236: {32: (0, 153), 102: (0, 278)}, 237: {3: (1, {'@': 203}), 18: (1, {'@': 203})}, 238: {}, 239: {32: (0, 254), 51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 66: (0, 263), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 81: (0, 73), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 240: {16: (0, 265)}, 241: {87: (0, 188), 32: (0, 2), 51: (0, 116), 54: (0, 62), 70: (0, 166), 55: (0, 207), 71: (0, 270), 72: (0, 48), 28: (0, 16), 59: (0, 120), 60: (0, 94), 73: (0, 257), 56: (0, 78), 61: (0, 130), 74: (0, 101), 75: (0, 179), 76: (0, 160), 62: (0, 168), 77: (0, 206), 63: (0, 42), 52: (0, 279), 78: (0, 28), 66: (0, 138), 22: (0, 154), 33: (0, 33), 67: (0, 125), 79: (0, 147), 80: (0, 106), 0: (0, 248), 11: (0, 198), 30: (0, 239), 36: (0, 222), 20: (0, 71), 53: (0, 212), 27: (0, 283), 81: (0, 274), 35: (0, 87), 19: (0, 95), 82: (0, 225), 83: (0, 173), 47: (0, 286), 26: (0, 156), 64: (0, 181), 65: (0, 192), 84: (0, 17), 25: (0, 258), 85: (0, 182), 29: (0, 36), 31: (0, 119), 13: (0, 231), 4: (0, 170), 86: (0, 72), 8: (0, 113), 88: (0, 285), 37: (0, 109), 24: (0, 67), 89: (0, 200), 21: (0, 193), 69: (0, 150)}, 242: {32: (0, 2), 51: (0, 116), 54: (0, 62), 70: (0, 166), 55: (0, 207), 71: (0, 270), 72: (0, 48), 28: (0, 16), 59: (0, 120), 60: (0, 94), 73: (0, 257), 56: (0, 78), 61: (0, 130), 74: (0, 101), 75: (0, 179), 76: (0, 160), 62: (0, 168), 77: (0, 206), 63: (0, 42), 52: (0, 279), 87: (0, 129), 78: (0, 28), 66: (0, 138), 22: (0, 154), 33: (0, 33), 67: (0, 125), 79: (0, 147), 80: (0, 106), 0: (0, 248), 11: (0, 198), 30: (0, 239), 36: (0, 222), 20: (0, 71), 53: (0, 212), 27: (0, 283), 81: (0, 274), 35: (0, 87), 19: (0, 95), 82: (0, 225), 83: (0, 173), 47: (0, 286), 26: (0, 156), 64: (0, 181), 65: (0, 192), 84: (0, 17), 25: (0, 258), 85: (0, 182), 29: (0, 36), 31: (0, 119), 13: (0, 231), 4: (0, 170), 86: (0, 72), 8: (0, 113), 88: (0, 285), 37: (0, 109), 24: (0, 67), 89: (0, 200), 21: (0, 193), 69: (0, 150)}, 243: {23: (0, 140)}, 244: {118: (0, 235)}, 245: {15: (0, 91)}, 246: {32: (0, 202), 103: (0, 175)}, 247: {32: (0, 153), 102: (0, 45), 15: (0, 220), 119: (0, 267)}, 248: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 66: (0, 245), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 249: {25: (1, {'@': 83}), 19: (1, {'@': 83}), 26: (1, {'@': 83}), 27: (1, {'@': 83}), 4: (1, {'@': 83}), 28: (1, {'@': 83}), 29: (1, {'@': 83}), 20: (1, {'@': 83}), 30: (1, {'@': 83}), 8: (1, {'@': 83}), 0: (1, {'@': 83}), 31: (1, {'@': 83}), 32: (1, {'@': 83}), 33: (1, {'@': 83}), 11: (1, {'@': 83}), 21: (1, {'@': 83}), 22: (1, {'@': 83}), 23: (1, {'@': 83}), 13: (1, {'@': 83}), 35: (1, {'@': 83}), 36: (1, {'@': 83}), 24: (1, {'@': 83}), 37: (1, {'@': 83}), 38: (1, {'@': 83})}, 250: {32: (0, 52)}, 251: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 66: (0, 108), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 252: {15: (1, {'@': 86}), 17: (1, {'@': 86})}, 253: {108: (0, 232), 113: (0, 174), 19: (1, {'@': 80}), 20: (1, {'@': 80}), 8: (1, {'@': 80}), 21: (1, {'@': 80}), 22: (1, {'@': 80}), 23: (1, {'@': 80}), 13: (1, {'@': 80}), 24: (1, {'@': 80}), 25: (1, {'@': 80}), 42: (1, {'@': 80}), 26: (1, {'@': 80}), 27: (1, {'@': 80}), 4: (1, {'@': 80}), 28: (1, {'@': 80}), 29: (1, {'@': 80}), 30: (1, {'@': 80}), 0: (1, {'@': 80}), 31: (1, {'@': 80}), 32: (1, {'@': 80}), 33: (1, {'@': 80}), 11: (1, {'@': 80}), 35: (1, {'@': 80}), 36: (1, {'@': 80}), 37: (1, {'@': 80}), 38: (1, {'@': 80})}, 254: {39: (0, 250), 41: (0, 6), 1: (1, {'@': 162}), 19: (1, {'@': 162}), 20: (1, {'@': 162}), 8: (1, {'@': 162}), 9: (1, {'@': 162}), 21: (1, {'@': 162}), 22: (1, {'@': 162}), 23: (1, {'@': 162}), 13: (1, {'@': 162}), 16: (1, {'@': 162}), 24: (1, {'@': 162}), 2: (1, {'@': 162}), 25: (1, {'@': 162}), 4: (1, {'@': 162}), 26: (1, {'@': 162}), 27: (1, {'@': 162}), 5: (1, {'@': 162}), 6: (1, {'@': 162}), 28: (1, {'@': 162}), 29: (1, {'@': 162}), 7: (1, {'@': 162}), 30: (1, {'@': 162}), 0: (1, {'@': 162}), 31: (1, {'@': 162}), 32: (1, {'@': 162}), 33: (1, {'@': 162}), 10: (1, {'@': 162}), 11: (1, {'@': 162}), 12: (1, {'@': 162}), 35: (1, {'@': 162}), 14: (1, {'@': 162}), 36: (1, {'@': 162}), 37: (1, {'@': 162}), 38: (1, {'@': 162})}, 255: {3: (1, {'@': 118}), 5: (1, {'@': 118}), 14: (1, {'@': 118}), 15: (1, {'@': 118}), 25: (1, {'@': 118}), 19: (1, {'@': 118}), 26: (1, {'@': 118}), 27: (1, {'@': 118}), 4: (1, {'@': 118}), 28: (1, {'@': 118}), 29: (1, {'@': 118}), 20: (1, {'@': 118}), 30: (1, {'@': 118}), 8: (1, {'@': 118}), 0: (1, {'@': 118}), 31: (1, {'@': 118}), 32: (1, {'@': 118}), 33: (1, {'@': 118}), 11: (1, {'@': 118}), 21: (1, {'@': 118}), 22: (1, {'@': 118}), 23: (1, {'@': 118}), 13: (1, {'@': 118}), 35: (1, {'@': 118}), 36: (1, {'@': 118}), 24: (1, {'@': 118}), 37: (1, {'@': 118}), 17: (1, {'@': 118}), 38: (1, {'@': 118}), 18: (1, {'@': 118}), 34: (1, {'@': 118})}, 256: {1: (1, {'@': 140}), 2: (1, {'@': 140}), 3: (1, {'@': 140}), 4: (1, {'@': 140}), 5: (1, {'@': 140}), 6: (1, {'@': 140}), 7: (1, {'@': 140}), 8: (1, {'@': 140}), 9: (1, {'@': 140}), 10: (1, {'@': 140}), 11: (1, {'@': 140}), 12: (1, {'@': 140}), 13: (1, {'@': 140}), 14: (1, {'@': 140}), 15: (1, {'@': 140}), 16: (1, {'@': 140}), 19: (1, {'@': 140}), 20: (1, {'@': 140}), 21: (1, {'@': 140}), 22: (1, {'@': 140}), 23: (1, {'@': 140}), 24: (1, {'@': 140}), 25: (1, {'@': 140}), 26: (1, {'@': 140}), 27: (1, {'@': 140}), 28: (1, {'@': 140}), 29: (1, {'@': 140}), 30: (1, {'@': 140}), 0: (1, {'@': 140}), 31: (1, {'@': 140}), 32: (1, {'@': 140}), 33: (1, {'@': 140}), 35: (1, {'@': 140}), 36: (1, {'@': 140}), 37: (1, {'@': 140}), 17: (1, {'@': 140}), 18: (1, {'@': 140}), 34: (1, {'@': 140}), 38: (1, {'@': 140})}, 257: {19: (1, {'@': 175}), 20: (1, {'@': 175}), 8: (1, {'@': 175}), 21: (1, {'@': 175}), 22: (1, {'@': 175}), 23: (1, {'@': 175}), 13: (1, {'@': 175}), 24: (1, {'@': 175}), 25: (1, {'@': 175}), 26: (1, {'@': 175}), 27: (1, {'@': 175}), 4: (1, {'@': 175}), 28: (1, {'@': 175}), 29: (1, {'@': 175}), 30: (1, {'@': 175}), 0: (1, {'@': 175}), 31: (1, {'@': 175}), 32: (1, {'@': 175}), 33: (1, {'@': 175}), 11: (1, {'@': 175}), 35: (1, {'@': 175}), 36: (1, {'@': 175}), 37: (1, {'@': 175}), 38: (1, {'@': 175})}, 258: {19: (1, {'@': 176}), 20: (1, {'@': 176}), 8: (1, {'@': 176}), 21: (1, {'@': 176}), 22: (1, {'@': 176}), 23: (1, {'@': 176}), 13: (1, {'@': 176}), 24: (1, {'@': 176}), 25: (1, {'@': 176}), 26: (1, {'@': 176}), 27: (1, {'@': 176}), 4: (1, {'@': 176}), 28: (1, {'@': 176}), 29: (1, {'@': 176}), 30: (1, {'@': 176}), 0: (1, {'@': 176}), 31: (1, {'@': 176}), 32: (1, {'@': 176}), 33: (1, {'@': 176}), 11: (1, {'@': 176}), 35: (1, {'@': 176}), 36: (1, {'@': 176}), 37: (1, {'@': 176}), 38: (1, {'@': 176})}, 259: {19: (1, {'@': 82}), 20: (1, {'@': 82}), 8: (1, {'@': 82}), 21: (1, {'@': 82}), 22: (1, {'@': 82}), 23: (1, {'@': 82}), 13: (1, {'@': 82}), 24: (1, {'@': 82}), 25: (1, {'@': 82}), 26: (1, {'@': 82}), 27: (1, {'@': 82}), 4: (1, {'@': 82}), 28: (1, {'@': 82}), 29: (1, {'@': 82}), 30: (1, {'@': 82}), 0: (1, {'@': 82}), 31: (1, {'@': 82}), 32: (1, {'@': 82}), 33: (1, {'@': 82}), 11: (1, {'@': 82}), 35: (1, {'@': 82}), 36: (1, {'@': 82}), 37: (1, {'@': 82}), 38: (1, {'@': 82})}, 260: {41: (0, 211)}, 261: {40: (0, 114)}, 262: {3: (0, 197), 15: (1, {'@': 153})}, 263: {25: (1, {'@': 73}), 19: (1, {'@': 73}), 26: (1, {'@': 73}), 27: (1, {'@': 73}), 4: (1, {'@': 73}), 28: (1, {'@': 73}), 29: (1, {'@': 73}), 20: (1, {'@': 73}), 30: (1, {'@': 73}), 8: (1, {'@': 73}), 0: (1, {'@': 73}), 31: (1, {'@': 73}), 32: (1, {'@': 73}), 33: (1, {'@': 73}), 11: (1, {'@': 73}), 21: (1, {'@': 73}), 22: (1, {'@': 73}), 23: (1, {'@': 73}), 13: (1, {'@': 73}), 35: (1, {'@': 73}), 36: (1, {'@': 73}), 24: (1, {'@': 73}), 37: (1, {'@': 73}), 38: (1, {'@': 73})}, 264: {25: (1, {'@': 113}), 19: (1, {'@': 113}), 26: (1, {'@': 113}), 27: (1, {'@': 113}), 4: (1, {'@': 113}), 28: (1, {'@': 113}), 29: (1, {'@': 113}), 20: (1, {'@': 113}), 30: (1, {'@': 113}), 8: (1, {'@': 113}), 0: (1, {'@': 113}), 31: (1, {'@': 113}), 32: (1, {'@': 113}), 33: (1, {'@': 113}), 11: (1, {'@': 113}), 21: (1, {'@': 113}), 22: (1, {'@': 113}), 23: (1, {'@': 113}), 13: (1, {'@': 113}), 35: (1, {'@': 113}), 36: (1, {'@': 113}), 24: (1, {'@': 113}), 37: (1, {'@': 113}), 38: (1, {'@': 113})}, 265: {11: (0, 46)}, 266: {25: (1, {'@': 102}), 19: (1, {'@': 102}), 26: (1, {'@': 102}), 27: (1, {'@': 102}), 4: (1, {'@': 102}), 28: (1, {'@': 102}), 29: (1, {'@': 102}), 20: (1, {'@': 102}), 30: (1, {'@': 102}), 8: (1, {'@': 102}), 0: (1, {'@': 102}), 31: (1, {'@': 102}), 32: (1, {'@': 102}), 33: (1, {'@': 102}), 11: (1, {'@': 102}), 21: (1, {'@': 102}), 22: (1, {'@': 102}), 23: (1, {'@': 102}), 13: (1, {'@': 102}), 35: (1, {'@': 102}), 36: (1, {'@': 102}), 24: (1, {'@': 102}), 37: (1, {'@': 102}), 38: (1, {'@': 102})}, 267: {15: (0, 65)}, 268: {23: (1, {'@': 184}), 25: (1, {'@': 184}), 101: (1, {'@': 184})}, 269: {25: (1, {'@': 107}), 19: (1, {'@': 107}), 26: (1, {'@': 107}), 27: (1, {'@': 107}), 4: (1, {'@': 107}), 28: (1, {'@': 107}), 29: (1, {'@': 107}), 20: (1, {'@': 107}), 30: (1, {'@': 107}), 8: (1, {'@': 107}), 0: (1, {'@': 107}), 31: (1, {'@': 107}), 32: (1, {'@': 107}), 33: (1, {'@': 107}), 11: (1, {'@': 107}), 21: (1, {'@': 107}), 22: (1, {'@': 107}), 23: (1, {'@': 107}), 13: (1, {'@': 107}), 35: (1, {'@': 107}), 36: (1, {'@': 107}), 24: (1, {'@': 107}), 37: (1, {'@': 107}), 38: (1, {'@': 107})}, 270: {25: (1, {'@': 63}), 19: (1, {'@': 63}), 26: (1, {'@': 63}), 27: (1, {'@': 63}), 4: (1, {'@': 63}), 28: (1, {'@': 63}), 29: (1, {'@': 63}), 20: (1, {'@': 63}), 30: (1, {'@': 63}), 8: (1, {'@': 63}), 0: (1, {'@': 63}), 31: (1, {'@': 63}), 32: (1, {'@': 63}), 33: (1, {'@': 63}), 11: (1, {'@': 63}), 21: (1, {'@': 63}), 22: (1, {'@': 63}), 23: (1, {'@': 63}), 13: (1, {'@': 63}), 35: (1, {'@': 63}), 36: (1, {'@': 63}), 24: (1, {'@': 63}), 37: (1, {'@': 63}), 38: (1, {'@': 63})}, 271: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 66: (0, 164), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 272: {19: (1, {'@': 178}), 20: (1, {'@': 178}), 8: (1, {'@': 178}), 21: (1, {'@': 178}), 22: (1, {'@': 178}), 23: (1, {'@': 178}), 13: (1, {'@': 178}), 24: (1, {'@': 178}), 25: (1, {'@': 178}), 26: (1, {'@': 178}), 27: (1, {'@': 178}), 4: (1, {'@': 178}), 28: (1, {'@': 178}), 29: (1, {'@': 178}), 30: (1, {'@': 178}), 0: (1, {'@': 178}), 31: (1, {'@': 178}), 32: (1, {'@': 178}), 33: (1, {'@': 178}), 11: (1, {'@': 178}), 35: (1, {'@': 178}), 36: (1, {'@': 178}), 37: (1, {'@': 178}), 38: (1, {'@': 178})}, 273: {32: (0, 202), 103: (0, 180)}, 274: {40: (0, 251), 25: (1, {'@': 68}), 19: (1, {'@': 68}), 26: (1, {'@': 68}), 27: (1, {'@': 68}), 4: (1, {'@': 68}), 28: (1, {'@': 68}), 29: (1, {'@': 68}), 20: (1, {'@': 68}), 30: (1, {'@': 68}), 8: (1, {'@': 68}), 0: (1, {'@': 68}), 31: (1, {'@': 68}), 32: (1, {'@': 68}), 33: (1, {'@': 68}), 11: (1, {'@': 68}), 21: (1, {'@': 68}), 22: (1, {'@': 68}), 23: (1, {'@': 68}), 13: (1, {'@': 68}), 35: (1, {'@': 68}), 36: (1, {'@': 68}), 24: (1, {'@': 68}), 37: (1, {'@': 68}), 38: (1, {'@': 68})}, 275: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 67: (0, 199), 13: (0, 231), 4: (0, 170), 33: (0, 33), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 276: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 69: (0, 150), 56: (0, 78), 47: (0, 286), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 66: (0, 172)}, 277: {51: (0, 116), 52: (0, 279), 53: (0, 212), 27: (0, 283), 35: (0, 87), 54: (0, 62), 55: (0, 207), 19: (0, 95), 56: (0, 78), 47: (0, 286), 66: (0, 178), 59: (0, 120), 60: (0, 94), 61: (0, 130), 62: (0, 0), 63: (0, 42), 64: (0, 181), 65: (0, 192), 32: (0, 121), 13: (0, 231), 4: (0, 170), 33: (0, 33), 67: (0, 125), 8: (0, 113), 11: (0, 198), 24: (0, 67), 0: (0, 248), 69: (0, 150)}, 278: {3: (1, {'@': 196}), 15: (1, {'@': 196})}, 279: {9: (0, 151), 6: (0, 217), 7: (0, 98), 1: (1, {'@': 129}), 2: (1, {'@': 129}), 10: (1, {'@': 129}), 3: (1, {'@': 129}), 4: (1, {'@': 129}), 12: (1, {'@': 129}), 5: (1, {'@': 129}), 13: (1, {'@': 129}), 15: (1, {'@': 129}), 14: (1, {'@': 129}), 8: (1, {'@': 129}), 16: (1, {'@': 129}), 19: (1, {'@': 129}), 20: (1, {'@': 129}), 21: (1, {'@': 129}), 22: (1, {'@': 129}), 23: (1, {'@': 129}), 24: (1, {'@': 129}), 25: (1, {'@': 129}), 26: (1, {'@': 129}), 27: (1, {'@': 129}), 28: (1, {'@': 129}), 29: (1, {'@': 129}), 30: (1, {'@': 129}), 0: (1, {'@': 129}), 31: (1, {'@': 129}), 32: (1, {'@': 129}), 33: (1, {'@': 129}), 11: (1, {'@': 129}), 35: (1, {'@': 129}), 36: (1, {'@': 129}), 37: (1, {'@': 129}), 17: (1, {'@': 129}), 38: (1, {'@': 129}), 18: (1, {'@': 129}), 34: (1, {'@': 129})}, 280: {17: (0, 88)}, 281: {25: (1, {'@': 75}), 19: (1, {'@': 75}), 26: (1, {'@': 75}), 27: (1, {'@': 75}), 4: (1, {'@': 75}), 28: (1, {'@': 75}), 29: (1, {'@': 75}), 20: (1, {'@': 75}), 30: (1, {'@': 75}), 8: (1, {'@': 75}), 0: (1, {'@': 75}), 31: (1, {'@': 75}), 32: (1, {'@': 75}), 33: (1, {'@': 75}), 11: (1, {'@': 75}), 21: (1, {'@': 75}), 22: (1, {'@': 75}), 23: (1, {'@': 75}), 13: (1, {'@': 75}), 35: (1, {'@': 75}), 36: (1, {'@': 75}), 24: (1, {'@': 75}), 37: (1, {'@': 75}), 38: (1, {'@': 75})}, 282: {23: (0, 233)}, 283: {1: (1, {'@': 158}), 2: (1, {'@': 158}), 3: (1, {'@': 158}), 4: (1, {'@': 158}), 5: (1, {'@': 158}), 6: (1, {'@': 158}), 7: (1, {'@': 158}), 8: (1, {'@': 158}), 9: (1, {'@': 158}), 10: (1, {'@': 158}), 11: (1, {'@': 158}), 12: (1, {'@': 158}), 13: (1, {'@': 158}), 14: (1, {'@': 158}), 15: (1, {'@': 158}), 16: (1, {'@': 158}), 19: (1, {'@': 158}), 20: (1, {'@': 158}), 21: (1, {'@': 158}), 22: (1, {'@': 158}), 23: (1, {'@': 158}), 24: (1, {'@': 158}), 25: (1, {'@': 158}), 26: (1, {'@': 158}), 27: (1, {'@': 158}), 28: (1, {'@': 158}), 29: (1, {'@': 158}), 30: (1, {'@': 158}), 0: (1, {'@': 158}), 31: (1, {'@': 158}), 32: (1, {'@': 158}), 33: (1, {'@': 158}), 35: (1, {'@': 158}), 36: (1, {'@': 158}), 37: (1, {'@': 158}), 18: (1, {'@': 158}), 17: (1, {'@': 158}), 34: (1, {'@': 158}), 38: (1, {'@': 158})}, 284: {3: (0, 189), 18: (1, {'@': 167})}, 285: {25: (1, {'@': 60}), 19: (1, {'@': 60}), 26: (1, {'@': 60}), 27: (1, {'@': 60}), 4: (1, {'@': 60}), 28: (1, {'@': 60}), 29: (1, {'@': 60}), 20: (1, {'@': 60}), 30: (1, {'@': 60}), 8: (1, {'@': 60}), 0: (1, {'@': 60}), 31: (1, {'@': 60}), 32: (1, {'@': 60}), 33: (1, {'@': 60}), 11: (1, {'@': 60}), 21: (1, {'@': 60}), 22: (1, {'@': 60}), 23: (1, {'@': 60}), 13: (1, {'@': 60}), 35: (1, {'@': 60}), 36: (1, {'@': 60}), 24: (1, {'@': 60}), 37: (1, {'@': 60}), 38: (1, {'@': 60})}, 286: {1: (1, {'@': 145}), 2: (1, {'@': 145}), 3: (1, {'@': 145}), 4: (1, {'@': 145}), 5: (1, {'@': 145}), 6: (1, {'@': 145}), 7: (1, {'@': 145}), 8: (1, {'@': 145}), 9: (1, {'@': 145}), 10: (1, {'@': 145}), 11: (1, {'@': 145}), 12: (1, {'@': 145}), 13: (1, {'@': 145}), 14: (1, {'@': 145}), 15: (1, {'@': 145}), 16: (1, {'@': 145}), 19: (1, {'@': 145}), 20: (1, {'@': 145}), 21: (1, {'@': 145}), 22: (1, {'@': 145}), 23: (1, {'@': 145}), 24: (1, {'@': 145}), 25: (1, {'@': 145}), 26: (1, {'@': 145}), 27: (1, {'@': 145}), 28: (1, {'@': 145}), 29: (1, {'@': 145}), 30: (1, {'@': 145}), 0: (1, {'@': 145}), 31: (1, {'@': 145}), 32: (1, {'@': 145}), 33: (1, {'@': 145}), 35: (1, {'@': 145}), 36: (1, {'@': 145}), 37: (1, {'@': 145}), 17: (1, {'@': 145}), 18: (1, {'@': 145}), 34: (1, {'@': 145}), 38: (1, {'@': 145})}}, 'start_states': {'start': 224}, 'end_states': {'start': 238}}, '__type__': 'ParsingFrontend'}, 'rules': [{'@': 51}, {'@': 52}, {'@': 53}, {'@': 54}, {'@': 55}, {'@': 56}, {'@': 57}, {'@': 58}, {'@': 59}, {'@': 60}, {'@': 61}, {'@': 62}, {'@': 63}, {'@': 64}, {'@': 65}, {'@': 66}, {'@': 67}, {'@': 68}, {'@': 69}, {'@': 70}, {'@': 71}, {'@': 72}, {'@': 73}, {'@': 74}, {'@': 75}, {'@': 76}, {'@': 77}, {'@': 78}, {'@': 79}, {'@': 80}, {'@': 81}, {'@': 82}, {'@': 83}, {'@': 84}, {'@': 85}, {'@': 86}, {'@': 87}, {'@': 88}, {'@': 89}, {'@': 90}, {'@': 91}, {'@': 92}, {'@': 93}, {'@': 94}, {'@': 95}, {'@': 96}, {'@': 97}, {'@': 98}, {'@': 99}, {'@': 100}, {'@': 101}, {'@': 102}, {'@': 103}, {'@': 104}, {'@': 105}, {'@': 106}, {'@': 107}, {'@': 108}, {'@': 109}, {'@': 110}, {'@': 111}, {'@': 112}, {'@': 113}, {'@': 114}, {'@': 115}, {'@': 116}, {'@': 117}, {'@': 118}, {'@': 119}, {'@': 120}, {'@': 121}, {'@': 122}, {'@': 123}, {'@': 124}, {'@': 125}, {'@': 126}, {'@': 127}, {'@': 128}, {'@': 129}, {'@': 130}, {'@': 131}, {'@': 132}, {'@': 133}, {'@': 134}, {'@': 135}, {'@': 136}, {'@': 137}, {'@': 138}, {'@': 139}, {'@': 140}, {'@': 141}, {'@': 142}, {'@': 143}, {'@': 144}, {'@': 145}, {'@': 146}, {'@': 147}, {'@': 148}, {'@': 149}, {'@': 150}, {'@': 151}, {'@': 152}, {'@': 153}, {'@': 154}, {'@': 155}, {'@': 156}, {'@': 157}, {'@': 158}, {'@': 159}, {'@': 160}, {'@': 161}, {'@': 162}, {'@': 163}, {'@': 164}, {'@': 165}, {'@': 166}, {'@': 167}, {'@': 168}, {'@': 169}, {'@': 170}, {'@': 171}, {'@': 172}, {'@': 173}, {'@': 174}, {'@': 175}, {'@': 176}, {'@': 177}, {'@': 178}, {'@': 179}, {'@': 180}, {'@': 181}, {'@': 182}, {'@': 183}, {'@': 184}, {'@': 185}, {'@': 186}, {'@': 187}, {'@': 188}, {'@': 189}, {'@': 190}, {'@': 191}, {'@': 192}, {'@': 193}, {'@': 194}, {'@': 195}, {'@': 196}, {'@': 197}, {'@': 198}, {'@': 199}, {'@': 200}, {'@': 201}, {'@': 202}, {'@': 203}, {'@': 204}], 'options': {'debug': False, 'strict': False, 'keep_all_tokens': False, 'tree_class': None, 'cache': False, 'postlex': None, 'parser': 'lalr', 'lexer': 'contextual', 'transformer': None, 'start': ['start'], 'priority': 'normal', 'ambiguity': 'auto', 'regex': False, 'propagate_positions': False, 'lexer_callbacks': {}, 'maybe_placeholders': False, 'edit_terminals': None, 'g_regex_flags': 0, 'use_bytes': False, 'ordered_sets': True, 'import_paths': [], 'source_path': None, '_plugins': {}}, '__type__': 'Lark'}
+)
+MEMO = (
+{0: {'name': 'INT', 'pattern': {'value': '(?:[0-9])+', 'flags': [], 'raw': None, '_width': [1, 18446744073709551616], '__type__': 'PatternRE'}, 'priority': 0, '__type__': 'TerminalDef'}, 1: {'name': 'IDENTIFIER', 'pattern': {'value': '(?:(?:[A-Z]|[a-z])|_)(?:(?:(?:[A-Z]|[a-z])|[0-9]|_))*', 'flags': [], 'raw': None, '_width': [1, 18446744073709551616], '__type__': 'PatternRE'}, 'priority': 0, '__type__': 'TerminalDef'}, 2: {'name': '_NL', 'pattern': {'value': '(?:(?:\r)?\n)+', 'flags': [], 'raw': None, '_width': [1, 18446744073709551616], '__type__': 'PatternRE'}, 'priority': 0, '__type__': 'TerminalDef'}, 3: {'name': '__IGNORE_0', 'pattern': {'value': ' ', 'flags': [], 'raw': '" "', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 4: {'name': '__IGNORE_1', 'pattern': {'value': '\t', 'flags': [], 'raw': '"\\t"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 5: {'name': 'COMMENT', 'pattern': {'value': '//(?:[^\n])*', 'flags': [], 'raw': None, '_width': [2, 18446744073709551616], '__type__': 'PatternRE'}, 'priority': 0, '__type__': 'TerminalDef'}, 6: {'name': 'TRUE', 'pattern': {'value': 'true', 'flags': [], 'raw': '"true"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 7: {'name': 'FALSE', 'pattern': {'value': 'false', 'flags': [], 'raw': '"false"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 8: {'name': 'STRING', 'pattern': {'value': '".*?"', 'flags': [], 'raw': None, '_width': [2, 18446744073709551616], '__type__': 'PatternRE'}, 'priority': 0, '__type__': 'TerminalDef'}, 9: {'name': 'LET', 'pattern': {'value': 'let', 'flags': [], 'raw': '"let"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 10: {'name': 'EQUAL', 'pattern': {'value': '=', 'flags': [], 'raw': '"="', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 11: {'name': 'LSQB', 'pattern': {'value': '[', 'flags': [], 'raw': '"["', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 12: {'name': 'RSQB', 'pattern': {'value': ']', 'flags': [], 'raw': '"]"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 13: {'name': 'PRINT', 'pattern': {'value': 'print', 'flags': [], 'raw': '"print"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 14: {'name': 'IF', 'pattern': {'value': 'if', 'flags': [], 'raw': '"if"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 15: {'name': 'LBRACE', 'pattern': {'value': '{', 'flags': [], 'raw': '"{"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 16: {'name': 'RBRACE', 'pattern': {'value': '}', 'flags': [], 'raw': '"}"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 17: {'name': 'ELIF', 'pattern': {'value': 'elif', 'flags': [], 'raw': '"elif"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 18: {'name': 'ELSE', 'pattern': {'value': 'else', 'flags': [], 'raw': '"else"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 19: {'name': 'MATCH', 'pattern': {'value': 'match', 'flags': [], 'raw': '"match"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 20: {'name': 'CASE', 'pattern': {'value': 'case', 'flags': [], 'raw': '"case"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 21: {'name': '__ANON_0', 'pattern': {'value': '::', 'flags': [], 'raw': '"::"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 22: {'name': 'LPAR', 'pattern': {'value': '(', 'flags': [], 'raw': '"("', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 23: {'name': 'RPAR', 'pattern': {'value': ')', 'flags': [], 'raw': '")"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 24: {'name': 'UNDERSCORE', 'pattern': {'value': '_', 'flags': [], 'raw': '"_"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 25: {'name': 'WHILE', 'pattern': {'value': 'while', 'flags': [], 'raw': '"while"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 26: {'name': 'FOR', 'pattern': {'value': 'for', 'flags': [], 'raw': '"for"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 27: {'name': 'IN', 'pattern': {'value': 'in', 'flags': [], 'raw': '"in"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 28: {'name': '__ANON_1', 'pattern': {'value': '..', 'flags': [], 'raw': '".."', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 29: {'name': 'STRUCT', 'pattern': {'value': 'struct', 'flags': [], 'raw': '"struct"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 30: {'name': 'COLON', 'pattern': {'value': ':', 'flags': [], 'raw': '":"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 31: {'name': 'DOT', 'pattern': {'value': '.', 'flags': [], 'raw': '"."', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 32: {'name': 'ENUM', 'pattern': {'value': 'enum', 'flags': [], 'raw': '"enum"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 33: {'name': 'FN', 'pattern': {'value': 'fn', 'flags': [], 'raw': '"fn"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 34: {'name': '__ANON_2', 'pattern': {'value': '->', 'flags': [], 'raw': '"->"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 35: {'name': 'COMMA', 'pattern': {'value': ',', 'flags': [], 'raw': '","', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 36: {'name': 'LESSTHAN', 'pattern': {'value': '<', 'flags': [], 'raw': '"<"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 37: {'name': 'MORETHAN', 'pattern': {'value': '>', 'flags': [], 'raw': '">"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 38: {'name': 'RETURN', 'pattern': {'value': 'return', 'flags': [], 'raw': '"return"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 39: {'name': '__ANON_3', 'pattern': {'value': '==', 'flags': [], 'raw': '"=="', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 40: {'name': '__ANON_4', 'pattern': {'value': '!=', 'flags': [], 'raw': '"!="', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 41: {'name': '__ANON_5', 'pattern': {'value': '&&', 'flags': [], 'raw': '"&&"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 42: {'name': '__ANON_6', 'pattern': {'value': '||', 'flags': [], 'raw': '"||"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 43: {'name': '__ANON_7', 'pattern': {'value': '<=', 'flags': [], 'raw': '"<="', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 44: {'name': '__ANON_8', 'pattern': {'value': '>=', 'flags': [], 'raw': '">="', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 45: {'name': 'PLUS', 'pattern': {'value': '+', 'flags': [], 'raw': '"+"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 46: {'name': 'MINUS', 'pattern': {'value': '-', 'flags': [], 'raw': '"-"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 47: {'name': 'STAR', 'pattern': {'value': '*', 'flags': [], 'raw': '"*"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 48: {'name': 'SLASH', 'pattern': {'value': '/', 'flags': [], 'raw': '"/"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 49: {'name': 'PERCENT', 'pattern': {'value': '%', 'flags': [], 'raw': '"%"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 50: {'name': 'BANG', 'pattern': {'value': '!', 'flags': [], 'raw': '"!"', '__type__': 'PatternStr'}, 'priority': 0, '__type__': 'TerminalDef'}, 51: {'origin': {'name': Token('RULE', 'start'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'statement_list', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 52: {'origin': {'name': Token('RULE', 'statement_list'), '__type__': 'NonTerminal'}, 'expansion': [{'name': '__statement_list_plus_0', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 53: {'origin': {'name': Token('RULE', 'statement_block'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'statement_list', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 54: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'expression', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 55: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'variable_declaration', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 56: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'assignment', '__type__': 'NonTerminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 57: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'if_chain', '__type__': 'NonTerminal'}], 'order': 3, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 58: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'match_stmt', '__type__': 'NonTerminal'}], 'order': 4, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 59: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'while_stmt', '__type__': 'NonTerminal'}], 'order': 5, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 60: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'for_stmt', '__type__': 'NonTerminal'}], 'order': 6, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 61: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'struct_stmt', '__type__': 'NonTerminal'}], 'order': 7, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 62: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'enum_stmt', '__type__': 'NonTerminal'}], 'order': 8, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 63: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'print_stmt', '__type__': 'NonTerminal'}], 'order': 9, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 64: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'index_assignment', '__type__': 'NonTerminal'}], 'order': 10, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 65: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'function_definition', '__type__': 'NonTerminal'}], 'order': 11, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 66: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'return_stmt', '__type__': 'NonTerminal'}], 'order': 12, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 67: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'for_stmt_int', '__type__': 'NonTerminal'}], 'order': 13, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 68: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'struct_access', '__type__': 'NonTerminal'}], 'order': 14, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 69: {'origin': {'name': Token('RULE', 'statement'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'struct_assignment', '__type__': 'NonTerminal'}], 'order': 15, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 70: {'origin': {'name': Token('RULE', 'variable_declaration'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'LET', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'EQUAL', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 71: {'origin': {'name': Token('RULE', 'assignment'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'EQUAL', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 72: {'origin': {'name': Token('RULE', 'index_assignment'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'variable', '__type__': 'NonTerminal'}, {'name': 'LSQB', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}, {'name': 'RSQB', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'EQUAL', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 73: {'origin': {'name': Token('RULE', 'print_stmt'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'PRINT', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 74: {'origin': {'name': Token('RULE', 'print_stmt'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'PRINT', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'struct_access', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 75: {'origin': {'name': Token('RULE', 'if_chain'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'if_stmt', '__type__': 'NonTerminal'}, {'name': 'else_if_ladder', '__type__': 'NonTerminal'}, {'name': 'else_block', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 76: {'origin': {'name': Token('RULE', 'if_chain'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'if_stmt', '__type__': 'NonTerminal'}, {'name': 'else_if_ladder', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (False, False, True), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 77: {'origin': {'name': Token('RULE', 'if_chain'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'if_stmt', '__type__': 'NonTerminal'}, {'name': 'else_block', '__type__': 'NonTerminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (False, True, False), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 78: {'origin': {'name': Token('RULE', 'if_chain'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'if_stmt', '__type__': 'NonTerminal'}], 'order': 3, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (False, True, True), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 79: {'origin': {'name': Token('RULE', 'if_stmt'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IF', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}, {'name': 'LBRACE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'statement_block', '__type__': 'NonTerminal'}, {'name': 'RBRACE', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 80: {'origin': {'name': Token('RULE', 'else_if_ladder'), '__type__': 'NonTerminal'}, 'expansion': [{'name': '__else_if_ladder_plus_1', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 81: {'origin': {'name': Token('RULE', 'else_if_stmt'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'ELIF', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}, {'name': 'LBRACE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'statement_block', '__type__': 'NonTerminal'}, {'name': 'RBRACE', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 82: {'origin': {'name': Token('RULE', 'else_block'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'ELSE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'LBRACE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'statement_block', '__type__': 'NonTerminal'}, {'name': 'RBRACE', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 83: {'origin': {'name': Token('RULE', 'match_stmt'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'MATCH', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}, {'name': 'LBRACE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'case_ladder', '__type__': 'NonTerminal'}, {'name': 'RBRACE', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 84: {'origin': {'name': Token('RULE', 'case_ladder'), '__type__': 'NonTerminal'}, 'expansion': [{'name': '__case_ladder_plus_2', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 85: {'origin': {'name': Token('RULE', 'case_stmt'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'CASE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'match_pattern', '__type__': 'NonTerminal'}, {'name': 'LBRACE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'statement_block', '__type__': 'NonTerminal'}, {'name': 'RBRACE', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 86: {'origin': {'name': Token('RULE', 'match_pattern'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'bool_literal', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 87: {'origin': {'name': Token('RULE', 'match_pattern'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'enum_pattern', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 88: {'origin': {'name': Token('RULE', 'match_pattern'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'enum_pattern_tuple', '__type__': 'NonTerminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 89: {'origin': {'name': Token('RULE', 'match_pattern'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'wildcard_pattern', '__type__': 'NonTerminal'}], 'order': 3, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 90: {'origin': {'name': Token('RULE', 'match_pattern'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'array_pattern', '__type__': 'NonTerminal'}], 'order': 4, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 91: {'origin': {'name': Token('RULE', 'enum_pattern'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': '__ANON_0', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 92: {'origin': {'name': Token('RULE', 'enum_pattern_tuple'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': '__ANON_0', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'LPAR', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'match_pattern', '__type__': 'NonTerminal'}, {'name': 'RPAR', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 93: {'origin': {'name': Token('RULE', 'wildcard_pattern'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'UNDERSCORE', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 94: {'origin': {'name': Token('RULE', 'while_stmt'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'WHILE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}, {'name': 'LBRACE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'statement_block', '__type__': 'NonTerminal'}, {'name': 'RBRACE', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 95: {'origin': {'name': Token('RULE', 'for_stmt'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'FOR', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'IN', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}, {'name': 'LBRACE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'statement_block', '__type__': 'NonTerminal'}, {'name': 'RBRACE', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 96: {'origin': {'name': Token('RULE', 'for_stmt_int'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'FOR', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'IN', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}, {'name': '__ANON_1', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}, {'name': 'LBRACE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'statement_block', '__type__': 'NonTerminal'}, {'name': 'RBRACE', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 97: {'origin': {'name': Token('RULE', 'struct_stmt'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'STRUCT', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'LBRACE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'struct_members', '__type__': 'NonTerminal'}, {'name': 'RBRACE', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 98: {'origin': {'name': Token('RULE', 'struct_members'), '__type__': 'NonTerminal'}, 'expansion': [{'name': '__struct_members_plus_3', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 99: {'origin': {'name': Token('RULE', 'struct_member'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'COLON', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'type_annotation', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 100: {'origin': {'name': Token('RULE', 'struct_access'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'DOT', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 101: {'origin': {'name': Token('RULE', 'struct_assignment'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'struct_access', '__type__': 'NonTerminal'}, {'name': 'EQUAL', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 102: {'origin': {'name': Token('RULE', 'enum_stmt'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'ENUM', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'LBRACE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'enum_members', '__type__': 'NonTerminal'}, {'name': 'RBRACE', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 103: {'origin': {'name': Token('RULE', 'enum_members'), '__type__': 'NonTerminal'}, 'expansion': [{'name': '__enum_members_plus_4', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 104: {'origin': {'name': Token('RULE', 'enum_member_bare'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 105: {'origin': {'name': Token('RULE', 'enum_member_tuple'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'LPAR', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'type_annotation', '__type__': 'NonTerminal'}, {'name': 'RPAR', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 106: {'origin': {'name': Token('RULE', 'function_definition'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'FN', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'LPAR', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'function_params', '__type__': 'NonTerminal'}, {'name': 'RPAR', 'filter_out': True, '__type__': 'Terminal'}, {'name': '__ANON_2', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'type_annotation', '__type__': 'NonTerminal'}, {'name': 'LBRACE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'statement_block', '__type__': 'NonTerminal'}, {'name': 'RBRACE', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 107: {'origin': {'name': Token('RULE', 'function_definition'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'FN', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'LPAR', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'RPAR', 'filter_out': True, '__type__': 'Terminal'}, {'name': '__ANON_2', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'type_annotation', '__type__': 'NonTerminal'}, {'name': 'LBRACE', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'statement_block', '__type__': 'NonTerminal'}, {'name': 'RBRACE', 'filter_out': True, '__type__': 'Terminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (False, False, False, True, False, False, False, False, False, False), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 108: {'origin': {'name': Token('RULE', 'function_params'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'function_param', '__type__': 'NonTerminal'}, {'name': '__function_params_star_5', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 109: {'origin': {'name': Token('RULE', 'function_params'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'function_param', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 110: {'origin': {'name': Token('RULE', 'function_param'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'COLON', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'type_annotation', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 111: {'origin': {'name': Token('RULE', 'type_annotation'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'LESSTHAN', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'type_annotation', '__type__': 'NonTerminal'}, {'name': 'MORETHAN', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 112: {'origin': {'name': Token('RULE', 'type_annotation'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (False, True), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 113: {'origin': {'name': Token('RULE', 'return_stmt'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'RETURN', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 114: {'origin': {'name': Token('RULE', 'expression'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'equality', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 115: {'origin': {'name': Token('RULE', 'equality'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'logical', '__type__': 'NonTerminal'}, {'name': '__ANON_3', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'equality', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 116: {'origin': {'name': Token('RULE', 'equality'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'logical', '__type__': 'NonTerminal'}, {'name': '__ANON_4', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'equality', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 117: {'origin': {'name': Token('RULE', 'equality'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'logical', '__type__': 'NonTerminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 118: {'origin': {'name': Token('RULE', 'logical'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'comparison', '__type__': 'NonTerminal'}, {'name': '__ANON_5', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'logical', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 119: {'origin': {'name': Token('RULE', 'logical'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'comparison', '__type__': 'NonTerminal'}, {'name': '__ANON_6', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'logical', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 120: {'origin': {'name': Token('RULE', 'logical'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'comparison', '__type__': 'NonTerminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 121: {'origin': {'name': Token('RULE', 'comparison'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'term', '__type__': 'NonTerminal'}, {'name': 'MORETHAN', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'comparison', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 122: {'origin': {'name': Token('RULE', 'comparison'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'term', '__type__': 'NonTerminal'}, {'name': 'LESSTHAN', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'comparison', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 123: {'origin': {'name': Token('RULE', 'comparison'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'term', '__type__': 'NonTerminal'}, {'name': '__ANON_7', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'comparison', '__type__': 'NonTerminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 124: {'origin': {'name': Token('RULE', 'comparison'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'term', '__type__': 'NonTerminal'}, {'name': '__ANON_8', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'comparison', '__type__': 'NonTerminal'}], 'order': 3, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 125: {'origin': {'name': Token('RULE', 'comparison'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'term', '__type__': 'NonTerminal'}], 'order': 4, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 126: {'origin': {'name': Token('RULE', 'term'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'factor', '__type__': 'NonTerminal'}, {'name': 'PLUS', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'term', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 127: {'origin': {'name': Token('RULE', 'term'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'factor', '__type__': 'NonTerminal'}, {'name': 'MINUS', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'term', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 128: {'origin': {'name': Token('RULE', 'term'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'factor', '__type__': 'NonTerminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 129: {'origin': {'name': Token('RULE', 'factor'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'unary_op', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 130: {'origin': {'name': Token('RULE', 'factor'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'unary_op', '__type__': 'NonTerminal'}, {'name': 'STAR', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'factor', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 131: {'origin': {'name': Token('RULE', 'factor'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'unary_op', '__type__': 'NonTerminal'}, {'name': 'SLASH', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'factor', '__type__': 'NonTerminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 132: {'origin': {'name': Token('RULE', 'factor'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'unary_op', '__type__': 'NonTerminal'}, {'name': 'PERCENT', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'factor', '__type__': 'NonTerminal'}], 'order': 3, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 133: {'origin': {'name': Token('RULE', 'unary_op'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'PLUS', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'unary_op', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 134: {'origin': {'name': Token('RULE', 'unary_op'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'MINUS', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'unary_op', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 135: {'origin': {'name': Token('RULE', 'unary_op'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'BANG', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'unary_op', '__type__': 'NonTerminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 136: {'origin': {'name': Token('RULE', 'unary_op'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'indexing', '__type__': 'NonTerminal'}], 'order': 3, 'alias': None, 'options': {'keep_all_tokens': True, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 137: {'origin': {'name': Token('RULE', 'indexing'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'function_call', '__type__': 'NonTerminal'}, {'name': 'LSQB', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}, {'name': 'RSQB', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 138: {'origin': {'name': Token('RULE', 'indexing'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'function_call', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 139: {'origin': {'name': Token('RULE', 'function_call'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'variable', '__type__': 'NonTerminal'}, {'name': 'LPAR', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'function_args', '__type__': 'NonTerminal'}, {'name': 'RPAR', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 140: {'origin': {'name': Token('RULE', 'function_call'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'variable', '__type__': 'NonTerminal'}, {'name': 'LPAR', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'struct_init_members', '__type__': 'NonTerminal'}, {'name': 'RPAR', 'filter_out': True, '__type__': 'Terminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 141: {'origin': {'name': Token('RULE', 'function_call'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'variable', '__type__': 'NonTerminal'}, {'name': 'LPAR', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'RPAR', 'filter_out': True, '__type__': 'Terminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (False, False, True, False), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 142: {'origin': {'name': Token('RULE', 'function_call'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'atom', '__type__': 'NonTerminal'}], 'order': 3, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 143: {'origin': {'name': Token('RULE', 'function_args'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'expression', '__type__': 'NonTerminal'}, {'name': '__function_args_star_6', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 144: {'origin': {'name': Token('RULE', 'function_args'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'expression', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 145: {'origin': {'name': Token('RULE', 'atom'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'bool_literal', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 146: {'origin': {'name': Token('RULE', 'atom'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'int_literal', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 147: {'origin': {'name': Token('RULE', 'atom'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'string_literal', '__type__': 'NonTerminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 148: {'origin': {'name': Token('RULE', 'atom'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'array_literal', '__type__': 'NonTerminal'}], 'order': 3, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 149: {'origin': {'name': Token('RULE', 'atom'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'enum_literal_simple', '__type__': 'NonTerminal'}], 'order': 4, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 150: {'origin': {'name': Token('RULE', 'atom'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'enum_literal_tuple', '__type__': 'NonTerminal'}], 'order': 5, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 151: {'origin': {'name': Token('RULE', 'atom'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'LPAR', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}, {'name': 'RPAR', 'filter_out': True, '__type__': 'Terminal'}], 'order': 6, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 152: {'origin': {'name': Token('RULE', 'atom'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'variable', '__type__': 'NonTerminal'}], 'order': 7, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': True, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 153: {'origin': {'name': Token('RULE', 'struct_init_members'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'struct_init_member', '__type__': 'NonTerminal'}, {'name': '__struct_init_members_star_7', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 154: {'origin': {'name': Token('RULE', 'struct_init_members'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'struct_init_member', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 155: {'origin': {'name': Token('RULE', 'struct_init_member'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'EQUAL', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 156: {'origin': {'name': Token('RULE', 'bool_literal'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'TRUE', 'filter_out': False, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 157: {'origin': {'name': Token('RULE', 'bool_literal'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'FALSE', 'filter_out': False, '__type__': 'Terminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 158: {'origin': {'name': Token('RULE', 'int_literal'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'INT', 'filter_out': False, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 159: {'origin': {'name': Token('RULE', 'string_literal'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'STRING', 'filter_out': False, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 160: {'origin': {'name': Token('RULE', 'enum_literal_simple'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': '__ANON_0', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 161: {'origin': {'name': Token('RULE', 'enum_literal_tuple'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': '__ANON_0', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}, {'name': 'LPAR', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}, {'name': 'RPAR', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 162: {'origin': {'name': Token('RULE', 'variable'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'IDENTIFIER', 'filter_out': False, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 163: {'origin': {'name': Token('RULE', 'array_literal'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'LESSTHAN', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'type_annotation', '__type__': 'NonTerminal'}, {'name': 'MORETHAN', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'LSQB', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'array_elements', '__type__': 'NonTerminal'}, {'name': 'RSQB', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 164: {'origin': {'name': Token('RULE', 'array_literal'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'LESSTHAN', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'type_annotation', '__type__': 'NonTerminal'}, {'name': 'MORETHAN', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'LSQB', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'RSQB', 'filter_out': True, '__type__': 'Terminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (False, False, False, False, True, False), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 165: {'origin': {'name': Token('RULE', 'array_literal'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'LSQB', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'array_elements', '__type__': 'NonTerminal'}, {'name': 'RSQB', 'filter_out': True, '__type__': 'Terminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (True, False, False, False), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 166: {'origin': {'name': Token('RULE', 'array_literal'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'LSQB', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'RSQB', 'filter_out': True, '__type__': 'Terminal'}], 'order': 3, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (True, False, True, False), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 167: {'origin': {'name': Token('RULE', 'array_elements'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'array_element', '__type__': 'NonTerminal'}, {'name': '__array_elements_star_8', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 168: {'origin': {'name': Token('RULE', 'array_elements'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'array_element', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 169: {'origin': {'name': Token('RULE', 'array_element'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'expression', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 170: {'origin': {'name': Token('RULE', 'array_pattern'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'LSQB', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'array_pattern_element', '__type__': 'NonTerminal'}, {'name': '__array_pattern_star_9', '__type__': 'NonTerminal'}, {'name': 'RSQB', 'filter_out': True, '__type__': 'Terminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 171: {'origin': {'name': Token('RULE', 'array_pattern'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'LSQB', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'array_pattern_element', '__type__': 'NonTerminal'}, {'name': 'RSQB', 'filter_out': True, '__type__': 'Terminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 172: {'origin': {'name': Token('RULE', 'array_pattern'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'LSQB', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'RSQB', 'filter_out': True, '__type__': 'Terminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 173: {'origin': {'name': Token('RULE', 'array_pattern_element'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'int_literal', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 174: {'origin': {'name': Token('RULE', 'array_pattern_element'), '__type__': 'NonTerminal'}, 'expansion': [{'name': 'wildcard_pattern', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 175: {'origin': {'name': '__statement_list_plus_0', '__type__': 'NonTerminal'}, 'expansion': [{'name': 'statement', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 176: {'origin': {'name': '__statement_list_plus_0', '__type__': 'NonTerminal'}, 'expansion': [{'name': '_NL', 'filter_out': True, '__type__': 'Terminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 177: {'origin': {'name': '__statement_list_plus_0', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__statement_list_plus_0', '__type__': 'NonTerminal'}, {'name': 'statement', '__type__': 'NonTerminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 178: {'origin': {'name': '__statement_list_plus_0', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__statement_list_plus_0', '__type__': 'NonTerminal'}, {'name': '_NL', 'filter_out': True, '__type__': 'Terminal'}], 'order': 3, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 179: {'origin': {'name': '__else_if_ladder_plus_1', '__type__': 'NonTerminal'}, 'expansion': [{'name': 'else_if_stmt', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 180: {'origin': {'name': '__else_if_ladder_plus_1', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__else_if_ladder_plus_1', '__type__': 'NonTerminal'}, {'name': 'else_if_stmt', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 181: {'origin': {'name': '__case_ladder_plus_2', '__type__': 'NonTerminal'}, 'expansion': [{'name': 'case_stmt', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 182: {'origin': {'name': '__case_ladder_plus_2', '__type__': 'NonTerminal'}, 'expansion': [{'name': '_NL', 'filter_out': True, '__type__': 'Terminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 183: {'origin': {'name': '__case_ladder_plus_2', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__case_ladder_plus_2', '__type__': 'NonTerminal'}, {'name': 'case_stmt', '__type__': 'NonTerminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 184: {'origin': {'name': '__case_ladder_plus_2', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__case_ladder_plus_2', '__type__': 'NonTerminal'}, {'name': '_NL', 'filter_out': True, '__type__': 'Terminal'}], 'order': 3, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 185: {'origin': {'name': '__struct_members_plus_3', '__type__': 'NonTerminal'}, 'expansion': [{'name': 'struct_member', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 186: {'origin': {'name': '__struct_members_plus_3', '__type__': 'NonTerminal'}, 'expansion': [{'name': '_NL', 'filter_out': True, '__type__': 'Terminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 187: {'origin': {'name': '__struct_members_plus_3', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__struct_members_plus_3', '__type__': 'NonTerminal'}, {'name': 'struct_member', '__type__': 'NonTerminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 188: {'origin': {'name': '__struct_members_plus_3', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__struct_members_plus_3', '__type__': 'NonTerminal'}, {'name': '_NL', 'filter_out': True, '__type__': 'Terminal'}], 'order': 3, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 189: {'origin': {'name': '__enum_members_plus_4', '__type__': 'NonTerminal'}, 'expansion': [{'name': 'enum_member_bare', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 190: {'origin': {'name': '__enum_members_plus_4', '__type__': 'NonTerminal'}, 'expansion': [{'name': 'enum_member_tuple', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 191: {'origin': {'name': '__enum_members_plus_4', '__type__': 'NonTerminal'}, 'expansion': [{'name': '_NL', 'filter_out': True, '__type__': 'Terminal'}], 'order': 2, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 192: {'origin': {'name': '__enum_members_plus_4', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__enum_members_plus_4', '__type__': 'NonTerminal'}, {'name': 'enum_member_bare', '__type__': 'NonTerminal'}], 'order': 3, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 193: {'origin': {'name': '__enum_members_plus_4', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__enum_members_plus_4', '__type__': 'NonTerminal'}, {'name': 'enum_member_tuple', '__type__': 'NonTerminal'}], 'order': 4, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 194: {'origin': {'name': '__enum_members_plus_4', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__enum_members_plus_4', '__type__': 'NonTerminal'}, {'name': '_NL', 'filter_out': True, '__type__': 'Terminal'}], 'order': 5, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 195: {'origin': {'name': '__function_params_star_5', '__type__': 'NonTerminal'}, 'expansion': [{'name': 'COMMA', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'function_param', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 196: {'origin': {'name': '__function_params_star_5', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__function_params_star_5', '__type__': 'NonTerminal'}, {'name': 'COMMA', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'function_param', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 197: {'origin': {'name': '__function_args_star_6', '__type__': 'NonTerminal'}, 'expansion': [{'name': 'COMMA', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 198: {'origin': {'name': '__function_args_star_6', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__function_args_star_6', '__type__': 'NonTerminal'}, {'name': 'COMMA', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'expression', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 199: {'origin': {'name': '__struct_init_members_star_7', '__type__': 'NonTerminal'}, 'expansion': [{'name': 'COMMA', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'struct_init_member', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 200: {'origin': {'name': '__struct_init_members_star_7', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__struct_init_members_star_7', '__type__': 'NonTerminal'}, {'name': 'COMMA', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'struct_init_member', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 201: {'origin': {'name': '__array_elements_star_8', '__type__': 'NonTerminal'}, 'expansion': [{'name': 'COMMA', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'array_element', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 202: {'origin': {'name': '__array_elements_star_8', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__array_elements_star_8', '__type__': 'NonTerminal'}, {'name': 'COMMA', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'array_element', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 203: {'origin': {'name': '__array_pattern_star_9', '__type__': 'NonTerminal'}, 'expansion': [{'name': 'COMMA', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'array_pattern_element', '__type__': 'NonTerminal'}], 'order': 0, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}, 204: {'origin': {'name': '__array_pattern_star_9', '__type__': 'NonTerminal'}, 'expansion': [{'name': '__array_pattern_star_9', '__type__': 'NonTerminal'}, {'name': 'COMMA', 'filter_out': True, '__type__': 'Terminal'}, {'name': 'array_pattern_element', '__type__': 'NonTerminal'}], 'order': 1, 'alias': None, 'options': {'keep_all_tokens': False, 'expand1': False, 'priority': None, 'template_source': None, 'empty_indices': (), '__type__': 'RuleOptions'}, '__type__': 'Rule'}}
+)
 Shift = 0
 Reduce = 1
-
-
 def Lark_StandAlone(**kwargs):
-    return Lark._load_from_dict(DATA, MEMO, **kwargs)
+  return Lark._load_from_dict(DATA, MEMO, **kwargs)
