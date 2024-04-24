@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from types import UnionType
 from typing import (
     TYPE_CHECKING,
@@ -19,7 +18,7 @@ if TYPE_CHECKING:
     from compiler.ast.match import EnumPatternTuple
     from compiler.ast.match import EnumPattern
     from compiler.ast.match import ArrayPattern, WildcardPattern
-    from compiler.ast import BoolLiteral
+    from compiler.ast.literals import BoolLiteral
     from compiler.errors import Span
 
 
@@ -41,7 +40,8 @@ class BoolPatternMatcher:
         self.cases: dict[bool | Wildcard, Span] = {}
 
     def add_case(self, arm: "BoolLiteral | WildcardPattern"):
-        from compiler.ast.match import BoolLiteral, WildcardPattern
+        from compiler.ast.literals import BoolLiteral
+        from compiler.ast.match import WildcardPattern
 
         match arm:
             case BoolLiteral():
