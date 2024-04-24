@@ -16,7 +16,7 @@
         dict({
           <class 'compiler.ast.WhileStmt'>: dict({
             'cond': dict({
-              <class 'compiler.ast.Equality'>: dict({
+              <class 'compiler.ast.operators.Equality'>: dict({
                 'left': dict({
                   <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'x'),
@@ -37,7 +37,7 @@
                     <class 'compiler.ast.variable.Assignment'>: dict({
                       'lvalue': Token('IDENTIFIER', 'x'),
                       'rvalue': dict({
-                        <class 'compiler.ast.Term'>: dict({
+                        <class 'compiler.ast.operators.Term'>: dict({
                           'left': dict({
                             <class 'compiler.ast.variable.Variable'>: dict({
                               'value': Token('IDENTIFIER', 'x'),
@@ -84,7 +84,7 @@
             <class 'compiler.ast.WhileStmt'>: dict({
               'fields': dict({
                 'cond': dict({
-                  <class 'compiler.ast.Equality'>: dict({
+                  <class 'compiler.ast.operators.Equality'>: dict({
                     'fields': dict({
                       'left': dict({
                         <class 'compiler.ast.variable.Variable'>: dict({
@@ -112,7 +112,7 @@
                           <class 'compiler.ast.variable.Assignment'>: dict({
                             'fields': dict({
                               'rvalue': dict({
-                                <class 'compiler.ast.Term'>: dict({
+                                <class 'compiler.ast.operators.Term'>: dict({
                                   'fields': dict({
                                     'left': dict({
                                       <class 'compiler.ast.variable.Variable'>: dict({

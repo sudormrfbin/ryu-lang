@@ -37,7 +37,7 @@
                   dict({
                     <class 'compiler.ast.function.ReturnStmt'>: dict({
                       'return_value': dict({
-                        <class 'compiler.ast.Term'>: dict({
+                        <class 'compiler.ast.operators.Term'>: dict({
                           'left': dict({
                             <class 'compiler.ast.variable.Variable'>: dict({
                               'value': Token('IDENTIFIER', 'a'),
@@ -151,7 +151,7 @@
                           <class 'compiler.ast.function.ReturnStmt'>: dict({
                             'fields': dict({
                               'return_value': dict({
-                                <class 'compiler.ast.Term'>: dict({
+                                <class 'compiler.ast.operators.Term'>: dict({
                                   'fields': dict({
                                     'left': dict({
                                       <class 'compiler.ast.variable.Variable'>: dict({
@@ -291,7 +291,7 @@
                       'if_stmt': dict({
                         <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                           'cond': dict({
-                            <class 'compiler.ast.Comparison'>: dict({
+                            <class 'compiler.ast.operators.Comparison'>: dict({
                               'left': dict({
                                 <class 'compiler.ast.variable.Variable'>: dict({
                                   'value': Token('IDENTIFIER', 'a'),
@@ -446,7 +446,7 @@
                                 <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                                   'fields': dict({
                                     'cond': dict({
-                                      <class 'compiler.ast.Comparison'>: dict({
+                                      <class 'compiler.ast.operators.Comparison'>: dict({
                                         'fields': dict({
                                           'left': dict({
                                             <class 'compiler.ast.variable.Variable'>: dict({
@@ -992,7 +992,7 @@
             dict({
               <class 'compiler.ast.function.ReturnStmt'>: dict({
                 'return_value': dict({
-                  <class 'compiler.ast.Term'>: dict({
+                  <class 'compiler.ast.operators.Term'>: dict({
                     'left': dict({
                       <class 'compiler.ast.variable.Variable'>: dict({
                         'value': Token('IDENTIFIER', 'a'),
@@ -1069,7 +1069,7 @@
                   <class 'compiler.ast.function.ReturnStmt'>: dict({
                     'fields': dict({
                       'return_value': dict({
-                        <class 'compiler.ast.Term'>: dict({
+                        <class 'compiler.ast.operators.Term'>: dict({
                           'fields': dict({
                             'left': dict({
                               <class 'compiler.ast.variable.Variable'>: dict({
@@ -1159,7 +1159,7 @@
                 'if_stmt': dict({
                   <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                     'cond': dict({
-                      <class 'compiler.ast.Comparison'>: dict({
+                      <class 'compiler.ast.operators.Comparison'>: dict({
                         'left': dict({
                           <class 'compiler.ast.variable.Variable'>: dict({
                             'value': Token('IDENTIFIER', 'a'),
@@ -1277,7 +1277,7 @@
                         <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                           'fields': dict({
                             'cond': dict({
-                              <class 'compiler.ast.Comparison'>: dict({
+                              <class 'compiler.ast.operators.Comparison'>: dict({
                                 'fields': dict({
                                   'left': dict({
                                     <class 'compiler.ast.variable.Variable'>: dict({
@@ -1537,14 +1537,14 @@
                             dict({
                               <class 'compiler.ast.function.ReturnStmt'>: dict({
                                 'return_value': dict({
-                                  <class 'compiler.ast.Factor'>: dict({
+                                  <class 'compiler.ast.operators.Factor'>: dict({
                                     'left': dict({
                                       <class 'compiler.ast.function.FunctionCall'>: dict({
                                         'args': dict({
                                           <class 'compiler.ast.function.FunctionArgs'>: dict({
                                             'args': list([
                                               dict({
-                                                <class 'compiler.ast.Term'>: dict({
+                                                <class 'compiler.ast.operators.Term'>: dict({
                                                   'left': dict({
                                                     <class 'compiler.ast.variable.Variable'>: dict({
                                                       'value': Token('IDENTIFIER', 'n'),
@@ -1584,7 +1584,7 @@
                       'if_stmt': dict({
                         <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                           'cond': dict({
-                            <class 'compiler.ast.Comparison'>: dict({
+                            <class 'compiler.ast.operators.Comparison'>: dict({
                               'left': dict({
                                 <class 'compiler.ast.variable.Variable'>: dict({
                                   'value': Token('IDENTIFIER', 'n'),
@@ -1828,7 +1828,7 @@
                                         <class 'compiler.ast.function.ReturnStmt'>: dict({
                                           'fields': dict({
                                             'return_value': dict({
-                                              <class 'compiler.ast.Factor'>: dict({
+                                              <class 'compiler.ast.operators.Factor'>: dict({
                                                 'fields': dict({
                                                   'left': dict({
                                                     <class 'compiler.ast.function.FunctionCall'>: dict({
@@ -1838,7 +1838,7 @@
                                                             'fields': dict({
                                                               'args': list([
                                                                 dict({
-                                                                  <class 'compiler.ast.Term'>: dict({
+                                                                  <class 'compiler.ast.operators.Term'>: dict({
                                                                     'fields': dict({
                                                                       'left': dict({
                                                                         <class 'compiler.ast.variable.Variable'>: dict({
@@ -1896,7 +1896,7 @@
                                 <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                                   'fields': dict({
                                     'cond': dict({
-                                      <class 'compiler.ast.Comparison'>: dict({
+                                      <class 'compiler.ast.operators.Comparison'>: dict({
                                         'fields': dict({
                                           'left': dict({
                                             <class 'compiler.ast.variable.Variable'>: dict({

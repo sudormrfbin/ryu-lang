@@ -20,7 +20,7 @@
                 dict({
                   <class 'compiler.ast.array.ArrayElement'>: dict({
                     'element': dict({
-                      <class 'compiler.ast.Term'>: dict({
+                      <class 'compiler.ast.operators.Term'>: dict({
                         'left': dict({
                           <class 'compiler.ast.literals.IntLiteral'>: dict({
                             'value': 3,
@@ -73,7 +73,7 @@
                         <class 'compiler.ast.array.ArrayElement'>: dict({
                           'fields': dict({
                             'element': dict({
-                              <class 'compiler.ast.Term'>: dict({
+                              <class 'compiler.ast.operators.Term'>: dict({
                                 'fields': dict({
                                   'left': dict({
                                     <class 'compiler.ast.literals.IntLiteral'>: dict({

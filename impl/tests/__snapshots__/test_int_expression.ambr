@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_addition_3_ints
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 1,
@@ -9,7 +9,7 @@
       }),
       'op': Token('PLUS', '+'),
       'right': dict({
-        <class 'compiler.ast.Term'>: dict({
+        <class 'compiler.ast.operators.Term'>: dict({
           'left': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
               'value': 2,
@@ -28,7 +28,7 @@
 # ---
 # name: test_addition_3_ints.1
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -38,7 +38,7 @@
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.Term'>: dict({
+          <class 'compiler.ast.operators.Term'>: dict({
             'fields': dict({
               'left': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -65,9 +65,9 @@
 # ---
 # name: test_addition_with_negative_int_both
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'left': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -78,7 +78,7 @@
       }),
       'op': Token('PLUS', '+'),
       'right': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -92,10 +92,10 @@
 # ---
 # name: test_addition_with_negative_int_both.1
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -109,7 +109,7 @@
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -129,9 +129,9 @@
 # ---
 # name: test_addition_with_negative_int_left
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'left': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -151,10 +151,10 @@
 # ---
 # name: test_addition_with_negative_int_left.1
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -181,7 +181,7 @@
 # ---
 # name: test_addition_with_negative_int_right
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 1,
@@ -189,7 +189,7 @@
       }),
       'op': Token('PLUS', '+'),
       'right': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -203,7 +203,7 @@
 # ---
 # name: test_addition_with_negative_int_right.1
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -213,7 +213,7 @@
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -233,7 +233,7 @@
 # ---
 # name: test_addition_with_positive_int
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 1,
@@ -250,7 +250,7 @@
 # ---
 # name: test_addition_with_positive_int.1
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -273,7 +273,7 @@
 # ---
 # name: test_and_false_and_false
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.BoolLiteral'>: dict({
           'value': False,
@@ -290,7 +290,7 @@
 # ---
 # name: test_and_false_and_false.1
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -313,7 +313,7 @@
 # ---
 # name: test_and_false_and_true
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.BoolLiteral'>: dict({
           'value': False,
@@ -330,7 +330,7 @@
 # ---
 # name: test_and_false_and_true.1
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -353,7 +353,7 @@
 # ---
 # name: test_and_false_or_false
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.BoolLiteral'>: dict({
           'value': False,
@@ -370,7 +370,7 @@
 # ---
 # name: test_and_false_or_false.1
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -393,7 +393,7 @@
 # ---
 # name: test_and_false_or_true
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.BoolLiteral'>: dict({
           'value': False,
@@ -410,7 +410,7 @@
 # ---
 # name: test_and_false_or_true.1
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -433,7 +433,7 @@
 # ---
 # name: test_and_true_and_false
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.BoolLiteral'>: dict({
           'value': True,
@@ -450,7 +450,7 @@
 # ---
 # name: test_and_true_and_false.1
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -473,7 +473,7 @@
 # ---
 # name: test_and_true_and_true
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.BoolLiteral'>: dict({
           'value': True,
@@ -490,7 +490,7 @@
 # ---
 # name: test_and_true_and_true.1
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -513,7 +513,7 @@
 # ---
 # name: test_and_true_or_false
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.BoolLiteral'>: dict({
           'value': True,
@@ -530,7 +530,7 @@
 # ---
 # name: test_and_true_or_false.1
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -553,7 +553,7 @@
 # ---
 # name: test_and_true_or_true
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.BoolLiteral'>: dict({
           'value': True,
@@ -570,7 +570,7 @@
 # ---
 # name: test_and_true_or_true.1
   dict({
-    <class 'compiler.ast.Logical'>: dict({
+    <class 'compiler.ast.operators.Logical'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -593,9 +593,9 @@
 # ---
 # name: test_division_with_negative_int_both
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'left': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -606,7 +606,7 @@
       }),
       'op': Token('SLASH', '/'),
       'right': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -620,10 +620,10 @@
 # ---
 # name: test_division_with_negative_int_both.1
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -637,7 +637,7 @@
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -657,9 +657,9 @@
 # ---
 # name: test_division_with_negative_int_left
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'left': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -679,10 +679,10 @@
 # ---
 # name: test_division_with_negative_int_left.1
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -709,7 +709,7 @@
 # ---
 # name: test_division_with_negative_int_right
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 4,
@@ -717,7 +717,7 @@
       }),
       'op': Token('SLASH', '/'),
       'right': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -731,7 +731,7 @@
 # ---
 # name: test_division_with_negative_int_right.1
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -741,7 +741,7 @@
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -761,7 +761,7 @@
 # ---
 # name: test_division_with_positive_int
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 4,
@@ -778,7 +778,7 @@
 # ---
 # name: test_division_with_positive_int.1
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -801,7 +801,7 @@
 # ---
 # name: test_eqeq_diffnum
   dict({
-    <class 'compiler.ast.Equality'>: dict({
+    <class 'compiler.ast.operators.Equality'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 3,
@@ -818,7 +818,7 @@
 # ---
 # name: test_eqeq_diffnum.1
   dict({
-    <class 'compiler.ast.Equality'>: dict({
+    <class 'compiler.ast.operators.Equality'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -841,7 +841,7 @@
 # ---
 # name: test_eqeq_samenum
   dict({
-    <class 'compiler.ast.Equality'>: dict({
+    <class 'compiler.ast.operators.Equality'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 3,
@@ -858,7 +858,7 @@
 # ---
 # name: test_eqeq_samenum.1
   dict({
-    <class 'compiler.ast.Equality'>: dict({
+    <class 'compiler.ast.operators.Equality'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -881,7 +881,7 @@
 # ---
 # name: test_greaterthan_largernum_gt_smallernum
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 5,
@@ -898,7 +898,7 @@
 # ---
 # name: test_greaterthan_largernum_gt_smallernum.1
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -921,7 +921,7 @@
 # ---
 # name: test_greaterthan_smallernum_gt_largernum
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 3,
@@ -938,7 +938,7 @@
 # ---
 # name: test_greaterthan_smallernum_gt_largernum.1
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -961,7 +961,7 @@
 # ---
 # name: test_gtq_largernum_gtq_smallernum
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 5,
@@ -978,7 +978,7 @@
 # ---
 # name: test_gtq_largernum_gtq_smallernum.1
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1001,7 +1001,7 @@
 # ---
 # name: test_gtq_samenum_gtq_samenum
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 3,
@@ -1018,7 +1018,7 @@
 # ---
 # name: test_gtq_samenum_gtq_samenum.1
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1041,7 +1041,7 @@
 # ---
 # name: test_gtq_smallernum_gtq_largernum
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 3,
@@ -1058,7 +1058,7 @@
 # ---
 # name: test_gtq_smallernum_gtq_largernum.1
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1081,7 +1081,7 @@
 # ---
 # name: test_lesserthan_largernum_lt_smallernum
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 5,
@@ -1098,7 +1098,7 @@
 # ---
 # name: test_lesserthan_largernum_lt_smallernum.1
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1121,7 +1121,7 @@
 # ---
 # name: test_lesserthan_smallernum_lt_largernum
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 3,
@@ -1138,7 +1138,7 @@
 # ---
 # name: test_lesserthan_smallernum_lt_largernum.1
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1161,7 +1161,7 @@
 # ---
 # name: test_ltq_largernum_ltq_smallernum
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 5,
@@ -1178,7 +1178,7 @@
 # ---
 # name: test_ltq_largernum_ltq_smallernum.1
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1201,7 +1201,7 @@
 # ---
 # name: test_ltq_samenum_ltq_samenum
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 3,
@@ -1218,7 +1218,7 @@
 # ---
 # name: test_ltq_samenum_ltq_samenum.1
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1241,7 +1241,7 @@
 # ---
 # name: test_ltq_smallernum_ltq_largernum
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 3,
@@ -1258,7 +1258,7 @@
 # ---
 # name: test_ltq_smallernum_ltq_largernum.1
   dict({
-    <class 'compiler.ast.Comparison'>: dict({
+    <class 'compiler.ast.operators.Comparison'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1281,9 +1281,9 @@
 # ---
 # name: test_modulus_with_negative_int_both
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'left': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1294,7 +1294,7 @@
       }),
       'op': Token('PERCENT', '%'),
       'right': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1308,10 +1308,10 @@
 # ---
 # name: test_modulus_with_negative_int_both.1
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1325,7 +1325,7 @@
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1345,9 +1345,9 @@
 # ---
 # name: test_modulus_with_negative_int_left
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'left': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1367,10 +1367,10 @@
 # ---
 # name: test_modulus_with_negative_int_left.1
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1397,7 +1397,7 @@
 # ---
 # name: test_modulus_with_negative_int_right
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 7,
@@ -1405,7 +1405,7 @@
       }),
       'op': Token('PERCENT', '%'),
       'right': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1419,7 +1419,7 @@
 # ---
 # name: test_modulus_with_negative_int_right.1
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1429,7 +1429,7 @@
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1449,7 +1449,7 @@
 # ---
 # name: test_modulus_with_positive_int
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 4,
@@ -1466,7 +1466,7 @@
 # ---
 # name: test_modulus_with_positive_int.1
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1489,9 +1489,9 @@
 # ---
 # name: test_multiplication_with_negative_int_both
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'left': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1502,7 +1502,7 @@
       }),
       'op': Token('STAR', '*'),
       'right': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1516,10 +1516,10 @@
 # ---
 # name: test_multiplication_with_negative_int_both.1
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1533,7 +1533,7 @@
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1553,9 +1553,9 @@
 # ---
 # name: test_multiplication_with_negative_int_left
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'left': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1575,10 +1575,10 @@
 # ---
 # name: test_multiplication_with_negative_int_left.1
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1605,7 +1605,7 @@
 # ---
 # name: test_multiplication_with_negative_int_right
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 3,
@@ -1613,7 +1613,7 @@
       }),
       'op': Token('STAR', '*'),
       'right': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1627,7 +1627,7 @@
 # ---
 # name: test_multiplication_with_negative_int_right.1
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1637,7 +1637,7 @@
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1657,7 +1657,7 @@
 # ---
 # name: test_multiplication_with_positive_int
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 3,
@@ -1674,7 +1674,7 @@
 # ---
 # name: test_multiplication_with_positive_int.1
   dict({
-    <class 'compiler.ast.Factor'>: dict({
+    <class 'compiler.ast.operators.Factor'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1697,7 +1697,7 @@
 # ---
 # name: test_not_false
   dict({
-    <class 'compiler.ast.UnaryOp'>: dict({
+    <class 'compiler.ast.operators.UnaryOp'>: dict({
       'op': Token('BANG', '!'),
       'operand': dict({
         <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -1709,7 +1709,7 @@
 # ---
 # name: test_not_false.1
   dict({
-    <class 'compiler.ast.UnaryOp'>: dict({
+    <class 'compiler.ast.operators.UnaryOp'>: dict({
       'fields': dict({
         'operand': dict({
           <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -1725,7 +1725,7 @@
 # ---
 # name: test_not_true
   dict({
-    <class 'compiler.ast.UnaryOp'>: dict({
+    <class 'compiler.ast.operators.UnaryOp'>: dict({
       'op': Token('BANG', '!'),
       'operand': dict({
         <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -1737,7 +1737,7 @@
 # ---
 # name: test_not_true.1
   dict({
-    <class 'compiler.ast.UnaryOp'>: dict({
+    <class 'compiler.ast.operators.UnaryOp'>: dict({
       'fields': dict({
         'operand': dict({
           <class 'compiler.ast.literals.BoolLiteral'>: dict({
@@ -1753,7 +1753,7 @@
 # ---
 # name: test_noteq_diffnum
   dict({
-    <class 'compiler.ast.Equality'>: dict({
+    <class 'compiler.ast.operators.Equality'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 3,
@@ -1770,7 +1770,7 @@
 # ---
 # name: test_noteq_diffnum.1
   dict({
-    <class 'compiler.ast.Equality'>: dict({
+    <class 'compiler.ast.operators.Equality'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1793,7 +1793,7 @@
 # ---
 # name: test_noteq_samenum
   dict({
-    <class 'compiler.ast.Equality'>: dict({
+    <class 'compiler.ast.operators.Equality'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 3,
@@ -1810,7 +1810,7 @@
 # ---
 # name: test_noteq_samenum.1
   dict({
-    <class 'compiler.ast.Equality'>: dict({
+    <class 'compiler.ast.operators.Equality'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1833,9 +1833,9 @@
 # ---
 # name: test_subtraction_with_negative_int_both
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'left': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1846,7 +1846,7 @@
       }),
       'op': Token('MINUS', '-'),
       'right': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1860,10 +1860,10 @@
 # ---
 # name: test_subtraction_with_negative_int_both.1
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1877,7 +1877,7 @@
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1897,9 +1897,9 @@
 # ---
 # name: test_subtraction_with_negative_int_left
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'left': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1919,10 +1919,10 @@
 # ---
 # name: test_subtraction_with_negative_int_left.1
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'fields': dict({
         'left': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1949,7 +1949,7 @@
 # ---
 # name: test_subtraction_with_negative_int_right
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 1,
@@ -1957,7 +1957,7 @@
       }),
       'op': Token('MINUS', '-'),
       'right': dict({
-        <class 'compiler.ast.UnaryOp'>: dict({
+        <class 'compiler.ast.operators.UnaryOp'>: dict({
           'op': Token('MINUS', '-'),
           'operand': dict({
             <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1971,7 +1971,7 @@
 # ---
 # name: test_subtraction_with_negative_int_right.1
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1981,7 +1981,7 @@
           }),
         }),
         'right': dict({
-          <class 'compiler.ast.UnaryOp'>: dict({
+          <class 'compiler.ast.operators.UnaryOp'>: dict({
             'fields': dict({
               'operand': dict({
                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -2001,7 +2001,7 @@
 # ---
 # name: test_subtraction_with_positive_int
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'left': dict({
         <class 'compiler.ast.literals.IntLiteral'>: dict({
           'value': 1,
@@ -2018,7 +2018,7 @@
 # ---
 # name: test_subtraction_with_positive_int.1
   dict({
-    <class 'compiler.ast.Term'>: dict({
+    <class 'compiler.ast.operators.Term'>: dict({
       'fields': dict({
         'left': dict({
           <class 'compiler.ast.literals.IntLiteral'>: dict({

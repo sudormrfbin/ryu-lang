@@ -1221,7 +1221,7 @@
             'if_stmt': dict({
               <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                 'cond': dict({
-                  <class 'compiler.ast.Equality'>: dict({
+                  <class 'compiler.ast.operators.Equality'>: dict({
                     'left': dict({
                       <class 'compiler.ast.variable.Variable'>: dict({
                         'value': Token('IDENTIFIER', 'x'),
@@ -1284,7 +1284,7 @@
                   <class 'compiler.ast.if_stmt.IfStmt'>: dict({
                     'fields': dict({
                       'cond': dict({
-                        <class 'compiler.ast.Equality'>: dict({
+                        <class 'compiler.ast.operators.Equality'>: dict({
                           'fields': dict({
                             'left': dict({
                               <class 'compiler.ast.variable.Variable'>: dict({

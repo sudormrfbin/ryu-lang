@@ -42,7 +42,7 @@
         dict({
           <class 'compiler.ast.PrintStmt'>: dict({
             'expr': dict({
-              <class 'compiler.ast.Term'>: dict({
+              <class 'compiler.ast.operators.Term'>: dict({
                 'left': dict({
                   <class 'compiler.ast.variable.Variable'>: dict({
                     'value': Token('IDENTIFIER', 'x'),
@@ -84,7 +84,7 @@
             <class 'compiler.ast.PrintStmt'>: dict({
               'fields': dict({
                 'expr': dict({
-                  <class 'compiler.ast.Term'>: dict({
+                  <class 'compiler.ast.operators.Term'>: dict({
                     'fields': dict({
                       'left': dict({
                         <class 'compiler.ast.variable.Variable'>: dict({

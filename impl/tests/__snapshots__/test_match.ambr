@@ -666,7 +666,7 @@
                                       dict({
                                         <class 'compiler.ast.function.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.UnaryOp'>: dict({
+                                            <class 'compiler.ast.operators.UnaryOp'>: dict({
                                               'op': Token('MINUS', '-'),
                                               'operand': dict({
                                                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1176,7 +1176,7 @@
                                                       <class 'compiler.ast.function.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.UnaryOp'>: dict({
+                                                            <class 'compiler.ast.operators.UnaryOp'>: dict({
                                                               'fields': dict({
                                                                 'operand': dict({
                                                                   <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -1628,7 +1628,7 @@
                                       dict({
                                         <class 'compiler.ast.function.ReturnStmt'>: dict({
                                           'return_value': dict({
-                                            <class 'compiler.ast.UnaryOp'>: dict({
+                                            <class 'compiler.ast.operators.UnaryOp'>: dict({
                                               'op': Token('MINUS', '-'),
                                               'operand': dict({
                                                 <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -2009,7 +2009,7 @@
                                                       <class 'compiler.ast.function.ReturnStmt'>: dict({
                                                         'fields': dict({
                                                           'return_value': dict({
-                                                            <class 'compiler.ast.UnaryOp'>: dict({
+                                                            <class 'compiler.ast.operators.UnaryOp'>: dict({
                                                               'fields': dict({
                                                                 'operand': dict({
                                                                   <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -3679,7 +3679,7 @@
           <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'result'),
             'rvalue': dict({
-              <class 'compiler.ast.UnaryOp'>: dict({
+              <class 'compiler.ast.operators.UnaryOp'>: dict({
                 'op': Token('MINUS', '-'),
                 'operand': dict({
                   <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -3768,7 +3768,7 @@
             <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.UnaryOp'>: dict({
+                  <class 'compiler.ast.operators.UnaryOp'>: dict({
                     'fields': dict({
                       'operand': dict({
                         <class 'compiler.ast.literals.IntLiteral'>: dict({
