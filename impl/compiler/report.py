@@ -2,14 +2,14 @@ from typing import TYPE_CHECKING, Optional, Sequence
 
 # error_report submodule is generated dynamically by pyo3 on the rust
 # side. Hence pyright cannot detect the source file.
-from error_report.error_report import (  # pyright: ignore [reportMissingModuleSource]
+from error_report import (  # pyright: ignore [reportMissingModuleSource]
     report_error as ariadne_error,
 )
 
 
 if TYPE_CHECKING:
     from compiler.errors import Span
-    import error_report.error_report as ariadne
+    import error_report as ariadne
 
 
 class Text:
