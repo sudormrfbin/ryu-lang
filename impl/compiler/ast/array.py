@@ -3,7 +3,6 @@ from typing import Any, Optional
 from typing_extensions import override
 
 from compiler import errors, langtypes
-from compiler.ast.base import Ast
 from compiler.ast.annotation import TypeAnnotation
 from compiler.ast.expressions import Expression
 from compiler.ast.statements import Statement
@@ -12,21 +11,24 @@ from compiler.env import RuntimeEnvironment, TypeEnvironment
 
 
 @dataclass
-class ArrayElement(Ast):
+class ArrayElement(Expression):
     element: Expression
 
+    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         self.type = self.element.typecheck(env)
         return self.type
 
+    @override
     def eval(self, env: RuntimeEnvironment) -> Any:
         return self.element.eval(env)
 
 
 @dataclass
-class ArrayElements(Ast):
+class ArrayElements(Expression):
     members: list[ArrayElement]
 
+    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         assert len(self.members) > 0
         check_type = self.members[0].typecheck(env)
@@ -42,6 +44,7 @@ class ArrayElements(Ast):
         self.type = check_type
         return self.type
 
+    @override
     def eval(self, env: RuntimeEnvironment) -> Any:
         result: list[Any] = []
         for mem in self.members:
@@ -50,10 +53,11 @@ class ArrayElements(Ast):
 
 
 @dataclass
-class ArrayLiteral(Ast):
+class ArrayLiteral(Expression):
     declared_type: Optional[TypeAnnotation]
     members: Optional[ArrayElements]
 
+    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         inferred_type = self.members.typecheck(env) if self.members else None
         declared_type = None
@@ -87,15 +91,17 @@ class ArrayLiteral(Ast):
                 )
         return self.type
 
+    @override
     def eval(self, env: RuntimeEnvironment) -> Any:
         return self.members.eval(env) if self.members else []
 
 
 @dataclass
-class Indexing(Ast):
+class Indexing(Expression):
     element: Expression
     index: Expression
 
+    @override
     def typecheck(self, env: TypeEnvironment) -> langtypes.Type:
         array_type = self.element.typecheck(env)
         index_type = self.index.typecheck(env)
@@ -111,6 +117,7 @@ class Indexing(Ast):
         self.type = array_type.ty
         return self.type
 
+    @override
     def eval(self, env: RuntimeEnvironment) -> Any:
         element_value = self.element.eval(env)
         array_ind = self.index.eval(env)
