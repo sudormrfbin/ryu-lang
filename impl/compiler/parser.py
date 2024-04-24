@@ -38,8 +38,8 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     def STRING(self, s: str) -> str:
         return s[1:-1]  # remove quotes
 
-    statement_list = listify(ast.StatementList)
-    statement_block = listify(ast.StatementBlock)
+    statement_list = listify(ast.statements.StatementList)
+    statement_block = listify(ast.statements.StatementBlock)
     variable_declaration = ast.variable.VariableDeclaration
     assignment = ast.variable.Assignment
     index_assignment = ast.array.IndexAssignment
@@ -54,9 +54,9 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     enum_pattern = ast.match.EnumPattern
     enum_pattern_tuple = ast.match.EnumPatternTuple
     wildcard_pattern = ast.match.WildcardPattern
-    while_stmt = ast.WhileStmt
-    for_stmt = ast.ForStmt
-    for_stmt_int = ast.ForStmtInt
+    while_stmt = ast.loops.WhileStmt
+    for_stmt = ast.loops.ForStmt
+    for_stmt_int = ast.loops.ForStmtInt
     struct_stmt = ast.struct.StructStmt
     struct_members = listify(ast.struct.StructMembers)
     struct_member = ast.struct.StructMember

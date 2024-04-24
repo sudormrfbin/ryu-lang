@@ -14,7 +14,7 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.WhileStmt'>: dict({
+          <class 'compiler.ast.loops.WhileStmt'>: dict({
             'cond': dict({
               <class 'compiler.ast.operators.Equality'>: dict({
                 'left': dict({
@@ -81,7 +81,7 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.WhileStmt'>: dict({
+            <class 'compiler.ast.loops.WhileStmt'>: dict({
               'fields': dict({
                 'cond': dict({
                   <class 'compiler.ast.operators.Equality'>: dict({
