@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_print
   dict({
-    <class 'compiler.ast.PrintStmt'>: dict({
+    <class 'compiler.ast.print.PrintStmt'>: dict({
       'expr': dict({
         <class 'compiler.ast.literals.StringLiteral'>: dict({
           'value': 'hello world',
@@ -12,7 +12,7 @@
 # ---
 # name: test_print.1
   dict({
-    <class 'compiler.ast.PrintStmt'>: dict({
+    <class 'compiler.ast.print.PrintStmt'>: dict({
       'fields': dict({
         'expr': dict({
           <class 'compiler.ast.literals.StringLiteral'>: dict({
@@ -40,7 +40,7 @@
           }),
         }),
         dict({
-          <class 'compiler.ast.PrintStmt'>: dict({
+          <class 'compiler.ast.print.PrintStmt'>: dict({
             'expr': dict({
               <class 'compiler.ast.operators.Term'>: dict({
                 'left': dict({
@@ -81,7 +81,7 @@
             }),
           }),
           dict({
-            <class 'compiler.ast.PrintStmt'>: dict({
+            <class 'compiler.ast.print.PrintStmt'>: dict({
               'fields': dict({
                 'expr': dict({
                   <class 'compiler.ast.operators.Term'>: dict({

@@ -43,7 +43,7 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     variable_declaration = ast.variable.VariableDeclaration
     assignment = ast.variable.Assignment
     index_assignment = ast.array.IndexAssignment
-    print_stmt = ast.PrintStmt
+    print_stmt = ast.print.PrintStmt
     if_chain = ast.if_stmt.IfChain
     if_stmt = ast.if_stmt.IfStmt
     else_if_ladder = listify(ast.if_stmt.ElseIfLadder)
@@ -69,7 +69,7 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     function_definition = ast.function.FunctionDefinition
     function_params = listify(ast.function.FunctionParams)
     function_param = ast.function.FunctionParam
-    type_annotation = ast.TypeAnnotation
+    type_annotation = ast.annotation.TypeAnnotation
     return_stmt = ast.function.ReturnStmt
     equality = ast.operators.Equality
     logical = ast.operators.Logical
@@ -84,7 +84,7 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     struct_init_member = ast.struct.StructInitMember
     bool_literal = ast.literals.BoolLiteral
     int_literal = ast.literals.IntLiteral
-    string_literal = ast.StringLiteral
+    string_literal = ast.literals.StringLiteral
     enum_literal_simple = ast.enum.EnumLiteralSimple
     enum_literal_tuple = ast.enum.EnumLiteralTuple
     variable = ast.variable.Variable
