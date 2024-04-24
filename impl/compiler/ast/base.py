@@ -1,4 +1,3 @@
-import abc
 from typing import Any
 import typing
 import dataclasses
@@ -14,7 +13,7 @@ AstDict = dict[typing.Type["Ast"], dict[str, Any]]
 
 
 @dataclass
-class Ast(abc.ABC):
+class Ast:
     # InitVar makes meta available on the __post_init__ method
     # and excludes it in the generated __init__.
     meta: dataclasses.InitVar[LarkMeta]
