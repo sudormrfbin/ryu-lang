@@ -4,9 +4,9 @@
     <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'ident': Token('IDENTIFIER', 'i'),
       'rvalue': dict({
-        <class 'compiler.ast.FunctionCall'>: dict({
+        <class 'compiler.ast.function.FunctionCall'>: dict({
           'args': dict({
-            <class 'compiler.ast.FunctionArgs'>: dict({
+            <class 'compiler.ast.function.FunctionArgs'>: dict({
               'args': list([
                 dict({
                   <class 'compiler.ast.literals.IntLiteral'>: dict({
@@ -36,10 +36,10 @@
     <class 'compiler.ast.variable.VariableDeclaration'>: dict({
       'fields': dict({
         'rvalue': dict({
-          <class 'compiler.ast.FunctionCall'>: dict({
+          <class 'compiler.ast.function.FunctionCall'>: dict({
             'fields': dict({
               'args': dict({
-                <class 'compiler.ast.FunctionArgs'>: dict({
+                <class 'compiler.ast.function.FunctionArgs'>: dict({
                   'fields': dict({
                     'args': list([
                       dict({

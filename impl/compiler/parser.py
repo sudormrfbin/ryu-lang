@@ -1,6 +1,7 @@
 from typing import Any, Type, TypeVar
 
 from compiler import ast
+from compiler.ast.base import Ast
 from compiler.lalr import Meta, Token, Tree, Lark_StandAlone, v_args, Transformer, DATA  # type: ignore
 
 # https://github.com/lark-parser/lark/issues/565
@@ -65,11 +66,11 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     enum_members = listify(ast.enum.EnumMembers)
     enum_member_bare = ast.enum.EnumMemberBare
     enum_member_tuple = ast.enum.EnumMemberTuple
-    function_definition = ast.FunctionDefinition
-    function_params = listify(ast.FunctionParams)
-    function_param = ast.FunctionParam
+    function_definition = ast.function.FunctionDefinition
+    function_params = listify(ast.function.FunctionParams)
+    function_param = ast.function.FunctionParam
     type_annotation = ast.TypeAnnotation
-    return_stmt = ast.ReturnStmt
+    return_stmt = ast.function.ReturnStmt
     equality = ast.Equality
     logical = ast.Logical
     comparison = ast.Comparison
@@ -77,16 +78,16 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
     factor = ast.Factor
     unary_op = ast.UnaryOp
     indexing = ast.array.Indexing
-    function_call = ast.FunctionCall
-    function_args = listify(ast.FunctionArgs)
-    struct_init_members = listify(ast.StructInitMembers)
+    function_call = ast.function.FunctionCall
+    function_args = listify(ast.function.FunctionArgs)
+    struct_init_members = listify(ast.struct.StructInitMembers)
     struct_init_member = ast.struct.StructInitMember
     bool_literal = ast.literals.BoolLiteral
     int_literal = ast.literals.IntLiteral
     string_literal = ast.StringLiteral
     enum_literal_simple = ast.EnumLiteralSimple
     enum_literal_tuple = ast.EnumLiteralTuple
-    variable = ast.Variable
+    variable = ast.variable.Variable
     array_literal = ast.array.ArrayLiteral
     array_elements = listify(ast.array.ArrayElements)
     array_element = ast.array.ArrayElement
@@ -97,5 +98,5 @@ class LarkTreeToAstTransformer(Transformer[Token, Any]):
 _transformer = LarkTreeToAstTransformer()
 
 
-def parse_tree_to_ast(tree: Tree[Token]) -> ast.Ast:
+def parse_tree_to_ast(tree: Tree[Token]) -> Ast:
     return _transformer.transform(tree)

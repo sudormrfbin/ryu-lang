@@ -116,7 +116,7 @@
           <class 'compiler.ast.variable.VariableDeclaration'>: dict({
             'ident': Token('IDENTIFIER', 'p'),
             'rvalue': dict({
-              <class 'compiler.ast.FunctionCall'>: dict({
+              <class 'compiler.ast.function.FunctionCall'>: dict({
                 'args': dict({
                   <class 'compiler.ast.struct.StructInitMembers'>: dict({
                     'members': list([
@@ -208,7 +208,7 @@
             <class 'compiler.ast.variable.VariableDeclaration'>: dict({
               'fields': dict({
                 'rvalue': dict({
-                  <class 'compiler.ast.FunctionCall'>: dict({
+                  <class 'compiler.ast.function.FunctionCall'>: dict({
                     'fields': dict({
                       'args': dict({
                         <class 'compiler.ast.struct.StructInitMembers'>: dict({
