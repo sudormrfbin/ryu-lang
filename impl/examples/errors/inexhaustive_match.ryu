@@ -1,0 +1,14 @@
+enum Langs {
+	Malayalam
+	English
+	Japanese
+}
+
+fn langcode(lang: Langs) -> string {
+	match lang {
+		case Langs::English { return "eng" }
+		case Langs::Malayalam { return "mal" }
+	}
+}
+
+print(langcode(Langs::English))

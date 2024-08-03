@@ -145,14 +145,25 @@ class EnumPatternMatcher:
             return None
 
         leftover: set[str] = set()
+        leftover_simples: set[str] = set()
+        for variant in self.enum.members:
+            if isinstance(variant, langtypes.Enum.Simple):
+                leftover_simples.add(str(variant.name))
+
         for variant, span_and_matcher in self.cases.items():
             _, matcher = span_and_matcher
             if matcher is None:
+                if isinstance(variant, str):
+                    leftover_simples.remove(variant)
                 continue
             if remaining := matcher.unhandled_cases():
                 for rem in remaining:  # type: ignore
                     leftover.add(f"{self.enum.name}::{variant}({rem})")
 
+        leftover_simples = set(
+            (f"{self.enum.name}::{variant}" for variant in leftover_simples)
+        )
+        leftover = leftover.union(leftover_simples)
         return leftover if leftover else None
 
 
