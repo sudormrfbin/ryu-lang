@@ -1,0 +1,11 @@
+let flag = 0
+
+match flag {
+    case false {
+		print("Disabled")
+	}
+    case true {
+		print("Enabled")
+	}
+}
+
