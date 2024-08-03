@@ -1,0 +1,32 @@
+fn partition(a :array<int>, low: int, high: int) -> int {
+    let pivot = a[high]
+    let i = low - 1
+
+    for j in low..high {
+        if a[j] <= pivot {
+            i = i + 1
+            let temp = a[i]
+            a[i]= a[j]
+            a[j] = temp
+        }
+    }
+    let temp = a[i+1]
+    a[i+1]= a[high]
+    a[high] = temp
+
+    return i + 1
+}
+
+fn quicksort(a: array<int>, low: int, high: int) -> array<int> {
+    if low < high {
+        let pi = partition(a, low, high)
+        quicksort(a, low, pi - 1)
+        quicksort(a, pi + 1, high)
+    }
+    return a
+}
+
+let array = [10, 7, 8, 9, 1, 5]
+let n = arrlen(array)
+
+print(quicksort(array, 0, n - 1))
